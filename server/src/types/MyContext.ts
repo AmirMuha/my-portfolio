@@ -1,7 +1,15 @@
 import { PrismaClient } from "@prisma/client";
-import { Request } from "express";
+import { Request, Response } from "express";
+import { Session } from "express-session";
+import { SessionProps } from "./Session";
+
+interface RequestProps extends Request {
+  session: SessionProps & Session;
+}
 
 export interface MyContext {
   prisma: PrismaClient;
-  req: Request;
+  req: RequestProps;
+  res: Response;
+  data: any;
 }
