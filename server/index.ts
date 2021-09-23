@@ -6,23 +6,58 @@ import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
 import { config as EnvConfig } from "dotenv";
 import Express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 import path from "path";
 import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
-import { resolvers } from "./prisma/generated/type-graphql";
+import { AdminCrudResolver } from "./src/resolvers/User";
+import {
+  AboutCrudResolver,
+  ProjectCrudResolver,
+  MessageCrudResolver,
+  SketchCrudResolver,
+  QuestionCrudResolver,
+} from "./prisma/generated/type-graphql";
 import { black } from "./src/chalk";
-import { HOST, PORT, __prod__ } from "./src/constants/environment-variables";
+import {
+  HOST,
+  PORT,
+  SESSION_MAX_AGE,
+  SESSION_SECRET,
+  __prod__,
+} from "./src/constants/environment-variables";
+import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
 import prisma from "./src/prisma-client";
-import morgan from "morgan";
-import helmet from "helmet";
-import applyMiddlewares from "./src/middlewares/apply-middlewares-on-typegraphql-prisma";
 import { MyContext } from "./src/types/MyContext";
+import session from "express-session";
+import { redis } from "./src/redis-client";
+import { v4 } from "uuid";
+import redisStore from "connect-redis";
 const app = Express();
+const RedisStore = redisStore(session);
 
 app.use(
   cors({
     credentials: true,
     origin: "localhost:8000",
+  })
+);
+app.use(
+  session({
+    name: "sid",
+    store: new RedisStore({ client: redis }),
+    secret: SESSION_SECRET,
+    genid: () => {
+      return v4();
+    },
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: __prod__,
+      maxAge: SESSION_MAX_AGE,
+    },
   })
 );
 EnvConfig({
@@ -32,16 +67,19 @@ EnvConfig({
 const main = async () => {
   applyMiddlewares();
   const schema = buildSchemaSync({
-    resolvers: [...resolvers],
-    authChecker: async ({ context: { req } }: { context: MyContext }) => {
-      console.log(req.headers.authorization);
-      return true;
-    },
+    resolvers: [
+      AboutCrudResolver,
+      ProjectCrudResolver,
+      MessageCrudResolver,
+      SketchCrudResolver,
+      QuestionCrudResolver,
+      AdminCrudResolver,
+    ],
     emitSchemaFile: true,
   });
   const server = new ApolloServer({
     schema,
-    context: ({ req }) => ({ prisma, req }),
+    context: ({ req, res }) => ({ prisma, req, res, data: {} } as MyContext),
     plugins: [
       __prod__
         ? ApolloServerPluginLandingPageProductionDefault({
@@ -68,4 +106,4 @@ const main = async () => {
     console.log(black(` Server is running on http://${HOST}:${PORT} `));
   });
 };
-main();
+main().catch(console.error);
