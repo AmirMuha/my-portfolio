@@ -8,9 +8,8 @@ generator client {
 }
 
 generator typegraphql {
-  provider           = "typegraphql-prisma"
-  output             = "./generated/type-graphql"
-  emitTranspiledCode = true
+  provider = "typegraphql-prisma"
+  output   = "./generated/type-graphql"
 }
 
 model Admin {
@@ -22,8 +21,8 @@ model Admin {
   messages  Message[]
   projects  Project[]
   /// @TypeGraphQL.omit(output: true, input: true)
-  apikey    String
-  /// @TypeGraphQL.omit(output: true, input: true)
+  apikey    String?
+  /// @TypeGraphQL.omit(output: true)
   password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

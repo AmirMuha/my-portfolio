@@ -1,8 +1,15 @@
-// import {
-//   applyResolversEnhanceMap,
-//   ResolversEnhanceMap,
-// } from "../../prisma/generated/type-graphql";
+import { Authorized } from "type-graphql";
+import {
+  applyResolversEnhanceMap,
+  ResolversEnhanceMap,
+} from "../../prisma/generated/type-graphql";
 
-// const resolversEnhanceMap: ResolversEnhanceMap = {};
+export default () => {
+  const resolversEnhanceMap: ResolversEnhanceMap = {
+    Admin: {
+      _all: [Authorized()],
+    },
+  };
 
-// applyResolversEnhanceMap(resolversEnhanceMap);
+  applyResolversEnhanceMap(resolversEnhanceMap);
+};

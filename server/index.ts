@@ -15,6 +15,8 @@ import { HOST, PORT, __prod__ } from "./src/constants/environment-variables";
 import prisma from "./src/prisma-client";
 import morgan from "morgan";
 import helmet from "helmet";
+import applyMiddlewares from "./src/middlewares/apply-middlewares-on-typegraphql-prisma";
+import { MyContext } from "./src/types/MyContext";
 const app = Express();
 
 app.use(
@@ -28,13 +30,18 @@ EnvConfig({
 });
 
 const main = async () => {
+  applyMiddlewares();
   const schema = buildSchemaSync({
-    resolvers,
+    resolvers: [...resolvers],
+    authChecker: async ({ context: { req } }: { context: MyContext }) => {
+      console.log(req.headers.authorization);
+      return true;
+    },
     emitSchemaFile: true,
   });
   const server = new ApolloServer({
     schema,
-    context: () => ({ prisma }),
+    context: ({ req }) => ({ prisma, req }),
     plugins: [
       __prod__
         ? ApolloServerPluginLandingPageProductionDefault({
