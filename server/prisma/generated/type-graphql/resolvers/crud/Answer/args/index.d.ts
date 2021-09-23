@@ -1,0 +1,12 @@
+export { AggregateAnswerArgs } from "./AggregateAnswerArgs";
+export { CreateAnswerArgs } from "./CreateAnswerArgs";
+export { CreateManyAnswerArgs } from "./CreateManyAnswerArgs";
+export { DeleteAnswerArgs } from "./DeleteAnswerArgs";
+export { DeleteManyAnswerArgs } from "./DeleteManyAnswerArgs";
+export { FindFirstAnswerArgs } from "./FindFirstAnswerArgs";
+export { FindManyAnswerArgs } from "./FindManyAnswerArgs";
+export { FindUniqueAnswerArgs } from "./FindUniqueAnswerArgs";
+export { GroupByAnswerArgs } from "./GroupByAnswerArgs";
+export { UpdateAnswerArgs } from "./UpdateAnswerArgs";
+export { UpdateManyAnswerArgs } from "./UpdateManyAnswerArgs";
+export { UpsertAnswerArgs } from "./UpsertAnswerArgs";

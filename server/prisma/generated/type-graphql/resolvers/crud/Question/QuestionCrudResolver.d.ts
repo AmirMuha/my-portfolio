@@ -1,0 +1,31 @@
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateQuestionArgs } from "./args/AggregateQuestionArgs";
+import { CreateManyQuestionArgs } from "./args/CreateManyQuestionArgs";
+import { CreateQuestionArgs } from "./args/CreateQuestionArgs";
+import { DeleteManyQuestionArgs } from "./args/DeleteManyQuestionArgs";
+import { DeleteQuestionArgs } from "./args/DeleteQuestionArgs";
+import { FindFirstQuestionArgs } from "./args/FindFirstQuestionArgs";
+import { FindManyQuestionArgs } from "./args/FindManyQuestionArgs";
+import { FindUniqueQuestionArgs } from "./args/FindUniqueQuestionArgs";
+import { GroupByQuestionArgs } from "./args/GroupByQuestionArgs";
+import { UpdateManyQuestionArgs } from "./args/UpdateManyQuestionArgs";
+import { UpdateQuestionArgs } from "./args/UpdateQuestionArgs";
+import { UpsertQuestionArgs } from "./args/UpsertQuestionArgs";
+import { Question } from "../../../models/Question";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateQuestion } from "../../outputs/AggregateQuestion";
+import { QuestionGroupBy } from "../../outputs/QuestionGroupBy";
+export declare class QuestionCrudResolver {
+    question(ctx: any, info: GraphQLResolveInfo, args: FindUniqueQuestionArgs): Promise<Question | null>;
+    findFirstQuestion(ctx: any, info: GraphQLResolveInfo, args: FindFirstQuestionArgs): Promise<Question | null>;
+    questions(ctx: any, info: GraphQLResolveInfo, args: FindManyQuestionArgs): Promise<Question[]>;
+    createQuestion(ctx: any, info: GraphQLResolveInfo, args: CreateQuestionArgs): Promise<Question>;
+    createManyQuestion(ctx: any, info: GraphQLResolveInfo, args: CreateManyQuestionArgs): Promise<AffectedRowsOutput>;
+    deleteQuestion(ctx: any, info: GraphQLResolveInfo, args: DeleteQuestionArgs): Promise<Question | null>;
+    updateQuestion(ctx: any, info: GraphQLResolveInfo, args: UpdateQuestionArgs): Promise<Question | null>;
+    deleteManyQuestion(ctx: any, info: GraphQLResolveInfo, args: DeleteManyQuestionArgs): Promise<AffectedRowsOutput>;
+    updateManyQuestion(ctx: any, info: GraphQLResolveInfo, args: UpdateManyQuestionArgs): Promise<AffectedRowsOutput>;
+    upsertQuestion(ctx: any, info: GraphQLResolveInfo, args: UpsertQuestionArgs): Promise<Question>;
+    aggregateQuestion(ctx: any, info: GraphQLResolveInfo, args: AggregateQuestionArgs): Promise<AggregateQuestion>;
+    groupByQuestion(ctx: any, info: GraphQLResolveInfo, args: GroupByQuestionArgs): Promise<QuestionGroupBy[]>;
+}

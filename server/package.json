@@ -1,0 +1,44 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev index.ts",
+    "start": "node ./getprivatekey.js && node dist/index.js",
+    "build": "tsc -b",
+    "p:mig": "prisma migrate dev",
+    "p:reset": "prisma migrate reset",
+    "p:gen": "prisma generate",
+    "gen:apikey": "node ./getprivatekey.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.0.1",
+    "apollo-server-core": "^3.3.0",
+    "apollo-server-express": "^3.3.0",
+    "chalk": "^4.1.2",
+    "class-validator": "^0.13.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "graphql": "^15.6.0",
+    "helmet": "^4.6.0",
+    "morgan": "^1.10.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.4",
+    "@types/graphql": "^14.5.0",
+    "@types/helmet": "^4.0.0",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.9.6",
+    "prisma": "^3.0.1",
+    "typegraphql-prisma": "^0.16.0"
+  }
+}

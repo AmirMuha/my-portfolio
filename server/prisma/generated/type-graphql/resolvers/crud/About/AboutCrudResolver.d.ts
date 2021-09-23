@@ -1,0 +1,31 @@
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateAboutArgs } from "./args/AggregateAboutArgs";
+import { CreateAboutArgs } from "./args/CreateAboutArgs";
+import { CreateManyAboutArgs } from "./args/CreateManyAboutArgs";
+import { DeleteAboutArgs } from "./args/DeleteAboutArgs";
+import { DeleteManyAboutArgs } from "./args/DeleteManyAboutArgs";
+import { FindFirstAboutArgs } from "./args/FindFirstAboutArgs";
+import { FindManyAboutArgs } from "./args/FindManyAboutArgs";
+import { FindUniqueAboutArgs } from "./args/FindUniqueAboutArgs";
+import { GroupByAboutArgs } from "./args/GroupByAboutArgs";
+import { UpdateAboutArgs } from "./args/UpdateAboutArgs";
+import { UpdateManyAboutArgs } from "./args/UpdateManyAboutArgs";
+import { UpsertAboutArgs } from "./args/UpsertAboutArgs";
+import { About } from "../../../models/About";
+import { AboutGroupBy } from "../../outputs/AboutGroupBy";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateAbout } from "../../outputs/AggregateAbout";
+export declare class AboutCrudResolver {
+    about(ctx: any, info: GraphQLResolveInfo, args: FindUniqueAboutArgs): Promise<About | null>;
+    findFirstAbout(ctx: any, info: GraphQLResolveInfo, args: FindFirstAboutArgs): Promise<About | null>;
+    abouts(ctx: any, info: GraphQLResolveInfo, args: FindManyAboutArgs): Promise<About[]>;
+    createAbout(ctx: any, info: GraphQLResolveInfo, args: CreateAboutArgs): Promise<About>;
+    createManyAbout(ctx: any, info: GraphQLResolveInfo, args: CreateManyAboutArgs): Promise<AffectedRowsOutput>;
+    deleteAbout(ctx: any, info: GraphQLResolveInfo, args: DeleteAboutArgs): Promise<About | null>;
+    updateAbout(ctx: any, info: GraphQLResolveInfo, args: UpdateAboutArgs): Promise<About | null>;
+    deleteManyAbout(ctx: any, info: GraphQLResolveInfo, args: DeleteManyAboutArgs): Promise<AffectedRowsOutput>;
+    updateManyAbout(ctx: any, info: GraphQLResolveInfo, args: UpdateManyAboutArgs): Promise<AffectedRowsOutput>;
+    upsertAbout(ctx: any, info: GraphQLResolveInfo, args: UpsertAboutArgs): Promise<About>;
+    aggregateAbout(ctx: any, info: GraphQLResolveInfo, args: AggregateAboutArgs): Promise<AggregateAbout>;
+    groupByAbout(ctx: any, info: GraphQLResolveInfo, args: GroupByAboutArgs): Promise<AboutGroupBy[]>;
+}

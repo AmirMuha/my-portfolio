@@ -1,0 +1,12 @@
+export { AggregateTechCategoryArgs } from "./AggregateTechCategoryArgs";
+export { CreateManyTechCategoryArgs } from "./CreateManyTechCategoryArgs";
+export { CreateTechCategoryArgs } from "./CreateTechCategoryArgs";
+export { DeleteManyTechCategoryArgs } from "./DeleteManyTechCategoryArgs";
+export { DeleteTechCategoryArgs } from "./DeleteTechCategoryArgs";
+export { FindFirstTechCategoryArgs } from "./FindFirstTechCategoryArgs";
+export { FindManyTechCategoryArgs } from "./FindManyTechCategoryArgs";
+export { FindUniqueTechCategoryArgs } from "./FindUniqueTechCategoryArgs";
+export { GroupByTechCategoryArgs } from "./GroupByTechCategoryArgs";
+export { UpdateManyTechCategoryArgs } from "./UpdateManyTechCategoryArgs";
+export { UpdateTechCategoryArgs } from "./UpdateTechCategoryArgs";
+export { UpsertTechCategoryArgs } from "./UpsertTechCategoryArgs";

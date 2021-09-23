@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("./font.css");
+body {
+  @apply bg-palatte-100 text-palatte-500;
+  font-family: "Share";
+  padding: 0;
+  margin: 0;
+}
+* {
+  outline: none;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+

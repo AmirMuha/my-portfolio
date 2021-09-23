@@ -1,0 +1,107 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphql {
+  provider           = "typegraphql-prisma"
+  output             = "./generated/type-graphql"
+  emitTranspiledCode = true
+}
+
+model Admin {
+  id        String    @id @unique @default(uuid()) @db.Uuid
+  email     String    @unique
+  fname     String
+  lname     String
+  about     About[]
+  messages  Message[]
+  projects  Project[]
+  /// @TypeGraphQL.omit(output: true, input: true)
+  apikey    String
+  /// @TypeGraphQL.omit(output: true, input: true)
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Project {
+  id              String         @id @unique @default(uuid()) @db.Uuid
+  name            String
+  image           String
+  github_url      String
+  app_url         String
+  description     String         @db.Text
+  tech_categories TechCategory[]
+  questions       Question[]
+  sketches        Sketch[]
+  admin           Admin          @relation(fields: [admin_id], references: [id])
+  admin_id        String         @db.Uuid
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model TechCategory {
+  id         String  @id @unique @default(uuid()) @db.Uuid
+  name       String
+  techs      Tech[]
+  project    Project @relation(fields: [project_id], references: [id])
+  project_id String  @db.Uuid
+}
+
+model Tech {
+  id               String       @id @unique @default(uuid()) @db.Uuid
+  name             String
+  tech_categories  TechCategory @relation(fields: [tech_category_id], references: [id])
+  tech_category_id String       @db.Uuid
+}
+
+model Question {
+  id         String  @id @unique @default(uuid()) @db.Uuid
+  question   String  @db.Text
+  answer     Answer  @relation(fields: [answer_id], references: [id])
+  answer_id  String  @db.Uuid
+  project    Project @relation(fields: [project_id], references: [id])
+  project_id String  @db.Uuid
+}
+
+model Answer {
+  id       String    @id @unique @default(uuid()) @db.Uuid
+  answer   String    @db.Text
+  question Question?
+}
+
+model Sketch {
+  id            String  @id @unique @default(uuid()) @db.Uuid
+  title         String
+  body          String  @db.Text
+  download_link String
+  image         String
+  project       Project @relation(fields: [project_id], references: [id])
+  project_id    String  @db.Uuid
+}
+
+model About {
+  id        String   @id @unique @default(uuid()) @db.Uuid
+  title     String
+  body      String   @db.Text
+  admin     Admin    @relation(fields: [admin_id], references: [id])
+  admin_id  String   @db.Uuid
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id            String   @id @unique @default(uuid()) @db.Uuid
+  subject       String
+  from          String
+  body          String   @db.Text
+  read_status   Boolean  @default(false)
+  answer_status Boolean  @default(false)
+  admin         Admin    @relation(fields: [admin_id], references: [id])
+  admin_id      String   @db.Uuid
+  createdAd     DateTime @default(now())
+}

@@ -1,0 +1,12 @@
+export { AggregateTechArgs } from "./AggregateTechArgs";
+export { CreateManyTechArgs } from "./CreateManyTechArgs";
+export { CreateTechArgs } from "./CreateTechArgs";
+export { DeleteManyTechArgs } from "./DeleteManyTechArgs";
+export { DeleteTechArgs } from "./DeleteTechArgs";
+export { FindFirstTechArgs } from "./FindFirstTechArgs";
+export { FindManyTechArgs } from "./FindManyTechArgs";
+export { FindUniqueTechArgs } from "./FindUniqueTechArgs";
+export { GroupByTechArgs } from "./GroupByTechArgs";
+export { UpdateManyTechArgs } from "./UpdateManyTechArgs";
+export { UpdateTechArgs } from "./UpdateTechArgs";
+export { UpsertTechArgs } from "./UpsertTechArgs";

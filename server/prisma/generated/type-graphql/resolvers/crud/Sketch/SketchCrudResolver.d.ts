@@ -1,0 +1,31 @@
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateSketchArgs } from "./args/AggregateSketchArgs";
+import { CreateManySketchArgs } from "./args/CreateManySketchArgs";
+import { CreateSketchArgs } from "./args/CreateSketchArgs";
+import { DeleteManySketchArgs } from "./args/DeleteManySketchArgs";
+import { DeleteSketchArgs } from "./args/DeleteSketchArgs";
+import { FindFirstSketchArgs } from "./args/FindFirstSketchArgs";
+import { FindManySketchArgs } from "./args/FindManySketchArgs";
+import { FindUniqueSketchArgs } from "./args/FindUniqueSketchArgs";
+import { GroupBySketchArgs } from "./args/GroupBySketchArgs";
+import { UpdateManySketchArgs } from "./args/UpdateManySketchArgs";
+import { UpdateSketchArgs } from "./args/UpdateSketchArgs";
+import { UpsertSketchArgs } from "./args/UpsertSketchArgs";
+import { Sketch } from "../../../models/Sketch";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateSketch } from "../../outputs/AggregateSketch";
+import { SketchGroupBy } from "../../outputs/SketchGroupBy";
+export declare class SketchCrudResolver {
+    sketch(ctx: any, info: GraphQLResolveInfo, args: FindUniqueSketchArgs): Promise<Sketch | null>;
+    findFirstSketch(ctx: any, info: GraphQLResolveInfo, args: FindFirstSketchArgs): Promise<Sketch | null>;
+    sketches(ctx: any, info: GraphQLResolveInfo, args: FindManySketchArgs): Promise<Sketch[]>;
+    createSketch(ctx: any, info: GraphQLResolveInfo, args: CreateSketchArgs): Promise<Sketch>;
+    createManySketch(ctx: any, info: GraphQLResolveInfo, args: CreateManySketchArgs): Promise<AffectedRowsOutput>;
+    deleteSketch(ctx: any, info: GraphQLResolveInfo, args: DeleteSketchArgs): Promise<Sketch | null>;
+    updateSketch(ctx: any, info: GraphQLResolveInfo, args: UpdateSketchArgs): Promise<Sketch | null>;
+    deleteManySketch(ctx: any, info: GraphQLResolveInfo, args: DeleteManySketchArgs): Promise<AffectedRowsOutput>;
+    updateManySketch(ctx: any, info: GraphQLResolveInfo, args: UpdateManySketchArgs): Promise<AffectedRowsOutput>;
+    upsertSketch(ctx: any, info: GraphQLResolveInfo, args: UpsertSketchArgs): Promise<Sketch>;
+    aggregateSketch(ctx: any, info: GraphQLResolveInfo, args: AggregateSketchArgs): Promise<AggregateSketch>;
+    groupBySketch(ctx: any, info: GraphQLResolveInfo, args: GroupBySketchArgs): Promise<SketchGroupBy[]>;
+}

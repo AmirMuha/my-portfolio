@@ -1,0 +1,12 @@
+export { AggregateSketchArgs } from "./AggregateSketchArgs";
+export { CreateManySketchArgs } from "./CreateManySketchArgs";
+export { CreateSketchArgs } from "./CreateSketchArgs";
+export { DeleteManySketchArgs } from "./DeleteManySketchArgs";
+export { DeleteSketchArgs } from "./DeleteSketchArgs";
+export { FindFirstSketchArgs } from "./FindFirstSketchArgs";
+export { FindManySketchArgs } from "./FindManySketchArgs";
+export { FindUniqueSketchArgs } from "./FindUniqueSketchArgs";
+export { GroupBySketchArgs } from "./GroupBySketchArgs";
+export { UpdateManySketchArgs } from "./UpdateManySketchArgs";
+export { UpdateSketchArgs } from "./UpdateSketchArgs";
+export { UpsertSketchArgs } from "./UpsertSketchArgs";

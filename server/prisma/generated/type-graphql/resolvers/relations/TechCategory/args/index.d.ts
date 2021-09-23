@@ -1,0 +1,1 @@
+export { TechCategoryTechsArgs } from "./TechCategoryTechsArgs";

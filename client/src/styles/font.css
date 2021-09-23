@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Share";
+  src: url("../fonts/ShareTech-Regular.woff2") format("woff2"),
+    url("../fonts/ShareTech-Regular.woff") format("woff"),
+    url("../fonts/ShareTech-Regular.otf") format("opentype"),
+    url("../fonts/ShareTech-Regular.ttf") format("truetype");
+}
