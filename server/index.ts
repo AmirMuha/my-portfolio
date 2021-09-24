@@ -12,6 +12,7 @@ import path from "path";
 import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
 import { AdminCrudResolver } from "./src/resolvers/User";
+import { AuthResolver } from "./src/resolvers/Auth";
 import {
   AboutCrudResolver,
   ProjectCrudResolver,
@@ -43,6 +44,7 @@ app.use(
     origin: "localhost:8000",
   })
 );
+
 app.use(
   session({
     name: "sid",
@@ -60,6 +62,7 @@ app.use(
     },
   })
 );
+
 EnvConfig({
   path: "./.env*",
 });
@@ -74,6 +77,7 @@ const main = async () => {
       SketchCrudResolver,
       QuestionCrudResolver,
       AdminCrudResolver,
+      AuthResolver,
     ],
     emitSchemaFile: true,
   });

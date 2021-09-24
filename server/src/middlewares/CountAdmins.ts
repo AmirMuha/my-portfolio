@@ -2,7 +2,7 @@ import { MiddlewareFn, NextFn } from "type-graphql";
 import { MyContext } from "../types/MyContext";
 import { Props } from "../types/Props";
 
-const countAdmins: MiddlewareFn<MyContext> = async (
+const CountAdmins: MiddlewareFn<MyContext> = async (
   { context: { data, prisma } }: Props,
   next: NextFn
 ): Promise<NextFn> => {
@@ -10,4 +10,4 @@ const countAdmins: MiddlewareFn<MyContext> = async (
   data.numberOfAdmins = numberOfAdmins;
   return next();
 };
-export default countAdmins;
+export default CountAdmins;

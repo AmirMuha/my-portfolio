@@ -4,7 +4,6 @@
 # -----------------------------------------------
 
 type About {
-  admin: Admin!
   admin_id: String!
   body: String!
   id: String!
@@ -249,14 +248,11 @@ input AboutWhereUniqueInput {
 
 type Admin {
   _count: AdminCount
-  about(cursor: AboutWhereUniqueInput, distinct: [AboutScalarFieldEnum!], orderBy: [AboutOrderByWithRelationInput!], skip: Int, take: Int, where: AboutWhereInput): [About!]!
   createdAt: DateTime!
   email: String!
   fname: String!
   id: String!
   lname: String!
-  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
-  projects(cursor: ProjectWhereUniqueInput, distinct: [ProjectScalarFieldEnum!], orderBy: [ProjectOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectWhereInput): [Project!]!
   updatedAt: DateTime!
 }
 
@@ -264,28 +260,6 @@ type AdminCount {
   about: Int!
   messages: Int!
   projects: Int!
-}
-
-type AdminCountAggregate {
-  _all: Int!
-  apikey: Int!
-  createdAt: Int!
-  email: Int!
-  fname: Int!
-  id: Int!
-  lname: Int!
-  password: Int!
-  updatedAt: Int!
-}
-
-input AdminCountOrderByAggregateInput {
-  createdAt: SortOrder
-  email: SortOrder
-  fname: SortOrder
-  id: SortOrder
-  lname: SortOrder
-  password: SortOrder
-  updatedAt: SortOrder
 }
 
 input AdminCreateInput {
@@ -298,16 +272,6 @@ input AdminCreateInput {
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
-  updatedAt: DateTime
-}
-
-input AdminCreateManyInput {
-  createdAt: DateTime
-  email: String!
-  fname: String!
-  id: String
-  lname: String!
-  password: String!
   updatedAt: DateTime
 }
 
@@ -380,75 +344,6 @@ input AdminCreateWithoutProjectsInput {
   updatedAt: DateTime
 }
 
-type AdminGroupBy {
-  _count: AdminCountAggregate
-  _max: AdminMaxAggregate
-  _min: AdminMinAggregate
-  apikey: String
-  createdAt: DateTime!
-  email: String!
-  fname: String!
-  id: String!
-  lname: String!
-  password: String!
-  updatedAt: DateTime!
-}
-
-type AdminMaxAggregate {
-  apikey: String
-  createdAt: DateTime
-  email: String
-  fname: String
-  id: String
-  lname: String
-  password: String
-  updatedAt: DateTime
-}
-
-input AdminMaxOrderByAggregateInput {
-  createdAt: SortOrder
-  email: SortOrder
-  fname: SortOrder
-  id: SortOrder
-  lname: SortOrder
-  password: SortOrder
-  updatedAt: SortOrder
-}
-
-type AdminMinAggregate {
-  apikey: String
-  createdAt: DateTime
-  email: String
-  fname: String
-  id: String
-  lname: String
-  password: String
-  updatedAt: DateTime
-}
-
-input AdminMinOrderByAggregateInput {
-  createdAt: SortOrder
-  email: SortOrder
-  fname: SortOrder
-  id: SortOrder
-  lname: SortOrder
-  password: SortOrder
-  updatedAt: SortOrder
-}
-
-input AdminOrderByWithAggregationInput {
-  _count: AdminCountOrderByAggregateInput
-  _max: AdminMaxOrderByAggregateInput
-  _min: AdminMinOrderByAggregateInput
-  createdAt: SortOrder
-  email: SortOrder
-  fname: SortOrder
-  id: SortOrder
-  lname: SortOrder
-  password: SortOrder
-  updatedAt: SortOrder
-}
-
 input AdminOrderByWithRelationInput {
   about: AboutOrderByRelationAggregateInput
   createdAt: SortOrder
@@ -465,53 +360,6 @@ input AdminOrderByWithRelationInput {
 input AdminRelationFilter {
   is: AdminWhereInput
   isNot: AdminWhereInput
-}
-
-enum AdminScalarFieldEnum {
-  apikey
-  createdAt
-  email
-  fname
-  id
-  lname
-  password
-  updatedAt
-}
-
-input AdminScalarWhereWithAggregatesInput {
-  AND: [AdminScalarWhereWithAggregatesInput!]
-  NOT: [AdminScalarWhereWithAggregatesInput!]
-  OR: [AdminScalarWhereWithAggregatesInput!]
-  createdAt: DateTimeWithAggregatesFilter
-  email: StringWithAggregatesFilter
-  fname: StringWithAggregatesFilter
-  id: StringWithAggregatesFilter
-  lname: StringWithAggregatesFilter
-  password: StringWithAggregatesFilter
-  updatedAt: DateTimeWithAggregatesFilter
-}
-
-input AdminUpdateInput {
-  about: AboutUpdateManyWithoutAdminInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  email: StringFieldUpdateOperationsInput
-  fname: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  lname: StringFieldUpdateOperationsInput
-  messages: MessageUpdateManyWithoutAdminInput
-  password: StringFieldUpdateOperationsInput
-  projects: ProjectUpdateManyWithoutAdminInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input AdminUpdateManyMutationInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  email: StringFieldUpdateOperationsInput
-  fname: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  lname: StringFieldUpdateOperationsInput
-  password: StringFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AdminUpdateOneRequiredWithoutAboutInput {
@@ -620,18 +468,6 @@ type AggregateAbout {
   _min: AboutMinAggregate
 }
 
-type AggregateAdmin {
-  _count: AdminCountAggregate
-  _max: AdminMaxAggregate
-  _min: AdminMinAggregate
-}
-
-type AggregateAnswer {
-  _count: AnswerCountAggregate
-  _max: AnswerMaxAggregate
-  _min: AnswerMinAggregate
-}
-
 type AggregateMessage {
   _count: MessageCountAggregate
   _max: MessageMaxAggregate
@@ -656,46 +492,6 @@ type AggregateSketch {
   _min: SketchMinAggregate
 }
 
-type AggregateTech {
-  _count: TechCountAggregate
-  _max: TechMaxAggregate
-  _min: TechMinAggregate
-}
-
-type AggregateTechCategory {
-  _count: TechCategoryCountAggregate
-  _max: TechCategoryMaxAggregate
-  _min: TechCategoryMinAggregate
-}
-
-type Answer {
-  answer: String!
-  id: String!
-  question: Question
-}
-
-type AnswerCountAggregate {
-  _all: Int!
-  answer: Int!
-  id: Int!
-}
-
-input AnswerCountOrderByAggregateInput {
-  answer: SortOrder
-  id: SortOrder
-}
-
-input AnswerCreateInput {
-  answer: String!
-  id: String
-  question: QuestionCreateNestedOneWithoutAnswerInput
-}
-
-input AnswerCreateManyInput {
-  answer: String!
-  id: String
-}
-
 input AnswerCreateNestedOneWithoutQuestionInput {
   connect: AnswerWhereUniqueInput
   connectOrCreate: AnswerCreateOrConnectWithoutQuestionInput
@@ -712,42 +508,6 @@ input AnswerCreateWithoutQuestionInput {
   id: String
 }
 
-type AnswerGroupBy {
-  _count: AnswerCountAggregate
-  _max: AnswerMaxAggregate
-  _min: AnswerMinAggregate
-  answer: String!
-  id: String!
-}
-
-type AnswerMaxAggregate {
-  answer: String
-  id: String
-}
-
-input AnswerMaxOrderByAggregateInput {
-  answer: SortOrder
-  id: SortOrder
-}
-
-type AnswerMinAggregate {
-  answer: String
-  id: String
-}
-
-input AnswerMinOrderByAggregateInput {
-  answer: SortOrder
-  id: SortOrder
-}
-
-input AnswerOrderByWithAggregationInput {
-  _count: AnswerCountOrderByAggregateInput
-  _max: AnswerMaxOrderByAggregateInput
-  _min: AnswerMinOrderByAggregateInput
-  answer: SortOrder
-  id: SortOrder
-}
-
 input AnswerOrderByWithRelationInput {
   answer: SortOrder
   id: SortOrder
@@ -757,30 +517,6 @@ input AnswerOrderByWithRelationInput {
 input AnswerRelationFilter {
   is: AnswerWhereInput
   isNot: AnswerWhereInput
-}
-
-enum AnswerScalarFieldEnum {
-  answer
-  id
-}
-
-input AnswerScalarWhereWithAggregatesInput {
-  AND: [AnswerScalarWhereWithAggregatesInput!]
-  NOT: [AnswerScalarWhereWithAggregatesInput!]
-  OR: [AnswerScalarWhereWithAggregatesInput!]
-  answer: StringWithAggregatesFilter
-  id: StringWithAggregatesFilter
-}
-
-input AnswerUpdateInput {
-  answer: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  question: QuestionUpdateOneWithoutAnswerInput
-}
-
-input AnswerUpdateManyMutationInput {
-  answer: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
 }
 
 input AnswerUpdateOneRequiredWithoutQuestionInput {
@@ -865,8 +601,12 @@ input DateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
+input LoginInputType {
+  email: String!
+  password: String!
+}
+
 type Message {
-  admin: Admin!
   admin_id: String!
   answer_status: Boolean!
   body: String!
@@ -1174,68 +914,42 @@ input MessageWhereUniqueInput {
 
 type Mutation {
   createAbout(data: AboutCreateInput!): About!
-  createAdmin(data: AdminCreateInput!): Admin!
-  createAnswer(data: AnswerCreateInput!): Answer!
+  createAdmin(data: AdminCreateInput!): Admin
   createManyAbout(data: [AboutCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createManyAdmin(data: [AdminCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createManyAnswer(data: [AnswerCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyMessage(data: [MessageCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyProject(data: [ProjectCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyQuestion(data: [QuestionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManySketch(data: [SketchCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createManyTech(data: [TechCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createManyTechCategory(data: [TechCategoryCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createMessage(data: MessageCreateInput!): Message!
   createProject(data: ProjectCreateInput!): Project!
   createQuestion(data: QuestionCreateInput!): Question!
   createSketch(data: SketchCreateInput!): Sketch!
-  createTech(data: TechCreateInput!): Tech!
-  createTechCategory(data: TechCategoryCreateInput!): TechCategory!
   deleteAbout(where: AboutWhereUniqueInput!): About
-  deleteAdmin(where: AdminWhereUniqueInput!): Admin
-  deleteAnswer(where: AnswerWhereUniqueInput!): Answer
   deleteManyAbout(where: AboutWhereInput): AffectedRowsOutput!
-  deleteManyAdmin(where: AdminWhereInput): AffectedRowsOutput!
-  deleteManyAnswer(where: AnswerWhereInput): AffectedRowsOutput!
   deleteManyMessage(where: MessageWhereInput): AffectedRowsOutput!
   deleteManyProject(where: ProjectWhereInput): AffectedRowsOutput!
   deleteManyQuestion(where: QuestionWhereInput): AffectedRowsOutput!
   deleteManySketch(where: SketchWhereInput): AffectedRowsOutput!
-  deleteManyTech(where: TechWhereInput): AffectedRowsOutput!
-  deleteManyTechCategory(where: TechCategoryWhereInput): AffectedRowsOutput!
   deleteMessage(where: MessageWhereUniqueInput!): Message
   deleteProject(where: ProjectWhereUniqueInput!): Project
   deleteQuestion(where: QuestionWhereUniqueInput!): Question
   deleteSketch(where: SketchWhereUniqueInput!): Sketch
-  deleteTech(where: TechWhereUniqueInput!): Tech
-  deleteTechCategory(where: TechCategoryWhereUniqueInput!): TechCategory
+  login(data: LoginInputType!): Boolean
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
-  updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
-  updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
   updateManyAbout(data: AboutUpdateManyMutationInput!, where: AboutWhereInput): AffectedRowsOutput!
-  updateManyAdmin(data: AdminUpdateManyMutationInput!, where: AdminWhereInput): AffectedRowsOutput!
-  updateManyAnswer(data: AnswerUpdateManyMutationInput!, where: AnswerWhereInput): AffectedRowsOutput!
   updateManyMessage(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): AffectedRowsOutput!
   updateManyProject(data: ProjectUpdateManyMutationInput!, where: ProjectWhereInput): AffectedRowsOutput!
   updateManyQuestion(data: QuestionUpdateManyMutationInput!, where: QuestionWhereInput): AffectedRowsOutput!
   updateManySketch(data: SketchUpdateManyMutationInput!, where: SketchWhereInput): AffectedRowsOutput!
-  updateManyTech(data: TechUpdateManyMutationInput!, where: TechWhereInput): AffectedRowsOutput!
-  updateManyTechCategory(data: TechCategoryUpdateManyMutationInput!, where: TechCategoryWhereInput): AffectedRowsOutput!
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
   updateSketch(data: SketchUpdateInput!, where: SketchWhereUniqueInput!): Sketch
-  updateTech(data: TechUpdateInput!, where: TechWhereUniqueInput!): Tech
-  updateTechCategory(data: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory
   upsertAbout(create: AboutCreateInput!, update: AboutUpdateInput!, where: AboutWhereUniqueInput!): About!
-  upsertAdmin(create: AdminCreateInput!, update: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin!
-  upsertAnswer(create: AnswerCreateInput!, update: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer!
   upsertMessage(create: MessageCreateInput!, update: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message!
   upsertProject(create: ProjectCreateInput!, update: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project!
   upsertQuestion(create: QuestionCreateInput!, update: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
   upsertSketch(create: SketchCreateInput!, update: SketchUpdateInput!, where: SketchWhereUniqueInput!): Sketch!
-  upsertTech(create: TechCreateInput!, update: TechUpdateInput!, where: TechWhereUniqueInput!): Tech!
-  upsertTechCategory(create: TechCategoryCreateInput!, update: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory!
 }
 
 input NestedBoolFilter {
@@ -1320,7 +1034,6 @@ input NestedStringWithAggregatesFilter {
 
 type Project {
   _count: ProjectCount
-  admin: Admin!
   admin_id: String!
   app_url: String!
   createdAt: DateTime!
@@ -1329,9 +1042,6 @@ type Project {
   id: String!
   image: String!
   name: String!
-  questions(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): [Question!]!
-  sketches(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): [Sketch!]!
-  tech_categories(cursor: TechCategoryWhereUniqueInput, distinct: [TechCategoryScalarFieldEnum!], orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): [TechCategory!]!
   updatedAt: DateTime!
 }
 
@@ -1428,12 +1138,6 @@ input ProjectCreateNestedOneWithoutSketchesInput {
   create: ProjectCreateWithoutSketchesInput
 }
 
-input ProjectCreateNestedOneWithoutTech_categoriesInput {
-  connect: ProjectWhereUniqueInput
-  connectOrCreate: ProjectCreateOrConnectWithoutTech_categoriesInput
-  create: ProjectCreateWithoutTech_categoriesInput
-}
-
 input ProjectCreateOrConnectWithoutAdminInput {
   create: ProjectCreateWithoutAdminInput!
   where: ProjectWhereUniqueInput!
@@ -1446,11 +1150,6 @@ input ProjectCreateOrConnectWithoutQuestionsInput {
 
 input ProjectCreateOrConnectWithoutSketchesInput {
   create: ProjectCreateWithoutSketchesInput!
-  where: ProjectWhereUniqueInput!
-}
-
-input ProjectCreateOrConnectWithoutTech_categoriesInput {
-  create: ProjectCreateWithoutTech_categoriesInput!
   where: ProjectWhereUniqueInput!
 }
 
@@ -1493,20 +1192,6 @@ input ProjectCreateWithoutSketchesInput {
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
-  updatedAt: DateTime
-}
-
-input ProjectCreateWithoutTech_categoriesInput {
-  admin: AdminCreateNestedOneWithoutProjectsInput!
-  app_url: String!
-  createdAt: DateTime
-  description: String!
-  github_url: String!
-  id: String
-  image: String!
-  name: String!
-  questions: QuestionCreateNestedManyWithoutProjectInput
-  sketches: SketchCreateNestedManyWithoutProjectInput
   updatedAt: DateTime
 }
 
@@ -1722,14 +1407,6 @@ input ProjectUpdateOneRequiredWithoutSketchesInput {
   upsert: ProjectUpsertWithoutSketchesInput
 }
 
-input ProjectUpdateOneRequiredWithoutTech_categoriesInput {
-  connect: ProjectWhereUniqueInput
-  connectOrCreate: ProjectCreateOrConnectWithoutTech_categoriesInput
-  create: ProjectCreateWithoutTech_categoriesInput
-  update: ProjectUpdateWithoutTech_categoriesInput
-  upsert: ProjectUpsertWithoutTech_categoriesInput
-}
-
 input ProjectUpdateWithWhereUniqueWithoutAdminInput {
   data: ProjectUpdateWithoutAdminInput!
   where: ProjectWhereUniqueInput!
@@ -1777,20 +1454,6 @@ input ProjectUpdateWithoutSketchesInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input ProjectUpdateWithoutTech_categoriesInput {
-  admin: AdminUpdateOneRequiredWithoutProjectsInput
-  app_url: StringFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
-  github_url: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  image: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  questions: QuestionUpdateManyWithoutProjectInput
-  sketches: SketchUpdateManyWithoutProjectInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
 input ProjectUpsertWithWhereUniqueWithoutAdminInput {
   create: ProjectCreateWithoutAdminInput!
   update: ProjectUpdateWithoutAdminInput!
@@ -1805,11 +1468,6 @@ input ProjectUpsertWithoutQuestionsInput {
 input ProjectUpsertWithoutSketchesInput {
   create: ProjectCreateWithoutSketchesInput!
   update: ProjectUpdateWithoutSketchesInput!
-}
-
-input ProjectUpsertWithoutTech_categoriesInput {
-  create: ProjectCreateWithoutTech_categoriesInput!
-  update: ProjectUpdateWithoutTech_categoriesInput!
 }
 
 input ProjectWhereInput {
@@ -1838,37 +1496,23 @@ input ProjectWhereUniqueInput {
 type Query {
   about(where: AboutWhereUniqueInput!): About
   abouts(cursor: AboutWhereUniqueInput, distinct: [AboutScalarFieldEnum!], orderBy: [AboutOrderByWithRelationInput!], skip: Int, take: Int, where: AboutWhereInput): [About!]!
-  admin(where: AdminWhereUniqueInput!): Admin
-  admins(cursor: AdminWhereUniqueInput, distinct: [AdminScalarFieldEnum!], orderBy: [AdminOrderByWithRelationInput!], skip: Int, take: Int, where: AdminWhereInput): [Admin!]!
   aggregateAbout(cursor: AboutWhereUniqueInput, orderBy: [AboutOrderByWithRelationInput!], skip: Int, take: Int, where: AboutWhereInput): AggregateAbout!
-  aggregateAdmin(cursor: AdminWhereUniqueInput, orderBy: [AdminOrderByWithRelationInput!], skip: Int, take: Int, where: AdminWhereInput): AggregateAdmin!
-  aggregateAnswer(cursor: AnswerWhereUniqueInput, orderBy: [AnswerOrderByWithRelationInput!], skip: Int, take: Int, where: AnswerWhereInput): AggregateAnswer!
   aggregateMessage(cursor: MessageWhereUniqueInput, orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): AggregateMessage!
   aggregateProject(cursor: ProjectWhereUniqueInput, orderBy: [ProjectOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectWhereInput): AggregateProject!
   aggregateQuestion(cursor: QuestionWhereUniqueInput, orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): AggregateQuestion!
   aggregateSketch(cursor: SketchWhereUniqueInput, orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): AggregateSketch!
-  aggregateTech(cursor: TechWhereUniqueInput, orderBy: [TechOrderByWithRelationInput!], skip: Int, take: Int, where: TechWhereInput): AggregateTech!
-  aggregateTechCategory(cursor: TechCategoryWhereUniqueInput, orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): AggregateTechCategory!
-  answer(where: AnswerWhereUniqueInput!): Answer
-  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum!], orderBy: [AnswerOrderByWithRelationInput!], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
   findFirstAbout(cursor: AboutWhereUniqueInput, distinct: [AboutScalarFieldEnum!], orderBy: [AboutOrderByWithRelationInput!], skip: Int, take: Int, where: AboutWhereInput): About
-  findFirstAdmin(cursor: AdminWhereUniqueInput, distinct: [AdminScalarFieldEnum!], orderBy: [AdminOrderByWithRelationInput!], skip: Int, take: Int, where: AdminWhereInput): Admin
-  findFirstAnswer(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum!], orderBy: [AnswerOrderByWithRelationInput!], skip: Int, take: Int, where: AnswerWhereInput): Answer
   findFirstMessage(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): Message
   findFirstProject(cursor: ProjectWhereUniqueInput, distinct: [ProjectScalarFieldEnum!], orderBy: [ProjectOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectWhereInput): Project
   findFirstQuestion(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): Question
   findFirstSketch(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): Sketch
-  findFirstTech(cursor: TechWhereUniqueInput, distinct: [TechScalarFieldEnum!], orderBy: [TechOrderByWithRelationInput!], skip: Int, take: Int, where: TechWhereInput): Tech
-  findFirstTechCategory(cursor: TechCategoryWhereUniqueInput, distinct: [TechCategoryScalarFieldEnum!], orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): TechCategory
+  getAdmin: Admin
   groupByAbout(by: [AboutScalarFieldEnum!]!, having: AboutScalarWhereWithAggregatesInput, orderBy: [AboutOrderByWithAggregationInput!], skip: Int, take: Int, where: AboutWhereInput): [AboutGroupBy!]!
-  groupByAdmin(by: [AdminScalarFieldEnum!]!, having: AdminScalarWhereWithAggregatesInput, orderBy: [AdminOrderByWithAggregationInput!], skip: Int, take: Int, where: AdminWhereInput): [AdminGroupBy!]!
-  groupByAnswer(by: [AnswerScalarFieldEnum!]!, having: AnswerScalarWhereWithAggregatesInput, orderBy: [AnswerOrderByWithAggregationInput!], skip: Int, take: Int, where: AnswerWhereInput): [AnswerGroupBy!]!
   groupByMessage(by: [MessageScalarFieldEnum!]!, having: MessageScalarWhereWithAggregatesInput, orderBy: [MessageOrderByWithAggregationInput!], skip: Int, take: Int, where: MessageWhereInput): [MessageGroupBy!]!
   groupByProject(by: [ProjectScalarFieldEnum!]!, having: ProjectScalarWhereWithAggregatesInput, orderBy: [ProjectOrderByWithAggregationInput!], skip: Int, take: Int, where: ProjectWhereInput): [ProjectGroupBy!]!
   groupByQuestion(by: [QuestionScalarFieldEnum!]!, having: QuestionScalarWhereWithAggregatesInput, orderBy: [QuestionOrderByWithAggregationInput!], skip: Int, take: Int, where: QuestionWhereInput): [QuestionGroupBy!]!
   groupBySketch(by: [SketchScalarFieldEnum!]!, having: SketchScalarWhereWithAggregatesInput, orderBy: [SketchOrderByWithAggregationInput!], skip: Int, take: Int, where: SketchWhereInput): [SketchGroupBy!]!
-  groupByTech(by: [TechScalarFieldEnum!]!, having: TechScalarWhereWithAggregatesInput, orderBy: [TechOrderByWithAggregationInput!], skip: Int, take: Int, where: TechWhereInput): [TechGroupBy!]!
-  groupByTechCategory(by: [TechCategoryScalarFieldEnum!]!, having: TechCategoryScalarWhereWithAggregatesInput, orderBy: [TechCategoryOrderByWithAggregationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): [TechCategoryGroupBy!]!
+  me: Admin
   message(where: MessageWhereUniqueInput!): Message
   messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   project(where: ProjectWhereUniqueInput!): Project
@@ -1877,10 +1521,6 @@ type Query {
   questions(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): [Question!]!
   sketch(where: SketchWhereUniqueInput!): Sketch
   sketches(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): [Sketch!]!
-  tech(where: TechWhereUniqueInput!): Tech
-  techCategories(cursor: TechCategoryWhereUniqueInput, distinct: [TechCategoryScalarFieldEnum!], orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): [TechCategory!]!
-  techCategory(where: TechCategoryWhereUniqueInput!): TechCategory
-  teches(cursor: TechWhereUniqueInput, distinct: [TechScalarFieldEnum!], orderBy: [TechOrderByWithRelationInput!], skip: Int, take: Int, where: TechWhereInput): [Tech!]!
 }
 
 enum QueryMode {
@@ -1889,10 +1529,8 @@ enum QueryMode {
 }
 
 type Question {
-  answer: Answer!
   answer_id: String!
   id: String!
-  project: Project!
   project_id: String!
   question: String!
 }
@@ -1944,26 +1582,9 @@ input QuestionCreateNestedManyWithoutProjectInput {
   createMany: QuestionCreateManyProjectInputEnvelope
 }
 
-input QuestionCreateNestedOneWithoutAnswerInput {
-  connect: QuestionWhereUniqueInput
-  connectOrCreate: QuestionCreateOrConnectWithoutAnswerInput
-  create: QuestionCreateWithoutAnswerInput
-}
-
-input QuestionCreateOrConnectWithoutAnswerInput {
-  create: QuestionCreateWithoutAnswerInput!
-  where: QuestionWhereUniqueInput!
-}
-
 input QuestionCreateOrConnectWithoutProjectInput {
   create: QuestionCreateWithoutProjectInput!
   where: QuestionWhereUniqueInput!
-}
-
-input QuestionCreateWithoutAnswerInput {
-  id: String
-  project: ProjectCreateNestedOneWithoutQuestionsInput!
-  question: String!
 }
 
 input QuestionCreateWithoutProjectInput {
@@ -2102,25 +1723,9 @@ input QuestionUpdateManyWithoutProjectInput {
   upsert: [QuestionUpsertWithWhereUniqueWithoutProjectInput!]
 }
 
-input QuestionUpdateOneWithoutAnswerInput {
-  connect: QuestionWhereUniqueInput
-  connectOrCreate: QuestionCreateOrConnectWithoutAnswerInput
-  create: QuestionCreateWithoutAnswerInput
-  delete: Boolean
-  disconnect: Boolean
-  update: QuestionUpdateWithoutAnswerInput
-  upsert: QuestionUpsertWithoutAnswerInput
-}
-
 input QuestionUpdateWithWhereUniqueWithoutProjectInput {
   data: QuestionUpdateWithoutProjectInput!
   where: QuestionWhereUniqueInput!
-}
-
-input QuestionUpdateWithoutAnswerInput {
-  id: StringFieldUpdateOperationsInput
-  project: ProjectUpdateOneRequiredWithoutQuestionsInput
-  question: StringFieldUpdateOperationsInput
 }
 
 input QuestionUpdateWithoutProjectInput {
@@ -2133,11 +1738,6 @@ input QuestionUpsertWithWhereUniqueWithoutProjectInput {
   create: QuestionCreateWithoutProjectInput!
   update: QuestionUpdateWithoutProjectInput!
   where: QuestionWhereUniqueInput!
-}
-
-input QuestionUpsertWithoutAnswerInput {
-  create: QuestionCreateWithoutAnswerInput!
-  update: QuestionUpdateWithoutAnswerInput!
 }
 
 input QuestionWhereInput {
@@ -2161,7 +1761,6 @@ type Sketch {
   download_link: String!
   id: String!
   image: String!
-  project: Project!
   project_id: String!
   title: String!
 }
@@ -2463,52 +2062,6 @@ input StringWithAggregatesFilter {
   startsWith: String
 }
 
-type Tech {
-  id: String!
-  name: String!
-  tech_categories: TechCategory!
-  tech_category_id: String!
-}
-
-type TechCategory {
-  _count: TechCategoryCount
-  id: String!
-  name: String!
-  project: Project!
-  project_id: String!
-  techs(cursor: TechWhereUniqueInput, distinct: [TechScalarFieldEnum!], orderBy: [TechOrderByWithRelationInput!], skip: Int, take: Int, where: TechWhereInput): [Tech!]!
-}
-
-type TechCategoryCount {
-  techs: Int!
-}
-
-type TechCategoryCountAggregate {
-  _all: Int!
-  id: Int!
-  name: Int!
-  project_id: Int!
-}
-
-input TechCategoryCountOrderByAggregateInput {
-  id: SortOrder
-  name: SortOrder
-  project_id: SortOrder
-}
-
-input TechCategoryCreateInput {
-  id: String
-  name: String!
-  project: ProjectCreateNestedOneWithoutTech_categoriesInput!
-  techs: TechCreateNestedManyWithoutTech_categoriesInput
-}
-
-input TechCategoryCreateManyInput {
-  id: String
-  name: String!
-  project_id: String!
-}
-
 input TechCategoryCreateManyProjectInput {
   id: String
   name: String!
@@ -2526,19 +2079,8 @@ input TechCategoryCreateNestedManyWithoutProjectInput {
   createMany: TechCategoryCreateManyProjectInputEnvelope
 }
 
-input TechCategoryCreateNestedOneWithoutTechsInput {
-  connect: TechCategoryWhereUniqueInput
-  connectOrCreate: TechCategoryCreateOrConnectWithoutTechsInput
-  create: TechCategoryCreateWithoutTechsInput
-}
-
 input TechCategoryCreateOrConnectWithoutProjectInput {
   create: TechCategoryCreateWithoutProjectInput!
-  where: TechCategoryWhereUniqueInput!
-}
-
-input TechCategoryCreateOrConnectWithoutTechsInput {
-  create: TechCategoryCreateWithoutTechsInput!
   where: TechCategoryWhereUniqueInput!
 }
 
@@ -2548,81 +2090,19 @@ input TechCategoryCreateWithoutProjectInput {
   techs: TechCreateNestedManyWithoutTech_categoriesInput
 }
 
-input TechCategoryCreateWithoutTechsInput {
-  id: String
-  name: String!
-  project: ProjectCreateNestedOneWithoutTech_categoriesInput!
-}
-
-type TechCategoryGroupBy {
-  _count: TechCategoryCountAggregate
-  _max: TechCategoryMaxAggregate
-  _min: TechCategoryMinAggregate
-  id: String!
-  name: String!
-  project_id: String!
-}
-
 input TechCategoryListRelationFilter {
   every: TechCategoryWhereInput
   none: TechCategoryWhereInput
   some: TechCategoryWhereInput
 }
 
-type TechCategoryMaxAggregate {
-  id: String
-  name: String
-  project_id: String
-}
-
-input TechCategoryMaxOrderByAggregateInput {
-  id: SortOrder
-  name: SortOrder
-  project_id: SortOrder
-}
-
-type TechCategoryMinAggregate {
-  id: String
-  name: String
-  project_id: String
-}
-
-input TechCategoryMinOrderByAggregateInput {
-  id: SortOrder
-  name: SortOrder
-  project_id: SortOrder
-}
-
 input TechCategoryOrderByRelationAggregateInput {
   _count: SortOrder
-}
-
-input TechCategoryOrderByWithAggregationInput {
-  _count: TechCategoryCountOrderByAggregateInput
-  _max: TechCategoryMaxOrderByAggregateInput
-  _min: TechCategoryMinOrderByAggregateInput
-  id: SortOrder
-  name: SortOrder
-  project_id: SortOrder
-}
-
-input TechCategoryOrderByWithRelationInput {
-  id: SortOrder
-  name: SortOrder
-  project: ProjectOrderByWithRelationInput
-  project_id: SortOrder
-  techs: TechOrderByRelationAggregateInput
 }
 
 input TechCategoryRelationFilter {
   is: TechCategoryWhereInput
   isNot: TechCategoryWhereInput
-}
-
-enum TechCategoryScalarFieldEnum {
-  id
-  name
-  project_id
 }
 
 input TechCategoryScalarWhereInput {
@@ -2632,22 +2112,6 @@ input TechCategoryScalarWhereInput {
   id: StringFilter
   name: StringFilter
   project_id: StringFilter
-}
-
-input TechCategoryScalarWhereWithAggregatesInput {
-  AND: [TechCategoryScalarWhereWithAggregatesInput!]
-  NOT: [TechCategoryScalarWhereWithAggregatesInput!]
-  OR: [TechCategoryScalarWhereWithAggregatesInput!]
-  id: StringWithAggregatesFilter
-  name: StringWithAggregatesFilter
-  project_id: StringWithAggregatesFilter
-}
-
-input TechCategoryUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  project: ProjectUpdateOneRequiredWithoutTech_categoriesInput
-  techs: TechUpdateManyWithoutTech_categoriesInput
 }
 
 input TechCategoryUpdateManyMutationInput {
@@ -2674,14 +2138,6 @@ input TechCategoryUpdateManyWithoutProjectInput {
   upsert: [TechCategoryUpsertWithWhereUniqueWithoutProjectInput!]
 }
 
-input TechCategoryUpdateOneRequiredWithoutTechsInput {
-  connect: TechCategoryWhereUniqueInput
-  connectOrCreate: TechCategoryCreateOrConnectWithoutTechsInput
-  create: TechCategoryCreateWithoutTechsInput
-  update: TechCategoryUpdateWithoutTechsInput
-  upsert: TechCategoryUpsertWithoutTechsInput
-}
-
 input TechCategoryUpdateWithWhereUniqueWithoutProjectInput {
   data: TechCategoryUpdateWithoutProjectInput!
   where: TechCategoryWhereUniqueInput!
@@ -2693,21 +2149,10 @@ input TechCategoryUpdateWithoutProjectInput {
   techs: TechUpdateManyWithoutTech_categoriesInput
 }
 
-input TechCategoryUpdateWithoutTechsInput {
-  id: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  project: ProjectUpdateOneRequiredWithoutTech_categoriesInput
-}
-
 input TechCategoryUpsertWithWhereUniqueWithoutProjectInput {
   create: TechCategoryCreateWithoutProjectInput!
   update: TechCategoryUpdateWithoutProjectInput!
   where: TechCategoryWhereUniqueInput!
-}
-
-input TechCategoryUpsertWithoutTechsInput {
-  create: TechCategoryCreateWithoutTechsInput!
-  update: TechCategoryUpdateWithoutTechsInput!
 }
 
 input TechCategoryWhereInput {
@@ -2723,31 +2168,6 @@ input TechCategoryWhereInput {
 
 input TechCategoryWhereUniqueInput {
   id: String
-}
-
-type TechCountAggregate {
-  _all: Int!
-  id: Int!
-  name: Int!
-  tech_category_id: Int!
-}
-
-input TechCountOrderByAggregateInput {
-  id: SortOrder
-  name: SortOrder
-  tech_category_id: SortOrder
-}
-
-input TechCreateInput {
-  id: String
-  name: String!
-  tech_categories: TechCategoryCreateNestedOneWithoutTechsInput!
-}
-
-input TechCreateManyInput {
-  id: String
-  name: String!
-  tech_category_id: String!
 }
 
 input TechCreateManyTech_categoriesInput {
@@ -2777,69 +2197,10 @@ input TechCreateWithoutTech_categoriesInput {
   name: String!
 }
 
-type TechGroupBy {
-  _count: TechCountAggregate
-  _max: TechMaxAggregate
-  _min: TechMinAggregate
-  id: String!
-  name: String!
-  tech_category_id: String!
-}
-
 input TechListRelationFilter {
   every: TechWhereInput
   none: TechWhereInput
   some: TechWhereInput
-}
-
-type TechMaxAggregate {
-  id: String
-  name: String
-  tech_category_id: String
-}
-
-input TechMaxOrderByAggregateInput {
-  id: SortOrder
-  name: SortOrder
-  tech_category_id: SortOrder
-}
-
-type TechMinAggregate {
-  id: String
-  name: String
-  tech_category_id: String
-}
-
-input TechMinOrderByAggregateInput {
-  id: SortOrder
-  name: SortOrder
-  tech_category_id: SortOrder
-}
-
-input TechOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input TechOrderByWithAggregationInput {
-  _count: TechCountOrderByAggregateInput
-  _max: TechMaxOrderByAggregateInput
-  _min: TechMinOrderByAggregateInput
-  id: SortOrder
-  name: SortOrder
-  tech_category_id: SortOrder
-}
-
-input TechOrderByWithRelationInput {
-  id: SortOrder
-  name: SortOrder
-  tech_categories: TechCategoryOrderByWithRelationInput
-  tech_category_id: SortOrder
-}
-
-enum TechScalarFieldEnum {
-  id
-  name
-  tech_category_id
 }
 
 input TechScalarWhereInput {
@@ -2849,21 +2210,6 @@ input TechScalarWhereInput {
   id: StringFilter
   name: StringFilter
   tech_category_id: StringFilter
-}
-
-input TechScalarWhereWithAggregatesInput {
-  AND: [TechScalarWhereWithAggregatesInput!]
-  NOT: [TechScalarWhereWithAggregatesInput!]
-  OR: [TechScalarWhereWithAggregatesInput!]
-  id: StringWithAggregatesFilter
-  name: StringWithAggregatesFilter
-  tech_category_id: StringWithAggregatesFilter
-}
-
-input TechUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  tech_categories: TechCategoryUpdateOneRequiredWithoutTechsInput
 }
 
 input TechUpdateManyMutationInput {

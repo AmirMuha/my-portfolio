@@ -8,7 +8,6 @@ import {
 // ##############################################
 // ####################### CONFIGURATION ########
 // ##############################################
-
 const adminCreateArgConfig: ArgConfig<"CreateAdminArgs"> = {
   fields: {
     data: [ValidateNested()],
