@@ -5,6 +5,7 @@ export enum AdminScalarFieldEnum {
   email = "email",
   fname = "fname",
   lname = "lname",
+  confirmed = "confirmed",
   apikey = "apikey",
   password = "password",
   createdAt = "createdAt",

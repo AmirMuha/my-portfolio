@@ -31,6 +31,11 @@ export class Admin {
   })
   lname!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: false
+  })
+  confirmed!: boolean;
+
   about?: About[];
 
   messages?: Message[];

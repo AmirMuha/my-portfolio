@@ -17,6 +17,7 @@ model Admin {
   email     String    @unique
   fname     String
   lname     String
+  confirmed Boolean   @default(false)
   about     About[]
   messages  Message[]
   projects  Project[]

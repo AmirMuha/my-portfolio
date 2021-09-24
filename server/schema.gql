@@ -248,6 +248,7 @@ input AboutWhereUniqueInput {
 
 type Admin {
   _count: AdminCount
+  confirmed: Boolean!
   createdAt: DateTime!
   email: String!
   fname: String!
@@ -264,6 +265,7 @@ type AdminCount {
 
 input AdminCreateInput {
   about: AboutCreateNestedManyWithoutAdminInput
+  confirmed: Boolean
   createdAt: DateTime
   email: String!
   fname: String!
@@ -309,6 +311,7 @@ input AdminCreateOrConnectWithoutProjectsInput {
 }
 
 input AdminCreateWithoutAboutInput {
+  confirmed: Boolean
   createdAt: DateTime
   email: String!
   fname: String!
@@ -322,6 +325,7 @@ input AdminCreateWithoutAboutInput {
 
 input AdminCreateWithoutMessagesInput {
   about: AboutCreateNestedManyWithoutAdminInput
+  confirmed: Boolean
   createdAt: DateTime
   email: String!
   fname: String!
@@ -334,6 +338,7 @@ input AdminCreateWithoutMessagesInput {
 
 input AdminCreateWithoutProjectsInput {
   about: AboutCreateNestedManyWithoutAdminInput
+  confirmed: Boolean
   createdAt: DateTime
   email: String!
   fname: String!
@@ -346,6 +351,7 @@ input AdminCreateWithoutProjectsInput {
 
 input AdminOrderByWithRelationInput {
   about: AboutOrderByRelationAggregateInput
+  confirmed: SortOrder
   createdAt: SortOrder
   email: SortOrder
   fname: SortOrder
@@ -387,6 +393,7 @@ input AdminUpdateOneRequiredWithoutProjectsInput {
 }
 
 input AdminUpdateWithoutAboutInput {
+  confirmed: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
@@ -400,6 +407,7 @@ input AdminUpdateWithoutAboutInput {
 
 input AdminUpdateWithoutMessagesInput {
   about: AboutUpdateManyWithoutAdminInput
+  confirmed: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
@@ -412,6 +420,7 @@ input AdminUpdateWithoutMessagesInput {
 
 input AdminUpdateWithoutProjectsInput {
   about: AboutUpdateManyWithoutAdminInput
+  confirmed: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
@@ -442,6 +451,7 @@ input AdminWhereInput {
   NOT: [AdminWhereInput!]
   OR: [AdminWhereInput!]
   about: AboutListRelationFilter
+  confirmed: BoolFilter
   createdAt: DateTimeFilter
   email: StringFilter
   fname: StringFilter
@@ -913,6 +923,7 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
+  confimEmail(code: Int, email: String, token: String): Boolean
   createAbout(data: AboutCreateInput!): About!
   createAdmin(data: AdminCreateInput!): Admin
   createManyAbout(data: [AboutCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -1506,13 +1517,14 @@ type Query {
   findFirstProject(cursor: ProjectWhereUniqueInput, distinct: [ProjectScalarFieldEnum!], orderBy: [ProjectOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectWhereInput): Project
   findFirstQuestion(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): Question
   findFirstSketch(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): Sketch
-  getAdmin: Admin
+  getAdmin: Admin!
+  getNumOfAdmins: Int
   groupByAbout(by: [AboutScalarFieldEnum!]!, having: AboutScalarWhereWithAggregatesInput, orderBy: [AboutOrderByWithAggregationInput!], skip: Int, take: Int, where: AboutWhereInput): [AboutGroupBy!]!
   groupByMessage(by: [MessageScalarFieldEnum!]!, having: MessageScalarWhereWithAggregatesInput, orderBy: [MessageOrderByWithAggregationInput!], skip: Int, take: Int, where: MessageWhereInput): [MessageGroupBy!]!
   groupByProject(by: [ProjectScalarFieldEnum!]!, having: ProjectScalarWhereWithAggregatesInput, orderBy: [ProjectOrderByWithAggregationInput!], skip: Int, take: Int, where: ProjectWhereInput): [ProjectGroupBy!]!
   groupByQuestion(by: [QuestionScalarFieldEnum!]!, having: QuestionScalarWhereWithAggregatesInput, orderBy: [QuestionOrderByWithAggregationInput!], skip: Int, take: Int, where: QuestionWhereInput): [QuestionGroupBy!]!
   groupBySketch(by: [SketchScalarFieldEnum!]!, having: SketchScalarWhereWithAggregatesInput, orderBy: [SketchOrderByWithAggregationInput!], skip: Int, take: Int, where: SketchWhereInput): [SketchGroupBy!]!
-  me: Admin
+  me: Admin!
   message(where: MessageWhereUniqueInput!): Message
   messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   project(where: ProjectWhereUniqueInput!): Project

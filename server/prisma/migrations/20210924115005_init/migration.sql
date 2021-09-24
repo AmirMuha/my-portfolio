@@ -4,6 +4,7 @@ CREATE TABLE "Admin" (
     "email" TEXT NOT NULL,
     "fname" TEXT NOT NULL,
     "lname" TEXT NOT NULL,
+    "confirmed" BOOLEAN NOT NULL DEFAULT false,
     "apikey" TEXT,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

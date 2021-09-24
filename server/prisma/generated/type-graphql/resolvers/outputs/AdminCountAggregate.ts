@@ -30,6 +30,11 @@ export class AdminCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
+  confirmed!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
   apikey!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {

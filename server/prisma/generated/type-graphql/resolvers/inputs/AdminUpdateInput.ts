@@ -3,6 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { AboutUpdateManyWithoutAdminInput } from "../inputs/AboutUpdateManyWithoutAdminInput";
+import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { MessageUpdateManyWithoutAdminInput } from "../inputs/MessageUpdateManyWithoutAdminInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
@@ -32,6 +33,11 @@ export class AdminUpdateInput {
     nullable: true
   })
   lname?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  confirmed?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true

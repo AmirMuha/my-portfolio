@@ -30,6 +30,11 @@ export class AdminGroupBy {
   })
   lname!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: false
+  })
+  confirmed!: boolean;
+
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })

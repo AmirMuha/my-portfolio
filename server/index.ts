@@ -3,38 +3,42 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
+import redisStore from "connect-redis";
 import cors from "cors";
 import { config as EnvConfig } from "dotenv";
 import Express from "express";
+import session from "express-session";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
-import { AdminCrudResolver } from "./src/resolvers/User";
-import { AuthResolver } from "./src/resolvers/Auth";
+import { v4 } from "uuid";
 import {
   AboutCrudResolver,
-  ProjectCrudResolver,
   MessageCrudResolver,
-  SketchCrudResolver,
+  ProjectCrudResolver,
   QuestionCrudResolver,
+  SketchCrudResolver,
 } from "./prisma/generated/type-graphql";
 import { black } from "./src/chalk";
+EnvConfig({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
 import {
   HOST,
   PORT,
   SESSION_MAX_AGE,
   SESSION_SECRET,
   __prod__,
-} from "./src/constants/environment-variables";
+} from "./src/constants/envs-and-consts";
 import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
 import prisma from "./src/prisma-client";
-import { MyContext } from "./src/types/MyContext";
-import session from "express-session";
 import { redis } from "./src/redis-client";
-import { v4 } from "uuid";
-import redisStore from "connect-redis";
+import { AuthResolver } from "./src/resolvers/Auth";
+import { AdminCrudResolver } from "./src/resolvers/User";
+import { MyContext } from "./src/types/MyContext";
 const app = Express();
 const RedisStore = redisStore(session);
 
@@ -62,10 +66,6 @@ app.use(
     },
   })
 );
-
-EnvConfig({
-  path: "./.env*",
-});
 
 const main = async () => {
   applyMiddlewares();

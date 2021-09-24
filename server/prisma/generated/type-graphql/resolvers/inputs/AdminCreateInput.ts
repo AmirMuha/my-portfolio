@@ -30,6 +30,11 @@ export class AdminCreateInput {
   })
   lname!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: true
+  })
+  confirmed?: boolean | undefined;
+
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })

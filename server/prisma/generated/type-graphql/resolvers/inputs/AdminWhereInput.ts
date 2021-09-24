@@ -3,6 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { AboutListRelationFilter } from "../inputs/AboutListRelationFilter";
+import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { MessageListRelationFilter } from "../inputs/MessageListRelationFilter";
 import { ProjectListRelationFilter } from "../inputs/ProjectListRelationFilter";
@@ -47,6 +48,11 @@ export class AdminWhereInput {
     nullable: true
   })
   lname?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => BoolFilter, {
+    nullable: true
+  })
+  confirmed?: BoolFilter | undefined;
 
   @TypeGraphQL.Field(_type => AboutListRelationFilter, {
     nullable: true

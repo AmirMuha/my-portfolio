@@ -31,6 +31,11 @@ export class AdminOrderByWithRelationInput {
   })
   lname?: "asc" | "desc" | undefined;
 
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  confirmed?: "asc" | "desc" | undefined;
+
   @TypeGraphQL.Field(_type => AboutOrderByRelationAggregateInput, {
     nullable: true
   })
