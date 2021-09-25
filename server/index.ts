@@ -1,3 +1,7 @@
+import { config as EnvConfig } from "dotenv";
+EnvConfig({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageProductionDefault,
@@ -5,7 +9,6 @@ import {
 import { ApolloServer } from "apollo-server-express";
 import redisStore from "connect-redis";
 import cors from "cors";
-import { config as EnvConfig } from "dotenv";
 import Express from "express";
 import session from "express-session";
 import helmet from "helmet";
@@ -14,18 +17,8 @@ import path from "path";
 import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
 import { v4 } from "uuid";
-import {
-  AboutCrudResolver,
-  MessageCrudResolver,
-  ProjectCrudResolver,
-  QuestionCrudResolver,
-  SketchCrudResolver,
-} from "./prisma/generated/type-graphql";
+import resolvers from "./src/resolvers/allResolvers";
 import { black } from "./src/chalk";
-EnvConfig({
-  path: `.env.${process.env.NODE_ENV}`,
-});
-
 import {
   HOST,
   PORT,
@@ -36,8 +29,7 @@ import {
 import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
 import prisma from "./src/prisma-client";
 import { redis } from "./src/redis-client";
-import { AuthResolver } from "./src/resolvers/Auth";
-import { AdminCrudResolver } from "./src/resolvers/User";
+
 import { MyContext } from "./src/types/MyContext";
 const app = Express();
 const RedisStore = redisStore(session);
@@ -49,36 +41,27 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    name: "sid",
-    store: new RedisStore({ client: redis }),
-    secret: SESSION_SECRET,
-    genid: () => {
-      return v4();
-    },
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      httpOnly: true,
-      secure: __prod__,
-      maxAge: SESSION_MAX_AGE,
-    },
-  })
-);
-
 const main = async () => {
+  app.use(
+    session({
+      name: "sid",
+      store: new RedisStore({ client: redis }),
+      secret: SESSION_SECRET,
+      genid: () => {
+        return v4();
+      },
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        httpOnly: true,
+        secure: __prod__,
+        maxAge: SESSION_MAX_AGE,
+      },
+    })
+  );
   applyMiddlewares();
   const schema = buildSchemaSync({
-    resolvers: [
-      AboutCrudResolver,
-      ProjectCrudResolver,
-      MessageCrudResolver,
-      SketchCrudResolver,
-      QuestionCrudResolver,
-      AdminCrudResolver,
-      AuthResolver,
-    ],
+    resolvers,
     emitSchemaFile: true,
   });
   const server = new ApolloServer({
