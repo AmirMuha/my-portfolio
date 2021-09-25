@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "reset": "rm -rf ./prisma/migrations/ && npm run p:mig && npm run dev",
     "dev": "export NODE_ENV=development && ts-node-dev index.ts",
     "start": "node ./getprivatekey.js && node dist/index.js",
     "build": "tsc -b",

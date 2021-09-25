@@ -50,6 +50,12 @@ export class AuthResolver {
     req.session.token = token;
     return true;
   }
+  @UseMiddleware(isLoggedIn)
+  @Mutation(() => Boolean, { nullable: true })
+  async logout(@Ctx() { req }: MyContext): Promise<boolean | undefined> {
+    req.session.token = "";
+    return true;
+  }
 
   @Mutation(() => Boolean, { nullable: true })
   async confimEmail(

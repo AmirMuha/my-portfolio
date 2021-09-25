@@ -39,7 +39,7 @@ model Project {
   tech_categories TechCategory[]
   questions       Question[]
   sketches        Sketch[]
-  admin           Admin          @relation(fields: [admin_id], references: [id])
+  admin           Admin          @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   admin_id        String         @db.Uuid
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -49,23 +49,23 @@ model TechCategory {
   id         String  @id @unique @default(uuid()) @db.Uuid
   name       String
   techs      Tech[]
-  project    Project @relation(fields: [project_id], references: [id])
+  project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id String  @db.Uuid
 }
 
 model Tech {
   id               String       @id @unique @default(uuid()) @db.Uuid
   name             String
-  tech_categories  TechCategory @relation(fields: [tech_category_id], references: [id])
+  tech_categories  TechCategory @relation(fields: [tech_category_id], references: [id], onDelete: Cascade)
   tech_category_id String       @db.Uuid
 }
 
 model Question {
   id         String  @id @unique @default(uuid()) @db.Uuid
   question   String  @db.Text
-  answer     Answer  @relation(fields: [answer_id], references: [id])
+  answer     Answer  @relation(fields: [answer_id], references: [id], onDelete: Cascade)
   answer_id  String  @db.Uuid
-  project    Project @relation(fields: [project_id], references: [id])
+  project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id String  @db.Uuid
 }
 
@@ -81,7 +81,7 @@ model Sketch {
   body          String  @db.Text
   download_link String
   image         String
-  project       Project @relation(fields: [project_id], references: [id])
+  project       Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id    String  @db.Uuid
 }
 
@@ -89,7 +89,7 @@ model About {
   id        String   @id @unique @default(uuid()) @db.Uuid
   title     String
   body      String   @db.Text
-  admin     Admin    @relation(fields: [admin_id], references: [id])
+  admin     Admin    @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   admin_id  String   @db.Uuid
   updatedAt DateTime @updatedAt
 }
@@ -101,7 +101,7 @@ model Message {
   body          String   @db.Text
   read_status   Boolean  @default(false)
   answer_status Boolean  @default(false)
-  admin         Admin    @relation(fields: [admin_id], references: [id])
+  admin         Admin    @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   admin_id      String   @db.Uuid
   createdAd     DateTime @default(now())
 }
