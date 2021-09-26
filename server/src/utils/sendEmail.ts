@@ -66,8 +66,9 @@ export const sendEmail = async ({
     if (!__prod__) {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     }
+    return true;
   } catch (err) {
     console.error(err);
-    return err;
+    return false;
   }
 };

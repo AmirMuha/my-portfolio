@@ -278,6 +278,20 @@ input AdminRelationFilter {
   isNot: AdminWhereInput
 }
 
+input AdminUpdateInput {
+  about: AboutUpdateManyWithoutAdminInput
+  confirmed: BoolFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  fname: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  lname: StringFieldUpdateOperationsInput
+  messages: MessageUpdateManyWithoutAdminInput
+  password: StringFieldUpdateOperationsInput
+  projects: ProjectUpdateManyWithoutAdminInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
 input AdminUpdateOneRequiredWithoutAboutInput {
   connect: AdminWhereUniqueInput
   connectOrCreate: AdminCreateOrConnectWithoutAboutInput
@@ -684,6 +698,8 @@ input MessageWhereUniqueInput {
 
 type Mutation {
   confimEmail(code: Int, email: String, token: String): Boolean
+  confirmAdminDelete(code: Int, email: String, token: String): Boolean!
+  confirmTokenOrCode(code: Int, email: String, token: String): Boolean!
   createAbout(data: AboutCreateInput!): About!
   createAdmin(data: AdminCreateInput!): Admin
   createAnswer(data: AnswerCreateInput!): Answer!
@@ -694,6 +710,7 @@ type Mutation {
   createTech(data: TechCreateInput!): Tech!
   createTechCategory(data: TechCategoryCreateInput!): TechCategory!
   deleteAbout(where: AboutWhereUniqueInput!): About
+  deleteAdmin(where: AdminWhereUniqueInput!): Boolean!
   deleteAnswer(where: AnswerWhereUniqueInput!): Answer
   deleteManyAbout(where: AboutWhereInput): AffectedRowsOutput!
   deleteManyAnswer(where: AnswerWhereInput): AffectedRowsOutput!
@@ -709,9 +726,12 @@ type Mutation {
   deleteSketch(where: SketchWhereUniqueInput!): Sketch
   deleteTech(where: TechWhereUniqueInput!): Tech
   deleteTechCategory(where: TechCategoryWhereUniqueInput!): TechCategory
+  forgotPassword(email: String!): Boolean!
   login(data: LoginInputType!): Boolean
   logout: Boolean
+  resetPassword(code: Int, confirmPassword: String!, email: String!, newPassword: String!, token: String): String!
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
+  updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project

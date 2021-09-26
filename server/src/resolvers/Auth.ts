@@ -1,3 +1,4 @@
+import { prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
@@ -12,13 +13,22 @@ import { Admin } from "../../prisma/generated/type-graphql";
 import {
   EMAIL_CONFIRMATION_CODE,
   JWT_PRIVATE_KEY,
+  MY_EMAIL,
 } from "../constants/envs-and-consts";
 import { isLoggedIn } from "../middlewares/isLoggedIn";
 import { redis } from "../redis-client";
-import { ConfirmEmailArgsType } from "../types/arg-types/ConfirmEmailArgs";
+import {
+  ConfirmEmailArgsType,
+  ConfirmTokenOrCodeArgsType,
+} from "../types/arg-types/ConfirmEmailArgs";
+import { ForgotPasswordArgs } from "../types/arg-types/ForgotPasswordArgs";
 import { LoginArgsType } from "../types/arg-types/LoginArgs";
+import { ResetPasswordArgs } from "../types/arg-types/ResetPasswordArgs";
+import { JwtVerifyWithPayloadType } from "../types/JwtVerifyWithPayloadType";
 import { MyContext } from "../types/MyContext";
+import { randomNumber } from "../utils/randomNumber";
 import { sendConfirmationEmail } from "../utils/sendConfirmationEmail";
+import { EmailTypes, sendEmail } from "../utils/sendEmail";
 
 @Resolver()
 export class AuthResolver {
@@ -60,7 +70,7 @@ export class AuthResolver {
   @Mutation(() => Boolean, { nullable: true })
   async confimEmail(
     @Ctx() { prisma }: MyContext,
-    @Args() args: ConfirmEmailArgsType
+    @Args() args: ConfirmTokenOrCodeArgsType
   ): Promise<boolean | undefined> {
     if (!args.token && !args.code) {
       throw new Error(
@@ -93,6 +103,110 @@ export class AuthResolver {
       });
     }
     return true;
+  }
+
+  @UseMiddleware(isLoggedIn)
+  @Mutation(() => Boolean)
+  async forgotPassword(
+    @Ctx() { data, prisma }: MyContext,
+    @Args() args: ForgotPasswordArgs
+  ): Promise<boolean> {
+    const admin = await prisma.admin.findUnique({
+      where: { email: args.email },
+    });
+    if (!admin) throw new Error("There is no admin with the given email.");
+    const token = await jwt.sign({ id: data.userId }, JWT_PRIVATE_KEY, {
+      expiresIn: 10 * 60,
+    });
+    const confirmation_code = randomNumber(1000, 9999);
+    await redis.set(
+      `FORGOTPASSWORD_CODE-${data.id}`,
+      confirmation_code,
+      "ex",
+      60 * 10
+    );
+    const result = await sendEmail({
+      type: EmailTypes.FORGOT_PASSWORD,
+      from: MY_EMAIL,
+      to: args.email,
+      subject: "Forgot Password",
+      token,
+      confirmation_code,
+    });
+    if (!result)
+      throw new Error("Couldn't send the email, Please try again later.");
+    return true;
+  }
+
+  @UseMiddleware(isLoggedIn)
+  @Mutation(() => Boolean)
+  async confirmTokenOrCode(
+    @Ctx() { data }: MyContext,
+    @Args() args: ConfirmTokenOrCodeArgsType
+  ): Promise<boolean> {
+    if (!args.code && !args.token)
+      throw new Error(
+        "Please provide either a code or token to confirm deleting the admin."
+      );
+    if (args.token) {
+      const token = args.token;
+      const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+        complete: true,
+      })) as JwtVerifyWithPayloadType;
+      if (!verifiedToken)
+        throw new Error("Token is either invalid or has expired.");
+      return true;
+    } else {
+      const code = await redis.get(`FORGOTPASSWORD_CODE-${data.userId}`);
+      if (!code) throw new Error("Code is either incorrect or has expired.");
+      if (parseInt(code) !== args.code) throw new Error("Code is incorrect.");
+      return true;
+    }
+  }
+
+  @UseMiddleware(isLoggedIn)
+  @Mutation(() => String)
+  async resetPassword(
+    @Ctx() { prisma, data, req }: MyContext,
+    @Args() args: ResetPasswordArgs
+  ): Promise<string> {
+    let flag: boolean = false;
+    if (!args.code && !args.token)
+      throw new Error(
+        "Please provide either a code or token to confirm deleting the admin."
+      );
+    if (args.token) {
+      const token = args.token;
+      const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+        complete: true,
+      })) as JwtVerifyWithPayloadType;
+      if (!verifiedToken)
+        throw new Error("Your code or token has expired. Please try again.");
+      flag = true;
+    } else {
+      const code = await redis.get(`FORGOTPASSWORD_CODE-${data.userId}`);
+      if (!code) throw new Error("Code is either incorrect or has expired.");
+      if (parseInt(code) !== args.code)
+        throw new Error("Your code or token has expired. Please try again.");
+      flag = true;
+    }
+    if (!flag)
+      throw new Error("Your code or token has expired. Please try again.");
+    if (!args.newPassword || !args.confirmPassword)
+      throw new Error("Please provide both new and confirm passwords.");
+    if (args.newPassword !== args.confirmPassword)
+      throw new Error("Passwords don't match.");
+    const hashedPassword = await bcrypt.hash(args.newPassword, 12);
+    await prisma.admin.update({
+      data: {
+        password: hashedPassword,
+      },
+      where: {
+        email: args.email,
+      },
+    });
+    req.session.token = "";
+    return "Password successfully changed !";
   }
 
   @UseMiddleware(isLoggedIn)

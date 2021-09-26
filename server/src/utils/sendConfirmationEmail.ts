@@ -11,7 +11,6 @@ import { EmailTypes, sendEmail } from "./sendEmail";
 
 interface SendConfirmationEmailReturnType {
   token: string;
-  result: string;
   code: number;
 }
 
@@ -20,7 +19,7 @@ export const sendConfirmationEmail = async (
   to: string
 ): Promise<SendConfirmationEmailReturnType> => {
   const token = await jwt.sign({ email: id }, JWT_PRIVATE_KEY, {
-    expiresIn: "10m",
+    expiresIn: 10 * 60,
   });
   const confirmation_code = randomNumber(1000, 9999);
   await redis.set(
@@ -37,9 +36,10 @@ export const sendConfirmationEmail = async (
     confirmation_code: confirmation_code,
     token: token,
   });
+  if (!result)
+    throw new Error("Couldn't send the email, Please try again later.");
   return {
     token,
-    result,
     code: confirmation_code,
   };
 };

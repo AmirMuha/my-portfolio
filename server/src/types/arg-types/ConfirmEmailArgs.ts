@@ -16,3 +16,6 @@ export class ConfirmEmailArgsType {
   @Field(() => String, { nullable: true })
   email: string;
 }
+
+@ArgsType()
+export class ConfirmTokenOrCodeArgsType extends ConfirmEmailArgsType {}
