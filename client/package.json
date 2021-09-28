@@ -1,36 +1,60 @@
 {
-  "name": "amir-muha-portfolio",
-  "version": "1.0.0",
+  "name": "my-portfolio",
   "private": true,
-  "description": "AmirMuha Portfolio",
-  "author": "AmirMuha",
+  "description": "Just my portfolio",
+  "version": "1.0.0",
+  "author": "AmirMohammad MirzaeiRad",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "gatsby": "^3.13.1",
+    "gatsby-config": "^0.1.1",
+    "gatsby-plugin-apollo": "^3.0.2",
+    "gatsby-plugin-graphql": "^2.0.5",
+    "gatsby-plugin-image": "^1.13.0",
+    "gatsby-plugin-manifest": "^3.13.0",
+    "gatsby-plugin-offline": "^4.13.0",
+    "gatsby-plugin-react-helmet": "^4.13.0",
+    "gatsby-plugin-sharp": "^3.13.0",
+    "gatsby-plugin-typescript": "^3.14.0",
+    "gatsby-source-filesystem": "^3.13.0",
+    "gatsby-source-graphql": "^3.14.0",
+    "gatsby-transformer-sharp": "^3.13.0",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-helmet": "^6.1.0",
+    "source-map-support": "^0.5.20",
+    "ts-node": "^10.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.24",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-helmet": "^6.1.2",
+    "autoprefixer": "^10.3.6",
+    "gatsby-plugin-postcss": "^4.14.0",
+    "gatsby-plugin-ts-config": "^2.1.2",
+    "postcss": "^8.3.8",
+    "prettier": "2.4.1",
+    "tailwindcss": "^2.2.16"
+  },
   "keywords": [
     "gatsby"
   ],
+  "license": "0BSD",
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
     "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "start": "gatsby develop",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
-  "dependencies": {
-    "gatsby": "^3.13.1",
-    "gatsby-plugin-image": "^1.14.0",
-    "gatsby-plugin-sharp": "^3.14.0",
-    "gatsby-source-filesystem": "^3.14.0",
-    "gatsby-source-graphql": "^3.14.0",
-    "gatsby-transformer-sharp": "^3.14.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AmirMuha/my-portfolio"
   },
-  "devDependencies": {
-    "@types/node": "^16.9.4",
-    "@types/react": "^17.0.22",
-    "@types/react-dom": "^17.0.9",
-    "autoprefixer": "^10.3.4",
-    "gatsby-plugin-postcss": "^4.14.0",
-    "postcss": "^8.3.6",
-    "tailwindcss": "^2.2.15"
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
   }
 }
