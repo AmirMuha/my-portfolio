@@ -7,6 +7,8 @@ const Projects: FC<PropsWithChildren<Props>> = props => {
   return (
     <>
       <ProjectItem />
+      <ProjectItem />
+      <ProjectItem />
     </>
   )
 }

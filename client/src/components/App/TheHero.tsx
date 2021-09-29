@@ -6,10 +6,11 @@ import Button from "../UI/Button"
 interface Props {}
 
 const TheHero: FC<PropsWithChildren<Props>> = props => {
+  let windowSize: number = document.body.offsetHeight
   return (
     <div className="px-14 pt-5 relative">
       <span
-        style={{ height: "100Vh" }}
+        style={{ height: windowSize }}
         className="top-0 absolute z-20 hidden xs:block left-0 w-pipe-sm md:w-pipe-lg bg-palatte-500"
       ></span>
       <div className="inline-block">

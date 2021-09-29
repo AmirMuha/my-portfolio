@@ -7,11 +7,12 @@ interface Props {}
 const ProjectItem: FC<PropsWithChildren<Props>> = props => {
   const techs: any = []
   return (
-    <div className="flex-col gap-0 items-start">
+    <div className="flex-col gap-0 items-start mb-5">
       <div className="flex gap-0 items-center">
         <div className="w-6 bg-palatte-500 h-pipe-sm md:h-pipe-lg"></div>
-        <div className="ProjectImage_Border">
+        <div className="ProjectImage_Border relative">
           <StaticImage src="../../images/image-1.png" alt="Project Image" />
+          <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
         </div>
         <div className="pl-3 text-sm">
           <p>PROJECT_NAME</p>
