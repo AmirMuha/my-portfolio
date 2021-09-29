@@ -1,0 +1,14 @@
+.NavLink {
+  @apply px-3 py-1 relative overflow-hidden;
+}
+.NavLink_Dark {
+  @apply text-palatte-500;
+}
+.NavLink_Light {
+  @apply text-palatte-100;
+}
+.NavLink_Border {
+  @apply absolute left-0 bottom-0 w-full bg-palatte-500;
+  height: 2px;
+  transform: translateX(-101%);
+}

@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "author": "AmirMohammad MirzaeiRad",
   "dependencies": {
+    "@types/gsap": "^3.0.0",
     "dotenv": "^10.0.0",
     "gatsby": "^3.13.1",
     "gatsby-config": "^0.1.1",
@@ -19,6 +20,7 @@
     "gatsby-source-filesystem": "^3.13.0",
     "gatsby-source-graphql": "^3.14.0",
     "gatsby-transformer-sharp": "^3.13.0",
+    "gsap": "^3.7.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

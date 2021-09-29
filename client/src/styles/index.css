@@ -12,8 +12,31 @@ body {
   outline: none;
   box-sizing: border-box;
 }
-
+*::-webkit-scrollbar {
+  display: none;
+}
 a {
   text-decoration: none;
 }
+.ProjectItem_Hide__Border {
+  @apply bg-palatte-100 w-pipe-sm absolute md:w-pipe-lg h-1/2;
+  left: -5px;
+  bottom: -8.5px;
+}
 
+.ProjectImage_Border {
+  @apply border-palatte-500 border-5 md:border-10;
+  min-width: 85px;
+  min-height: 85px;
+}
+
+@media only screen and (min-width: 768px) {
+  .ProjectItem_Hide__Border {
+    left: -10px;
+    bottom: -11px;
+  }
+  .ProductImage_Border {
+    max-width: 120px;
+    max-height: 120px;
+  }
+}

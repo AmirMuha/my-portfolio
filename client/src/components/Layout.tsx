@@ -1,5 +1,5 @@
-import React, { FC, PropsWithChildren, ReactElement } from "react";
-import { Header } from "./styles/Layout.module.css";
+import React, { FC, PropsWithChildren, ReactElement } from "react"
+import TheHeader from "./App/TheHeader"
 
 interface Props {}
 
@@ -7,17 +7,14 @@ const Layout: FC<Props> = ({
   children,
 }: PropsWithChildren<Props>): ReactElement => {
   return (
-    <div className="items-center">
-      <header className={Header}>
-        <p className="font-bold text-sm">
-          AMIRMUHA.<span className="text-tiny font-normal">portfolio</span>
-        </p>
-        <button>Resume</button>
-      </header>
-      <main>{children}</main>
-      <footer></footer>
-    </div>
-  );
-};
+    <>
+      <TheHeader />
+      <div className="items-center container mx-auto">
+        <main>{children}</main>
+        <footer></footer>
+      </div>
+    </>
+  )
+}
 
-export default Layout;
+export default Layout

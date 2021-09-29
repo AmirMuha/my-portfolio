@@ -44,16 +44,12 @@ module.exports = {
     },
     extend: {
       width: {
-        pipe: {
-          sm: "5px",
-          lg: "10px",
-        },
+        "pipe-sm": "5px",
+        "pipe-lg": "10px",
       },
       height: {
-        pipe: {
-          sm: "5px",
-          lg: "10px",
-        },
+        "pipe-sm": "5px",
+        "pipe-lg": "10px",
       },
       screens: {
         xs: "400px",
@@ -64,4 +60,4 @@ module.exports = {
     extend: {},
   },
   plugins: ["gatsby-plugin-postcss"],
-};
+}

@@ -26,6 +26,13 @@ export default {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `icons`,
+        path: `${__dirname}/src/icons`,
+      },
+    },
+    {
       resolve: "gatsby-plugin-apollo",
       options: {
         uri: "localhost:3333/graphql",

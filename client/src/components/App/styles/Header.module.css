@@ -1,0 +1,15 @@
+.Header {
+  @apply px-3 xs:px-5 sm:px-16 md:px-16 bg-palatte-100 py-2 sticky top-0 z-50;
+}
+.Header_Container {
+  @apply flex justify-between lg:justify-center relative container items-center mx-auto;
+}
+.Header_Border {
+  @apply border-b border-palatte-500;
+}
+.Header_Resume {
+  @apply lg:hidden;
+}
+.Header_Menu {
+  @apply sm:gap-5 hidden sm:flex lg:hidden items-center;
+}
