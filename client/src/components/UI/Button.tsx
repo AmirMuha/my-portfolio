@@ -15,7 +15,11 @@ interface Props {
   className?: string
   icon?: JSX.Element
   iconAnimation?: IconAnimations
+  target?: "_blank" | "_self" | "_parent" | "_top"
   fill?: boolean
+  color?: "100" | "200" | "300" | "400" | "500"
+  borderColor?: "100" | "200" | "300" | "400" | "500"
+  textColor?: "100" | "200" | "300" | "400" | "500"
   toUrl?: string
   style?: React.CSSProperties
 }
@@ -31,9 +35,13 @@ const Button: FC<PropsWithChildren<Props>> = ({
   children,
   outline = false,
   underline = false,
+  color = "500",
+  borderColor = "500",
+  textColor = "100",
   pulse = false,
   fill = false,
   className = "",
+  target = "_self",
   toUrl,
   style = {},
   icon = null,
@@ -103,8 +111,14 @@ const Button: FC<PropsWithChildren<Props>> = ({
     }
   }
   const buttonClasses = `${className} ${ButtonClass} ${
-    outline && Button_Outlined
-  } ${underline && Button_Underlined} ${pulse && Button_Pulse} ${
+    outline &&
+    Button_Outlined +
+      ` bg-palatte-${color} text-palatte-${textColor} border-palatte-${borderColor}`
+  } ${
+    underline &&
+    Button_Underlined +
+      ` bg-palatte-${color} border-palatte-${borderColor} text-palatte-${textColor}`
+  } ${pulse && Button_Pulse} ${
     icon && "flex overflow-hidden justify-center items-center gap-2 relative"
   }`
   return (
@@ -115,7 +129,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
           style={style}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
           onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
-          className={buttonClasses}
+          className={`${buttonClasses} bg-palatte-${color} text-palatte-${textColor}`}
         >
           <span>{children}</span>
           <span
@@ -127,11 +141,11 @@ const Button: FC<PropsWithChildren<Props>> = ({
       ) : (
         <a
           href={toUrl}
-          target="_blank"
           style={style}
+          target={target}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
           onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
-          className={buttonClasses}
+          className={`${buttonClasses} bg-palatte-${color} text-palatte-${textColor}`}
         >
           <span>{children}</span>
           <span

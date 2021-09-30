@@ -8,6 +8,9 @@ body {
   padding: 0;
   margin: 0;
 }
+html {
+  overflow-x: hidden;
+}
 * {
   outline: none;
   box-sizing: border-box;
@@ -29,8 +32,17 @@ a {
   min-width: 85px;
   min-height: 85px;
 }
+.Pipe_Hide {
+  @apply w-pipe-sm md:w-pipe-lg bg-palatte-100 absolute top-0;
+  left: -5px;
+  height: 44px;
+}
 
 @media only screen and (min-width: 768px) {
+  .Pipe_Hide {
+    left: -10px;
+    height: 48px;
+  }
   .ProjectItem_Hide__Border {
     left: -10px;
     bottom: -11px;

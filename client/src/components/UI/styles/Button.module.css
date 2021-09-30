@@ -1,12 +1,12 @@
 .Button {
-  @apply px-3 transform py-1 bg-palatte-500 text-palatte-100;
+  @apply px-3 transform py-1;
 }
 .Button_Pulse {
   @apply hover:scale-105;
 }
 .Button_Underlined {
-  @apply border-b border-palatte-500 bg-palatte-100 text-palatte-500;
+  @apply border-b;
 }
 .Button_Outlined {
-  @apply border border-palatte-500 bg-palatte-100 text-palatte-500;
+  @apply border;
 }
