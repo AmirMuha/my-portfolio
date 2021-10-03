@@ -13,44 +13,52 @@ import { Update } from "../Update";
 
 const resolversEnhanceMap: ResolversEnhanceMap = {
   About: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateAbout: [UseMiddleware(isLoggedIn, Update)],
     createAbout: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    deleteAbout: [UseMiddleware(isLoggedIn)],
+    deleteManyAbout: [UseMiddleware(isLoggedIn)],
   },
   Tech: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateTech: [UseMiddleware(isLoggedIn, Update)],
-    createTech: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    createTech: [UseMiddleware(isLoggedIn)],
+    deleteTech: [UseMiddleware(isLoggedIn)],
+    deleteManyTech: [UseMiddleware(isLoggedIn)],
   },
   TechCategory: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateTechCategory: [UseMiddleware(isLoggedIn, Update)],
-    createTechCategory: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    createTechCategory: [UseMiddleware(isLoggedIn)],
+    deleteTechCategory: [UseMiddleware(isLoggedIn)],
+    deleteManyTechCategory: [UseMiddleware(isLoggedIn)],
   },
   Project: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateProject: [UseMiddleware(isLoggedIn, Update)],
     createProject: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    deleteProject: [UseMiddleware(isLoggedIn)],
+    deleteManyProject: [UseMiddleware(isLoggedIn)],
   },
   Message: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateMessage: [UseMiddleware(isLoggedIn, Update)],
     createMessage: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    deleteMessage: [UseMiddleware(isLoggedIn)],
+    deleteManyMessage: [UseMiddleware(isLoggedIn)],
   },
   Answer: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateAnswer: [UseMiddleware(isLoggedIn, Update)],
-    createAnswer: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    createAnswer: [UseMiddleware(isLoggedIn)],
+    deleteAnswer: [UseMiddleware(isLoggedIn)],
+    deleteManyAnswer: [UseMiddleware(isLoggedIn)],
   },
   Question: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateQuestion: [UseMiddleware(isLoggedIn, Update)],
-    createQuestion: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    createQuestion: [UseMiddleware(isLoggedIn)],
+    deleteQuestion: [UseMiddleware(isLoggedIn)],
+    deleteManyQuestion: [UseMiddleware(isLoggedIn)],
   },
   Sketch: {
-    _all: [UseMiddleware(isLoggedIn)],
     updateSketch: [UseMiddleware(isLoggedIn, Update)],
-    createSketch: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    createSketch: [UseMiddleware(isLoggedIn)],
+    deleteSketch: [UseMiddleware(isLoggedIn)],
+    deleteManySketch: [UseMiddleware(isLoggedIn)],
   },
 };
 // ##############################################

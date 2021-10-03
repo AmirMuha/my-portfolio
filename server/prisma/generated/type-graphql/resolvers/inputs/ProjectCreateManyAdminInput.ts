@@ -25,6 +25,11 @@ export class ProjectCreateManyAdminInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
+  type!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
   github_url!: string;
 
   @TypeGraphQL.Field(_type => String, {

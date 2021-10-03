@@ -4,6 +4,7 @@
 # -----------------------------------------------
 
 type About {
+  admin: Admin!
   admin_id: String!
   body: String!
   id: String!
@@ -162,9 +163,15 @@ type Admin {
   createdAt: DateTime!
   email: String!
   fname: String!
+  github: String!
+  heroImage: String!
   id: String!
+  instagram: String!
+  linkedIn: String!
   lname: String!
+  resumes: [String!]!
   updatedAt: DateTime!
+  whatsapp: String!
 }
 
 type AdminCount {
@@ -179,12 +186,18 @@ input AdminCreateInput {
   createdAt: DateTime
   email: String!
   fname: String!
+  github: String!
+  heroImage: String!
   id: String
+  instagram: String!
+  linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
+  resumes: AdminCreateresumesInput
   updatedAt: DateTime
+  whatsapp: String!
 }
 
 input AdminCreateNestedOneWithoutAboutInput {
@@ -225,12 +238,18 @@ input AdminCreateWithoutAboutInput {
   createdAt: DateTime
   email: String!
   fname: String!
+  github: String!
+  heroImage: String!
   id: String
+  instagram: String!
+  linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
+  resumes: AdminCreateresumesInput
   updatedAt: DateTime
+  whatsapp: String!
 }
 
 input AdminCreateWithoutMessagesInput {
@@ -239,11 +258,17 @@ input AdminCreateWithoutMessagesInput {
   createdAt: DateTime
   email: String!
   fname: String!
+  github: String!
+  heroImage: String!
   id: String
+  instagram: String!
+  linkedIn: String!
   lname: String!
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
+  resumes: AdminCreateresumesInput
   updatedAt: DateTime
+  whatsapp: String!
 }
 
 input AdminCreateWithoutProjectsInput {
@@ -252,11 +277,21 @@ input AdminCreateWithoutProjectsInput {
   createdAt: DateTime
   email: String!
   fname: String!
+  github: String!
+  heroImage: String!
   id: String
+  instagram: String!
+  linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
+  resumes: AdminCreateresumesInput
   updatedAt: DateTime
+  whatsapp: String!
+}
+
+input AdminCreateresumesInput {
+  set: [String!]!
 }
 
 input AdminOrderByWithRelationInput {
@@ -265,12 +300,18 @@ input AdminOrderByWithRelationInput {
   createdAt: SortOrder
   email: SortOrder
   fname: SortOrder
+  github: SortOrder
+  heroImage: SortOrder
   id: SortOrder
+  instagram: SortOrder
+  linkedIn: SortOrder
   lname: SortOrder
   messages: MessageOrderByRelationAggregateInput
   password: SortOrder
   projects: ProjectOrderByRelationAggregateInput
+  resumes: SortOrder
   updatedAt: SortOrder
+  whatsapp: SortOrder
 }
 
 input AdminRelationFilter {
@@ -284,12 +325,18 @@ input AdminUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
+  github: StringFieldUpdateOperationsInput
+  heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  instagram: StringFieldUpdateOperationsInput
+  linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
+  resumes: AdminUpdateresumesInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  whatsapp: StringFieldUpdateOperationsInput
 }
 
 input AdminUpdateOneRequiredWithoutAboutInput {
@@ -321,12 +368,18 @@ input AdminUpdateWithoutAboutInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
+  github: StringFieldUpdateOperationsInput
+  heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  instagram: StringFieldUpdateOperationsInput
+  linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
+  resumes: AdminUpdateresumesInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  whatsapp: StringFieldUpdateOperationsInput
 }
 
 input AdminUpdateWithoutMessagesInput {
@@ -335,11 +388,17 @@ input AdminUpdateWithoutMessagesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
+  github: StringFieldUpdateOperationsInput
+  heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  instagram: StringFieldUpdateOperationsInput
+  linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
+  resumes: AdminUpdateresumesInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  whatsapp: StringFieldUpdateOperationsInput
 }
 
 input AdminUpdateWithoutProjectsInput {
@@ -348,11 +407,22 @@ input AdminUpdateWithoutProjectsInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fname: StringFieldUpdateOperationsInput
+  github: StringFieldUpdateOperationsInput
+  heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  instagram: StringFieldUpdateOperationsInput
+  linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
+  resumes: AdminUpdateresumesInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  whatsapp: StringFieldUpdateOperationsInput
+}
+
+input AdminUpdateresumesInput {
+  push: [String!]
+  set: [String!]
 }
 
 input AdminUpsertWithoutAboutInput {
@@ -379,12 +449,18 @@ input AdminWhereInput {
   createdAt: DateTimeFilter
   email: StringFilter
   fname: StringFilter
+  github: StringFilter
+  heroImage: StringFilter
   id: StringFilter
+  instagram: StringFilter
+  linkedIn: StringFilter
   lname: StringFilter
   messages: MessageListRelationFilter
   password: StringFilter
   projects: ProjectListRelationFilter
+  resumes: StringNullableListFilter
   updatedAt: DateTimeFilter
+  whatsapp: StringFilter
 }
 
 input AdminWhereUniqueInput {
@@ -399,6 +475,7 @@ type AffectedRowsOutput {
 type Answer {
   answer: String!
   id: String!
+  question: Question
 }
 
 input AnswerCreateInput {
@@ -511,6 +588,7 @@ input LoginInputType {
 }
 
 type Message {
+  admin: Admin!
   admin_id: String!
   answer_status: Boolean!
   body: String!
@@ -773,6 +851,7 @@ input NestedStringFilter {
 
 type Project {
   _count: ProjectCount
+  admin: Admin!
   admin_id: String!
   app_url: String!
   createdAt: DateTime!
@@ -781,6 +860,10 @@ type Project {
   id: String!
   image: String!
   name: String!
+  questions(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): [Question!]!
+  sketches(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): [Sketch!]!
+  tech_categories(cursor: TechCategoryWhereUniqueInput, distinct: [TechCategoryScalarFieldEnum!], orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): [TechCategory!]!
+  type: String!
   updatedAt: DateTime!
 }
 
@@ -802,6 +885,7 @@ input ProjectCreateInput {
   questions: QuestionCreateNestedManyWithoutProjectInput
   sketches: SketchCreateNestedManyWithoutProjectInput
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
+  type: String!
   updatedAt: DateTime
 }
 
@@ -813,6 +897,7 @@ input ProjectCreateManyAdminInput {
   id: String
   image: String!
   name: String!
+  type: String!
   updatedAt: DateTime
 }
 
@@ -877,6 +962,7 @@ input ProjectCreateWithoutAdminInput {
   questions: QuestionCreateNestedManyWithoutProjectInput
   sketches: SketchCreateNestedManyWithoutProjectInput
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
+  type: String!
   updatedAt: DateTime
 }
 
@@ -891,6 +977,7 @@ input ProjectCreateWithoutQuestionsInput {
   name: String!
   sketches: SketchCreateNestedManyWithoutProjectInput
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
+  type: String!
   updatedAt: DateTime
 }
 
@@ -905,6 +992,7 @@ input ProjectCreateWithoutSketchesInput {
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
+  type: String!
   updatedAt: DateTime
 }
 
@@ -919,6 +1007,7 @@ input ProjectCreateWithoutTech_categoriesInput {
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
   sketches: SketchCreateNestedManyWithoutProjectInput
+  type: String!
   updatedAt: DateTime
 }
 
@@ -945,6 +1034,7 @@ input ProjectOrderByWithRelationInput {
   questions: QuestionOrderByRelationAggregateInput
   sketches: SketchOrderByRelationAggregateInput
   tech_categories: TechCategoryOrderByRelationAggregateInput
+  type: SortOrder
   updatedAt: SortOrder
 }
 
@@ -962,6 +1052,7 @@ enum ProjectScalarFieldEnum {
   id
   image
   name
+  type
   updatedAt
 }
 
@@ -977,6 +1068,7 @@ input ProjectScalarWhereInput {
   id: StringFilter
   image: StringFilter
   name: StringFilter
+  type: StringFilter
   updatedAt: DateTimeFilter
 }
 
@@ -992,6 +1084,7 @@ input ProjectUpdateInput {
   questions: QuestionUpdateManyWithoutProjectInput
   sketches: SketchUpdateManyWithoutProjectInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
+  type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1003,6 +1096,7 @@ input ProjectUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1065,6 +1159,7 @@ input ProjectUpdateWithoutAdminInput {
   questions: QuestionUpdateManyWithoutProjectInput
   sketches: SketchUpdateManyWithoutProjectInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
+  type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1079,6 +1174,7 @@ input ProjectUpdateWithoutQuestionsInput {
   name: StringFieldUpdateOperationsInput
   sketches: SketchUpdateManyWithoutProjectInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
+  type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1093,6 +1189,7 @@ input ProjectUpdateWithoutSketchesInput {
   name: StringFieldUpdateOperationsInput
   questions: QuestionUpdateManyWithoutProjectInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
+  type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1107,6 +1204,7 @@ input ProjectUpdateWithoutTech_categoriesInput {
   name: StringFieldUpdateOperationsInput
   questions: QuestionUpdateManyWithoutProjectInput
   sketches: SketchUpdateManyWithoutProjectInput
+  type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1147,6 +1245,7 @@ input ProjectWhereInput {
   questions: QuestionListRelationFilter
   sketches: SketchListRelationFilter
   tech_categories: TechCategoryListRelationFilter
+  type: StringFilter
   updatedAt: DateTimeFilter
 }
 
@@ -1182,8 +1281,10 @@ enum QueryMode {
 }
 
 type Question {
+  answer: Answer!
   answer_id: String!
   id: String!
+  project: Project!
   project_id: String!
   question: String!
 }
@@ -1372,6 +1473,7 @@ type Sketch {
   download_link: String!
   id: String!
   image: String!
+  project: Project!
   project_id: String!
   title: String!
 }
@@ -1555,9 +1657,18 @@ input StringFilter {
   startsWith: String
 }
 
+input StringNullableListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
+}
+
 type Tech {
   id: String!
   name: String!
+  tech_categories: TechCategory!
   tech_category_id: String!
 }
 
@@ -1565,7 +1676,9 @@ type TechCategory {
   _count: TechCategoryCount
   id: String!
   name: String!
+  project: Project!
   project_id: String!
+  techs(cursor: TechWhereUniqueInput, distinct: [TechScalarFieldEnum!], orderBy: [TechOrderByWithRelationInput!], skip: Int, take: Int, where: TechWhereInput): [Tech!]!
 }
 
 type TechCategoryCount {

@@ -9,6 +9,7 @@ import { MessageListRelationFilter } from "../inputs/MessageListRelationFilter";
 import { ProjectListRelationFilter } from "../inputs/ProjectListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
+import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -48,6 +49,36 @@ export class AdminWhereInput {
     nullable: true
   })
   lname?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  linkedIn?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  whatsapp?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  instagram?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  github?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  heroImage?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  resumes?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true

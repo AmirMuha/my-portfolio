@@ -35,5 +35,5 @@ export class FindManyAdminArgs {
   @TypeGraphQL.Field(_type => [AdminScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "email" | "fname" | "lname" | "confirmed" | "apikey" | "password" | "createdAt" | "updatedAt"> | undefined;
+  distinct?: Array<"id" | "email" | "fname" | "lname" | "linkedIn" | "whatsapp" | "instagram" | "github" | "heroImage" | "resumes" | "confirmed" | "apikey" | "password" | "createdAt" | "updatedAt"> | undefined;
 }

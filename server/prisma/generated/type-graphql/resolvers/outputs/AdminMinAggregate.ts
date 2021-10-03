@@ -27,6 +27,31 @@ export class AdminMinAggregate {
   })
   lname!: string | null;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  linkedIn!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  whatsapp!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  instagram!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  github!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  heroImage!: string | null;
+
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })

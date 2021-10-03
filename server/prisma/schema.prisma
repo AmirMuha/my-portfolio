@@ -17,6 +17,12 @@ model Admin {
   email     String    @unique
   fname     String
   lname     String
+  linkedIn  String
+  whatsapp  String
+  instagram String
+  github    String
+  heroImage String
+  resumes   String[]
   confirmed Boolean   @default(false)
   about     About[]
   messages  Message[]
@@ -33,6 +39,7 @@ model Project {
   id              String         @id @unique @default(uuid()) @db.Uuid
   name            String
   image           String
+  type            String
   github_url      String
   app_url         String
   description     String         @db.Text

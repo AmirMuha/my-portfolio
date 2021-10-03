@@ -25,6 +25,11 @@ export class ProjectMinAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
+  type!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
   github_url!: string | null;
 
   @TypeGraphQL.Field(_type => String, {

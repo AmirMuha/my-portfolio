@@ -47,11 +47,27 @@ import {
   DeleteSketchResolver,
   DeleteMessageResolver,
   DeleteAboutResolver,
+  TechCategoryRelationsResolver,
+  AboutRelationsResolver,
+  ProjectRelationsResolver,
+  TechRelationsResolver,
+  MessageRelationsResolver,
+  SketchRelationsResolver,
+  QuestionRelationsResolver,
+  AnswerRelationsResolver,
 } from "../../prisma/generated/type-graphql";
 import { AuthResolver } from "../resolvers/Auth";
 import { AdminCrudResolver } from "../resolvers/User";
 
 export default [
+  TechCategoryRelationsResolver,
+  AboutRelationsResolver,
+  ProjectRelationsResolver,
+  TechRelationsResolver,
+  MessageRelationsResolver,
+  SketchRelationsResolver,
+  QuestionRelationsResolver,
+  AnswerRelationsResolver,
   DeleteTechResolver,
   DeleteAboutResolver,
   CreateAboutResolver,

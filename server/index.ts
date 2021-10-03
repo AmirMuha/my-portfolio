@@ -19,6 +19,7 @@ import { buildSchemaSync } from "type-graphql";
 import { v4 } from "uuid";
 import resolvers from "./src/resolvers/allResolvers";
 import { black } from "./src/chalk";
+// import { TechCategoryResolver } from "./prisma/generated/type-graphql";
 import {
   HOST,
   PORT,

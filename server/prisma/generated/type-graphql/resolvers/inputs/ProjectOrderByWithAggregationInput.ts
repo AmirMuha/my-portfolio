@@ -29,6 +29,11 @@ export class ProjectOrderByWithAggregationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
+  type?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
   github_url?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {

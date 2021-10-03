@@ -31,6 +31,36 @@ export class Admin {
   })
   lname!: string;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  linkedIn!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  whatsapp!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  instagram!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  github!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  heroImage!: string;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: false
+  })
+  resumes!: string[];
+
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })

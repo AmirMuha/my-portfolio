@@ -25,6 +25,11 @@ export class ProjectCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
+  type!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
   github_url!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {

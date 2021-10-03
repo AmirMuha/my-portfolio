@@ -15,6 +15,11 @@ export const adminPropsValidation = {
   fname: [IsString(), Length(3, 20)],
   lname: [IsString(), Length(3, 20)],
   password: [IsString(), MinLength(8)],
+  github: [IsString(), IsUrl()],
+  linkedIn: [IsString(), IsUrl()],
+  instagram: [IsString(), IsUrl()],
+  whatsapp: [IsString()],
+  heroImage: [IsString()],
 };
 
 export const aboutPropsValidation = {
