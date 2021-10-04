@@ -8,6 +8,7 @@ import {
 } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import redisStore from "connect-redis";
+import { graphqlUploadExpress } from "graphql-upload";
 import cors from "cors";
 import Express from "express";
 import session from "express-session";
@@ -28,10 +29,12 @@ import {
   __prod__,
 } from "./src/constants/envs-and-consts";
 import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
+import { Upload } from "graphql-upload";
 import prisma from "./src/prisma-client";
 import { redis } from "./src/redis-client";
 
 import { MyContext } from "./src/types/MyContext";
+import { UploadResolver } from "./src/resolvers/Upload";
 const app = Express();
 const RedisStore = redisStore(session);
 
@@ -61,7 +64,7 @@ const main = async () => {
   );
   applyMiddlewares();
   const schema = buildSchemaSync({
-    resolvers,
+    resolvers: [...resolvers, UploadResolver] as any,
     emitSchemaFile: true,
   });
   const server = new ApolloServer({
@@ -75,6 +78,7 @@ const main = async () => {
         : ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
   });
+  app.use(graphqlUploadExpress({}));
   await server.start();
 
   server.applyMiddleware({

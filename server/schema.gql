@@ -817,6 +817,8 @@ type Mutation {
   updateSketch(data: SketchUpdateInput!, where: SketchWhereUniqueInput!): Sketch
   updateTech(data: TechUpdateInput!, where: TechWhereUniqueInput!): Tech
   updateTechCategory(data: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory
+  uploadMultipleFiles(files: [Upload!]!): Boolean!
+  uploadSingleFile(file: Upload!): Boolean!
 }
 
 input NestedBoolFilter {
@@ -1981,3 +1983,6 @@ input TechWhereInput {
 input TechWhereUniqueInput {
   id: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
