@@ -1,3 +1,4 @@
+import { Link } from "gatsby"
 import gsap from "gsap"
 import React, { FC, PropsWithChildren, ReactElement, useRef } from "react"
 import {
@@ -10,18 +11,21 @@ import {
 interface Props {
   onClick?(): void
   outline?: boolean
+  to?: string
   underline?: boolean
   pulse?: boolean
+  normal?: boolean
   className?: string
   icon?: JSX.Element
   iconAnimation?: IconAnimations
   target?: "_blank" | "_self" | "_parent" | "_top"
   fill?: boolean
-  color?: "100" | "200" | "300" | "400" | "500"
+  color?: "100" | "200" | "300" | "400" | "500" | "transparent"
   borderColor?: "100" | "200" | "300" | "400" | "500"
   textColor?: "100" | "200" | "300" | "400" | "500"
   toUrl?: string
   style?: React.CSSProperties
+  iconPos?: "right" | "left"
 }
 
 export type IconAnimations =
@@ -40,10 +44,13 @@ const Button: FC<PropsWithChildren<Props>> = ({
   textColor = "100",
   pulse = false,
   fill = false,
+  normal = false,
   className = "",
+  to,
   target = "_self",
   toUrl,
   style = {},
+  iconPos = "right",
   icon = null,
   iconAnimation,
   onClick,
@@ -113,47 +120,77 @@ const Button: FC<PropsWithChildren<Props>> = ({
   const buttonClasses = `${className} ${ButtonClass} ${
     outline &&
     Button_Outlined +
-      ` bg-palatte-${color} text-palatte-${textColor} border-palatte-${borderColor}`
+      ` ${
+        color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+      } text-palatte-${textColor} border-palatte-${borderColor}`
   } ${
     underline &&
     Button_Underlined +
-      ` bg-palatte-${color} border-palatte-${borderColor} text-palatte-${textColor}`
+      ` ${
+        color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+      } border-palatte-${borderColor} text-palatte-${textColor}`
   } ${pulse && Button_Pulse} ${
     icon && "flex overflow-hidden justify-center items-center gap-2 relative"
   }`
   return (
     <>
-      {!toUrl ? (
+      {normal && (
         <button
           onClick={onClick}
           style={style}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
-          onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
-          className={`${buttonClasses} bg-palatte-${color} text-palatte-${textColor}`}
+          onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
+          className={`${buttonClasses} ${className} ${
+            color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+          } text-palatte-${textColor}`}
         >
+          {iconPos === "left" && <span ref={iconRef as any}>{icon}</span>}
           <span>{children}</span>
           <span
             ref={buttonBackGroundColorRef as any}
             className="bg-palatte-500  w-0 h-full absolute top-0 left-0"
           ></span>
-          <span ref={iconRef as any}>{icon}</span>
+          {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
         </button>
-      ) : (
+      )}
+      {toUrl && (
         <a
           href={toUrl}
           style={style}
           target={target}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
-          onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
-          className={`${buttonClasses} bg-palatte-${color} text-palatte-${textColor}`}
+          onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
+          className={`${buttonClasses} ${className} ${
+            color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+          } text-palatte-${textColor}`}
         >
+          {iconPos === "left" && <span ref={iconRef as any}>{icon}</span>}
           <span>{children}</span>
           <span
             ref={buttonBackGroundColorRef as any}
             className="bg-palatte-500  w-0 h-full absolute top-0 left-0"
           ></span>
-          <span ref={iconRef as any}>{icon}</span>
+          {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
         </a>
+      )}
+      {to && (
+        <Link
+          to={to}
+          style={style}
+          onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
+          onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
+          className={`${buttonClasses} ${className} ${
+            color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+          } text-palatte-${textColor}`}
+        >
+          {iconPos === "left" && <span ref={iconRef as any}>{icon}</span>}
+          <span>{children}</span>
+          <span
+            ref={buttonBackGroundColorRef as any}
+            className="bg-palatte-500  w-0 h-full absolute top-0 left-0"
+          ></span>
+          {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
+        </Link>
       )}
     </>
   )

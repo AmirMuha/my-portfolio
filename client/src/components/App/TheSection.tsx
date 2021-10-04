@@ -1,13 +1,15 @@
-import React, { FC, PropsWithChildren } from "react"
+import React, { CSSProperties, FC, PropsWithChildren } from "react"
 
 interface Props {
   name: string
   className?: string
   id: string
+  style?: CSSProperties
 }
 
 const TheSection: FC<PropsWithChildren<Props>> = ({
   name,
+  style,
   children,
   id,
   className,
@@ -16,6 +18,7 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
     <>
       <section
         id={id}
+        style={style}
         className={`${className} relative mt-10 border-l-5 md:border-l-10 border-palatte-500 border-b-5`}
       >
         <div
@@ -24,7 +27,7 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
         ></div>
         <div className="flex gap-0 text-center items-start">
           <div className="w-1/2 bg-palatte-500 h-pipe-sm md:h-pipe-lg"></div>
-          <h1 className="capitalize px-3 font-bold bg-palatte-100 text-md transform -translate-x-1/2 -translate-y-1/2">
+          <h1 className="capitalize px-3 font-bold bg-palatte-100 text-sm sm:text-md transform -translate-x-1/2 -translate-y-1/2">
             {name}
           </h1>
         </div>

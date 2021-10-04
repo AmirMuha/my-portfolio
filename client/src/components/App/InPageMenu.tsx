@@ -17,28 +17,28 @@ const InPageMenu: FC<PropsWithChildren<Props>> = ({
     <>
       <SmallPipe pipes={pipes} style={style} className={`${className}`}>
         <Button
-          toUrl="#projects"
+          to="/projects"
           className="text-center mr-2"
           style={{ padding: "7px 0 7px 0", flexGrow: 1 }}
         >
           Projects
         </Button>
         <Button
-          toUrl="#about"
+          to="/about-me"
           className="text-center mr-2"
           style={{ padding: "7px 0 7px 0", flexGrow: 1 }}
         >
           About
         </Button>
         <Button
-          toUrl="#footer"
+          to="/#contact-me"
           className="text-center mr-2"
           style={{ padding: "7px 0 7px 0", flexGrow: 1 }}
         >
           Contact Me
         </Button>
         <Button
-          toUrl="#stack"
+          to="/#stack"
           className="text-center "
           style={{ padding: "7px 0 7px 0", flexGrow: 1 }}
         >

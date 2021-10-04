@@ -1,8 +1,23 @@
-import React, { FC, HTMLInputTypeAttribute, PropsWithChildren } from "react"
+import React, {
+  FC,
+  HTMLInputTypeAttribute,
+  PropsWithChildren,
+  useCallback,
+  useRef,
+} from "react"
+import Button from "./Button"
 
+export interface File {
+  name: string
+  ext: string
+  type: string
+  size: number
+}
+export type GetValue<T, F> = (value: T, files?: F) => void
 interface Props {
   type?: HTMLInputTypeAttribute
-  getValue(value: string): void
+  buttonTitle?: string
+  getValue: GetValue<string, any>
   id: string
   label?: string
   value: any
@@ -17,27 +32,85 @@ const Input: FC<PropsWithChildren<Props>> = ({
   textColor = "100",
   color = "100",
   id,
+  buttonTitle,
   name = label,
   getValue,
   type = "text",
 }) => {
+  const fileRef = useRef<HTMLInputElement>()
+  const fileInputClick = useCallback(() => {
+    fileRef.current?.click()
+  }, [])
+  if (type === "file" && fileRef && value) {
+    const arr = value.split("\\")
+    value = arr[arr.length - 1]
+  }
   return (
     <div>
-      <label
-        className={`block text-left text-palatte-${textColor}`}
-        htmlFor={id}
-        id={id}
-      >
-        {label}
-      </label>
-      <input
-        name={name}
-        className={`px-3 py-1 w-full bg-palatte-${color}`}
-        id={id}
-        type={type}
-        onChange={e => getValue(e.currentTarget.value)}
-        value={value}
-      />
+      {type === "file" && (
+        <>
+          <label htmlFor={id} id={id} className="block">
+            {`${label}`}
+          </label>
+          <div className="flex">
+            <div className="px-3 py-2 w-full bg-palatte-200 truncate">
+              {value ? (
+                <p className="text-palatte-500">
+                  {value && value}
+                  {
+                    <span className="text-palatte-300">
+                      {` ${
+                        fileRef.current?.files?.length! > 1
+                          ? `and ${fileRef.current?.files?.length! - 1} more`
+                          : ""
+                      }`}
+                    </span>
+                  }
+                </p>
+              ) : (
+                <p className="text-palatte-300">No files chosen yet !</p>
+              )}
+            </div>
+            <Button
+              color="400"
+              normal
+              style={{ minWidth: "fit-content" }}
+              onClick={fileInputClick}
+            >
+              {buttonTitle ? buttonTitle : label}
+            </Button>
+          </div>
+          <input
+            multiple={true}
+            hidden={true}
+            onChange={e =>
+              getValue(e.currentTarget.value, e.currentTarget?.files)
+            }
+            ref={fileRef as any}
+            type="file"
+            className="hidden"
+          />
+        </>
+      )}
+      {type === "text" && (
+        <>
+          <label
+            className={`block text-left text-palatte-${textColor}`}
+            htmlFor={id}
+            id={id}
+          >
+            {label}
+          </label>
+          <input
+            name={name}
+            className={`px-3 py-2 w-full bg-palatte-${color}`}
+            id={id}
+            type={type}
+            onChange={e => getValue(e.currentTarget.value)}
+            value={value}
+          />
+        </>
+      )}
     </div>
   )
 }

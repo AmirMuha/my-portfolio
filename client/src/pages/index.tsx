@@ -3,7 +3,7 @@ import React, { FC } from "react"
 import InPageMenu from "../components/App/InPageMenu"
 import Projects from "../components/App/Projects"
 import Skills from "../components/App/Skills"
-import TheFooter from "../components/App/TheFooter"
+import ContactMe from "../components/App/ContactMe"
 import TheHero from "../components/App/TheHero"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
@@ -11,10 +11,10 @@ import { SEO } from "../components/SEO"
 const Home: FC<PageProps> = props => {
   return (
     <>
-      <SEO title="AmirMohammad MirzaeiRad" />
+      <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />
       <Layout>
         <TheHero />
-        <TheSection className="sm:hidden" id="sections" name="Sections">
+        <TheSection className="sm:hidden" id="what-next" name="What Next ?">
           <InPageMenu pipes="left" style={{ paddingBottom: 25 }} />
         </TheSection>
         <TheSection id="projects" name="Projects">
@@ -23,7 +23,20 @@ const Home: FC<PageProps> = props => {
         <TheSection id="stack" name="Stack">
           <Skills />
         </TheSection>
-        <TheFooter id="footer" />
+        <TheSection
+          id="contact-me"
+          style={{ paddingBottom: 25 }}
+          name="Contact Me"
+        >
+          <ContactMe id="footer" />
+        </TheSection>
+        <TheSection
+          style={{ marginBottom: 50, paddingBottom: 25 }}
+          name="What Now ?"
+          id="what-now"
+        >
+          <InPageMenu pipes="left" />
+        </TheSection>
       </Layout>
     </>
   )

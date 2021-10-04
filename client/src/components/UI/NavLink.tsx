@@ -1,4 +1,4 @@
-import { navigate } from "gatsby"
+import { Link } from "gatsby"
 import gsap from "gsap"
 import React, {
   FC,
@@ -30,18 +30,15 @@ const NavLink: FC<PropsWithChildren<Props>> = ({
   style = {},
 }) => {
   const borderRef = useRef<HTMLSpanElement>()
-  const buttonRef = useRef<HTMLButtonElement>()
+  const linkRef = useRef<HTMLButtonElement>()
   const navLinkClass = `${className} ${NavLinkClass} ${
     light ? NavLink_Light : NavLink_Dark
   }`
   const navLinkBorder = `${NavLink_Border} ${!onHover && "hidden"}`
-  const buttonClick = () => {
-    navigate(to)
-  }
   const linkOnMouseEnter = (e: MouseEvent) => {
     if (onHover) {
-      const offsetLeft = buttonRef.current?.offsetLeft as number
-      const buttonWidth = buttonRef.current?.clientWidth as number
+      const offsetLeft = linkRef.current?.offsetLeft as number
+      const buttonWidth = linkRef.current?.clientWidth as number
       const splitButton = (buttonWidth / 2) as number
       const mouseClientX = e.clientX as number
       if (mouseClientX >= offsetLeft + splitButton) {
@@ -61,8 +58,8 @@ const NavLink: FC<PropsWithChildren<Props>> = ({
   }
   const linkOnMouseLeave = (e: MouseEvent) => {
     if (onHover) {
-      const offsetLeft = buttonRef.current?.offsetLeft as number
-      const buttonWidth = buttonRef.current?.clientWidth as number
+      const offsetLeft = linkRef.current?.offsetLeft as number
+      const buttonWidth = linkRef.current?.clientWidth as number
       const splitButton = (buttonWidth / 2) as number
       const mouseClientX = e.clientX as number
       if (mouseClientX >= offsetLeft + splitButton) {
@@ -81,17 +78,17 @@ const NavLink: FC<PropsWithChildren<Props>> = ({
     }
   }
   return (
-    <button
+    <Link
+      to={to}
       style={style}
-      ref={buttonRef as any}
-      onClick={buttonClick}
+      ref={linkRef as any}
       onMouseEnter={linkOnMouseEnter as any}
       onMouseLeave={linkOnMouseLeave as any}
       className={navLinkClass}
     >
       {children}
       <span ref={borderRef as any} className={navLinkBorder}></span>
-    </button>
+    </Link>
   )
 }
 

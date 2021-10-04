@@ -31,7 +31,7 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
           style={{
             gap: 0,
             marginTop: 25,
-            padding: "7px 0 7px 0",
+            padding: "8px 0",
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
@@ -64,16 +64,96 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
               </div>
             </div>
           </SmallPipe>
-          <Button
-            style={{ padding: "6px 0 6px 0", borderRight: "none" }}
-            outline
-            borderColor="500"
-            color="100"
-            textColor="500"
-            className="w-full"
-          >
-            socials
-          </Button>
+          <div className="w-full flex items-center justify-between">
+            <Button
+              className="text-center flex-1"
+              fill
+              target="_top"
+              borderColor="500"
+              textColor="500"
+              color="100"
+              outline
+              toUrl="https://google.com"
+              style={{
+                alignItems: "center",
+                padding: "6px 8px",
+                borderRight: 0,
+              }}
+            >
+              <StaticImage
+                width={24}
+                placeholder="none"
+                src="../../images/WhatsApp.png"
+                alt="WhatsApp Icon"
+              />
+            </Button>
+            <Button
+              className="text-center flex-1"
+              fill
+              borderColor="500"
+              textColor="500"
+              color="100"
+              outline
+              target="_blank"
+              toUrl="https://google.com"
+              style={{
+                alignItems: "center",
+                padding: "6px 8px",
+                borderRight: 0,
+              }}
+            >
+              <StaticImage
+                width={24}
+                placeholder="none"
+                src="../../images/Skype.png"
+                alt="Skype Icon"
+              />
+            </Button>
+            <Button
+              className="text-center flex-1"
+              fill
+              borderColor="500"
+              textColor="500"
+              color="100"
+              outline
+              target="_blank"
+              toUrl="https://google.com"
+              style={{
+                alignItems: "center",
+                padding: "6px 8px",
+                borderRight: 0,
+              }}
+            >
+              <StaticImage
+                width={24}
+                placeholder="none"
+                src="../../images/Instagram.png"
+                alt="Instagram Icon"
+              />
+            </Button>
+            <Button
+              className="text-center flex-1"
+              fill
+              borderColor="500"
+              textColor="500"
+              color="100"
+              outline
+              target="_blank"
+              toUrl="https://google.com"
+              style={{
+                alignItems: "center",
+                padding: "6px 8px",
+                borderRight: 0,
+              }}
+            >
+              <StaticImage
+                width={24}
+                placeholder="none"
+                src="../../images/LinkedIn.png"
+                alt="LinkedIn Icon"
+              />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

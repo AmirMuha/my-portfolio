@@ -7,11 +7,11 @@ export const SEO: FC<SEOProps> = ({
   lang = "en",
   meta = [],
   title,
+  titleTemplate,
 }: SEOProps) => {
   const { site } = useStaticQuery<QueryTypes>(SEOStaticQuery)
 
   const metaDescription = description || site.siteMetadata.description
-  const defaultTitle = site.siteMetadata?.title
 
   return (
     <Helmet
@@ -19,7 +19,7 @@ export const SEO: FC<SEOProps> = ({
         lang,
       }}
       title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : undefined}
+      titleTemplate={!titleTemplate ? `%s | AmirMuha` : titleTemplate}
       meta={[
         {
           name: `description`,
@@ -62,11 +62,12 @@ export const SEO: FC<SEOProps> = ({
 type SEOProps = {
   description?: string
   lang?: string
+  titleTemplate?: string
   meta?: Meta
   title: string
 }
 
-type Meta = ConcatArray<PropertyMetaObj | NameMetaObj>
+export type Meta = ConcatArray<PropertyMetaObj | NameMetaObj>
 
 type PropertyMetaObj = {
   property: string

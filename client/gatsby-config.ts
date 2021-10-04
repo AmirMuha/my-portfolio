@@ -1,5 +1,7 @@
 import { config } from "dotenv"
+import { PluginOptions as TypeGenPluginOptions } from "gatsby-plugin-typegen/types"
 import { GatsbyConfig } from "gatsby"
+
 config({
   path: `./.env`,
 })
@@ -16,8 +18,28 @@ export default {
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     `gatsby-plugin-react-helmet`,
+    "gatsby-plugin-debug-build",
     `gatsby-plugin-postcss`,
     `gatsby-plugin-image`,
+    {
+      resolve: "gatsby-plugin-typegen",
+      options: {
+        outputPath: "./src/__generated__/gatsby-types.d.ts",
+        emitSchema: {
+          "./src/__generated__/gatsby-schema.graphql": true,
+          "./src/__generated__/gatsby-introspection.json": true,
+        },
+        emitPluginDocuments: {
+          "src/__generated__/gatsby-plugin-documents.graphql": true,
+        },
+      } as TypeGenPluginOptions,
+    },
+    {
+      resolve: "gatsby-background-image-es5",
+      options: {
+        specialChars: "/:",
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -33,13 +55,6 @@ export default {
       },
     },
     {
-      resolve: "gatsby-plugin-apollo",
-      options: {
-        uri: "localhost:3333/graphql",
-        credentials: true,
-      },
-    },
-    {
       resolve: `gatsby-plugin-typescript`,
       options: {
         isTSX: true, // defaults to false
@@ -52,7 +67,7 @@ export default {
       options: {
         typeName: "Portfolio",
         fieldName: "portfolio",
-        url: `http://localhost:3333/graphql`,
+        url: process.env.GRAPHQL_API,
       },
     },
   ],

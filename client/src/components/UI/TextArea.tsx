@@ -31,7 +31,7 @@ const TextArea: FC<PropsWithChildren<Props>> = ({
       <textarea
         name={name}
         id={id}
-        className={`px-3 py-1 w-full bg-palatte-${color}`}
+        className={`px-3 py-2 w-full bg-palatte-${color}`}
         cols={cols}
         onChange={e => getValue(e.currentTarget.value)}
         rows={rows}

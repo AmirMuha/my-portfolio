@@ -1,13 +1,18 @@
-import React, { FC, PropsWithChildren } from "react"
+import React, { CSSProperties, FC } from "react"
 import SmallPipe from "../UI/SmallPipe"
 
 interface Props {
   data: TechDataObject
+  className?: string
+  style?: CSSProperties
 }
 interface TechDataObject {}
-const TechItem: FC<PropsWithChildren<Props>> = ({ data }) => {
+const TechItem: FC<Props> = ({ style, className }) => {
   return (
-    <div className="flex-col border-l-5 md:border-l-10 border-palatte-500 justify-start gap-0 ml-14">
+    <div
+      style={style}
+      className={`flex-col border-l-5 md:border-l-10 border-palatte-500 justify-start gap-0 ml-14 ${className}`}
+    >
       <SmallPipe className="pt-3">
         <div className="pl-2 text-sm font-semibold">FronEnd</div>
       </SmallPipe>

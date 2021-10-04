@@ -15,7 +15,9 @@ export class UploadResolver {
       const stream = createReadStream();
       stream
         .pipe(
-          createWriteStream(path.join(__dirname, "../../src/images/", filename))
+          createWriteStream(
+            path.join(__dirname, "../../src/uploads/", filename)
+          )
         )
         .on("error", () => reject(false))
         .on("finish", () => resolve(true));
@@ -36,7 +38,7 @@ export class UploadResolver {
         stream
           .pipe(
             createWriteStream(
-              path.join(__dirname, "../../src/images/", filename)
+              path.join(__dirname, "../../src/uploads/", filename)
             )
           )
           .on("error", () => reject(false))

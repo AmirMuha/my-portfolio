@@ -5,22 +5,31 @@
   "version": "1.0.0",
   "author": "AmirMohammad MirzaeiRad",
   "dependencies": {
+    "@apollo/client": "^3.3.21",
     "@types/gsap": "^3.0.0",
+    "apollo-upload-client": "^16.0.0",
     "dotenv": "^10.0.0",
+    "eslint-plugin-graphql": "^4.0.0",
     "gatsby": "^3.13.1",
+    "gatsby-background-image": "^1.5.3",
+    "gatsby-background-image-es5": "^1.5.3",
     "gatsby-config": "^0.1.1",
     "gatsby-plugin-apollo": "^3.0.2",
+    "gatsby-plugin-debug-build": "^1.0.0",
     "gatsby-plugin-graphql": "^2.0.5",
     "gatsby-plugin-image": "^1.13.0",
     "gatsby-plugin-manifest": "^3.13.0",
     "gatsby-plugin-offline": "^4.13.0",
     "gatsby-plugin-react-helmet": "^4.13.0",
     "gatsby-plugin-sharp": "^3.13.0",
+    "gatsby-plugin-typegen": "^2.2.4",
     "gatsby-plugin-typescript": "^3.14.0",
     "gatsby-source-filesystem": "^3.13.0",
     "gatsby-source-graphql": "^3.14.0",
     "gatsby-transformer-sharp": "^3.13.0",
+    "gbimage-bridge": "^0.1.4",
     "gsap": "^3.7.1",
+    "intersection-observer": "^0.12.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -29,6 +38,7 @@
     "ts-node": "^10.2.1"
   },
   "devDependencies": {
+    "@types/apollo-upload-client": "^14.1.0",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "@types/react-helmet": "^6.1.2",
@@ -37,7 +47,8 @@
     "gatsby-plugin-ts-config": "^2.1.2",
     "postcss": "^8.3.8",
     "prettier": "2.4.1",
-    "tailwindcss": "^2.2.16"
+    "tailwindcss": "^2.2.16",
+    "ts-graphql-plugin": "^2.1.4"
   },
   "keywords": [
     "gatsby"

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react"
+import React, { CSSProperties, FC, PropsWithChildren } from "react"
 
 interface Props {
   style?: React.CSSProperties
@@ -6,6 +6,8 @@ interface Props {
   rtl?: boolean
   pipes?: "both-side" | "left" | "right"
   w?: string
+  pipeStyle?: CSSProperties
+  pipeClassName?: string
 }
 
 const SmallPipe: FC<PropsWithChildren<Props>> = ({
@@ -15,20 +17,27 @@ const SmallPipe: FC<PropsWithChildren<Props>> = ({
   style,
   w = "6",
   children,
+  pipeStyle,
+  pipeClassName,
 }) => {
   return (
     <div
-      style={style}
-      className={`flex ${
+      className={`flex ${className} ${
         rtl && "flex-row-reverse"
-      } items-center gap-0 ${className}`}
+      } items-center gap-0`}
     >
       {(pipes === "left" || pipes === "both-side") && (
-        <div className={`h-pipe-sm md:h-pipe-lg w-${w} bg-palatte-500`}></div>
+        <div
+          style={pipeStyle}
+          className={`${pipeClassName} h-pipe-sm md:h-pipe-lg w-${w} bg-palatte-500`}
+        ></div>
       )}
       {children}
       {(pipes === "right" || pipes === "both-side") && (
-        <div className={`h-pipe-sm md:h-pipe-lg w-${w} bg-palatte-500`}></div>
+        <div
+          style={pipeStyle}
+          className={`${pipeClassName} h-pipe-sm md:h-pipe-lg w-${w} bg-palatte-500`}
+        ></div>
       )}
     </div>
   )
