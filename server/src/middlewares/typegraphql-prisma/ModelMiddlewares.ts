@@ -1,12 +1,9 @@
-import { IsString } from "class-validator";
-import { UseMiddleware } from "type-graphql";
 import {
+  applyModelsEnhanceMap,
   ModelConfig,
   ModelsEnhanceMap,
-  applyModelsEnhanceMap,
 } from "../../../prisma/generated/type-graphql";
-import { isLoggedIn } from "../isLoggedIn";
-import { adminPropsValidation } from "../validations";
+import { aboutPropsValidation, adminPropsValidation } from "../validations";
 
 // ##############################################
 // ####################### CONFIGURATION ########
@@ -14,10 +11,7 @@ import { adminPropsValidation } from "../validations";
 const projectModelConfig: ModelConfig<"Project"> = {};
 const aboutModelConfig: ModelConfig<"About"> = {
   fields: {
-    _all: [UseMiddleware(isLoggedIn)],
-    title: [IsString()],
-    body: [IsString()],
-    admin_id: [IsString()],
+    ...aboutPropsValidation,
   },
 };
 const adminModelConfig: ModelConfig<"Admin"> = {

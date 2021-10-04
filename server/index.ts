@@ -35,14 +35,13 @@ import { MyContext } from "./src/types/MyContext";
 const app = Express();
 const RedisStore = redisStore(session);
 
-app.use(
-  cors({
-    credentials: true,
-    origin: "localhost:8000",
-  })
-);
-
 const main = async () => {
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:8000",
+    })
+  );
   app.use(
     session({
       name: "sid",
@@ -77,7 +76,11 @@ const main = async () => {
     ],
   });
   await server.start();
-  server.applyMiddleware({ app });
+
+  server.applyMiddleware({
+    app,
+    cors: { origin: "http://localhost:8000", credentials: true },
+  });
   if (!__prod__) {
     app.use(morgan("dev"));
   }
