@@ -20,6 +20,7 @@ interface Props {
   placeholder?: string
   getValue: GetValue<string, any>
   className?: string
+  containerClasses?: string
   id: string
   style?: React.CSSProperties
   label?: string
@@ -36,6 +37,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
   style,
   color = "100",
   className,
+  containerClasses,
   id,
   placeholder,
   buttonTitle,
@@ -52,7 +54,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
     value = arr[arr.length - 1]
   }
   return (
-    <div>
+    <div className={containerClasses}>
       {type === "file" && (
         <>
           <label htmlFor={id} id={id} className="block">

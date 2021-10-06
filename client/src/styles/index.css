@@ -135,7 +135,31 @@ input[type="range"]::-ms-thumb {
   overflow-y: scroll;
 }
 
-.dark input::placeholder,
-input {
+.dark input {
   color: #ffe1d0;
+}
+
+.dark input::placeholder {
+  color: #ffe1d0a2;
+}
+input::placeholder {
+  color: #aa6239ab;
+}
+
+.messages--container {
+  columns: auto 1;
+}
+@media only screen and (min-width: 640px) {
+  .messages--container {
+    columns: auto 2;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .messages--container {
+    columns: auto 3;
+  }
+}
+
+.messages--item {
+  break-inside: avoid;
 }
