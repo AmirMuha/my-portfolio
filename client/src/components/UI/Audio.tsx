@@ -50,6 +50,12 @@ const Audio: FC<PropsWithChildren<Props>> = ({ src }) => {
     if (audioRef.current) audioRef.current.currentTime = 0
     setIsPlaying(false)
   }
+  const playing = (e: React.ChangeEvent<HTMLAudioElement>) => {
+    setIsPlaying(true)
+  }
+  const pausing = (e: React.ChangeEvent<HTMLAudioElement>) => {
+    setIsPlaying(false)
+  }
   const timeUpdate = (e: React.ChangeEvent<HTMLAudioElement>) => {
     if (progressRef.current && audioRef.current) {
       if (e.currentTarget.ended) {
@@ -76,6 +82,8 @@ const Audio: FC<PropsWithChildren<Props>> = ({ src }) => {
   return (
     <div className="w-full py-2 px-3 border-l-0 md:border-l border border-palatte-500">
       <audio
+        onPlay={playing}
+        onPause={pausing}
         onTimeUpdate={timeUpdate}
         src={src}
         ref={audioRef as any}

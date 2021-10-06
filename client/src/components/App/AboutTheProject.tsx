@@ -8,7 +8,6 @@ import { GitHub } from "../../icons/iconsJSX"
 import Audio from "../UI/Audio"
 import Button from "../UI/Button"
 import SmallPipe from "../UI/SmallPipe"
-import TheSection from "./TheSection"
 interface Props {}
 
 const AboutTheProject: FC<PropsWithChildren<Props>> = props => {

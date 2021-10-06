@@ -229,3 +229,32 @@ export const LinkedIn = (
     />
   </svg>
 )
+
+export const DropDown = (
+  <svg
+    width="12"
+    height="8"
+    viewBox="0 0 12 8"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"
+      fill="#1E0B00"
+    />
+  </svg>
+)
+export const DropUp = (
+  <svg
+    width="12"
+    height="8"
+    viewBox="0 0 12 8"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M10.59 7.41003L6 2.83003L1.41 7.41004L-1.23266e-07 6.00004L6 3.48568e-05L12 6.00003L10.59 7.41003Z"
+      fill="#1E0B00"
+    />
+  </svg>
+)

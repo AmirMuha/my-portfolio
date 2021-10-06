@@ -14,8 +14,13 @@ const Home: FC<PageProps> = props => {
       <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />
       <Layout>
         <TheHero />
-        <TheSection className="sm:hidden" id="what-next" name="What Next ?">
-          <InPageMenu pipes="left" style={{ paddingBottom: 25 }} />
+        <TheSection
+          className="sm:hidden"
+          style={{ paddingBottom: 25 }}
+          id="what-next"
+          name="What Next ?"
+        >
+          <InPageMenu pipes="left" />
         </TheSection>
         <TheSection id="projects" name="Projects">
           <Projects />

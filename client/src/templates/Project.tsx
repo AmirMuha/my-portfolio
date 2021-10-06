@@ -1,14 +1,14 @@
+import { gql, useQuery } from "@apollo/client"
 import { PageProps } from "gatsby"
 import React, { FC } from "react"
 import AboutTheProject from "../components/App/AboutTheProject"
 import InPageMenu from "../components/App/InPageMenu"
+import QAndA from "../components/App/QAndA"
+import Sketch from "../components/App/Sketch"
+import TechItem from "../components/App/TechItem"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { SEO } from "../components/SEO"
-import { useQuery, gql, useMutation } from "@apollo/client"
-import QAndA from "../components/App/QAndA"
-import Sketches from "../components/App/Sketches"
-import TechItem from "../components/App/TechItem"
 const query = gql`
   query {
     me {
@@ -37,35 +37,45 @@ const Project: FC<Props> = ({ pageContext: { project } }) => {
       ) : (
         <>
           <SEO title="Adding New Project To Stack" />
-          <Layout nav={false}>
+          <Layout
+            nav={false}
+            header={{ page: "project", brand: "AM.PROJECTS" }}
+          >
             <TheSection
-              name="What Now ?"
               id="what-now"
+              name="What Now ?"
               style={{ paddingBottom: 25 }}
             >
               <InPageMenu pipes="left" />
             </TheSection>
-            <TheSection
-              name="Name of the project"
-              className="mb-10"
-              id="name-of-the-project"
-            >
+            <TheSection name="Name of the project" id="name-of-the-project">
               <AboutTheProject />
             </TheSection>
-            <TheSection
-              name="Techs Used"
-              id="techs-used"
-              style={{ paddingBottom: 40 }}
-            >
-              <TechItem data={{}} />
-              <TechItem data={{}} />
-              <TechItem data={{}} />
-            </TheSection>
-            <TheSection name="Q&A" id="Questions-and-answers">
-              <QAndA />
-            </TheSection>
-            <TheSection name="Sketches" id="sketches">
-              <Sketches />
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3">
+              <TheSection
+                name="Techs Used"
+                id="techs-used"
+                style={{ paddingBottom: 40 }}
+              >
+                <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
+                <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
+                <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
+              </TheSection>
+              <TheSection
+                name="Q&A"
+                id="Questions-and-answers"
+                className="lg:col-span-2 lg:col-start-2"
+                style={{ paddingBottom: 40, flex: "1 1 0%" }}
+              >
+                <QAndA />
+                <QAndA />
+                <QAndA />
+              </TheSection>
+            </div>
+            <TheSection name="Sketches" className="lg:hidden" id="sketches">
+              <Sketch />
+              <Sketch />
+              <Sketch />
             </TheSection>
             <TheSection
               name="What Next ?"

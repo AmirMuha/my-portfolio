@@ -17,12 +17,15 @@ export type GetValue<T, F> = (value: T, files?: F) => void
 interface Props {
   type?: HTMLInputTypeAttribute
   buttonTitle?: string
+  placeholder?: string
   getValue: GetValue<string, any>
+  className?: string
   id: string
+  style?: React.CSSProperties
   label?: string
   value: any
   name?: string
-  color?: "100" | "200" | "300" | "400" | "500"
+  color?: "100" | "200" | "300" | "400" | "500" | "transparent"
   textColor?: "100" | "200" | "300" | "400" | "500"
 }
 
@@ -30,8 +33,11 @@ const Input: FC<PropsWithChildren<Props>> = ({
   label,
   value,
   textColor = "100",
+  style,
   color = "100",
+  className,
   id,
+  placeholder,
   buttonTitle,
   name = label,
   getValue,
@@ -103,7 +109,9 @@ const Input: FC<PropsWithChildren<Props>> = ({
           </label>
           <input
             name={name}
-            className={`px-3 py-2 w-full bg-palatte-${color}`}
+            placeholder={placeholder}
+            style={style}
+            className={`px-3 py-2 w-full ${className} bg-palatte-${color}`}
             id={id}
             type={type}
             onChange={e => getValue(e.currentTarget.value)}

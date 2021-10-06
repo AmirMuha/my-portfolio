@@ -39,6 +39,11 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
         ></Button>
       </div>
       <div className="hidden lg:block justify-self-end self-end flex-1">
+        <div className="bg-palatte-300 flex-col mx-6">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
         <InPageMenu style={{ padding: 0 }} />
       </div>
       <div className="hidden sm:block justify-self-end self-end flex-1">
@@ -55,10 +60,10 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
               <div className="border-5 text-sm.4 text-palatte-100 md:border-10 border-palatte-500">
                 <div className="flex p-2">
                   <button className="w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70">
-                    <p className="">.PDF</p>
+                    <p>.PDF</p>
                   </button>
                   <button className="w-1/2 py-14 text-center place-self-center bg-palatte-300 opacity-70">
-                    <p className="">.DOCX</p>
+                    <p>.DOCX</p>
                   </button>
                 </div>
               </div>

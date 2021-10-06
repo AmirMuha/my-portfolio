@@ -6,7 +6,6 @@ const Sketches: FC<PropsWithChildren<Props>> = props => {
   return (
     <div>
       <Sketch />
-      <Sketch />
     </div>
   )
 }

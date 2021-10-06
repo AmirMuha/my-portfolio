@@ -1,4 +1,3 @@
-import { gql, useMutation } from "@apollo/client"
 import { StaticImage } from "gatsby-plugin-image"
 import React, { FC, PropsWithChildren, useCallback, useState } from "react"
 import Button from "../UI/Button"
@@ -106,7 +105,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = props => {
         <h2 className="text-md font-bold">Me On Social Media</h2>
         <div
           style={{ maxHeight: "min-content" }}
-          className="grid-cols-2 grid items-start justify-center gap-1 lg:grid-cols-1"
+          className="grid-cols-1 sm:grid-cols-2 grid items-start justify-center gap-1 lg:grid-cols-1"
         >
           <Button
             toUrl="https://google.com"

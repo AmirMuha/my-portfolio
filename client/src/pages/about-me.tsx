@@ -17,9 +17,13 @@ const AboutMe: FC<PageProps> = ({ data }) => {
   return (
     <>
       <SEO title="Adding New AboutMe To Stack" meta={meta} />
-      <Layout nav={false}>
-        <TheSection name="What Now ?" id="what-now">
-          <InPageMenu pipes="left" style={{ paddingBottom: 25 }} />
+      <Layout header={{ brand: "AM.PORTFOLIO", page: "about" }} nav={false}>
+        <TheSection
+          name="What Now ?"
+          style={{ paddingBottom: 25 }}
+          id="what-now"
+        >
+          <InPageMenu pipes="left" />
         </TheSection>
         <TheSection id="who-am-i" name="Who Am I ?">
           <p className="px-5 pb-8">

@@ -12,6 +12,7 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
   style,
   children,
   id,
+
   className,
 }) => {
   return (
@@ -23,11 +24,13 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
       >
         <div
           style={{ width: "100vw", bottom: "-5px" }}
-          className="h-pipe-sm md:h-pipe-lg bg-palatte-500 absolute left-0"
+          className={`h-pipe-sm md:h-pipe-lg bg-palatte-500 absolute left-0`}
         ></div>
         <div className="flex gap-0 text-center items-start">
-          <div className="w-1/2 bg-palatte-500 h-pipe-sm md:h-pipe-lg"></div>
-          <h1 className="capitalize px-3 font-bold bg-palatte-100 text-sm sm:text-md transform -translate-x-1/2 -translate-y-1/2">
+          <div className={`w-1/2 bg-palatte-500 h-pipe-sm md:h-pipe-lg`}></div>
+          <h1
+            className={`capitalize px-3 font-bold bg-palatte-100 text-sm sm:text-md transform -translate-x-1/2 -translate-y-1/2`}
+          >
             {name}
           </h1>
         </div>

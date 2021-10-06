@@ -8,7 +8,7 @@
   @apply border-b border-palatte-500;
 }
 .Header_Resume {
-  @apply lg:hidden;
+  @apply sm:hidden relative;
 }
 .Header_Menu {
   @apply sm:gap-5 hidden sm:flex lg:hidden items-center;

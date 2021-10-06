@@ -107,3 +107,35 @@ input[type="range"]::-ms-fill-upper {
 input[type="range"]::-ms-thumb {
   background-color: #1e0b00;
 }
+
+.onshowMenu {
+  width: 70vw;
+  max-width: 350px;
+  height: 100vh;
+  min-height: 400px;
+  overflow-y: scroll;
+}
+.onhideMenu {
+  width: 0;
+  height: 100vh;
+  min-height: 400px;
+  overflow-y: scroll;
+}
+.onshowMessages {
+  width: 70vw;
+  max-width: 350px;
+  height: 100vh;
+  min-height: 400px;
+  overflow-y: scroll;
+}
+.onhideMessages {
+  width: 0;
+  height: 100vh;
+  min-height: 400px;
+  overflow-y: scroll;
+}
+
+.dark input::placeholder,
+input {
+  color: #ffe1d0;
+}
