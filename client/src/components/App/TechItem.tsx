@@ -6,9 +6,15 @@ interface Props {
   className?: string
   style?: CSSProperties
   border?: boolean
+  editable?: boolean
 }
 interface TechDataObject {}
-const TechItem: FC<Props> = ({ border = true, style, className }) => {
+const TechItem: FC<Props> = ({
+  editable = false,
+  border = true,
+  style,
+  className,
+}) => {
   return (
     <div
       style={style}

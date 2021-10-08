@@ -13,6 +13,7 @@ interface Props {
   outline?: boolean
   to?: string
   underline?: boolean
+  disabled?: boolean
   pulse?: boolean
   normal?: boolean
   className?: string
@@ -39,6 +40,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
   children,
   outline = false,
   underline = false,
+  disabled = false,
   color = "500",
   borderColor = "500",
   textColor = "100",
@@ -138,6 +140,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
         <button
           onClick={onClick}
           style={style}
+          disabled={disabled}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
           onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
           className={`${buttonClasses} ${className} ${
@@ -153,7 +156,20 @@ const Button: FC<PropsWithChildren<Props>> = ({
           {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
         </button>
       )}
-      {toUrl && (
+      {toUrl && disabled && (
+        <div
+          style={style}
+          className={`${buttonClasses} ${className} ${
+            color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+          } text-palatte-${textColor}`}
+        >
+          {iconPos === "left" && <span ref={iconRef as any}>{icon}</span>}
+          <span>{children}</span>
+          <span className="bg-palatte-500  w-0 h-full absolute top-0 left-0"></span>
+          {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
+        </div>
+      )}
+      {toUrl && !disabled && (
         <a
           href={toUrl}
           style={style}
@@ -173,7 +189,21 @@ const Button: FC<PropsWithChildren<Props>> = ({
           {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
         </a>
       )}
-      {to && (
+
+      {to && disabled && (
+        <div
+          style={style}
+          className={`${buttonClasses} ${className} ${
+            color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
+          } text-palatte-${textColor}`}
+        >
+          {iconPos === "left" && <span ref={iconRef as any}>{icon}</span>}
+          <span>{children}</span>
+          <span className="bg-palatte-500  w-0 h-full absolute top-0 left-0"></span>
+          {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
+        </div>
+      )}
+      {to && !disabled && (
         <Link
           to={to}
           style={style}

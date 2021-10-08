@@ -55,10 +55,20 @@ export const createPages = async ({
     return
   }
   const ProjectTemplate = path.resolve("./src/templates/Project.tsx")
+  const EditableProject = path.resolve("./src/templates/EditableProject.tsx")
   results.data?.portfolio.projects.forEach(async (proj: any) => {
     createPage({
       path: `/projects/${proj.id}`,
       component: ProjectTemplate,
+      context: {
+        project: proj,
+      },
+    })
+  })
+  results.data?.portfolio.projects.forEach(async (proj: any) => {
+    createPage({
+      path: `/dashboard/projects/${proj.id}`,
+      component: EditableProject,
       context: {
         project: proj,
       },

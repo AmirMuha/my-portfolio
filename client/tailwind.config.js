@@ -1,3 +1,4 @@
+const plugin = require("tailwindcss/plugin")
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx,css,.module.css}"],
   darkMode: false, // or 'media' or 'class'
@@ -59,5 +60,52 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: ["gatsby-plugin-postcss"],
+  plugins: [
+    "gatsby-plugin-postcss",
+    plugin(({ addUtilities }) => {
+      const utilities = {
+        ".icon-s-1 svg": {
+          width: "12px",
+          height: "12px",
+        },
+        ".icon-s-2 svg": {
+          width: "15px",
+          height: "15px",
+        },
+        ".icon-s-3 svg": {
+          width: "17px",
+          height: "17px",
+        },
+        ".icon-s-4 svg": {
+          width: "19px",
+          height: "19px",
+        },
+        ".icon-s-5 svg": {
+          width: "21px",
+          height: "21px",
+        },
+        ".icon-s-6 svg": {
+          width: "23px",
+          height: "23px",
+        },
+        ".icon-s-7 svg": {
+          width: "25px",
+          height: "25px",
+        },
+        ".icon-s-8 svg": {
+          width: "27px",
+          height: "27px",
+        },
+        ".icon-s-9 svg": {
+          width: "29px",
+          height: "29px",
+        },
+        ".icon-s-10 svg": {
+          width: "31px",
+          height: "31px",
+        },
+      }
+      addUtilities(utilities)
+    }),
+  ],
 }

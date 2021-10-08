@@ -2,7 +2,7 @@ import { PageProps } from "gatsby"
 import React, { FC } from "react"
 import InPageMenu from "../components/App/InPageMenu"
 import Projects from "../components/App/Projects"
-import Skills from "../components/App/Skills"
+import Stack from "../components/App/Stack"
 import ContactMe from "../components/App/ContactMe"
 import TheHero from "../components/App/TheHero"
 import TheSection from "../components/App/TheSection"
@@ -26,7 +26,7 @@ const Home: FC<PageProps> = props => {
           <Projects />
         </TheSection>
         <TheSection id="stack" name="Stack">
-          <Skills />
+          <Stack />
         </TheSection>
         <TheSection
           id="contact-me"

@@ -1,4 +1,20 @@
 import React from "react"
+export const Done = (
+  <svg width="18" height="14" viewBox="0 0 18 14">
+    <path
+      d="M5.6 10.6L1.4 6.4L0 7.8L5.6 13.4L17.6 1.4L16.2 0L5.6 10.6Z"
+      fill="#FFE1D0"
+    />
+  </svg>
+)
+export const Close = (
+  <svg width="17" height="17" viewBox="0 0 17 17">
+    <path
+      d="M1.19688 0.000831642L0 1.19765L7.3052 8.5L0 15.8032L1.19771 17L8.50042 9.69516L15.804 16.9992L17 15.8032L9.69563 8.5L17 1.19682L15.8031 0L8.50042 7.30484L1.19688 0.000831642Z"
+      fill="#1E0B00"
+    />
+  </svg>
+)
 export const GitHub = (
   <svg width="74" height="24" viewBox="0 0 74 24">
     <path

@@ -5,9 +5,14 @@ import SmallPipe from "../UI/SmallPipe"
 interface Props {
   style?: React.CSSProperties
   className?: string
+  editable?: boolean
 }
 
-const Skills: FC<PropsWithChildren<Props>> = ({ className, style }) => {
+const Stack: FC<PropsWithChildren<Props>> = ({
+  className,
+  style,
+  editable = false,
+}) => {
   return (
     <>
       <div
@@ -26,4 +31,4 @@ const Skills: FC<PropsWithChildren<Props>> = ({ className, style }) => {
   )
 }
 
-export default Skills
+export default Stack

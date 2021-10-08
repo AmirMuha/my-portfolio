@@ -23,7 +23,7 @@ interface PageContext {
 interface Props extends PageProps {
   pageContext: PageContext
 }
-const Project: FC<Props> = ({ pageContext: { project } }) => {
+const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
   const { data, error, loading } = useQuery<GatsbyTypes.Portfolio_About>(query)
   if (error) {
     console.log(error)
@@ -36,7 +36,7 @@ const Project: FC<Props> = ({ pageContext: { project } }) => {
         <div>Content is loading</div>
       ) : (
         <>
-          <SEO title="Adding New Project To Stack" />
+          <SEO title="Editing PROJECT_NAME" />
           <Layout
             nav={false}
             header={{ page: "project", brand: "AM.PROJECTS" }}
@@ -92,4 +92,4 @@ const Project: FC<Props> = ({ pageContext: { project } }) => {
   )
 }
 
-export default Project
+export default EditableProject

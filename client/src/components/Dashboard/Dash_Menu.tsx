@@ -93,7 +93,7 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
           >
             Dashboard
           </Button>
-          <Button toUrl="/" outline color="100" textColor="500">
+          <Button to="/" outline color="100" textColor="500">
             <div className="flex justify-between items-center">
               <svg width="20" className="m-0" height="17" viewBox="0 0 20 17">
                 <path
@@ -102,7 +102,6 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
                 />
               </svg>
               <div className="">back to the website</div>
-              <div></div>
             </div>
           </Button>
         </div>

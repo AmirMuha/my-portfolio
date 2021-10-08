@@ -8,9 +8,11 @@ import React, {
 import { DropDown } from "../../icons/iconsJSX"
 import SmallPipe from "../UI/SmallPipe"
 import gsap from "gsap"
-interface Props {}
+interface Props {
+  editable?: boolean
+}
 
-const QAndA: FC<PropsWithChildren<Props>> = props => {
+const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
   const dropdownRef = useRef<HTMLButtonElement>()
   const [isAnswerOpen, setIsAnswerOpen] = useState<boolean>(false)
   const controlDropDown = useCallback(() => {

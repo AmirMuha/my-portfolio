@@ -1,5 +1,5 @@
 import { StaticImage } from "gatsby-plugin-image"
-import React, { FC, PropsWithChildren, useState } from "react"
+import React, { FC, PropsWithChildren } from "react"
 import { Edit } from "../../icons/iconsJSX"
 import Button from "../UI/Button"
 import SmallPipe from "../UI/SmallPipe"
@@ -9,9 +9,11 @@ import TechItem from "./TechItem"
 interface Props {
   type?: "1" | "2"
   editable?: boolean
+  buttonText?: string
 }
 const ProjectItem: FC<PropsWithChildren<Props>> = ({
   type,
+  buttonText,
   editable = false,
 }) => {
   // const [imageEditMode, setImageEditMode] = useState<boolean>(false)
@@ -120,7 +122,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
               <div className="flex pt-3 items-center gap-0 relative">
                 <div className="h-pipe-sm md:h-pipe-lg w-6 bg-palatte-500"></div>
                 <Button
-                  normal
+                  to="/"
                   color="100"
                   textColor="500"
                   borderColor="500"
@@ -129,7 +131,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   outline
                   fill
                 >
-                  Read More
+                  {buttonText ? buttonText : "Read More"}
                 </Button>
                 <div className="ProjectItem_Hide__Border"></div>
               </div>

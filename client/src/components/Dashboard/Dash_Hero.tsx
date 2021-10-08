@@ -39,10 +39,10 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = props => {
         {...bgImage1}
       >
         <div className="text-center py-10 bg-palatte-500 w-full h-full bg-opacity-90">
-          <div className="text-palatte-100 text-sm.6 font-bold">
+          <h1 className="text-palatte-100 text-sm.6 font-bold">
             Add New Project
-          </div>
-          <div className="flex mt-5 dark items-center justify-center gap-1 text-center">
+          </h1>
+          <div className="flex mt-5 w-1/2 dark mx-auto items-center justify-center gap-1">
             <Input
               style={{
                 padding: "4px 10px",
@@ -52,8 +52,9 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = props => {
               getValue={getNewProjectName}
               id="new-project-name"
               textColor="100"
+              containerClasses="flex-grow self-center"
               placeholder="Name Of The New Project"
-              className="border border-palatte-100 flex-grow"
+              className="border border-palatte-100"
               color="transparent"
               value={newProjectName}
             />
@@ -78,9 +79,9 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = props => {
         {...bgImage2}
       >
         <div className="py-10 text-center bg-palatte-500 w-full h-full bg-opacity-90">
-          <div className="text-palatte-100 text-sm.6 font-bold">
+          <h1 className="text-palatte-100 text-sm.6 font-bold">
             Edit About Me Page
-          </div>
+          </h1>
           <div className="mt-5">
             <Button
               className="w-2/3 text-center"

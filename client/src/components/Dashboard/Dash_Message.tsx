@@ -1,5 +1,5 @@
-import Markdown from "markdown-to-jsx"
-import React, { CSSProperties, FC, PropsWithChildren, useState } from "react"
+import Markdown from "../utility/Markdown"
+import React, { FC, PropsWithChildren, useState } from "react"
 import { createPortal } from "react-dom"
 import Button from "../UI/Button"
 import TextArea from "../UI/TextArea"
@@ -214,63 +214,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
                             style={{ minHeight: 150 }}
                             className="px-5 py-3 border-palatte-500 border"
                           >
-                            <Markdown
-                              options={{
-                                overrides: {
-                                  a: {
-                                    props: {
-                                      style: {
-                                        textDecoration: "underline",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                  h1: {
-                                    props: {
-                                      style: {
-                                        fontSize: "1.875rem",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                  h2: {
-                                    props: {
-                                      style: {
-                                        fontSize: "1.5rem",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                  h3: {
-                                    props: {
-                                      style: {
-                                        fontSize: "1.25rem",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                  h4: {
-                                    props: {
-                                      style: {
-                                        fontSize: "1.125rem",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                  h5: {
-                                    props: {
-                                      style: {
-                                        fontSize: "1rem",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                  h6: {
-                                    props: {
-                                      style: {
-                                        fontSize: "0.75rem",
-                                      } as CSSProperties,
-                                    },
-                                  },
-                                },
-                              }}
-                            >
-                              {theAnswer}
-                            </Markdown>
+                            <Markdown>{theAnswer}</Markdown>
                           </div>
                         )}
                       </div>
