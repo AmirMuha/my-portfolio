@@ -18,13 +18,15 @@ interface Props {
   type?: HTMLInputTypeAttribute
   buttonTitle?: string
   placeholder?: string
-  getValue: GetValue<string, any>
+  getValue: GetValue<any, any>
+  checked?: boolean
   className?: string
   containerClasses?: string
   id: string
   style?: React.CSSProperties
+  offon?: boolean
   label?: string
-  value: any
+  value?: any
   name?: string
   color?: "100" | "200" | "300" | "400" | "500" | "transparent"
   textColor?: "100" | "200" | "300" | "400" | "500"
@@ -32,12 +34,14 @@ interface Props {
 
 const Input: FC<PropsWithChildren<Props>> = ({
   label,
+  checked,
   value,
   textColor = "100",
   style,
   color = "100",
   className,
   containerClasses,
+  offon = false,
   id,
   placeholder,
   buttonTitle,
@@ -119,6 +123,48 @@ const Input: FC<PropsWithChildren<Props>> = ({
             onChange={e => getValue(e.currentTarget.value)}
             value={value}
           />
+        </>
+      )}
+      {!offon && type === "checkbox" && (
+        <>
+          <label
+            style={style}
+            className={`${className} checkbox items-center flex gap-1`}
+          >
+            {label}
+            <input
+              type="checkbox"
+              checked={checked}
+              id={id}
+              onChange={e => getValue(e.currentTarget.checked)}
+              name={name}
+            />
+            <div className="box w-5 h-5"></div>
+          </label>
+        </>
+      )}
+      {offon && type === "checkbox" && (
+        <>
+          <label
+            style={style}
+            className={`${className} checkbox items-center flex gap-1`}
+          >
+            {label}
+            <input
+              type="checkbox"
+              id={id}
+              checked={checked}
+              onChange={e => getValue(e.currentTarget.checked)}
+              name={name}
+            />
+            <div className="check-container w-5 h-5">
+              <div
+                className={`check ${
+                  checked === true ? "check-on" : "check-off"
+                }`}
+              ></div>
+            </div>
+          </label>
         </>
       )}
     </div>

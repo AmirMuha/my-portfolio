@@ -110,5 +110,6 @@ model Message {
   answer_status Boolean  @default(false)
   admin         Admin    @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   admin_id      String   @db.Uuid
+  answeredAt    DateTime @updatedAt
   createdAd     DateTime @default(now())
 }

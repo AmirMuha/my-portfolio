@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react"
+import React, { CSSProperties, FC, PropsWithChildren } from "react"
 
 interface Props {
   name?: string
@@ -8,19 +8,27 @@ interface Props {
   value: string
   getValue(value: string): void
   label?: string
+  outline?: boolean
   color?: "100" | "200" | "300" | "400" | "500"
   textColor?: "100" | "200" | "300" | "400" | "500"
+  borderColor?: "100" | "200" | "300" | "400" | "500"
+  className?: string
+  style?: CSSProperties
 }
 
 const TextArea: FC<PropsWithChildren<Props>> = ({
   value,
+  outline = false,
   label,
   name = label,
   color = "100",
   textColor = "100",
+  className,
+  style,
   getValue,
   id,
   cols,
+  borderColor,
   rows,
 }) => {
   return (
@@ -29,9 +37,12 @@ const TextArea: FC<PropsWithChildren<Props>> = ({
         {label}
       </label>
       <textarea
+        style={style}
         name={name}
         id={id}
-        className={`px-3 py-2 w-full bg-palatte-${color}`}
+        className={`${className} px-3 py-2 w-full ${
+          outline ? `border border-palatte${borderColor}` : ""
+        } bg-palatte-${color}`}
         cols={cols}
         onChange={e => getValue(e.currentTarget.value)}
         rows={rows}

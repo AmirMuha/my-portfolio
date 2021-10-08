@@ -1,14 +1,37 @@
-import React, { FC, PropsWithChildren, useState } from "react"
+import Markdown from "markdown-to-jsx"
+import React, { CSSProperties, FC, PropsWithChildren, useState } from "react"
+import { createPortal } from "react-dom"
 import Button from "../UI/Button"
-
+import TextArea from "../UI/TextArea"
 interface Props {}
 
 const Dash_Message: FC<PropsWithChildren<Props>> = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [isRead, setIsRead] = useState<boolean>(false)
+  const [isAnswerBoxOpen, setIsAnswerBoxOpen] = useState<boolean>(false)
+  const [isAnswered, setIsAnswered] = useState<boolean>(false)
+  const [isTextOpen, setIsTextOpen] = useState<boolean>(true)
+  const [theAnswer, setTheAnswer] = useState<string>(
+    "## Enjoy using Markdown :)"
+  )
+  const sendAnswer = () => {
+    console.log(theAnswer)
+    setIsAnswered(true)
+  }
+  const getAnswer = (v: string) => {
+    setTheAnswer(v)
+  }
   const openMessage = () => {
-    setIsOpen(prev => !prev)
-    setIsRead(true) // also change it on the database
+    setIsOpen(true)
+  }
+  const close = () => {
+    setIsOpen(false)
+    setIsAnswerBoxOpen(false)
+  }
+  const closeAnswerBox = () => {
+    setIsAnswerBoxOpen(false)
+  }
+  const answer = () => {
+    setIsAnswerBoxOpen(true)
   }
   return (
     <div
@@ -16,15 +39,15 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
       style={{ height: "fit-content" }}
     >
       <div className="flex-col w-full border-r-5 md:border-r-10 border-l-5 md:border-l-10 border-palatte-500 pt-5 relative">
-        {!isRead && (
-          <div
-            style={{ fontSize: 12 }}
-            title="unread"
-            className="bg-palatte-300 text-palatte-500 border-palatte-500 border inline float-right mr-2 px-2"
-          >
-            unread
-          </div>
-        )}
+        <div
+          style={{ fontSize: 12 }}
+          title="unread"
+          className={`${
+            isAnswered ? "bg-palatte-200" : "bg-palatte-300"
+          } text-palatte-500 border-palatte-500 border inline float-right mr-2 px-2`}
+        >
+          {`${!isAnswered ? "not answered!" : "answered"}`}
+        </div>
         <div className="h-pipe-sm md:h-pipe-lg bg-palatte-500 w-full absolute top-0 left-0"></div>
         <div className="ml-2 flex items-center">
           <span className="font-bold text-sm">Subject</span>
@@ -40,20 +63,250 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
           <span className="font-bold text-sm">Date</span>
           <span className="ml-2 text-palatte-400 text-xs">20 Aug 2021</span>
         </div>
-        {isOpen && (
-          <>
-            <div className="flex items-center">
-              <div className="flex h-pipe-sm md:h-pipe-lg bg-palatte-500 w-1/2"></div>
-              <h3 className="font-bold ml-2 text-sm">Message</h3>
-            </div>
-            <p className="p-5 text-palatte-400">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Doloremque, necessitatibus. Lorem, ipsum dolor sit amet
-              consectetur adipisicing elit. Maiores eos illo eligendi
-              cupiditate, aliquid consequatur obcaecati nam nesciunt.
-            </p>
-          </>
-        )}
+        {isOpen &&
+          createPortal(
+            <div>
+              <div
+                onClick={close}
+                className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
+              ></div>
+              <div
+                style={{ maxHeight: "80vh", maxWidth: "900px" }}
+                className="bg-palatte-100 overflow-scroll fixed top-1/2 w-4/5 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+              >
+                <div className="px-5 py-2 font-bold bg-palatte-500 text-palatte-100">
+                  Message
+                </div>
+                <div className="grid grid-cols-1 md:divide-x divide-palatte-500 divide-y md:grid-cols-2">
+                  <div className="self-start px-5 py-3">
+                    <div className="ml-2 flex items-center">
+                      <span className="font-bold text-sm">Subject</span>
+                      <span className="ml-2 text-palatte-400 text-xs">
+                        EMAIL_SUBJECT
+                      </span>
+                    </div>
+                    <div className="ml-2 flex items-center">
+                      <span className="font-bold text-sm">From</span>
+                      <span className="ml-2 text-palatte-400 text-xs">
+                        sfdsdmirzaii@gmail.com
+                      </span>
+                    </div>
+                    <div className="ml-2 flex items-center">
+                      <span className="font-bold text-sm">Date</span>
+                      <span className="ml-2 text-palatte-400 text-xs">
+                        20 Aug 2021
+                      </span>
+                    </div>
+                    <div className="ml-2 flex items-center">
+                      <span className="font-bold text-sm">Status</span>
+                      <span className="ml-2 bg-palatte-300 text-palatte-500 px-1 border-palatte-500 border text-xs">
+                        {`${!isAnswered ? "not answered!" : "answered"}`}
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    style={{ maxHeight: "80vh" }}
+                    className="px-5 py-4 overflow-scroll"
+                  >
+                    <div>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Rem minima ad eaque molestias commodi quaerat fuga
+                        laborum quos, magnam aut, aliquid quasi repudiandae iste
+                        itaque quas nostrum tempora, libero excepturi! Lorem
+                        ipsum dolor sit, amet consectetur adipisicing elit.
+                        Reprehenderit blanditiis possimus id, ipsam eligendi
+                        magni nobis quidem laudantium rem sint culpa ipsa nihil
+                        sunt voluptate quos sed architecto in porro atque nulla
+                        animi! Delectus, aut soluta explicabo qui distinctio
+                        accusantium. Lorem ipsum rem sint culpa ipsa nihil sunt
+                        voluptate quos sed architecto in porro atque nulla
+                        animi! Delectus, aut soluta explicabo qui distinctio
+                        accusantium. Lorem ipsum dolor sit amet consectetur
+                        adipisicing elit. Totam dolor dolorem numquam fugit
+                        voluptatum ut at, iusto porro esse illo aliquam eum odit
+                        corrupti officia, fugiat, temporibus suscipit reiciendis
+                        quod fuga sit sapiente minima harum. Tempora nam, quae
+                        reiciendis nemo magni ducimus. Blanditiis assumenda nemo
+                        rem earum laudantium officia numquam dignissimos.
+                        Corrupti error libero culpa placeat expedita omnis eaque
+                        fugit.
+                      </p>
+                    </div>
+                    <div className="flex mt-3 items-center gap-2 justify-end">
+                      <Button
+                        normal
+                        outline
+                        borderColor="500"
+                        textColor="100"
+                        onClick={answer}
+                        color="500"
+                        className={`text-center`}
+                      >
+                        Answer
+                      </Button>
+                      <Button
+                        onClick={close}
+                        outline
+                        normal
+                        borderColor="500"
+                        textColor="500"
+                        color="100"
+                        className={`text-center`}
+                      >
+                        Close
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {isAnswerBoxOpen && (
+                <div>
+                  <div
+                    onClick={closeAnswerBox}
+                    className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
+                  ></div>
+                  <div
+                    style={{ maxHeight: "70vh", maxWidth: "850px" }}
+                    className="bg-palatte-100 fixed md:divide-x overflow-scroll divide-palatte-500 divide-y top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+                  >
+                    <div className="relative">
+                      <div className="px-5 py-2 font-bold bg-palatte-500 text-palatte-100">
+                        Answer
+                      </div>
+                      <div className="px-5 py-3">
+                        <div className="flex sticky top-0 items-center gap-0">
+                          <Button
+                            normal
+                            outline
+                            onClick={() => setIsTextOpen(true)}
+                            color={isTextOpen ? "500" : "100"}
+                            borderColor="500"
+                            textColor={isTextOpen ? "100" : "500"}
+                            className="flex-1 text-center"
+                          >
+                            Text
+                          </Button>
+                          <Button
+                            normal
+                            outline
+                            onClick={() => setIsTextOpen(false)}
+                            color={isTextOpen ? "100" : "500"}
+                            borderColor="500"
+                            textColor={isTextOpen ? "500" : "100"}
+                            className="flex-1 text-center"
+                          >
+                            Preview
+                          </Button>
+                        </div>
+                        {isTextOpen ? (
+                          <TextArea
+                            id="answer"
+                            name="answer"
+                            outline
+                            rows={5}
+                            borderColor="500"
+                            getValue={getAnswer}
+                            value={theAnswer}
+                          />
+                        ) : (
+                          <div
+                            style={{ minHeight: 150 }}
+                            className="px-5 py-3 border-palatte-500 border"
+                          >
+                            <Markdown
+                              options={{
+                                overrides: {
+                                  a: {
+                                    props: {
+                                      style: {
+                                        textDecoration: "underline",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                  h1: {
+                                    props: {
+                                      style: {
+                                        fontSize: "1.875rem",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                  h2: {
+                                    props: {
+                                      style: {
+                                        fontSize: "1.5rem",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                  h3: {
+                                    props: {
+                                      style: {
+                                        fontSize: "1.25rem",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                  h4: {
+                                    props: {
+                                      style: {
+                                        fontSize: "1.125rem",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                  h5: {
+                                    props: {
+                                      style: {
+                                        fontSize: "1rem",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                  h6: {
+                                    props: {
+                                      style: {
+                                        fontSize: "0.75rem",
+                                      } as CSSProperties,
+                                    },
+                                  },
+                                },
+                              }}
+                            >
+                              {theAnswer}
+                            </Markdown>
+                          </div>
+                        )}
+                      </div>
+                      <div className="px-5 pb-3">
+                        <div className="flex items-center gap-2 justify-end">
+                          <Button
+                            normal
+                            outline
+                            onClick={sendAnswer}
+                            color="500"
+                            borderColor="500"
+                            textColor="100"
+                            className="text-center"
+                          >
+                            Send
+                          </Button>
+                          <Button
+                            normal
+                            outline
+                            onClick={() => setIsAnswerBoxOpen(false)}
+                            color="100"
+                            borderColor="500"
+                            textColor="500"
+                            className="text-center"
+                          >
+                            Close
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>,
+            document.body
+          )}
         <div className="flex items-end">
           <div className="flex h-pipe-sm md:h-pipe-lg bg-palatte-500 w-6"></div>
           <Button
@@ -66,19 +319,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
             onClick={openMessage}
             className="w-full flex-1 text-center -mb-3.5"
           >
-            {!isOpen ? "Read" : "Close"}
-          </Button>
-          <Button
-            normal
-            outline
-            borderColor="500"
-            textColor="100"
-            color="500"
-            className={`${
-              isOpen ? "" : "hidden"
-            } w-full text-center flex-1 -mb-3.5`}
-          >
-            Answer
+            Read
           </Button>
           <div className="flex h-pipe-sm md:h-pipe-lg bg-palatte-500 w-7"></div>
         </div>
