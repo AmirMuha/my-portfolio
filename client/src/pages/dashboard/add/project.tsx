@@ -15,7 +15,7 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
       <SEO title="Adding PROJECT_NAME" />
       <Dash_Layout>
         <TheSection name="Name of the project" id="name-of-the-project">
-          <AboutTheProject />
+          <AboutTheProject editable />
         </TheSection>
         <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3">
           <TheSection
@@ -23,9 +23,24 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
             id="techs-used"
             style={{ paddingBottom: 40 }}
           >
-            <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
-            <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
-            <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
+            <TechItem
+              editable
+              border={false}
+              style={{ marginLeft: 0 }}
+              data={{}}
+            />
+            <TechItem
+              editable
+              border={false}
+              style={{ marginLeft: 0 }}
+              data={{}}
+            />
+            <TechItem
+              editable
+              border={false}
+              style={{ marginLeft: 0 }}
+              data={{}}
+            />
           </TheSection>
           <TheSection
             name="Q&A"
@@ -33,9 +48,9 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
             className="lg:col-span-2 lg:col-start-2"
             style={{ paddingBottom: 40, flex: "1 1 0%" }}
           >
-            <QAndA />
-            <QAndA />
-            <QAndA />
+            <QAndA editable />
+            <QAndA editable />
+            <QAndA editable />
           </TheSection>
         </div>
         <TheSection
@@ -44,9 +59,9 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
           id="sketches"
           style={{ marginBottom: 25 }}
         >
-          <Sketch />
-          <Sketch />
-          <Sketch />
+          <Sketch editable />
+          <Sketch editable />
+          <Sketch editable />
         </TheSection>
         <TheSection
           name="Delete The Project"

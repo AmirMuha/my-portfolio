@@ -42,7 +42,7 @@ model Project {
   type            String
   github_url      String
   app_url         String
-  description     String         @db.Text
+  summary         String         @db.Text
   tech_categories TechCategory[]
   questions       Question[]
   sketches        Sketch[]
@@ -71,7 +71,7 @@ model Question {
   id         String  @id @unique @default(uuid()) @db.Uuid
   question   String  @db.Text
   answer     Answer  @relation(fields: [answer_id], references: [id], onDelete: Cascade)
-  answer_id  String  @db.Uuid
+  answer_id  String  @db.Uuid@unique
   project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id String  @db.Uuid
 }

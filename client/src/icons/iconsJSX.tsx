@@ -7,6 +7,14 @@ export const Done = (
     />
   </svg>
 )
+export const Delete = (
+  <svg width="16" height="20" viewBox="0 0 16 20">
+    <path
+      d="M1.14286 17.7778C1.14286 19 2.17143 20 3.42857 20H12.5714C13.8286 20 14.8571 19 14.8571 17.7778V4.44444H1.14286V17.7778ZM16 1.11111H12L10.8571 0H5.14286L4 1.11111H0V3.33333H16V1.11111Z"
+      fill="#1E0B00"
+    />
+  </svg>
+)
 export const Close = (
   <svg width="17" height="17" viewBox="0 0 17 17">
     <path

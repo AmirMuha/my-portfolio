@@ -1,17 +1,23 @@
 import React, {
   CSSProperties,
   FC,
+  HTMLInputTypeAttribute,
   PropsWithChildren,
+  ReactNode,
   useRef,
   useState,
 } from "react"
 import { createPortal } from "react-dom"
-import { Edit, Close, Done } from "../../icons/iconsJSX"
+import { Close, Done, Edit } from "../../icons/iconsJSX"
 import Button from "../UI/Button"
+import Input from "../UI/Input"
 
 interface Props {
+  inputType?: HTMLInputTypeAttribute
+  title?: string
   text?: boolean
   file?: boolean
+  tech?: boolean
   onSave: () => void
   onClose?: () => void
   getValue: (v: any) => void
@@ -22,23 +28,30 @@ interface Props {
   positionNum?: "inside" | "outside"
   inputClassName?: string
   inputStyle?: CSSProperties
-  buttonClassName?: string
+  editButtonStyle?: CSSProperties
   buttonStyle?: CSSProperties
-  className?: string
   style?: CSSProperties
+  modalChildren?: ReactNode
+  buttonClassName?: string
+  className?: string
 }
 
 const Editable: FC<PropsWithChildren<Props>> = ({
   text = false,
   mode = "IN_POSITION",
   file = false,
+  tech = false,
   position = "br",
   positionNum = "outside",
+  title,
   onClose,
+  inputType,
   acceptableFileTypes,
   onSave,
   getValue,
   value,
+  editButtonStyle,
+  modalChildren,
   inputClassName,
   inputStyle,
   buttonClassName,
@@ -64,6 +77,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
               />
               {isEnable ? (
                 <div
+                  style={{ ...editButtonStyle }}
                   className={`flex items-center gap-1 absolute ${
                     positionNum === "outside"
                       ? position === "br"
@@ -104,11 +118,12 @@ const Editable: FC<PropsWithChildren<Props>> = ({
                 </div>
               ) : (
                 <Button
+                  onClick={() => setIsEnable(prev => !prev)}
                   outline
                   borderColor="400"
                   color="100"
                   normal
-                  style={{ padding: "6px" }}
+                  style={{ padding: "6px", ...editButtonStyle }}
                   className={`rounded-full absolute ${
                     positionNum === "outside"
                       ? position === "br"
@@ -186,7 +201,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
                     fileRef.current?.click()
                     setIsEnable(prev => !prev)
                   }}
-                  style={{ padding: "6px" }}
+                  style={{ padding: "6px", ...editButtonStyle }}
                   className={`rounded-full absolute ${
                     positionNum === "outside"
                       ? position === "br"
@@ -202,6 +217,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
               )}
             </>
           )}
+          {tech && <></>}
         </>
       )}
       {mode === "MODAL" &&
@@ -214,10 +230,35 @@ const Editable: FC<PropsWithChildren<Props>> = ({
             ></div>
             <dialog
               open={isEnable}
-              style={{ maxHeight: "80vh", maxWidth: "900px" }}
-              className="bg-palatte-100 fixed md:divide-x overflow-scroll divide-palatte-500 divide-y top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+              style={{ maxHeight: "80vh", maxWidth: "900px", padding: 0 }}
+              className="bg-palatte-100 fixed overflow-scroll top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
             >
-              <header className="bg-palatte-500 px-5 py-3 font-bold text-palatte-100"></header>
+              <header className="bg-palatte-500 px-5 py-3 font-bold text-palatte-100">
+                {title}
+              </header>
+              <div className="py-3 px-5 flex items-center gap-1">
+                <Input
+                  id={title as string}
+                  name={title}
+                  type={inputType}
+                  color="200"
+                  style={{ fontSize: "0.80rem" }}
+                  placeholder={`Enter the ${title}`}
+                  getValue={v => getValue(v)}
+                  containerClasses="flex-grow"
+                  value={value}
+                />
+                <Button
+                  onClick={() => {
+                    onSave()
+                    setIsEnable(prev => !prev)
+                  }}
+                  normal
+                  outline
+                >
+                  Save
+                </Button>
+              </div>
             </dialog>
           </div>,
           document.body
@@ -229,7 +270,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
           color="100"
           normal
           onClick={() => setIsEnable(prev => !prev)}
-          style={{ padding: "6px" }}
+          style={{ padding: "6px", ...editButtonStyle }}
           className={`rounded-full ${
             position === "br"
               ? "absolute -bottom-4 -right-4"

@@ -20,6 +20,8 @@ interface Props {
   placeholder?: string
   getValue: GetValue<any, any>
   checked?: boolean
+  pattern?: string
+  required?: boolean
   className?: string
   containerClasses?: string
   id: string
@@ -39,6 +41,8 @@ const Input: FC<PropsWithChildren<Props>> = ({
   textColor = "100",
   style,
   color = "100",
+  pattern,
+  required = false,
   className,
   containerClasses,
   offon = false,
@@ -95,6 +99,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
           <input
             multiple={true}
             hidden={true}
+            required={required}
             onChange={e =>
               getValue(e.currentTarget.value, e.currentTarget?.files)
             }
@@ -104,7 +109,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
           />
         </>
       )}
-      {type === "text" && (
+      {(type !== "file" || type !== "checkbox") && (
         <>
           <label
             className={`block text-left text-palatte-${textColor}`}
@@ -119,7 +124,9 @@ const Input: FC<PropsWithChildren<Props>> = ({
             style={style}
             className={`px-3 py-2 w-full ${className} bg-palatte-${color}`}
             id={id}
+            required={required}
             type={type}
+            pattern={pattern}
             onChange={e => getValue(e.currentTarget.value)}
             value={value}
           />
@@ -134,6 +141,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
             {label}
             <input
               type="checkbox"
+              required={required}
               checked={checked}
               id={id}
               onChange={e => getValue(e.currentTarget.checked)}
@@ -152,6 +160,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
             {label}
             <input
               type="checkbox"
+              required={required}
               id={id}
               checked={checked}
               onChange={e => getValue(e.currentTarget.checked)}

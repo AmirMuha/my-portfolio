@@ -1,0 +1,81 @@
+import React, { FC, PropsWithChildren } from "react"
+import { createPortal } from "react-dom"
+import { Close } from "../../icons/iconsJSX"
+import Button from "./Button"
+interface Props {
+  header?: boolean
+  text: string
+  title?: string
+  confirmButtonText?: string
+  notConfirmButtonText?: string
+  onClose: () => void
+  getValue: (v: boolean) => void
+}
+
+const Confirm: FC<PropsWithChildren<Props>> = ({
+  confirmButtonText = "Confirm",
+  notConfirmButtonText = "Close",
+  title,
+  text,
+  onClose,
+  getValue,
+  header = false,
+}) => {
+  return (
+    <>
+      {createPortal(
+        <>
+          <div
+            onClick={onClose}
+            className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
+          ></div>
+          <dialog
+            open
+            style={{ maxHeight: "80vh", maxWidth: "500px", padding: 0 }}
+            className="bg-palatte-100 fixed overflow-scroll top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+          >
+            <div>
+              <header className="flex items-center justify-between bg-palatte-500 px-5 py-3 font-bold text-palatte-100">
+                <span>{title}</span>
+                <span className="cursor-pointer" onClick={onClose}>
+                  {Close}
+                </span>
+              </header>
+              <div className="px-5 py-3 text-center">
+                <p className="my-3">{text}</p>
+                <footer className="flex justify-center items-center gap-2">
+                  <Button
+                    onClick={() => {
+                      getValue(false)
+                      onClose()
+                    }}
+                    outline
+                    normal
+                    borderColor="500"
+                    color="100"
+                    textColor="500"
+                  >
+                    {notConfirmButtonText}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      getValue(true)
+                      onClose()
+                    }}
+                    normal
+                    outline
+                  >
+                    {confirmButtonText}
+                  </Button>
+                </footer>
+              </div>
+            </div>
+          </dialog>
+        </>,
+        document.body
+      )}
+    </>
+  )
+}
+
+export default Confirm

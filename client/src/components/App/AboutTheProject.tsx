@@ -108,7 +108,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 fill
               >
                 <Editable
+                  title="GitHub URL"
                   mode="MODAL"
+                  inputType="url"
                   onSave={updateGithubUrl}
                   getValue={getGithubUrl}
                   value={githubUrl}
@@ -127,6 +129,8 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               >
                 Visit The App
                 <Editable
+                  inputType="url"
+                  title="App URL"
                   mode="MODAL"
                   onSave={updateAppUrl}
                   getValue={getAppUrl}
