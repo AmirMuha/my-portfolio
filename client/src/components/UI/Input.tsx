@@ -1,7 +1,6 @@
 import React, {
-  FC,
+  ForwardRefRenderFunction,
   HTMLInputTypeAttribute,
-  PropsWithChildren,
   useCallback,
   useRef,
 } from "react"
@@ -21,6 +20,7 @@ interface Props {
   getValue: GetValue<any, any>
   checked?: boolean
   pattern?: string
+  readOnly?: boolean
   required?: boolean
   className?: string
   containerClasses?: string
@@ -34,25 +34,29 @@ interface Props {
   textColor?: "100" | "200" | "300" | "400" | "500"
 }
 
-const Input: FC<PropsWithChildren<Props>> = ({
-  label,
-  checked,
-  value,
-  textColor = "100",
-  style,
-  color = "100",
-  pattern,
-  required = false,
-  className,
-  containerClasses,
-  offon = false,
-  id,
-  placeholder,
-  buttonTitle,
-  name = label,
-  getValue,
-  type = "text",
-}) => {
+const Input: ForwardRefRenderFunction<unknown, Props> = (
+  {
+    label,
+    checked,
+    value,
+    textColor = "100",
+    style,
+    color = "100",
+    pattern,
+    required = false,
+    readOnly = false,
+    className,
+    containerClasses,
+    offon = false,
+    id,
+    placeholder,
+    buttonTitle,
+    name = label,
+    getValue,
+    type = "text",
+  },
+  ref
+) => {
   const fileRef = useRef<HTMLInputElement>()
   const fileInputClick = useCallback(() => {
     fileRef.current?.click()
@@ -105,11 +109,12 @@ const Input: FC<PropsWithChildren<Props>> = ({
             }
             ref={fileRef as any}
             type="file"
+            aria-hidden="true"
             className="hidden"
           />
         </>
       )}
-      {(type !== "file" || type !== "checkbox") && (
+      {type !== "file" && type !== "checkbox" && (
         <>
           <label
             className={`block text-left text-palatte-${textColor}`}
@@ -119,11 +124,13 @@ const Input: FC<PropsWithChildren<Props>> = ({
             {label}
           </label>
           <input
+            ref={ref as any}
             name={name}
             placeholder={placeholder}
             style={style}
             className={`px-3 py-2 w-full ${className} bg-palatte-${color}`}
             id={id}
+            readOnly={readOnly}
             required={required}
             type={type}
             pattern={pattern}
@@ -132,7 +139,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
           />
         </>
       )}
-      {!offon && type === "checkbox" && (
+      {!offon && type === "checkbox" && type !== "file" && (
         <>
           <label
             style={style}
@@ -142,6 +149,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
             <input
               type="checkbox"
               required={required}
+              readOnly={readOnly}
               checked={checked}
               id={id}
               onChange={e => getValue(e.currentTarget.checked)}
@@ -151,7 +159,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
           </label>
         </>
       )}
-      {offon && type === "checkbox" && (
+      {offon && type === "checkbox" && type !== "file" && (
         <>
           <label
             style={style}
@@ -160,6 +168,7 @@ const Input: FC<PropsWithChildren<Props>> = ({
             {label}
             <input
               type="checkbox"
+              readOnly={readOnly}
               required={required}
               id={id}
               checked={checked}
@@ -180,4 +189,5 @@ const Input: FC<PropsWithChildren<Props>> = ({
   )
 }
 
-export default React.memo(Input)
+const InputRefForward = React.forwardRef(Input)
+export default React.memo(InputRefForward)

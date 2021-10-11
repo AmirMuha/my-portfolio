@@ -2,12 +2,12 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { createUploadLink } from "apollo-upload-client"
 import { WrapPageElementBrowserArgs, WrapRootElementBrowserArgs } from "gatsby"
 import React, { FC } from "react"
-import Layout from "./src/components/Layout"
+import { Provider } from "react-redux"
+import { store } from "./src/state/store"
 export const wrapPageElement: FC<WrapPageElementBrowserArgs> = ({
   element,
-  props,
 }) => {
-  return <Layout {...props}>{element}</Layout>
+  return <Provider store={store}>{element}</Provider>
 }
 
 const uploadLink = createUploadLink({

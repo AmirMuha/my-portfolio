@@ -1,6 +1,7 @@
 import { PageProps } from "gatsby"
 import React, { FC } from "react"
 import AboutTheProject from "../../../components/App/AboutTheProject"
+import AddTechCategory from "../../../components/Dashboard/AddTechCategory"
 import QAndA from "../../../components/App/QAndA"
 import Sketch from "../../../components/App/Sketch"
 import TechItem from "../../../components/App/TechItem"
@@ -8,7 +9,7 @@ import TheSection from "../../../components/App/TheSection"
 import Dash_Layout from "../../../components/Dashboard/Dash_Layout"
 import { SEO } from "../../../components/SEO"
 import Button from "../../../components/UI/Button"
-
+import QAndA_Add from "../../../components/Dashboard/Q&A_Add"
 const AddProject: FC<PageProps> = ({ children, params, data }) => {
   return (
     <>
@@ -23,6 +24,7 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
             id="techs-used"
             style={{ paddingBottom: 40 }}
           >
+            <AddTechCategory />
             <TechItem
               editable
               border={false}
@@ -48,24 +50,21 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
             className="lg:col-span-2 lg:col-start-2"
             style={{ paddingBottom: 40, flex: "1 1 0%" }}
           >
+            <QAndA_Add />
             <QAndA editable />
             <QAndA editable />
             <QAndA editable />
           </TheSection>
         </div>
-        <TheSection
-          name="Sketches"
-          className="lg:hidden"
-          id="sketches"
-          style={{ marginBottom: 25 }}
-        >
-          <Sketch editable />
-          <Sketch editable />
-          <Sketch editable />
+        <TheSection name="Sketches" id="sketches" style={{ marginBottom: 25 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <Sketch editable />
+            <Sketch editable />
+            <Sketch editable />
+          </div>
         </TheSection>
         <TheSection
           name="Delete The Project"
-          className="lg:hidden"
           id="delete-the-project"
           style={{ marginBottom: 25, paddingBottom: 25 }}
         >

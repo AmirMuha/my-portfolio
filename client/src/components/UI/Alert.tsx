@@ -27,7 +27,6 @@ const Alert: FC<PropsWithChildren<Props>> = ({
     <>
       {createPortal(
         <>
-          <div onClick={onClose} className="fixed inset-0 bg-opacity-0"></div>
           <dialog
             open
             style={{ padding: 0, maxHeight: "80vh", maxWidth: "500px" }}

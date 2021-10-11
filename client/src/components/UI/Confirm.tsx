@@ -32,7 +32,7 @@ const Confirm: FC<PropsWithChildren<Props>> = ({
           <dialog
             open
             style={{ maxHeight: "80vh", maxWidth: "500px", padding: 0 }}
-            className="bg-palatte-100 fixed overflow-scroll top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+            className="bg-palatte-100 fixed w-3/4 inset-0 border border-palatte-500"
           >
             <div>
               <header className="flex items-center justify-between bg-palatte-500 px-5 py-3 font-bold text-palatte-100">

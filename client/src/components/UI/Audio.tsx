@@ -69,11 +69,10 @@ const Audio: FC<PropsWithChildren<Props>> = ({ src }) => {
   }
   const mute = () => {
     if (audioRef.current && progressRef.current) {
-      if (!audioRef.current.muted) {
-        setVolumeMode("MUTE")
-      }
       if (audioRef.current.muted || progressRef.current.value === "0") {
         setVolumeMode("NOT_MUTE")
+      } else {
+        setVolumeMode("MUTE")
       }
       audioRef.current.muted = !audioRef.current.muted
     }

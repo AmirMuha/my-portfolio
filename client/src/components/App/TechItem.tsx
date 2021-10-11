@@ -1,9 +1,8 @@
 import React, { CSSProperties, FC, useState } from "react"
-import Editable from "../Dashboard/Editable"
-import SmallPipe from "../UI/SmallPipe"
 import { Delete } from "../../icons/iconsJSX"
+import Editable, { TechState } from "../Dashboard/Editable"
 import Confirm from "../UI/Confirm"
-import Alert from "../UI/Alert"
+import SmallPipe from "../UI/SmallPipe"
 interface Props {
   data: TechDataObject
   className?: string
@@ -20,7 +19,8 @@ const TechItem: FC<Props> = ({
 }) => {
   const [techItem, setTechItem] = useState<string>("")
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
-  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false)
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(true)
+
   const updateTechItem = () => {
     console.log("updating the tech item")
   }
@@ -35,6 +35,10 @@ const TechItem: FC<Props> = ({
       console.log("deleting tech category ...")
     }
   }
+  const deleteTech = (id: string) => {}
+  const updateTech = (v: TechState) => {
+    console.log(v)
+  }
   return (
     <div
       style={style}
@@ -42,21 +46,25 @@ const TechItem: FC<Props> = ({
         border && " border-l-5 md:border-l-10 border-palatte-500 "
       } ${className}`}
     >
-      {isAlertOpen && (
+      {/* {isAlertOpen && (
         <Alert
           message="Something went wrong during the operation."
           title="Error"
           onClose={() => setIsAlertOpen(false)}
         />
-      )}
+      )} */}
       <SmallPipe className="pt-3">
         <div className="pl-2 pr-5 w-full text-sm flex items-center justify-between font-semibold relative">
           <span>FrontEnd</span>
           {editable && (
             <div className="flex gap-5 items-center">
               <Editable
+                techCategory
+                title="FronEnd"
                 editButtonStyle={{ position: "initial" }}
+                techOnSave={v => updateTech(v)}
                 mode="MODAL"
+                deleteTech={id => deleteTech(id)}
                 onSave={updateTechItem}
                 getValue={getTechItem}
                 value={techItem}

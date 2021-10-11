@@ -72,10 +72,12 @@ const Project: FC<Props> = ({ pageContext: { project } }) => {
                 <QAndA />
               </TheSection>
             </div>
-            <TheSection name="Sketches" className="lg:hidden" id="sketches">
-              <Sketch />
-              <Sketch />
-              <Sketch />
+            <TheSection name="Sketches" id="sketches">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <Sketch />
+                <Sketch />
+                <Sketch />
+              </div>
             </TheSection>
             <TheSection
               name="What Next ?"

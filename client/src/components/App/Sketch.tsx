@@ -24,7 +24,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
   }
   const bgImage = convertToBgImage(image)
   return (
-    <div className="grid grid-cols-1 pl-5 pb-7 relative sm:grid-cols-2 lg:grid-cols-1">
+    <div className="pl-5 pb-7 relative ">
       <div className="relative">
         <BackgroundImage
           style={{
@@ -58,13 +58,23 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
           </div>
         </div>
       </div>
-      <div className="">
+      <div className="ml-10 border-l-5 border-palatte-500 md:border-l-10">
         <p className="px-5 py-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. In cumque
           fuga quaerat iure aspernatur! Consequatur blanditiis nemo eveniet!
           Eius expedita ab libero eveniet sapiente tempore quo dicta quae
           doloribus! Magni!
         </p>
+        <Button
+          textColor="500"
+          fill
+          style={{ borderLeft: 0, width: "100%" }}
+          normal
+          outline
+          color="100"
+        >
+          Read More
+        </Button>
       </div>
     </div>
   )
