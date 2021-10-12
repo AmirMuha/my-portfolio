@@ -3,6 +3,7 @@ import React, { FC, PropsWithChildren, useState } from "react"
 import { createPortal } from "react-dom"
 import Button from "../UI/Button"
 import TextArea from "../UI/TextArea"
+import Modal from "../UI/Modal"
 interface Props {}
 
 const Dash_Message: FC<PropsWithChildren<Props>> = props => {
@@ -66,18 +67,13 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
         {isOpen &&
           createPortal(
             <div>
-              <div
-                onClick={close}
-                className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
-              ></div>
-              <div
-                style={{ maxHeight: "80vh", maxWidth: "900px" }}
-                className="bg-palatte-100 overflow-scroll fixed top-1/2 w-4/5 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+              <Modal
+                containerStyle={{ padding: 0 }}
+                header
+                title="Message"
+                onClose={close}
               >
-                <div className="px-5 py-2 font-bold bg-palatte-500 text-palatte-100">
-                  Message
-                </div>
-                <div className="grid grid-cols-1 md:divide-x divide-palatte-500 divide-y md:grid-cols-2">
+                <div className="grid grid-cols-1 md:divide-x divide-palatte-500 divide-y md:divide-y-0 md:grid-cols-2">
                   <div className="self-start px-5 py-3">
                     <div className="ml-2 flex items-center">
                       <span className="font-bold text-sm">Subject</span>
@@ -109,6 +105,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
                     className="px-5 py-4 overflow-scroll"
                   >
                     <div>
+                      <h3 className="font-bold text-sm.6">Message</h3>
                       <p>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Rem minima ad eaque molestias commodi quaerat fuga
@@ -159,94 +156,78 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Modal>
               {isAnswerBoxOpen && (
-                <div>
-                  <div
-                    onClick={closeAnswerBox}
-                    className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
-                  ></div>
-                  <div
-                    style={{ maxHeight: "70vh", maxWidth: "850px" }}
-                    className="bg-palatte-100 fixed md:divide-x overflow-scroll divide-palatte-500 divide-y top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
-                  >
-                    <div className="relative">
-                      <div className="px-5 py-2 font-bold bg-palatte-500 text-palatte-100">
-                        Answer
-                      </div>
-                      <div className="px-5 py-3">
-                        <div className="flex sticky top-0 items-center gap-0">
-                          <Button
-                            normal
-                            outline
-                            onClick={() => setIsTextOpen(true)}
-                            color={isTextOpen ? "500" : "100"}
-                            borderColor="500"
-                            textColor={isTextOpen ? "100" : "500"}
-                            className="flex-1 text-center"
-                          >
-                            Text
-                          </Button>
-                          <Button
-                            normal
-                            outline
-                            onClick={() => setIsTextOpen(false)}
-                            color={isTextOpen ? "100" : "500"}
-                            borderColor="500"
-                            textColor={isTextOpen ? "500" : "100"}
-                            className="flex-1 text-center"
-                          >
-                            Preview
-                          </Button>
-                        </div>
-                        {isTextOpen ? (
-                          <TextArea
-                            id="answer"
-                            name="answer"
-                            outline
-                            rows={5}
-                            borderColor="500"
-                            getValue={getAnswer}
-                            value={theAnswer}
-                          />
-                        ) : (
-                          <div
-                            style={{ minHeight: 150 }}
-                            className="px-5 py-3 border-palatte-500 border"
-                          >
-                            <Markdown>{theAnswer}</Markdown>
-                          </div>
-                        )}
-                      </div>
-                      <div className="px-5 pb-3">
-                        <div className="flex items-center gap-2 justify-end">
-                          <Button
-                            normal
-                            outline
-                            onClick={sendAnswer}
-                            color="500"
-                            borderColor="500"
-                            textColor="100"
-                            className="text-center"
-                          >
-                            Send
-                          </Button>
-                          <Button
-                            normal
-                            outline
-                            onClick={() => setIsAnswerBoxOpen(false)}
-                            color="100"
-                            borderColor="500"
-                            textColor="500"
-                            className="text-center"
-                          >
-                            Close
-                          </Button>
-                        </div>
-                      </div>
+                <Modal header title="Answer" onClose={closeAnswerBox}>
+                  <div className="flex sticky top-0 items-center gap-0">
+                    <Button
+                      normal
+                      outline
+                      onClick={() => setIsTextOpen(true)}
+                      color={isTextOpen ? "500" : "100"}
+                      borderColor="500"
+                      textColor={isTextOpen ? "100" : "500"}
+                      className="flex-1 text-center"
+                    >
+                      Text
+                    </Button>
+                    <Button
+                      normal
+                      outline
+                      onClick={() => setIsTextOpen(false)}
+                      color={isTextOpen ? "100" : "500"}
+                      borderColor="500"
+                      textColor={isTextOpen ? "500" : "100"}
+                      className="flex-1 text-center"
+                    >
+                      Preview
+                    </Button>
+                  </div>
+                  {isTextOpen ? (
+                    <TextArea
+                      id="answer"
+                      name="answer"
+                      outline
+                      rows={5}
+                      borderColor="500"
+                      getValue={getAnswer}
+                      value={theAnswer}
+                    />
+                  ) : (
+                    <div
+                      style={{ minHeight: 150 }}
+                      className="px-5 py-3 border-palatte-500 border"
+                    >
+                      <Markdown>{theAnswer}</Markdown>
+                    </div>
+                  )}
+                  <div className="px-5 pb-3">
+                    <div className="flex items-center gap-2 justify-end">
+                      <Button
+                        normal
+                        outline
+                        onClick={sendAnswer}
+                        color="500"
+                        borderColor="500"
+                        textColor="100"
+                        className="text-center"
+                      >
+                        Send
+                      </Button>
+                      <Button
+                        normal
+                        outline
+                        onClick={() => setIsAnswerBoxOpen(false)}
+                        color="100"
+                        borderColor="500"
+                        textColor="500"
+                        className="text-center"
+                      >
+                        Close
+                      </Button>
                     </div>
                   </div>
-                </div>
+                </Modal>
               )}
             </div>,
             document.body
