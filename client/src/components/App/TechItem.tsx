@@ -35,7 +35,9 @@ const TechItem: FC<Props> = ({
       console.log("deleting tech category ...")
     }
   }
-  const deleteTech = (id: string) => {}
+  const deleteTech = (id: string) => {
+    console.log("deleting tech item with id " + id)
+  }
   const updateTech = (v: TechState) => {
     console.log(v)
   }

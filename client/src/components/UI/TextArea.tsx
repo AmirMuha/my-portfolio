@@ -9,6 +9,7 @@ interface Props {
   getValue(value: string): void
   label?: string
   outline?: boolean
+  required?: boolean
   color?: "100" | "200" | "300" | "400" | "500"
   textColor?: "100" | "200" | "300" | "400" | "500"
   borderColor?: "100" | "200" | "300" | "400" | "500"
@@ -26,6 +27,7 @@ const TextArea: FC<PropsWithChildren<Props>> = ({
   className,
   style,
   getValue,
+  required = false,
   id,
   cols,
   borderColor,
@@ -39,6 +41,7 @@ const TextArea: FC<PropsWithChildren<Props>> = ({
       <textarea
         style={style}
         name={name}
+        required
         id={id}
         className={`${className} px-3 py-2 w-full ${
           outline ? `border border-palatte${borderColor}` : ""
