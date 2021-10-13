@@ -40,9 +40,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     // mutate the update
     console.log("Updating the audio ...")
   }
-  const updateSummary = () => {
+  const updateSummary = (v: string) => {
     // mutate the update
-    console.log("Updating the summary ...")
+    console.log("Updating the summary, new Value => " + v)
   }
   const getGithubUrl = (v: string) => {
     console.log(v)
@@ -142,7 +142,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             </div>
             <Editable
               file
-              positionNum="inside"
+              positionPlace="inside"
               mode="IN_POSITION"
               acceptableFileTypes="image/*"
               onSave={updateImage}
@@ -165,7 +165,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             <Editable
               className="px-5 py-3"
               mode="IN_POSITION"
-              text
+              textarea
               position="tr"
               getValue={getSummary}
               onSave={updateSummary}

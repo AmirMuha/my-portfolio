@@ -1,6 +1,7 @@
 import React, { CSSProperties, FC, useState } from "react"
 import { Delete } from "../../icons/iconsJSX"
-import Editable, { TechState } from "../Dashboard/Editable"
+import Editable from "../Dashboard/Editable"
+import { TechState } from "../Dashboard/Editable/Editable_TechCategory"
 import Confirm from "../UI/Confirm"
 import SmallPipe from "../UI/SmallPipe"
 interface Props {
@@ -17,15 +18,10 @@ const TechItem: FC<Props> = ({
   style,
   className,
 }) => {
-  const [techItem, setTechItem] = useState<string>("")
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
-  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(true)
-
-  const updateTechItem = () => {
-    console.log("updating the tech item")
-  }
-  const getTechItem = (v: string) => {
-    setTechItem(v)
+  const techItem: TechState = {
+    categoryName: "FrontEnd",
+    techs: ["React", "TSX"],
   }
   const openConfirm = () => {
     setIsConfirmOpen(true)
@@ -48,27 +44,18 @@ const TechItem: FC<Props> = ({
         border && " border-l-5 md:border-l-10 border-palatte-500 "
       } ${className}`}
     >
-      {/* {isAlertOpen && (
-        <Alert
-          message="Something went wrong during the operation."
-          title="Error"
-          onClose={() => setIsAlertOpen(false)}
-        />
-      )} */}
       <SmallPipe className="pt-3">
         <div className="pl-2 pr-5 w-full text-sm flex items-center justify-between font-semibold relative">
           <span>FrontEnd</span>
           {editable && (
             <div className="flex gap-5 items-center">
               <Editable
-                techCategory
                 title="FronEnd"
+                techCategory
                 editButtonStyle={{ position: "initial" }}
-                techOnSave={v => updateTech(v)}
+                onSave={(v: TechState) => updateTech(v)}
                 mode="MODAL"
-                deleteTech={id => deleteTech(id)}
-                onSave={updateTechItem}
-                getValue={getTechItem}
+                onDeleteTech={id => deleteTech(id)}
                 value={techItem}
               />
               <span className="cursor-pointer" onClick={openConfirm}>

@@ -1,5 +1,4 @@
 import React, { FC, PropsWithChildren } from "react"
-import TheSection from "../App/TheSection"
 import Button from "../UI/Button"
 
 interface Props {
@@ -85,6 +84,15 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
         </div>
         <div className="text-center grid grid-cols-1 self-end gap-2 m-3">
           <Button
+            to="/dashboard/messages"
+            outline
+            borderColor="100"
+            color="500"
+            textColor="100"
+          >
+            Messages
+          </Button>
+          <Button
             to="/dashboard"
             outline
             borderColor="100"
@@ -95,13 +103,13 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
           </Button>
           <Button to="/" outline color="100" textColor="500">
             <div className="flex justify-between items-center">
+              <div className="">back to the website</div>
               <svg width="20" className="m-0" height="17" viewBox="0 0 20 17">
                 <path
                   d="M8 17V11H12V17H17V9H20L10 0L0 9H3V17H8Z"
                   fill="#1E0B00"
                 />
               </svg>
-              <div className="">back to the website</div>
             </div>
           </Button>
         </div>

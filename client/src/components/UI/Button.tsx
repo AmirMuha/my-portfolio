@@ -1,5 +1,6 @@
 import { Link } from "gatsby"
-import gsap from "gsap"
+import CSSRulePlugin from "gsap/dist/CSSRulePlugin"
+import gsap from "gsap/gsap-core"
 import React, { FC, PropsWithChildren, ReactElement, useRef } from "react"
 import {
   Button as ButtonClass,
@@ -7,7 +8,7 @@ import {
   Button_Underlined,
   Button_Pulse,
 } from "./styles/Button.module.css"
-
+gsap.registerPlugin(CSSRulePlugin)
 interface Props {
   onClick?(): void
   outline?: boolean

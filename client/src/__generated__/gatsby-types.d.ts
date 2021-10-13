@@ -5188,20 +5188,25 @@ type MyQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 type MyQueryQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
-type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type Unnamed_1_Query = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
 
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx2780465676QueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx2780465676Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'id'>> } };
 
-type Unnamed_2_QueryVariables = Exact<{ [key: string]: never; }>;
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type Unnamed_2_Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsAppSketchTsx4046871794QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsAppSketchTsx4046871794Query = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -5228,11 +5233,6 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
-
-type Unnamed_3_QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type Unnamed_3_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
 
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 

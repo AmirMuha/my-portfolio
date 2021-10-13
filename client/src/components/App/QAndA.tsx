@@ -60,6 +60,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               >
                 <p className="ml-3 font-semibold">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit ?
+                  Lorem ipsum dolor sit amet, co
                 </p>
                 <div
                   ref={dropdownRef as any}
@@ -116,7 +117,8 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               className="flex py-2 relative items-center pr-6 text-left justify-between"
             >
               <p className="ml-3 font-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit ?
+                Lorem ipsum dolor sit amet consectetur adipisicing elit ? Lorem
+                ipsum dolor sit.
               </p>
               <div
                 ref={dropdownRef as any}
