@@ -59,7 +59,7 @@ const Dash_Layout: FC<PropsWithChildren<Props>> = ({
           isMessagesOpen ? "onshowMessages" : "onhideMessages"
         } fixed top-0 right-0 h-full z-50 bg-palatte-500`}
       ></Dash_Aside>
-      <main className="mx-auto container w-full">{children}</main>
+      <main className="px-5 md:px-10 mx-auto container w-full">{children}</main>
     </div>
   )
 }

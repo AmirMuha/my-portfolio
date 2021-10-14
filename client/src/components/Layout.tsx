@@ -17,8 +17,8 @@ const Layout: FC<Props> = ({
   return (
     <>
       <TheHeader brand={header?.brand} page={header?.page} nav={nav} />
-      <div className="items-center container mx-auto">
-        <main>{children}</main>
+      <div className="items-center px-5 sm:px-5 md:px-10 mx-auto container">
+        <main className="">{children}</main>
       </div>
     </>
   )
