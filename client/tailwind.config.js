@@ -104,6 +104,21 @@ module.exports = {
           width: "31px",
           height: "31px",
         },
+        ".icon-palatte-100 svg path": {
+          fill: "#FFE1D0",
+        },
+        ".icon-palatte-200 svg path": {
+          fill: "#F0AF8A",
+        },
+        ".icon-palatte-300 svg path": {
+          fill: "#AA6239",
+        },
+        ".icon-palatte-400 svg path": {
+          fill: "#642A09",
+        },
+        ".icon-palatte-500 svg path": {
+          fill: "#1E0B00",
+        },
       }
       addUtilities(utilities)
     }),

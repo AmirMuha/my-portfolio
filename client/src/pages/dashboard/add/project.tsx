@@ -1,5 +1,5 @@
 import { PageProps } from "gatsby"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import AboutTheProject from "../../../components/App/AboutTheProject"
 import AddTechCategory from "../../../components/Dashboard/AddTechCategory"
 import QAndA from "../../../components/App/QAndA"
@@ -10,19 +10,40 @@ import Dash_Layout from "../../../components/Dashboard/Dash_Layout"
 import { SEO } from "../../../components/SEO"
 import Button from "../../../components/UI/Button"
 import QAndA_Add from "../../../components/Dashboard/Q&A_Add"
+import AddSketch from "../../../components/Dashboard/AddSketch"
+import SmallPipe from "../../../components/UI/SmallPipe"
+import Modal from "../../../components/UI/Modal"
+import Confirm from "../../../components/UI/Confirm"
 const AddProject: FC<PageProps> = ({ children, params, data }) => {
+  const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
+  const [projectName, setProjectName] = useState<string>("PROJECT_NAME")
+  const deleteProject = (v: boolean) => {
+    console.log(v ? "Deleting  project." : "Not yet.")
+  }
+  const updateProjectName = (v: string) => [
+    console.log("updating project name"),
+  ]
   return (
     <>
       <SEO title="Adding PROJECT_NAME" />
       <Dash_Layout>
-        <TheSection name="Name of the project" id="name-of-the-project">
+        <TheSection
+          titleEditable
+          titleValue={projectName}
+          getTitleValue={v => setProjectName(v)}
+          onSaveTitleValue={v => updateProjectName(v)}
+          name="Name of the project"
+          id="name-of-the-project"
+        >
           <AboutTheProject editable />
         </TheSection>
         <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3">
           <TheSection
             name="Techs Used"
             id="techs-used"
-            style={{ paddingBottom: 40 }}
+            style={{ paddingBottom: 25 }}
+            textClassName="sm:text-sm"
+            lgText="sm.4"
           >
             <AddTechCategory />
             <TechItem
@@ -48,7 +69,7 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
             name="Q&A"
             id="Questions-and-answers"
             className="lg:col-span-2 lg:col-start-2"
-            style={{ paddingBottom: 40, flex: "1 1 0%" }}
+            style={{ paddingBottom: 25, flex: "1 1 0%" }}
           >
             <QAndA_Add />
             <QAndA editable />
@@ -57,7 +78,8 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
           </TheSection>
         </div>
         <TheSection name="Sketches" id="sketches" style={{ marginBottom: 25 }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <AddSketch data={{}} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
             <Sketch editable />
             <Sketch editable />
             <Sketch editable />
@@ -68,12 +90,24 @@ const AddProject: FC<PageProps> = ({ children, params, data }) => {
           id="delete-the-project"
           style={{ marginBottom: 25, paddingBottom: 25 }}
         >
-          <div className="flex items-center gap-2 w-full ml-5">
+          <div className="flex items-center max-w-lg gap-2 w-full ml-5">
             <p className="flex-grow font-bold text-sm.4">
               Do you want to delete this project ?
             </p>
-            <Button normal>Delete</Button>
+            <Button onClick={() => setIsDeleteBoxOpen(true)} normal>
+              Delete
+            </Button>
           </div>
+          {isDeleteBoxOpen && (
+            <Confirm
+              header
+              title="Deleting PROJECT_NAME"
+              onClose={() => setIsDeleteBoxOpen(false)}
+              confirmButtonText="Delete"
+              text="Are you sure you want to delete PROJECT_NAME ?"
+              getValue={v => deleteProject(v)}
+            ></Confirm>
+          )}
         </TheSection>
       </Dash_Layout>
     </>

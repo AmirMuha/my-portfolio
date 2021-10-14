@@ -108,6 +108,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 fill
               >
                 <Editable
+                  customInputId="girhuburl-asf"
                   title="GitHub URL"
                   mode="MODAL"
                   custom
@@ -130,6 +131,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               >
                 Visit The App
                 <Editable
+                  customInputId="appurl-asdf"
                   inputType="url"
                   title="App URL"
                   custom
@@ -171,8 +173,8 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               onSave={updateSummary}
               value={summary}
             />
-            <div className="">
-              <SmallPipe pipeClassName="hidden md:flex relative">
+            <div className="relative">
+              <SmallPipe pipeClassName="hidden md:flex">
                 <Audio src={audio} />
                 <Editable
                   file

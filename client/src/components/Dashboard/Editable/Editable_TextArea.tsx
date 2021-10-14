@@ -7,6 +7,7 @@ import React, {
 } from "react"
 import { Close, Done, Edit } from "../../../icons/iconsJSX"
 import Button from "../../UI/Button"
+import Markdown from "../../utility/Markdown"
 
 interface Props {
   style?: CSSProperties
@@ -15,6 +16,7 @@ interface Props {
   textareaClassName?: string
   saveAndCloseContainerStyle?: CSSProperties
   buttonClassName?: string
+  textareaRows?: number
   buttonStyle?: CSSProperties
   editButtonStyle?: CSSProperties
   isEnable: boolean
@@ -37,6 +39,7 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
   onClose,
   style,
   className,
+  textareaRows = 8,
   editButtonStyle,
   isEnable,
   onSave,
@@ -46,22 +49,35 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
   getValue,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>()
+  const [isPreviewBoxOpen, setIsPreviewBoxOpen] = useState<boolean>(false)
   const save = () => {
     if (textAreaRef.current) {
       onSave(textAreaRef.current.value)
+      setIsPreviewBoxOpen(false)
     }
   }
   return (
     <div style={style} className={`${className} relative`}>
-      <textarea
-        readOnly={!isEnable}
-        ref={textAreaRef as any}
-        onChange={e => getValue(e.currentTarget.value)}
-        rows={8}
-        style={{ ...textareaStyle }}
-        value={value}
-        className={`${textareaClassName} w-full resize-none bg-palatte-100 placeholder-opacity-50 text-palatte-500 placeholder-palatte-500`}
-      />
+      {isPreviewBoxOpen ? (
+        <Markdown>{value}</Markdown>
+      ) : isEnable ? (
+        <>
+          <textarea
+            ref={textAreaRef as any}
+            onChange={e => {
+              getValue(e.currentTarget.value)
+            }}
+            rows={textareaRows}
+            style={{ ...textareaStyle }}
+            value={value}
+            className={`${textareaClassName} w-full resize-none bg-palatte-100 placeholder-opacity-50 text-palatte-500 placeholder-palatte-500`}
+          />
+        </>
+      ) : (
+        <>
+          <Markdown>{value}</Markdown>
+        </>
+      )}
       {isEnable ? (
         <div
           style={{ ...saveAndCloseContainerStyle }}
@@ -75,6 +91,12 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
               : "top-0 right-0"
           }`}
         >
+          <button
+            onClick={() => setIsPreviewBoxOpen(prev => !prev)}
+            className="border border-palatte-500 rounded-full px-3 py-1 bg-palatte-500 text-palatte-100 text-tiny"
+          >
+            {isPreviewBoxOpen ? "Raw Text" : "Preview"}
+          </button>
           <Button
             outline
             borderColor="400"
@@ -96,7 +118,10 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
             borderColor="400"
             color="100"
             normal
-            onClick={onClose}
+            onClick={() => {
+              onClose()
+              setIsPreviewBoxOpen(false)
+            }}
             style={{ ...buttonStyle, padding: "6px" }}
             className={`${buttonClassName} rounded-full`}
           >

@@ -84,7 +84,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = props => {
         <Input
           type="file"
           label="Attach Some Files"
-          buttonTitle="Select Files"
+          buttonTitle="Choose Files"
           id="file"
           name="file"
           getValue={getFile}

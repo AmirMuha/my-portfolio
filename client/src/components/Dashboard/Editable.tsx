@@ -25,6 +25,7 @@ interface Props {
   QAndA?: boolean
   techCategory?: boolean
   value?: any
+  textareaRows?: number
   mode: "MODAL" | "IN_POSITION"
   position?: "tr" | "br"
   acceptableFileTypes?: string
@@ -36,6 +37,7 @@ interface Props {
   textareaStyle?: CSSProperties
   buttonClassName?: string
   textareaClassName?: string
+  customInputId?: string
   className?: string
   techValue?: string
   techCategoryValue?: string
@@ -50,6 +52,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
   custom = false,
   mode = "IN_POSITION",
   file = false,
+  textareaRows,
   QAndA = false,
   techCategory = false,
   position = "br",
@@ -65,6 +68,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
   buttonClassName,
   buttonStyle,
   className,
+  customInputId,
   textareaStyle,
   textareaClassName,
   style,
@@ -89,6 +93,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
               isEnable={isEnable}
               position={position}
               buttonClassName={buttonClassName}
+              textareaRows={textareaRows}
               buttonStyle={buttonStyle}
               saveAndCloseContainerStyle={saveAndCloseContainerStyle}
               editButtonStyle={editButtonStyle}
@@ -121,6 +126,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
       {mode === "MODAL" && isEnable && custom && (
         <Editable_Custom
           value={value}
+          id={customInputId as string}
           getValue={v => getValue && getValue(v)}
           onSave={v => onSave(v)}
           title={title || "Edit"}

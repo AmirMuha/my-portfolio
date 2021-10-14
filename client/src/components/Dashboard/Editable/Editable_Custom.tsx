@@ -4,6 +4,7 @@ import Input from "../../UI/Input"
 import Modal from "../../UI/Modal"
 
 interface Props {
+  id: string
   title: string
   inputType?: string
   value: any

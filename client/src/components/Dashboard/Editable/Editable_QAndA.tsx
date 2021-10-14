@@ -53,12 +53,14 @@ const Editable_QAndA: FC<PropsWithChildren<Props>> = ({
           borderColor="500"
           textColor={isTextOpen ? "100" : "500"}
           className="flex-1 text-center"
+          style={{ borderBottom: 0 }}
         >
           Text
         </Button>
         <Button
           normal
           outline
+          style={{ borderBottom: 0 }}
           onClick={() => setIsTextOpen(false)}
           color={isTextOpen ? "100" : "500"}
           borderColor="500"

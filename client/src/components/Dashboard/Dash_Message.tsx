@@ -165,6 +165,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
                       outline
                       onClick={() => setIsTextOpen(true)}
                       color={isTextOpen ? "500" : "100"}
+                      style={{ borderBottom: 0 }}
                       borderColor="500"
                       textColor={isTextOpen ? "100" : "500"}
                       className="flex-1 text-center"
@@ -174,6 +175,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
                     <Button
                       normal
                       outline
+                      style={{ borderBottom: 0 }}
                       onClick={() => setIsTextOpen(false)}
                       color={isTextOpen ? "100" : "500"}
                       borderColor="500"
@@ -196,12 +198,12 @@ const Dash_Message: FC<PropsWithChildren<Props>> = props => {
                   ) : (
                     <div
                       style={{ minHeight: 150 }}
-                      className="px-5 py-3 border-palatte-500 border"
+                      className="px-5 mb-3 py-3 border-palatte-500 border"
                     >
                       <Markdown>{theAnswer}</Markdown>
                     </div>
                   )}
-                  <div className="px-5 pb-3">
+                  <div className="pb-3">
                     <div className="flex items-center gap-2 justify-end">
                       <Button
                         normal

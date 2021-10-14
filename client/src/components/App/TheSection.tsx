@@ -1,19 +1,36 @@
-import React, { CSSProperties, FC, PropsWithChildren } from "react"
+import React, { CSSProperties, FC, PropsWithChildren, useState } from "react"
+import Editable from "../Dashboard/Editable"
 
 interface Props {
   name: string
   className?: string
+  textClassName?: string
+  lgText?: string
   id: string
   style?: CSSProperties
+  titleEditable?: boolean
+  titleValue?: string
+  getTitleValue?: (v: string) => void
+  onSaveTitleValue?: (v: string) => void
 }
 
 const TheSection: FC<PropsWithChildren<Props>> = ({
   name,
+  titleEditable = false,
+  getTitleValue,
+  titleValue,
+  lgText = "md",
   style,
+  textClassName,
   children,
   id,
+  onSaveTitleValue,
   className,
 }) => {
+  const updateTitle = (v: string) => {
+    console.log("updating title value for %s section with Value %s", name, v)
+    onSaveTitleValue && onSaveTitleValue(v)
+  }
   return (
     <>
       <section
@@ -27,11 +44,34 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
         ></div>
         <div className="flex gap-0 text-center items-start">
           <div className={`w-1/2 bg-palatte-500 h-pipe-sm md:h-pipe-lg`}></div>
-          <h1
-            className={`capitalize  px-3 font-bold bg-palatte-100 text-sm sm:text-md transform -translate-x-1/2 -translate-y-1/2`}
-          >
-            {name}
-          </h1>
+          {titleEditable ? (
+            <h1
+              className={`${textClassName} flex items-center gap-2 capitalize relative px-3 font-bold bg-palatte-100 text-sm lg:text-${
+                lgText || "md"
+              } transform -translate-x-1/2 -translate-y-1/2`}
+            >
+              {name}
+              <Editable
+                custom
+                title={`Editing ${name}`}
+                inputType="text"
+                customInputId={`section-${name.split(/\s/).join("-")}`}
+                onSave={v => updateTitle(v)}
+                mode="MODAL"
+                editButtonStyle={{ position: "initial" }}
+                getValue={v => getTitleValue && getTitleValue(v)}
+                value={titleValue}
+              />
+            </h1>
+          ) : (
+            <h1
+              className={`${textClassName} capitalize  px-3 font-bold bg-palatte-100 text-sm lg:text-${
+                lgText || "md"
+              } transform -translate-x-1/2 -translate-y-1/2`}
+            >
+              {name}
+            </h1>
+          )}
         </div>
         {children}
       </section>

@@ -12,6 +12,9 @@ body {
 html {
   overflow-x: hidden;
 }
+#___gatsby {
+  overflow-x: hidden;
+}
 * {
   outline: none;
   box-sizing: border-box;

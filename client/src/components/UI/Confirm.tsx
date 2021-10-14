@@ -35,12 +35,17 @@ const Confirm: FC<PropsWithChildren<Props>> = ({
             className="bg-palatte-100 fixed w-3/4 inset-0 border border-palatte-500"
           >
             <div>
-              <header className="flex items-center justify-between bg-palatte-500 px-5 py-3 font-bold text-palatte-100">
-                <span>{title}</span>
-                <span className="cursor-pointer" onClick={onClose}>
-                  {Close}
-                </span>
-              </header>
+              {header && (
+                <header className="flex items-center justify-between bg-palatte-500 px-5 py-3 font-bold text-palatte-100">
+                  <span>{title}</span>
+                  <span
+                    className="cursor-pointer icon-palatte-100 icon-s-1 p-1"
+                    onClick={onClose}
+                  >
+                    {Close}
+                  </span>
+                </header>
+              )}
               <div className="px-5 py-3 text-center">
                 <p className="my-3">{text}</p>
                 <footer className="flex justify-center items-center gap-2">

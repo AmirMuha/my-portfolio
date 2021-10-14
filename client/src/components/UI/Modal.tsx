@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from "react"
 import { createPortal } from "react-dom"
+import { Close } from "../../icons/iconsJSX"
 
 interface Props {
   onClose: () => void
@@ -12,11 +13,13 @@ interface Props {
   title?: string
   containerClass?: string
   header: boolean
+  stickyHeader?: boolean
 }
 
 const Modal: FC<PropsWithChildren<Props>> = ({
   onClose,
   header,
+  stickyHeader = false,
   maxHeight,
   minHeight,
   containerClass = "",
@@ -48,8 +51,19 @@ const Modal: FC<PropsWithChildren<Props>> = ({
             className="bg-palatte-100 fixed overflow-scroll top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
           >
             {header && (
-              <header className="bg-palatte-500 px-5 py-3 font-bold text-palatte-100">
-                {title}
+              <header
+                style={{ zIndex: 1 }}
+                className={`bg-palatte-500 ${
+                  stickyHeader && "sticky top-0"
+                } px-5 flex items-center justify-between py-3 font-bold text-palatte-100`}
+              >
+                <span className="flex gap-3 items-center">{title}</span>
+                <span
+                  onClick={onClose}
+                  className="icon-s-1 cursor-pointer p-2 icon-palatte-100"
+                >
+                  {Close}
+                </span>
               </header>
             )}
             <div

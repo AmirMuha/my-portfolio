@@ -73,7 +73,10 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
             {`${label}`}
           </label>
           <div className="flex">
-            <div className="px-3 py-2 w-full bg-palatte-200 truncate">
+            <div
+              onClick={fileInputClick}
+              className="px-3 py-2 w-full bg-palatte-200 truncate"
+            >
               {value ? (
                 <p className="text-palatte-500">
                   {value && value}
