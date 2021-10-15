@@ -1,5 +1,6 @@
 import { PageProps } from "gatsby"
 import React, { FC } from "react"
+import Stack from "../../components/App/Stack"
 import TheSection from "../../components/App/TheSection"
 import Dash_Hero from "../../components/Dashboard/Dash_Hero"
 import Dash_Layout from "../../components/Dashboard/Dash_Layout"
@@ -21,6 +22,9 @@ const Dashboard: FC<PageProps> = ({ children, params, data }) => {
               id="projects"
             >
               <Dash_Projects />
+            </TheSection>
+            <TheSection name="Stack" id="stack">
+              <Stack editable />
             </TheSection>
             <TheSection
               name="Messages"

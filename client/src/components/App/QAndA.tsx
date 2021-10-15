@@ -58,7 +58,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
                 onClick={controlDropDown}
                 className="flex py-2 relative items-center pr-6 text-left justify-between"
               >
-                <p className="ml-3 font-semibold">
+                <p className="ml-3 mt-0 mr-0 mb-0 font-semibold">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit ?
                   Lorem ipsum dolor sit amet, co
                 </p>
@@ -71,7 +71,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               </button>
             </SmallPipe>
             {isAnswerOpen && (
-              <p className="p-5 ml-6 bg-palatte-200 overflow-hidden mb-3">
+              <p className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos
                 neque obcaecati aut ut quas, odit perspiciatis, facere, quaerat
                 excepturi maxime assumenda. Perspiciatis provident laudantium
@@ -116,7 +116,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               onClick={controlDropDown}
               className="flex py-2 relative items-center pr-6 text-left justify-between"
             >
-              <p className="ml-3 font-semibold">
+              <p className="ml-3 mt-0 mr-0 mb-0 font-semibold">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit ? Lorem
                 ipsum dolor sit.
               </p>
@@ -129,7 +129,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
             </button>
           </SmallPipe>
           {isAnswerOpen && (
-            <p className="p-5 ml-6 bg-palatte-200 overflow-hidden mb-3">
+            <p className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos
               neque obcaecati aut ut quas, odit perspiciatis, facere, quaerat
               excepturi maxime assumenda. Perspiciatis provident laudantium

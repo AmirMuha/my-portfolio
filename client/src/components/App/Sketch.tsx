@@ -2,7 +2,13 @@ import { graphql, useStaticQuery } from "gatsby"
 import BackgroundImage from "gatsby-background-image"
 import { getImage } from "gatsby-plugin-image"
 import { convertToBgImage } from "gbimage-bridge"
-import React, { FC, PropsWithChildren, useState } from "react"
+import React, {
+  FC,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import Editable from "../Dashboard/Editable"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
@@ -20,7 +26,10 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isPreviewBoxOpen, setIsPreviewBoxOpen] = useState<boolean>(false)
   const [imageFile, setImage] = useState<any>(null)
-
+  const paragraphRef = useRef<HTMLParagraphElement>()
+  useEffect(() => {
+    paragraphRef.current?.scrollTo(0, 0)
+  }, [paragraphRef])
   const { file } = useStaticQuery<GatsbyTypes.MyQueryQuery>(graphql`
     query {
       file(name: { eq: "pexels-pixabay-355952" }) {
@@ -191,11 +200,6 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
                     onSave={v => updateSketchDescription(v)}
                   />
                 </div>
-                <div className="text-right">
-                  <Button normal outline borderColor="100" className="text-xs">
-                    Back To Top
-                  </Button>
-                </div>
               </div>
             </Modal>
           )}
@@ -237,7 +241,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               </div>
             </div>
             <div className="ml-10 border-l-5 border-palatte-500 md:border-l-10">
-              <p className="px-5 py-3">
+              <p style={{ margin: 0 }} className="px-5 py-3">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. In
                 cumque fuga quaerat iure aspernatur! Consequatur blanditiis nemo
                 eveniet! Eius expedita ab libero eveniet sapiente tempore quo
@@ -264,7 +268,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               onClose={() => setIsOpen(prev => !prev)}
             >
               <div className="relative">
-                <p>
+                <p style={{ margin: 0 }}>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Dolorem atque perspiciatis a, quia cumque nostrum voluptates
                   quae exercitationem hic aliquid unde eum consequuntur fugiat
@@ -301,15 +305,31 @@ const Sketch: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
                   deserunt vero maiores id harum doloremque nobis expedita fugit
                   quibusdam qui dolorem quaerat enim accusantium sit placeat
                   repudiandae iusto asperiores hic perferendis! Dolore aperiam
+                  repudiandae sit? Distinctio delectus deserunt ex vitae ab
+                  autem quam perspiciatis modi asperiores consectetur, aliquid
+                  facilis beatae voluptatem repellendus totam minus dicta aut,
+                  soluta consequuntur dolore. Culpa, ratione praesentium minus
+                  delectus ullam nostrum molestiae ab, accusantium nobis
+                  distinctio temporibus nesciunt tenetur repellat itaque
+                  deserunt iure! Vero ipsam mollitia laboriosam consequuntur
+                  quibusdam repellendus consectetur, obcaecati suscipit quia
+                  laudantium deleniti eveniet. Tenetur quam perferendis fugiat
+                  aliquam dolorum sunt reiciendis quo neque unde, vero
+                  doloribus. Provident natus hic temporibus dolore itaque iste
+                  at sit, neque laborum. Ab aliquid excepturi ratione.
+                  Aspernatur aliquid laudantium nihil atque quibusdam eius nobis
+                  qui fugit veniam, vitae ipsam libero possimus officiis
+                  repellat commodi fugiat temporibus tempora ad consequuntur cum
+                  laborum. Ipsum saepe impedit nesciunt possimus, at
+                  perspiciatis illo suscipit. Provident blanditiis architecto
+                  laudantium at ab. Omnis voluptates, maxime voluptatibus labore
+                  deserunt vero maiores id harum doloremque nobis expedita fugit
+                  quibusdam qui dolorem quaerat enim accusantium sit placeat
+                  repudiandae iusto asperiores hic perferendis! Dolore aperiam
                   mollitia placeat quisquam sit. Obcaecati delectus harum, fuga
                   quaerat saepe quo eaque, accusamus quod at explicabo magni id
                   sunt quisquam a autem incidunt reiciendis. Rerum!
                 </p>
-                <div className="text-right">
-                  <Button normal outline borderColor="100" className="text-xs">
-                    Back To Top
-                  </Button>
-                </div>
               </div>
             </Modal>
           )}

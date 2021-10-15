@@ -36,7 +36,7 @@ interface Props {
 
 const Input: ForwardRefRenderFunction<unknown, Props> = (
   {
-    label,
+    label = "",
     checked,
     value,
     textColor = "100",
@@ -78,7 +78,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
               className="px-3 py-2 w-full bg-palatte-200 truncate"
             >
               {value ? (
-                <p className="text-palatte-500">
+                <p style={{ margin: 0 }} className="text-palatte-500">
                   {value && value}
                   {
                     <span className="text-palatte-300">
@@ -91,7 +91,9 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
                   }
                 </p>
               ) : (
-                <p className="text-palatte-300">No files chosen yet !</p>
+                <p style={{ margin: 0 }} className="text-palatte-300">
+                  No files chosen yet !
+                </p>
               )}
             </div>
             <Button

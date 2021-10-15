@@ -56,6 +56,8 @@ const Project: FC<Props> = ({ pageContext: { project } }) => {
                 name="Techs Used"
                 id="techs-used"
                 style={{ paddingBottom: 40 }}
+                textClassName="sm:text-sm"
+                lgText="sm.4"
               >
                 <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
                 <TechItem border={false} style={{ marginLeft: 0 }} data={{}} />
