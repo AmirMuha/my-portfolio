@@ -48,5 +48,10 @@ export class Message {
   @TypeGraphQL.Field(_type => Date, {
     nullable: false
   })
+  answeredAt!: Date;
+
+  @TypeGraphQL.Field(_type => Date, {
+    nullable: false
+  })
   createdAd!: Date;
 }

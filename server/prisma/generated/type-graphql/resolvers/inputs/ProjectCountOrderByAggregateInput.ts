@@ -41,7 +41,7 @@ export class ProjectCountOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  description?: "asc" | "desc" | undefined;
+  summary?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true

@@ -45,7 +45,7 @@ export class Project {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  description!: string;
+  summary!: string;
 
   tech_categories?: TechCategory[];
 

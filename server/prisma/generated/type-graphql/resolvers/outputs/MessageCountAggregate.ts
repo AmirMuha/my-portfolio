@@ -45,6 +45,11 @@ export class MessageCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
+  answeredAt!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
   createdAd!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {

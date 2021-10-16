@@ -21,7 +21,12 @@ export class Sketch {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  body!: string;
+  description!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  summary!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false

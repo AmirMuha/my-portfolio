@@ -1,11 +1,35 @@
-import { PageProps } from "gatsby"
+import { graphql, PageProps, useStaticQuery } from "gatsby"
 import React, { FC } from "react"
 import InPageMenu from "../components/App/InPageMenu"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { SEO } from "../components/SEO"
 import ProjectsComponent from "../components/App/Projects"
-const Projects: FC<PageProps> = ({ children, params, data }) => {
+const query = graphql`
+  query {
+    portfolio {
+      projects {
+        id
+        image
+        app_url
+        type
+        name
+        github_url
+        summary
+      }
+    }
+  }
+`
+
+interface QueryTypes {
+  data: {
+    portfolio: {
+      projects: GatsbyTypes.Portfolio_Project[]
+    }
+  }
+}
+const Projects: FC<PageProps> = ({ children, params }) => {
+  const { data } = useStaticQuery<QueryTypes>(query)
   return (
     <>
       <SEO title="Adding New Projects To Stack" />
@@ -18,7 +42,7 @@ const Projects: FC<PageProps> = ({ children, params, data }) => {
           <InPageMenu pipes="left" />
         </TheSection>
         <TheSection name="Projects" className="mb-10" id="projects">
-          <ProjectsComponent type="2" />
+          <ProjectsComponent data={data.portfolio.projects || []} type="2" />
         </TheSection>
       </Layout>
     </>

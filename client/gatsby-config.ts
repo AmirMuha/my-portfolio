@@ -18,12 +18,14 @@ export default {
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     `gatsby-plugin-react-helmet`,
-    "gatsby-plugin-debug-build",
     `gatsby-plugin-postcss`,
     `gatsby-plugin-image`,
     {
       resolve: "gatsby-plugin-typegen",
       options: {
+        autoFix: true,
+        language: "typescript",
+        includeResolvers: true,
         outputPath: "./src/__generated__/gatsby-types.d.ts",
         emitSchema: {
           "./src/__generated__/gatsby-schema.graphql": true,

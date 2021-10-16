@@ -35,5 +35,5 @@ export class AdminMessagesArgs {
   @TypeGraphQL.Field(_type => [MessageScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "subject" | "from" | "body" | "read_status" | "answer_status" | "admin_id" | "createdAd"> | undefined;
+  distinct?: Array<"id" | "subject" | "from" | "body" | "read_status" | "answer_status" | "admin_id" | "answeredAt" | "createdAd"> | undefined;
 }

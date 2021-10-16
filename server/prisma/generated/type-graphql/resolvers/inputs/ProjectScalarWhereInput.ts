@@ -57,7 +57,7 @@ export class ProjectScalarWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  description?: StringFilter | undefined;
+  summary?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

@@ -20,12 +20,30 @@ const aboutRelationResolverActionsConfig: RelationResolverActionsConfig<"About">
       UseMiddleware(NotAllowedToCreateAdmin),
     ],
   };
+const projectRelationResolverActionsConfig: RelationResolverActionsConfig<"Project"> =
+  {
+    admin: [
+      UseMiddleware(isLoggedIn),
+      UseMiddleware(CountAdmins),
+      UseMiddleware(NotAllowedToCreateAdmin),
+    ],
+  };
+const messageRelationResolverActionsConfig: RelationResolverActionsConfig<"Message"> =
+  {
+    admin: [
+      UseMiddleware(isLoggedIn),
+      UseMiddleware(CountAdmins),
+      UseMiddleware(NotAllowedToCreateAdmin),
+    ],
+  };
 // ##############################################
 // ####################### ENHANCEMENT ##########
 // ##############################################
 const relationResolversEnhanceMap: RelationResolversEnhanceMap = {
   Admin: adminRelationResolverActionsConfig,
   About: aboutRelationResolverActionsConfig,
+  Message: messageRelationResolverActionsConfig,
+  Project: projectRelationResolverActionsConfig,
 };
 // ##############################################
 // ####################### APPLICATION ##########

@@ -20,7 +20,12 @@ export class SketchMaxAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  body!: string | null;
+  description!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  summary!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

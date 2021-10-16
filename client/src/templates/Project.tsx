@@ -9,6 +9,7 @@ import TechItem from "../components/App/TechItem"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { SEO } from "../components/SEO"
+import Loading from "../components/UI/Loading"
 const query = gql`
   query {
     me {
@@ -33,7 +34,7 @@ const Project: FC<Props> = ({ pageContext: { project } }) => {
   return (
     <>
       {loading ? (
-        <div>Content is loading</div>
+        <Loading />
       ) : (
         <>
           <SEO title="Adding New Project To Stack" />

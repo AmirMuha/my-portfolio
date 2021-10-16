@@ -63,5 +63,10 @@ export class MessageScalarWhereWithAggregatesInput {
   @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
     nullable: true
   })
+  answeredAt?: DateTimeWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
+    nullable: true
+  })
   createdAd?: DateTimeWithAggregatesFilter | undefined;
 }

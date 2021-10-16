@@ -37,7 +37,12 @@ export class SketchWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  body?: StringFilter | undefined;
+  description?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  summary?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

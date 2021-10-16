@@ -40,7 +40,7 @@ export class ProjectCreateManyAdminInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  description!: string;
+  summary!: string;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true

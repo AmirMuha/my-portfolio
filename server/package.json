@@ -11,6 +11,7 @@
     "p:mig": "prisma migrate dev --name init",
     "p:reset": "prisma migrate reset",
     "p:gen": "prisma generate",
+    "studio": "prisma studio",
     "gen:apikey": "node ./getprivatekey.js"
   },
   "prisma": {

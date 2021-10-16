@@ -41,6 +41,11 @@ export class MessageCreateInput {
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
+  answeredAt?: Date | undefined;
+
+  @TypeGraphQL.Field(_type => Date, {
+    nullable: true
+  })
   createdAd?: Date | undefined;
 
   @TypeGraphQL.Field(_type => AdminCreateNestedOneWithoutMessagesInput, {

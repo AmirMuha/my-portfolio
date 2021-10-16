@@ -13,6 +13,7 @@ import { SEO } from "../components/SEO"
 import Button from "../components/UI/Button"
 import Confirm from "../components/UI/Confirm"
 import QAndA_Add from "../components/Dashboard/Q&A_Add"
+import Loading from "../components/UI/Loading"
 const query = gql`
   query {
     me {
@@ -45,7 +46,7 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
   return (
     <>
       {loading ? (
-        <div>Content is loading</div>
+        <Loading />
       ) : (
         <>
           <SEO title="Adding PROJECT_NAME" />

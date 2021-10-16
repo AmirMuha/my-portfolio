@@ -388,19 +388,7 @@ type SitePageContextProject {
   type: String
   github_url: String
   app_url: String
-  description: String
-  tech_categories: [SitePageContextProjectTech_categories]
-}
-
-type SitePageContextProjectTech_categories {
-  id: String
-  name: String
-  techs: [SitePageContextProjectTech_categoriesTechs]
-}
-
-type SitePageContextProjectTech_categoriesTechs {
-  id: String
-  name: String
+  summary: String
 }
 
 enum ImageFormat {
@@ -689,6 +677,9 @@ type SitePluginPluginOptions {
   stripMetadata: Boolean
   defaultQuality: Int
   failOnError: Boolean
+  autoFix: Boolean
+  language: String
+  includeResolvers: Boolean
   outputPath: String
   emitSchema: SitePluginPluginOptionsEmitSchema
   emitPluginDocuments: SitePluginPluginOptionsEmitPluginDocuments
@@ -924,6 +915,7 @@ input Portfolio_MessageWhereInput {
   answer_status: Portfolio_BoolFilter
   admin: Portfolio_AdminRelationFilter
   admin_id: Portfolio_StringFilter
+  answeredAt: Portfolio_DateTimeFilter
   createdAd: Portfolio_DateTimeFilter
 }
 
@@ -965,7 +957,7 @@ input Portfolio_ProjectWhereInput {
   type: Portfolio_StringFilter
   github_url: Portfolio_StringFilter
   app_url: Portfolio_StringFilter
-  description: Portfolio_StringFilter
+  summary: Portfolio_StringFilter
   tech_categories: Portfolio_TechCategoryListRelationFilter
   questions: Portfolio_QuestionListRelationFilter
   sketches: Portfolio_SketchListRelationFilter
@@ -1067,7 +1059,8 @@ input Portfolio_SketchWhereInput {
   NOT: [Portfolio_SketchWhereInput!]
   id: Portfolio_StringFilter
   title: Portfolio_StringFilter
-  body: Portfolio_StringFilter
+  description: Portfolio_StringFilter
+  summary: Portfolio_StringFilter
   download_link: Portfolio_StringFilter
   image: Portfolio_StringFilter
   project: Portfolio_ProjectRelationFilter
@@ -1150,7 +1143,7 @@ type Portfolio_Project {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   admin_id: String!
   createdAt: Portfolio_DateTime!
   updatedAt: Portfolio_DateTime!
@@ -1213,7 +1206,7 @@ input Portfolio_ProjectOrderByWithRelationInput {
   type: Portfolio_SortOrder
   github_url: Portfolio_SortOrder
   app_url: Portfolio_SortOrder
-  description: Portfolio_SortOrder
+  summary: Portfolio_SortOrder
   tech_categories: Portfolio_TechCategoryOrderByRelationAggregateInput
   questions: Portfolio_QuestionOrderByRelationAggregateInput
   sketches: Portfolio_SketchOrderByRelationAggregateInput
@@ -1272,6 +1265,7 @@ input Portfolio_AnswerOrderByWithRelationInput {
 
 input Portfolio_QuestionWhereUniqueInput {
   id: String
+  answer_id: String
 }
 
 enum Portfolio_QuestionScalarFieldEnum {
@@ -1284,7 +1278,8 @@ enum Portfolio_QuestionScalarFieldEnum {
 type Portfolio_Sketch {
   id: String!
   title: String!
-  body: String!
+  description: String!
+  summary: String!
   download_link: String!
   image: String!
   project_id: String!
@@ -1294,7 +1289,8 @@ type Portfolio_Sketch {
 input Portfolio_SketchOrderByWithRelationInput {
   id: Portfolio_SortOrder
   title: Portfolio_SortOrder
-  body: Portfolio_SortOrder
+  description: Portfolio_SortOrder
+  summary: Portfolio_SortOrder
   download_link: Portfolio_SortOrder
   image: Portfolio_SortOrder
   project: Portfolio_ProjectOrderByWithRelationInput
@@ -1308,7 +1304,8 @@ input Portfolio_SketchWhereUniqueInput {
 enum Portfolio_SketchScalarFieldEnum {
   id
   title
-  body
+  description
+  summary
   download_link
   image
   project_id
@@ -1331,6 +1328,7 @@ type Portfolio_Message {
   read_status: Boolean!
   answer_status: Boolean!
   admin_id: String!
+  answeredAt: Portfolio_DateTime!
   createdAd: Portfolio_DateTime!
   admin: Portfolio_Admin!
 }
@@ -1348,6 +1346,7 @@ input Portfolio_MessageOrderByWithRelationInput {
   answer_status: Portfolio_SortOrder
   admin: Portfolio_AdminOrderByWithRelationInput
   admin_id: Portfolio_SortOrder
+  answeredAt: Portfolio_SortOrder
   createdAd: Portfolio_SortOrder
 }
 
@@ -1359,6 +1358,7 @@ enum Portfolio_MessageScalarFieldEnum {
   read_status
   answer_status
   admin_id
+  answeredAt
   createdAd
 }
 
@@ -1373,7 +1373,7 @@ enum Portfolio_ProjectScalarFieldEnum {
   type
   github_url
   app_url
-  description
+  summary
   admin_id
   createdAt
   updatedAt
@@ -1430,6 +1430,7 @@ input Portfolio_MessageCreateWithoutAdminInput {
   body: String!
   read_status: Boolean
   answer_status: Boolean
+  answeredAt: Portfolio_DateTime
   createdAd: Portfolio_DateTime
 }
 
@@ -1450,6 +1451,7 @@ input Portfolio_MessageCreateManyAdminInput {
   body: String!
   read_status: Boolean
   answer_status: Boolean
+  answeredAt: Portfolio_DateTime
   createdAd: Portfolio_DateTime
 }
 
@@ -1467,7 +1469,7 @@ input Portfolio_ProjectCreateWithoutAdminInput {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
   tech_categories: Portfolio_TechCategoryCreateNestedManyWithoutProjectInput
@@ -1585,7 +1587,8 @@ input Portfolio_SketchCreateNestedManyWithoutProjectInput {
 input Portfolio_SketchCreateWithoutProjectInput {
   id: String
   title: String!
-  body: String!
+  description: String!
+  summary: String!
   download_link: String!
   image: String!
 }
@@ -1603,7 +1606,8 @@ input Portfolio_SketchCreateManyProjectInputEnvelope {
 input Portfolio_SketchCreateManyProjectInput {
   id: String
   title: String!
-  body: String!
+  description: String!
+  summary: String!
   download_link: String!
   image: String!
 }
@@ -1625,7 +1629,7 @@ input Portfolio_ProjectCreateManyAdminInput {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
 }
@@ -1724,6 +1728,7 @@ input Portfolio_MessageUpdateWithoutAdminInput {
   body: Portfolio_StringFieldUpdateOperationsInput
   read_status: Portfolio_BoolFieldUpdateOperationsInput
   answer_status: Portfolio_BoolFieldUpdateOperationsInput
+  answeredAt: Portfolio_DateTimeFieldUpdateOperationsInput
   createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
 }
 
@@ -1748,6 +1753,7 @@ input Portfolio_MessageScalarWhereInput {
   read_status: Portfolio_BoolFilter
   answer_status: Portfolio_BoolFilter
   admin_id: Portfolio_StringFilter
+  answeredAt: Portfolio_DateTimeFilter
   createdAd: Portfolio_DateTimeFilter
 }
 
@@ -1758,6 +1764,7 @@ input Portfolio_MessageUpdateManyMutationInput {
   body: Portfolio_StringFieldUpdateOperationsInput
   read_status: Portfolio_BoolFieldUpdateOperationsInput
   answer_status: Portfolio_BoolFieldUpdateOperationsInput
+  answeredAt: Portfolio_DateTimeFieldUpdateOperationsInput
   createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
 }
 
@@ -1788,7 +1795,7 @@ input Portfolio_ProjectUpdateWithoutAdminInput {
   type: Portfolio_StringFieldUpdateOperationsInput
   github_url: Portfolio_StringFieldUpdateOperationsInput
   app_url: Portfolio_StringFieldUpdateOperationsInput
-  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
   tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
@@ -1987,7 +1994,8 @@ input Portfolio_SketchUpsertWithWhereUniqueWithoutProjectInput {
 input Portfolio_SketchUpdateWithoutProjectInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   title: Portfolio_StringFieldUpdateOperationsInput
-  body: Portfolio_StringFieldUpdateOperationsInput
+  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   download_link: Portfolio_StringFieldUpdateOperationsInput
   image: Portfolio_StringFieldUpdateOperationsInput
 }
@@ -2008,7 +2016,8 @@ input Portfolio_SketchScalarWhereInput {
   NOT: [Portfolio_SketchScalarWhereInput!]
   id: Portfolio_StringFilter
   title: Portfolio_StringFilter
-  body: Portfolio_StringFilter
+  description: Portfolio_StringFilter
+  summary: Portfolio_StringFilter
   download_link: Portfolio_StringFilter
   image: Portfolio_StringFilter
   project_id: Portfolio_StringFilter
@@ -2017,7 +2026,8 @@ input Portfolio_SketchScalarWhereInput {
 input Portfolio_SketchUpdateManyMutationInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   title: Portfolio_StringFieldUpdateOperationsInput
-  body: Portfolio_StringFieldUpdateOperationsInput
+  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   download_link: Portfolio_StringFieldUpdateOperationsInput
   image: Portfolio_StringFieldUpdateOperationsInput
 }
@@ -2042,7 +2052,7 @@ input Portfolio_ProjectScalarWhereInput {
   type: Portfolio_StringFilter
   github_url: Portfolio_StringFilter
   app_url: Portfolio_StringFilter
-  description: Portfolio_StringFilter
+  summary: Portfolio_StringFilter
   admin_id: Portfolio_StringFilter
   createdAt: Portfolio_DateTimeFilter
   updatedAt: Portfolio_DateTimeFilter
@@ -2055,7 +2065,7 @@ input Portfolio_ProjectUpdateManyMutationInput {
   type: Portfolio_StringFieldUpdateOperationsInput
   github_url: Portfolio_StringFieldUpdateOperationsInput
   app_url: Portfolio_StringFieldUpdateOperationsInput
-  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
 }
@@ -2095,7 +2105,7 @@ input Portfolio_ProjectCreateWithoutQuestionsInput {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
   tech_categories: Portfolio_TechCategoryCreateNestedManyWithoutProjectInput
@@ -2221,7 +2231,7 @@ input Portfolio_ProjectUpdateWithoutQuestionsInput {
   type: Portfolio_StringFieldUpdateOperationsInput
   github_url: Portfolio_StringFieldUpdateOperationsInput
   app_url: Portfolio_StringFieldUpdateOperationsInput
-  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
   tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
@@ -2323,6 +2333,7 @@ input Portfolio_MessageCreateInput {
   body: String!
   read_status: Boolean
   answer_status: Boolean
+  answeredAt: Portfolio_DateTime
   createdAd: Portfolio_DateTime
   admin: Portfolio_AdminCreateNestedOneWithoutMessagesInput!
 }
@@ -2364,6 +2375,7 @@ input Portfolio_MessageUpdateInput {
   body: Portfolio_StringFieldUpdateOperationsInput
   read_status: Portfolio_BoolFieldUpdateOperationsInput
   answer_status: Portfolio_BoolFieldUpdateOperationsInput
+  answeredAt: Portfolio_DateTimeFieldUpdateOperationsInput
   createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
   admin: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput
 }
@@ -2407,7 +2419,7 @@ input Portfolio_ProjectCreateInput {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
   tech_categories: Portfolio_TechCategoryCreateNestedManyWithoutProjectInput
@@ -2423,7 +2435,7 @@ input Portfolio_ProjectUpdateInput {
   type: Portfolio_StringFieldUpdateOperationsInput
   github_url: Portfolio_StringFieldUpdateOperationsInput
   app_url: Portfolio_StringFieldUpdateOperationsInput
-  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
   tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
@@ -2449,7 +2461,8 @@ input Portfolio_QuestionUpdateInput {
 input Portfolio_SketchCreateInput {
   id: String
   title: String!
-  body: String!
+  description: String!
+  summary: String!
   download_link: String!
   image: String!
   project: Portfolio_ProjectCreateNestedOneWithoutSketchesInput!
@@ -2468,7 +2481,7 @@ input Portfolio_ProjectCreateWithoutSketchesInput {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
   tech_categories: Portfolio_TechCategoryCreateNestedManyWithoutProjectInput
@@ -2484,7 +2497,8 @@ input Portfolio_ProjectCreateOrConnectWithoutSketchesInput {
 input Portfolio_SketchUpdateInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   title: Portfolio_StringFieldUpdateOperationsInput
-  body: Portfolio_StringFieldUpdateOperationsInput
+  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   download_link: Portfolio_StringFieldUpdateOperationsInput
   image: Portfolio_StringFieldUpdateOperationsInput
   project: Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput
@@ -2510,7 +2524,7 @@ input Portfolio_ProjectUpdateWithoutSketchesInput {
   type: Portfolio_StringFieldUpdateOperationsInput
   github_url: Portfolio_StringFieldUpdateOperationsInput
   app_url: Portfolio_StringFieldUpdateOperationsInput
-  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
   tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
@@ -2549,7 +2563,7 @@ input Portfolio_ProjectCreateWithoutTech_categoriesInput {
   type: String!
   github_url: String!
   app_url: String!
-  description: String!
+  summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
   questions: Portfolio_QuestionCreateNestedManyWithoutProjectInput
@@ -2612,7 +2626,7 @@ input Portfolio_ProjectUpdateWithoutTech_categoriesInput {
   type: Portfolio_StringFieldUpdateOperationsInput
   github_url: Portfolio_StringFieldUpdateOperationsInput
   app_url: Portfolio_StringFieldUpdateOperationsInput
-  description: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
   questions: Portfolio_QuestionUpdateManyWithoutProjectInput
@@ -3716,27 +3730,7 @@ input SitePageContextProjectFilterInput {
   type: StringQueryOperatorInput
   github_url: StringQueryOperatorInput
   app_url: StringQueryOperatorInput
-  description: StringQueryOperatorInput
-  tech_categories: SitePageContextProjectTech_categoriesFilterListInput
-}
-
-input SitePageContextProjectTech_categoriesFilterListInput {
-  elemMatch: SitePageContextProjectTech_categoriesFilterInput
-}
-
-input SitePageContextProjectTech_categoriesFilterInput {
-  id: StringQueryOperatorInput
-  name: StringQueryOperatorInput
-  techs: SitePageContextProjectTech_categoriesTechsFilterListInput
-}
-
-input SitePageContextProjectTech_categoriesTechsFilterListInput {
-  elemMatch: SitePageContextProjectTech_categoriesTechsFilterInput
-}
-
-input SitePageContextProjectTech_categoriesTechsFilterInput {
-  id: StringQueryOperatorInput
-  name: StringQueryOperatorInput
+  summary: StringQueryOperatorInput
 }
 
 input SitePluginFilterInput {
@@ -3760,6 +3754,9 @@ input SitePluginPluginOptionsFilterInput {
   stripMetadata: BooleanQueryOperatorInput
   defaultQuality: IntQueryOperatorInput
   failOnError: BooleanQueryOperatorInput
+  autoFix: BooleanQueryOperatorInput
+  language: StringQueryOperatorInput
+  includeResolvers: BooleanQueryOperatorInput
   outputPath: StringQueryOperatorInput
   emitSchema: SitePluginPluginOptionsEmitSchemaFilterInput
   emitPluginDocuments: SitePluginPluginOptionsEmitPluginDocumentsFilterInput
@@ -3940,11 +3937,7 @@ enum SitePageFieldsEnum {
   context___project___type
   context___project___github_url
   context___project___app_url
-  context___project___description
-  context___project___tech_categories
-  context___project___tech_categories___id
-  context___project___tech_categories___name
-  context___project___tech_categories___techs
+  context___project___summary
   pluginCreator___id
   pluginCreator___parent___id
   pluginCreator___parent___parent___id
@@ -3990,6 +3983,9 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___stripMetadata
   pluginCreator___pluginOptions___defaultQuality
   pluginCreator___pluginOptions___failOnError
+  pluginCreator___pluginOptions___autoFix
+  pluginCreator___pluginOptions___language
+  pluginCreator___pluginOptions___includeResolvers
   pluginCreator___pluginOptions___outputPath
   pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxschemaxgraphql
   pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson
@@ -4321,6 +4317,9 @@ enum SitePluginFieldsEnum {
   pluginOptions___stripMetadata
   pluginOptions___defaultQuality
   pluginOptions___failOnError
+  pluginOptions___autoFix
+  pluginOptions___language
+  pluginOptions___includeResolvers
   pluginOptions___outputPath
   pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxschemaxgraphql
   pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson

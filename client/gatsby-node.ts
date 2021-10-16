@@ -1,5 +1,6 @@
 import { CreatePagesArgs } from "gatsby"
 import path from "path"
+
 interface ProjectQuery {
   portfolio: {
     projects: {
@@ -22,7 +23,7 @@ export const createPages = async ({
           type
           github_url
           app_url
-          description
+          summary
           tech_categories {
             id
             name
@@ -34,7 +35,8 @@ export const createPages = async ({
           sketches {
             id
             title
-            body
+            summary
+            description
             download_link
             image
           }

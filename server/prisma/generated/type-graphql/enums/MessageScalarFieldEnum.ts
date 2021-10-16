@@ -8,6 +8,7 @@ export enum MessageScalarFieldEnum {
   read_status = "read_status",
   answer_status = "answer_status",
   admin_id = "admin_id",
+  answeredAt = "answeredAt",
   createdAd = "createdAd"
 }
 TypeGraphQL.registerEnumType(MessageScalarFieldEnum, {

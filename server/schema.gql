@@ -591,6 +591,7 @@ type Message {
   admin: Admin!
   admin_id: String!
   answer_status: Boolean!
+  answeredAt: DateTime!
   body: String!
   createdAd: DateTime!
   from: String!
@@ -602,6 +603,7 @@ type Message {
 input MessageCreateInput {
   admin: AdminCreateNestedOneWithoutMessagesInput!
   answer_status: Boolean
+  answeredAt: DateTime
   body: String!
   createdAd: DateTime
   from: String!
@@ -612,6 +614,7 @@ input MessageCreateInput {
 
 input MessageCreateManyAdminInput {
   answer_status: Boolean
+  answeredAt: DateTime
   body: String!
   createdAd: DateTime
   from: String!
@@ -639,6 +642,7 @@ input MessageCreateOrConnectWithoutAdminInput {
 
 input MessageCreateWithoutAdminInput {
   answer_status: Boolean
+  answeredAt: DateTime
   body: String!
   createdAd: DateTime
   from: String!
@@ -661,6 +665,7 @@ input MessageOrderByWithRelationInput {
   admin: AdminOrderByWithRelationInput
   admin_id: SortOrder
   answer_status: SortOrder
+  answeredAt: SortOrder
   body: SortOrder
   createdAd: SortOrder
   from: SortOrder
@@ -672,6 +677,7 @@ input MessageOrderByWithRelationInput {
 enum MessageScalarFieldEnum {
   admin_id
   answer_status
+  answeredAt
   body
   createdAd
   from
@@ -686,6 +692,7 @@ input MessageScalarWhereInput {
   OR: [MessageScalarWhereInput!]
   admin_id: StringFilter
   answer_status: BoolFilter
+  answeredAt: DateTimeFilter
   body: StringFilter
   createdAd: DateTimeFilter
   from: StringFilter
@@ -697,6 +704,7 @@ input MessageScalarWhereInput {
 input MessageUpdateInput {
   admin: AdminUpdateOneRequiredWithoutMessagesInput
   answer_status: BoolFieldUpdateOperationsInput
+  answeredAt: DateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
   from: StringFieldUpdateOperationsInput
@@ -707,6 +715,7 @@ input MessageUpdateInput {
 
 input MessageUpdateManyMutationInput {
   answer_status: BoolFieldUpdateOperationsInput
+  answeredAt: DateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
   from: StringFieldUpdateOperationsInput
@@ -741,6 +750,7 @@ input MessageUpdateWithWhereUniqueWithoutAdminInput {
 
 input MessageUpdateWithoutAdminInput {
   answer_status: BoolFieldUpdateOperationsInput
+  answeredAt: DateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
   from: StringFieldUpdateOperationsInput
@@ -762,6 +772,7 @@ input MessageWhereInput {
   admin: AdminRelationFilter
   admin_id: StringFilter
   answer_status: BoolFilter
+  answeredAt: DateTimeFilter
   body: StringFilter
   createdAd: DateTimeFilter
   from: StringFilter
@@ -857,13 +868,13 @@ type Project {
   admin_id: String!
   app_url: String!
   createdAt: DateTime!
-  description: String!
   github_url: String!
   id: String!
   image: String!
   name: String!
   questions(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): [Question!]!
   sketches(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): [Sketch!]!
+  summary: String!
   tech_categories(cursor: TechCategoryWhereUniqueInput, distinct: [TechCategoryScalarFieldEnum!], orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): [TechCategory!]!
   type: String!
   updatedAt: DateTime!
@@ -879,13 +890,13 @@ input ProjectCreateInput {
   admin: AdminCreateNestedOneWithoutProjectsInput!
   app_url: String!
   createdAt: DateTime
-  description: String!
   github_url: String!
   id: String
   image: String!
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
   sketches: SketchCreateNestedManyWithoutProjectInput
+  summary: String!
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
   type: String!
   updatedAt: DateTime
@@ -894,11 +905,11 @@ input ProjectCreateInput {
 input ProjectCreateManyAdminInput {
   app_url: String!
   createdAt: DateTime
-  description: String!
   github_url: String!
   id: String
   image: String!
   name: String!
+  summary: String!
   type: String!
   updatedAt: DateTime
 }
@@ -956,13 +967,13 @@ input ProjectCreateOrConnectWithoutTech_categoriesInput {
 input ProjectCreateWithoutAdminInput {
   app_url: String!
   createdAt: DateTime
-  description: String!
   github_url: String!
   id: String
   image: String!
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
   sketches: SketchCreateNestedManyWithoutProjectInput
+  summary: String!
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
   type: String!
   updatedAt: DateTime
@@ -972,12 +983,12 @@ input ProjectCreateWithoutQuestionsInput {
   admin: AdminCreateNestedOneWithoutProjectsInput!
   app_url: String!
   createdAt: DateTime
-  description: String!
   github_url: String!
   id: String
   image: String!
   name: String!
   sketches: SketchCreateNestedManyWithoutProjectInput
+  summary: String!
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
   type: String!
   updatedAt: DateTime
@@ -987,12 +998,12 @@ input ProjectCreateWithoutSketchesInput {
   admin: AdminCreateNestedOneWithoutProjectsInput!
   app_url: String!
   createdAt: DateTime
-  description: String!
   github_url: String!
   id: String
   image: String!
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
+  summary: String!
   tech_categories: TechCategoryCreateNestedManyWithoutProjectInput
   type: String!
   updatedAt: DateTime
@@ -1002,13 +1013,13 @@ input ProjectCreateWithoutTech_categoriesInput {
   admin: AdminCreateNestedOneWithoutProjectsInput!
   app_url: String!
   createdAt: DateTime
-  description: String!
   github_url: String!
   id: String
   image: String!
   name: String!
   questions: QuestionCreateNestedManyWithoutProjectInput
   sketches: SketchCreateNestedManyWithoutProjectInput
+  summary: String!
   type: String!
   updatedAt: DateTime
 }
@@ -1028,13 +1039,13 @@ input ProjectOrderByWithRelationInput {
   admin_id: SortOrder
   app_url: SortOrder
   createdAt: SortOrder
-  description: SortOrder
   github_url: SortOrder
   id: SortOrder
   image: SortOrder
   name: SortOrder
   questions: QuestionOrderByRelationAggregateInput
   sketches: SketchOrderByRelationAggregateInput
+  summary: SortOrder
   tech_categories: TechCategoryOrderByRelationAggregateInput
   type: SortOrder
   updatedAt: SortOrder
@@ -1049,11 +1060,11 @@ enum ProjectScalarFieldEnum {
   admin_id
   app_url
   createdAt
-  description
   github_url
   id
   image
   name
+  summary
   type
   updatedAt
 }
@@ -1065,11 +1076,11 @@ input ProjectScalarWhereInput {
   admin_id: StringFilter
   app_url: StringFilter
   createdAt: DateTimeFilter
-  description: StringFilter
   github_url: StringFilter
   id: StringFilter
   image: StringFilter
   name: StringFilter
+  summary: StringFilter
   type: StringFilter
   updatedAt: DateTimeFilter
 }
@@ -1078,13 +1089,13 @@ input ProjectUpdateInput {
   admin: AdminUpdateOneRequiredWithoutProjectsInput
   app_url: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
   github_url: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   questions: QuestionUpdateManyWithoutProjectInput
   sketches: SketchUpdateManyWithoutProjectInput
+  summary: StringFieldUpdateOperationsInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1093,11 +1104,11 @@ input ProjectUpdateInput {
 input ProjectUpdateManyMutationInput {
   app_url: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
   github_url: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  summary: StringFieldUpdateOperationsInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -1153,13 +1164,13 @@ input ProjectUpdateWithWhereUniqueWithoutAdminInput {
 input ProjectUpdateWithoutAdminInput {
   app_url: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
   github_url: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   questions: QuestionUpdateManyWithoutProjectInput
   sketches: SketchUpdateManyWithoutProjectInput
+  summary: StringFieldUpdateOperationsInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1169,12 +1180,12 @@ input ProjectUpdateWithoutQuestionsInput {
   admin: AdminUpdateOneRequiredWithoutProjectsInput
   app_url: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
   github_url: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   sketches: SketchUpdateManyWithoutProjectInput
+  summary: StringFieldUpdateOperationsInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1184,12 +1195,12 @@ input ProjectUpdateWithoutSketchesInput {
   admin: AdminUpdateOneRequiredWithoutProjectsInput
   app_url: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
   github_url: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   questions: QuestionUpdateManyWithoutProjectInput
+  summary: StringFieldUpdateOperationsInput
   tech_categories: TechCategoryUpdateManyWithoutProjectInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1199,13 +1210,13 @@ input ProjectUpdateWithoutTech_categoriesInput {
   admin: AdminUpdateOneRequiredWithoutProjectsInput
   app_url: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  description: StringFieldUpdateOperationsInput
   github_url: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   questions: QuestionUpdateManyWithoutProjectInput
   sketches: SketchUpdateManyWithoutProjectInput
+  summary: StringFieldUpdateOperationsInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -1239,13 +1250,13 @@ input ProjectWhereInput {
   admin_id: StringFilter
   app_url: StringFilter
   createdAt: DateTimeFilter
-  description: StringFilter
   github_url: StringFilter
   id: StringFilter
   image: StringFilter
   name: StringFilter
   questions: QuestionListRelationFilter
   sketches: SketchListRelationFilter
+  summary: StringFilter
   tech_categories: TechCategoryListRelationFilter
   type: StringFilter
   updatedAt: DateTimeFilter
@@ -1467,33 +1478,37 @@ input QuestionWhereInput {
 }
 
 input QuestionWhereUniqueInput {
+  answer_id: String
   id: String
 }
 
 type Sketch {
-  body: String!
+  description: String!
   download_link: String!
   id: String!
   image: String!
   project: Project!
   project_id: String!
+  summary: String!
   title: String!
 }
 
 input SketchCreateInput {
-  body: String!
+  description: String!
   download_link: String!
   id: String
   image: String!
   project: ProjectCreateNestedOneWithoutSketchesInput!
+  summary: String!
   title: String!
 }
 
 input SketchCreateManyProjectInput {
-  body: String!
+  description: String!
   download_link: String!
   id: String
   image: String!
+  summary: String!
   title: String!
 }
 
@@ -1515,10 +1530,11 @@ input SketchCreateOrConnectWithoutProjectInput {
 }
 
 input SketchCreateWithoutProjectInput {
-  body: String!
+  description: String!
   download_link: String!
   id: String
   image: String!
+  summary: String!
   title: String!
 }
 
@@ -1533,21 +1549,23 @@ input SketchOrderByRelationAggregateInput {
 }
 
 input SketchOrderByWithRelationInput {
-  body: SortOrder
+  description: SortOrder
   download_link: SortOrder
   id: SortOrder
   image: SortOrder
   project: ProjectOrderByWithRelationInput
   project_id: SortOrder
+  summary: SortOrder
   title: SortOrder
 }
 
 enum SketchScalarFieldEnum {
-  body
+  description
   download_link
   id
   image
   project_id
+  summary
   title
 }
 
@@ -1555,28 +1573,31 @@ input SketchScalarWhereInput {
   AND: [SketchScalarWhereInput!]
   NOT: [SketchScalarWhereInput!]
   OR: [SketchScalarWhereInput!]
-  body: StringFilter
+  description: StringFilter
   download_link: StringFilter
   id: StringFilter
   image: StringFilter
   project_id: StringFilter
+  summary: StringFilter
   title: StringFilter
 }
 
 input SketchUpdateInput {
-  body: StringFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
   download_link: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   project: ProjectUpdateOneRequiredWithoutSketchesInput
+  summary: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
 }
 
 input SketchUpdateManyMutationInput {
-  body: StringFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
   download_link: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
+  summary: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
 }
 
@@ -1605,10 +1626,11 @@ input SketchUpdateWithWhereUniqueWithoutProjectInput {
 }
 
 input SketchUpdateWithoutProjectInput {
-  body: StringFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
   download_link: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
+  summary: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
 }
 
@@ -1622,12 +1644,13 @@ input SketchWhereInput {
   AND: [SketchWhereInput!]
   NOT: [SketchWhereInput!]
   OR: [SketchWhereInput!]
-  body: StringFilter
+  description: StringFilter
   download_link: StringFilter
   id: StringFilter
   image: StringFilter
   project: ProjectRelationFilter
   project_id: StringFilter
+  summary: StringFilter
   title: StringFilter
 }
 

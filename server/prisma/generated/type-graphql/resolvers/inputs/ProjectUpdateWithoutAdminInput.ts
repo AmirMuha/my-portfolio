@@ -45,7 +45,7 @@ export class ProjectUpdateWithoutAdminInput {
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
-  description?: StringFieldUpdateOperationsInput | undefined;
+  summary?: StringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
     nullable: true

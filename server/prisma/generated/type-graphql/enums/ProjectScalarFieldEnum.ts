@@ -7,7 +7,7 @@ export enum ProjectScalarFieldEnum {
   type = "type",
   github_url = "github_url",
   app_url = "app_url",
-  description = "description",
+  summary = "summary",
   admin_id = "admin_id",
   createdAt = "createdAt",
   updatedAt = "updatedAt"

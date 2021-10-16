@@ -7,6 +7,7 @@ import {
   aboutPropsValidation,
   adminPropsValidation,
   answerPropsValidation,
+  messagePropsValidation,
   projectPropsValidation,
   questionPropsValidation,
   sketchPropsValidation,
@@ -65,6 +66,12 @@ const projectUpdateInputTypeConfig: InputTypeConfig<"ProjectUpdateInput"> = {
 const projectCreateInputTypeConfig: InputTypeConfig<"ProjectCreateInput"> = {
   fields: { ...projectPropsValidation },
 };
+const messageUpdateInputTypeConfig: InputTypeConfig<"MessageUpdateInput"> = {
+  fields: { ...messagePropsValidation },
+};
+const messageCreateInputTypeConfig: InputTypeConfig<"MessageCreateInput"> = {
+  fields: { ...messagePropsValidation },
+};
 // ##############################################
 // ####################### ENHANCEMENT ##########
 // ##############################################
@@ -84,6 +91,8 @@ const inputTypesEnhanceMap: InputTypesEnhanceMap = {
   SketchUpdateInput: sketchUpdateInputTypeConfig,
   ProjectCreateInput: projectCreateInputTypeConfig,
   ProjectUpdateInput: projectUpdateInputTypeConfig,
+  MessageCreateInput: messageCreateInputTypeConfig,
+  MessageUpdateInput: messageUpdateInputTypeConfig,
 };
 // ##############################################
 // ####################### APPLICATION ##########

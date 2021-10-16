@@ -40,7 +40,7 @@ export class ProjectMaxAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  description!: string | null;
+  summary!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

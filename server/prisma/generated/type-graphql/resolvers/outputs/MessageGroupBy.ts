@@ -48,6 +48,11 @@ export class MessageGroupBy {
   @TypeGraphQL.Field(_type => Date, {
     nullable: false
   })
+  answeredAt!: Date;
+
+  @TypeGraphQL.Field(_type => Date, {
+    nullable: false
+  })
   createdAd!: Date;
 
   @TypeGraphQL.Field(_type => MessageCountAggregate, {

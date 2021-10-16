@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsString,
   IsUrl,
@@ -24,8 +25,8 @@ export const adminPropsValidation = {
 
 export const aboutPropsValidation = {
   id: [IsString(), IsUUID()],
-  body: [UseMiddleware(isLoggedIn), IsString()],
-  title: [UseMiddleware(isLoggedIn), IsString()],
+  body: [IsString()],
+  title: [IsString()],
 };
 
 export const techPropsValidation = {
@@ -59,8 +60,17 @@ export const questionPropsValidation = {
 
 export const sketchPropsValidation = {
   id: [IsString(), IsUUID()],
-  body: [IsString()],
+  description: [IsString()],
+  summary: [IsString()],
   download_link: [IsString(), IsUrl()],
   image: [IsString()],
   title: [IsString()],
+};
+export const messagePropsValidation = {
+  id: [IsString(), IsUUID()],
+  body: [IsString()],
+  from: [IsEmail()],
+  read_status: [IsBoolean()],
+  answer_status: [IsBoolean()],
+  subject: [IsString()],
 };

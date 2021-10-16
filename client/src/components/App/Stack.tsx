@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren, useState } from "react"
 import { JS, NodeJS, ReactJS, TS, VueJS } from "../../icons/iconsJSX"
 import Button from "../UI/Button"
+import Confirm from "../UI/Confirm"
 import Input, { File } from "../UI/Input"
 import SmallPipe from "../UI/SmallPipe"
 
@@ -17,6 +18,15 @@ const Stack: FC<PropsWithChildren<Props>> = ({
 }) => {
   const [newStackImageUrl, setNewStackImageUrl] = useState<string>("")
   const [newStackImageFile, setNewStackImageFile] = useState<File>()
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState({
+    isOpen: false,
+    id: "",
+  })
+  const deleteStackItem = (d: boolean, id: string) => {
+    if (d) {
+      console.log("Deleting the stack item with id %s", id)
+    }
+  }
   return (
     <>
       {editable ? (
@@ -58,22 +68,63 @@ const Stack: FC<PropsWithChildren<Props>> = ({
             className="bg-palatte-500 w-full pb-2 pt-3"
           >
             <ul className="flex stack px-3 items-center gap-2">
-              <li title="TypeScript">
-                <button>{TS}</button>
+              <li title="Delete TypeScript">
+                <button
+                  onClick={() =>
+                    setIsConfirmDeleteOpen({ isOpen: true, id: "1" })
+                  }
+                >
+                  {TS}
+                </button>
               </li>
-              <li title="JavaScript">
-                <button>{JS}</button>
+              <li title="Delete JavaScript">
+                <button
+                  onClick={() =>
+                    setIsConfirmDeleteOpen({ isOpen: true, id: "2" })
+                  }
+                >
+                  {JS}
+                </button>
               </li>
-              <li title="NodeJS">
-                <button>{NodeJS}</button>
+              <li title="Delete NodeJS">
+                <button
+                  onClick={() =>
+                    setIsConfirmDeleteOpen({ isOpen: true, id: "4" })
+                  }
+                >
+                  {NodeJS}
+                </button>
               </li>
-              <li title="ReactJS">
-                <button>{ReactJS}</button>
+              <li title="Delete ReactJS">
+                <button
+                  onClick={() =>
+                    setIsConfirmDeleteOpen({ isOpen: true, id: "5" })
+                  }
+                >
+                  {ReactJS}
+                </button>
               </li>
-              <li title="VueJS">
-                <button>{VueJS}</button>
+              <li title="Delete VueJS">
+                <button
+                  onClick={() =>
+                    setIsConfirmDeleteOpen({ isOpen: true, id: "6" })
+                  }
+                >
+                  {VueJS}
+                </button>
               </li>
             </ul>
+            {isConfirmDeleteOpen.isOpen && (
+              <Confirm
+                header
+                title={`Deleting Stack Item`}
+                text="Are you sure you want to delete NodeJS Stack Item ?"
+                getValue={v => deleteStackItem(v, isConfirmDeleteOpen.id)}
+                onClose={() =>
+                  setIsConfirmDeleteOpen({ isOpen: false, id: "" })
+                }
+              ></Confirm>
+            )}
           </div>
         </div>
       ) : (

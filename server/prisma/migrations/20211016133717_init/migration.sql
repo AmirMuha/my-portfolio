@@ -27,7 +27,7 @@ CREATE TABLE "Project" (
     "type" TEXT NOT NULL,
     "github_url" TEXT NOT NULL,
     "app_url" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "summary" TEXT NOT NULL,
     "admin_id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -75,7 +75,8 @@ CREATE TABLE "Answer" (
 CREATE TABLE "Sketch" (
     "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
-    "body" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "summary" TEXT NOT NULL,
     "download_link" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "project_id" UUID NOT NULL,
@@ -103,6 +104,7 @@ CREATE TABLE "Message" (
     "read_status" BOOLEAN NOT NULL DEFAULT false,
     "answer_status" BOOLEAN NOT NULL DEFAULT false,
     "admin_id" UUID NOT NULL,
+    "answeredAt" TIMESTAMP(3) NOT NULL,
     "createdAd" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
@@ -127,7 +129,7 @@ CREATE UNIQUE INDEX "Tech_id_key" ON "Tech"("id");
 CREATE UNIQUE INDEX "Question_id_key" ON "Question"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Question_answer_id_unique" ON "Question"("answer_id");
+CREATE UNIQUE INDEX "Question_answer_id_key" ON "Question"("answer_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Answer_id_key" ON "Answer"("id");

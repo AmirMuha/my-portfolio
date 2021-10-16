@@ -20,7 +20,7 @@ export class GroupByMessageArgs {
   @TypeGraphQL.Field(_type => [MessageScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "subject" | "from" | "body" | "read_status" | "answer_status" | "admin_id" | "createdAd">;
+  by!: Array<"id" | "subject" | "from" | "body" | "read_status" | "answer_status" | "admin_id" | "answeredAt" | "createdAd">;
 
   @TypeGraphQL.Field(_type => MessageScalarWhereWithAggregatesInput, {
     nullable: true

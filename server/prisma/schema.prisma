@@ -71,7 +71,7 @@ model Question {
   id         String  @id @unique @default(uuid()) @db.Uuid
   question   String  @db.Text
   answer     Answer  @relation(fields: [answer_id], references: [id], onDelete: Cascade)
-  answer_id  String  @db.Uuid@unique
+  answer_id  String  @unique @db.Uuid
   project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id String  @db.Uuid
 }
@@ -85,8 +85,8 @@ model Answer {
 model Sketch {
   id            String  @id @unique @default(uuid()) @db.Uuid
   title         String
-  description          String  @db.Text
-  summary String @db.Text
+  description   String  @db.Text
+  summary       String  @db.Text
   download_link String
   image         String
   project       Project @relation(fields: [project_id], references: [id], onDelete: Cascade)

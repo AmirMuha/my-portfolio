@@ -1,4 +1,4 @@
-import { PageProps } from "gatsby"
+import { graphql, PageProps, useStaticQuery } from "gatsby"
 import React, { FC } from "react"
 import InPageMenu from "../components/App/InPageMenu"
 import Projects from "../components/App/Projects"
@@ -8,7 +8,15 @@ import TheHero from "../components/App/TheHero"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { SEO } from "../components/SEO"
-const Home: FC<PageProps> = props => {
+interface Props extends PageProps {
+  data: {
+    portfolio: {
+      projects: GatsbyTypes.Portfolio_Project[]
+    }
+  }
+}
+const Home: FC<Props> = ({ data }) => {
+  console.log(data)
   return (
     <>
       <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />
@@ -23,7 +31,7 @@ const Home: FC<PageProps> = props => {
           <InPageMenu pipes="left" />
         </TheSection>
         <TheSection id="projects" name="Projects">
-          <Projects />
+          <Projects data={data.portfolio.projects || []} />
         </TheSection>
         <TheSection id="stack" name="Stack">
           <Stack />
@@ -47,4 +55,21 @@ const Home: FC<PageProps> = props => {
   )
 }
 
+export const query = graphql`
+  query {
+    portfolio {
+      projects {
+        id
+        github_url
+        summary
+        app_url
+        image
+        name
+        type
+        updatedAt
+        createdAt
+      }
+    }
+  }
+`
 export default Home

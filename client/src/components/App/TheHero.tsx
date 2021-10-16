@@ -72,7 +72,6 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
           <div className="w-full flex items-center justify-between">
             <Button
               className="text-center flex-1"
-              fill
               target="_top"
               borderColor="500"
               textColor="500"
@@ -94,7 +93,6 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
             </Button>
             <Button
               className="text-center flex-1"
-              fill
               borderColor="500"
               textColor="500"
               color="100"
@@ -116,7 +114,6 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
             </Button>
             <Button
               className="text-center flex-1"
-              fill
               borderColor="500"
               textColor="500"
               color="100"
@@ -138,7 +135,6 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
             </Button>
             <Button
               className="text-center flex-1"
-              fill
               borderColor="500"
               textColor="500"
               color="100"

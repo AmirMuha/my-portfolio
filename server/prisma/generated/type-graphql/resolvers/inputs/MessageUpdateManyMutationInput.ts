@@ -43,5 +43,10 @@ export class MessageUpdateManyMutationInput {
   @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
     nullable: true
   })
+  answeredAt?: DateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
+    nullable: true
+  })
   createdAd?: DateTimeFieldUpdateOperationsInput | undefined;
 }

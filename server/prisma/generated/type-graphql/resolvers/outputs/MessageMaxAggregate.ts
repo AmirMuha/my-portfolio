@@ -45,5 +45,10 @@ export class MessageMaxAggregate {
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
+  answeredAt!: Date | null;
+
+  @TypeGraphQL.Field(_type => Date, {
+    nullable: true
+  })
   createdAd!: Date | null;
 }
