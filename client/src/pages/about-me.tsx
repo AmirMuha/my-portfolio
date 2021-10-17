@@ -1,10 +1,10 @@
-import { PageProps, useStaticQuery } from "gatsby"
+import { graphql, PageProps } from "gatsby"
 import React, { FC } from "react"
 import InPageMenu from "../components/App/InPageMenu"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { Meta, SEO } from "../components/SEO"
-import { graphql } from "gatsby"
+import Markdown from "../components/utility/Markdown"
 const meta: Meta = [
   {
     name: "description",
@@ -12,26 +12,14 @@ const meta: Meta = [
   },
 ]
 
-const query = graphql`
-  query {
-    portfolio {
-      abouts {
-        id
-        title
-        body
-      }
-    }
-  }
-`
-interface QueryTypes {
+interface QueryTypes extends PageProps {
   data: {
     portfolio: {
       abouts: GatsbyTypes.Portfolio_About[]
     }
   }
 }
-const AboutMe: FC<PageProps> = props => {
-  const { data } = useStaticQuery<QueryTypes>(query)
+const AboutMe: FC<QueryTypes> = ({ data }) => {
   const {
     portfolio: { abouts },
   } = data
@@ -48,12 +36,26 @@ const AboutMe: FC<PageProps> = props => {
         </TheSection>
         {abouts.map(p => (
           <TheSection key={p.id} id={p.id} name={p.title}>
-            <p className="px-5 pb-8">{p.body}</p>
+            <div className="px-5 pb-8">
+              <Markdown>{p.body}</Markdown>
+            </div>
           </TheSection>
         ))}
       </Layout>
     </>
   )
 }
+
+export const query = graphql`
+  {
+    portfolio {
+      abouts {
+        body
+        id
+        title
+      }
+    }
+  }
+`
 
 export default AboutMe

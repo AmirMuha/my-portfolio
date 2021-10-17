@@ -50,12 +50,12 @@ export const projectPropsValidation = {
 
 export const answerPropsValidation = {
   id: [IsString(), IsUUID()],
-  question: [IsString()],
+  answer: [IsString()],
 };
 
 export const questionPropsValidation = {
   id: [IsString(), IsUUID()],
-  answer: [IsString()],
+  question: [IsString()],
 };
 
 export const sketchPropsValidation = {

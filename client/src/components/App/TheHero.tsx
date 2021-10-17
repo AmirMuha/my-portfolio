@@ -1,22 +1,29 @@
-import { StaticImage } from "gatsby-plugin-image"
 import React, { FC, PropsWithChildren } from "react"
 import { GitHub } from "../../icons/iconsJSX"
+import hero from "../../images/Hero.svg"
+import insta from "../../images/Instagram.png"
+import linkedin from "../../images/LinkedIn.png"
+import skype from "../../images/Skype.png"
+import whatsapp from "../../images/WhatsApp.png"
 import Button from "../UI/Button"
 import SmallPipe from "../UI/SmallPipe"
 import InPageMenu from "./InPageMenu"
-interface Props {}
 
-const TheHero: FC<PropsWithChildren<Props>> = props => {
+interface Props {
+  data: GatsbyTypes.Portfolio_Admin
+}
+
+const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
   return (
     <div className="pt-5 flex items-center border-l-5 h-auto md:border-l-10 sm:border-r-5 md:border-r-10 border-palatte-500">
       <div className="block self-end w-full sm:flex-1">
         <div className="p-3 mx-auto">
-          <StaticImage
-            className="w-full"
-            src="../../images/Hero.svg"
-            alt="Hero Image"
+          <img
+            className="w-full px-5"
+            src={hero}
             placeholder="none"
-            imgStyle={{
+            alt="Hero Image"
+            style={{
               backgroundSize: "cover",
               objectFit: "contain",
               width: "100%",
@@ -24,7 +31,7 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
           />
         </div>
         <Button
-          toUrl="https://github.com/AmirMuha"
+          toUrl={data.github}
           iconAnimation="BtT"
           target="_blank"
           icon={GitHub}
@@ -84,10 +91,10 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
                 borderRight: 0,
               }}
             >
-              <StaticImage
+              <img
+                className="mx-auto"
                 width={24}
-                placeholder="none"
-                src="../../images/WhatsApp.png"
+                src={whatsapp}
                 alt="WhatsApp Icon"
               />
             </Button>
@@ -105,10 +112,10 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
                 borderRight: 0,
               }}
             >
-              <StaticImage
+              <img
+                className="mx-auto"
                 width={24}
-                placeholder="none"
-                src="../../images/Skype.png"
+                src={skype}
                 alt="Skype Icon"
               />
             </Button>
@@ -126,10 +133,10 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
                 borderRight: 0,
               }}
             >
-              <StaticImage
+              <img
+                className="mx-auto"
                 width={24}
-                placeholder="none"
-                src="../../images/Instagram.png"
+                src={insta}
                 alt="Instagram Icon"
               />
             </Button>
@@ -147,10 +154,10 @@ const TheHero: FC<PropsWithChildren<Props>> = props => {
                 borderRight: 0,
               }}
             >
-              <StaticImage
+              <img
+                className="mx-auto"
                 width={24}
-                placeholder="none"
-                src="../../images/LinkedIn.png"
+                src={linkedin}
                 alt="LinkedIn Icon"
               />
             </Button>

@@ -5,24 +5,20 @@ import { TechState } from "../Dashboard/Editable/Editable_TechCategory"
 import Confirm from "../UI/Confirm"
 import SmallPipe from "../UI/SmallPipe"
 interface Props {
-  data: TechDataObject
+  data: GatsbyTypes.Portfolio_TechCategory
   className?: string
   style?: CSSProperties
   border?: boolean
   editable?: boolean
 }
-interface TechDataObject {}
 const TechItem: FC<Props> = ({
   editable = false,
   border = true,
   style,
-  className,
+  data,
+  className = "",
 }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
-  const techItem: TechState = {
-    categoryName: "FrontEnd",
-    techs: ["React", "TSX"],
-  }
   const openConfirm = () => {
     setIsConfirmOpen(true)
   }
@@ -46,27 +42,27 @@ const TechItem: FC<Props> = ({
     >
       <SmallPipe className="pt-3">
         <div className="pl-2 pr-5 w-full text-sm flex items-center justify-between font-semibold relative">
-          <span>FrontEnd</span>
+          <span>{data.name}</span>
           {editable && (
             <div className="flex gap-5 items-center">
               <Editable
-                title="FronEnd"
+                title={data.name}
                 techCategory
                 editButtonStyle={{ position: "initial" }}
                 onSave={(v: TechState) => updateTech(v)}
                 mode="MODAL"
                 onDeleteTech={id => deleteTech(id)}
-                value={techItem}
+                value={data}
               />
               <span className="cursor-pointer" onClick={openConfirm}>
                 {Delete}
               </span>
               {isConfirmOpen && (
                 <Confirm
-                  text="Do your realy want to delete TECH_CATEGORY_ITEM ?"
+                  text={`Do your realy want to delete ${data.name} ?`}
                   getValue={deleteTechCategory}
                   confirmButtonText="Delete"
-                  title="Deleting FrontEnd"
+                  title={`Deleting ${data.name}`}
                   onClose={() => setIsConfirmOpen(false)}
                 />
               )}
@@ -75,8 +71,10 @@ const TechItem: FC<Props> = ({
         </div>
       </SmallPipe>
       <ul className="ml-3">
-        <li className="inline-flex bg-palatte-200 px-2 m-1">React</li>
-        <li className="inline-flex bg-palatte-200 px-2 m-1">Redux</li>
+        {data.techs?.length > 0 &&
+          data.techs.map(t => (
+            <li className="inline-flex bg-palatte-200 px-2 m-1">{t.name}</li>
+          ))}
       </ul>
     </div>
   )

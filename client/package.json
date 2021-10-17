@@ -66,13 +66,13 @@
   ],
   "license": "0BSD",
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
+    "build": "gatsby clean && gatsby build",
+    "dev": "export ENABLE_GATSBY_REFRESH_ENDPOINT=true && gatsby clean && gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "refresh": "curl -X POST http://localhost:8000/__refresh"
   },
   "repository": {
     "type": "git",

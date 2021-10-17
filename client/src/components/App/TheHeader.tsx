@@ -66,13 +66,10 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                   className="fixed  top-0 left-0 w-full h-full"
                 ></div>
               )}
-              <Button
-                iconAnimation="TtB"
-                color="500"
-                normal
+              <div
                 onClick={openDropdown}
                 style={{ overflow: "visible", padding: "3px 20px" }}
-                className={Header_Resume}
+                className={`${Header_Resume} cursor-pointer bg-palatte-500 text-palatte-100 relative`}
               >
                 Resume
                 <div
@@ -108,7 +105,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     </Button>
                   </div>
                 </div>
-              </Button>
+              </div>
             </div>
           )}
         </nav>

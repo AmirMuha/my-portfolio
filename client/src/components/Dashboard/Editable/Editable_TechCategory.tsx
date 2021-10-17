@@ -19,11 +19,11 @@ interface TechAction {
   value: string | string[]
 }
 export interface TechState {
-  categoryName: string
+  name: string
   techs: string[]
 }
 const techInitialState: TechState = {
-  categoryName: "",
+  name: "",
   techs: [],
 }
 const techReducer: Reducer<TechState, TechAction> = (state, action) => {
@@ -35,7 +35,7 @@ const techReducer: Reducer<TechState, TechAction> = (state, action) => {
       return state
     case "CATEGORY_NAME":
       return {
-        categoryName: action.value as string,
+        name: action.value as string,
         techs: state.techs,
       }
     default:
@@ -92,7 +92,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
             ref={inputRef as any}
             color={isInputEditable ? "100" : "200"}
             style={{ padding: "4px 15px" }}
-            value={techState.categoryName}
+            value={techState.name}
             readOnly={isInputEditable}
           />
           {!isInputEditable ? (

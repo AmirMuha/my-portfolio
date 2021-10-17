@@ -1,7 +1,4 @@
-import { graphql, useStaticQuery } from "gatsby"
-import BackGroundImage from "gatsby-background-image"
-import { getImage } from "gatsby-plugin-image"
-import { convertToBgImage } from "gbimage-bridge"
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
 import React, { FC, PropsWithChildren, useState } from "react"
 import audio from "../../04 Future.mp3"
 import { GitHub } from "../../icons/iconsJSX"
@@ -10,16 +7,18 @@ import Audio from "../UI/Audio"
 import Button from "../UI/Button"
 import { File } from "../UI/Input"
 import SmallPipe from "../UI/SmallPipe"
+import Markdown from "../utility/Markdown"
 interface Props {
+  image: IGatsbyImageData
   editable?: boolean
+  data: GatsbyTypes.Portfolio_Project
 }
-const sample =
-  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis quaerat quibusdam iusto repudiandae recusandae dolor eum. Maxime provident ipsam animi, qui fuga tempora temporibus dignissimos sint minima vel? Inventore, sed?"
-
 const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   editable = false,
+  image,
+  data,
 }) => {
-  const [summary, setSummary] = useState<string>(sample)
+  const [summary, setSummary] = useState<string>(data.summary)
   const [imageFile, setImage] = useState<any>(null)
   const [audioFile, setAudio] = useState<any>(null)
   const [githubUrl, setGithubUrl] = useState<string>("")
@@ -64,35 +63,22 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     console.log(f)
     setAudio(f)
   }
-  const { file } = useStaticQuery<GatsbyTypes.MyQueryQuery>(graphql`
-    query MyQuery {
-      file(name: { eq: "pexels-pixabay-355952" }) {
-        childImageSharp {
-          gatsbyImageData
-        }
-      }
-    }
-  `)
-  let image
-  if (file && file.childImageSharp) {
-    image = getImage(file.childImageSharp.gatsbyImageData)
-  }
-  const bgImage = convertToBgImage(image)
+
   return (
     <div>
       {editable ? (
         <div className="flex flex-col md:flex-row mb-6 ml-5">
-          <BackGroundImage
-            style={{
-              maxHeight: 400,
-              minHeight: 300,
-              minWidth: 300,
-              maxWidth: 500,
-            }}
-            className="w-full border-5 border-palatte-500 relative md:border-10"
-            Tag="div"
-            {...bgImage}
-          >
+          <div className="w-full border-5 border-palatte-500 relative md:border-10">
+            <GatsbyImage
+              style={{
+                maxHeight: 400,
+                minHeight: 300,
+                minWidth: 300,
+                maxWidth: 500,
+              }}
+              image={image!}
+              alt={`${data.name} Image`}
+            />
             <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
             <div className="flex justify-between m-1.5 items-center">
               <Button
@@ -151,7 +137,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               getValue={getImageFile}
               value=""
             />
-          </BackGroundImage>
+          </div>
           <div className="flex-col flex-grow ml-7 border-l-5 border-palatte-500 relative md:border-l-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
             <SmallPipe
               style={{
@@ -173,33 +159,38 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               onSave={updateSummary}
               value={summary}
             />
-            <div className="relative">
-              <SmallPipe pipeClassName="hidden md:flex">
-                <Audio src={audio} />
-                <Editable
-                  file
-                  acceptableFileTypes="audio/*"
-                  mode="IN_POSITION"
-                  onSave={updateAudio}
-                  getValue={getAudioFile}
-                  value=""
-                />
-              </SmallPipe>
-            </div>
+            {false && (
+              <div className="relative">
+                <SmallPipe pipeClassName="hidden md:flex">
+                  <Audio src={audio} />
+                  <Editable
+                    file
+                    acceptableFileTypes="audio/*"
+                    mode="IN_POSITION"
+                    onSave={updateAudio}
+                    getValue={getAudioFile}
+                    value=""
+                  />
+                </SmallPipe>
+              </div>
+            )}
           </div>
         </div>
       ) : (
         <div className="flex flex-col md:flex-row mb-6 ml-5 ">
-          <BackGroundImage
+          <div
             style={{
               maxHeight: 400,
               minHeight: 300,
               minWidth: 300,
             }}
             className="w-full border-5 overflow-hidden border-palatte-500 relative md:border-10"
-            Tag="div"
-            {...bgImage}
           >
+            <GatsbyImage
+              className="w-full"
+              image={image!}
+              alt={`${data.name} Image`}
+            />
             <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
             <div className="flex justify-between m-1.5 items-center">
               <Button
@@ -225,7 +216,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 Visit The App
               </Button>
             </div>
-          </BackGroundImage>
+          </div>
           <div className="flex-col ml-7 border-l-5 border-palatte-500 relative md:border-l-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
             <SmallPipe
               style={{
@@ -238,17 +229,16 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 Summary Of The Project
               </h2>
             </SmallPipe>
-            <p className="px-5 py-3">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit
-              provident cum, cumque exercitationem eaque vero placeat, delectus
-              temporibus eius debitis, voluptas est! Numquam, quod fugiat! Nemo
-              beatae aspernatur voluptatibus consectetur!
-            </p>
-            <div className="">
-              <SmallPipe pipeClassName="hidden md:flex">
-                <Audio src={audio} />
-              </SmallPipe>
+            <div className="px-5 py-3">
+              <Markdown>{data.summary}</Markdown>
             </div>
+            {false && (
+              <div className="">
+                <SmallPipe pipeClassName="hidden md:flex">
+                  <Audio src={audio} />
+                </SmallPipe>
+              </div>
+            )}
           </div>
         </div>
       )}

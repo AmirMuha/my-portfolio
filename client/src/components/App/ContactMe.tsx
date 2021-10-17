@@ -1,5 +1,8 @@
-import { StaticImage } from "gatsby-plugin-image"
 import React, { FC, PropsWithChildren, useCallback, useState } from "react"
+import insta from "../../images/Instagram.png"
+import linkedin from "../../images/LinkedIn.png"
+import skype from "../../images/Skype.png"
+import whatsapp from "../../images/WhatsApp.png"
 import Button from "../UI/Button"
 import Input, { File, GetValue } from "../UI/Input"
 import TextArea from "../UI/TextArea"
@@ -110,109 +113,117 @@ const ContactMe: FC<PropsWithChildren<Props>> = props => {
           <Button
             toUrl="https://google.com"
             style={{ padding: "6px 8px" }}
-            className="flex items-center w-full"
+            className="w-full"
             color="100"
             borderColor="500"
             textColor="500"
             outline
             fill
           >
-            <StaticImage
-              placeholder="none"
-              className="mx-3"
-              src="../../images/WhatsApp.png"
-              alt="WhatsApp Icon"
-            />
-            <span>+98-9158964046</span>
+            <span className="flex items-center">
+              <img
+                placeholder="none"
+                className="mx-3"
+                src={whatsapp}
+                alt="WhatsApp Icon"
+              />
+              <span>+98-9158964046</span>
+            </span>
           </Button>
           <Button
             toUrl="https://google.com"
             style={{ padding: "6px 8px" }}
-            className="flex items-center w-full"
+            className="w-full"
             color="100"
             borderColor="500"
             textColor="500"
             outline
             fill
           >
-            <StaticImage
-              placeholder="none"
-              className="mx-3"
-              src="../../images/Skype.png"
-              alt="Skype Icon"
-            />
-            <span>mirzaii4046@gmail.com</span>
+            <span className="flex items-center ">
+              <img
+                placeholder="none"
+                className="mx-3"
+                src={skype}
+                alt="Skype Icon"
+              />
+              <span>mirzaii4046@gmail.com</span>
+            </span>
           </Button>
           <Button
             toUrl="https://google.com"
             style={{ padding: "6px 8px" }}
-            className="flex items-center w-full"
+            className="w-full"
             color="100"
             borderColor="500"
             textColor="500"
             outline
             fill
           >
-            <StaticImage
-              placeholder="none"
-              className="mx-3"
-              src="../../images/Instagram.png"
-              alt="Instagram Icon"
-            />
-            <span>Instagram</span>
+            <span className="flex items-center ">
+              <img
+                placeholder="none"
+                className="mx-3"
+                src={insta}
+                alt="Instagram Icon"
+              />
+              <span>Instagram</span>
+            </span>
           </Button>
           <Button
             toUrl="https://google.com"
             style={{ padding: "6px 8px" }}
-            className="flex items-center w-full"
+            className=" w-full"
             color="100"
             borderColor="500"
             textColor="500"
             outline
             fill
           >
-            <StaticImage
-              placeholder="none"
-              className="mx-3"
-              src="../../images/LinkedIn.png"
-              alt="LinkedIn Icon"
-            />
-            <span>LinkedIn</span>
+            <span className="flex items-center ">
+              <img
+                placeholder="none"
+                className="mx-3"
+                src={linkedin}
+                alt="LinkedIn Icon"
+              />
+              <span>LinkedIn</span>
+            </span>
           </Button>
           <div className="mt-5">
             <h2 className="text-md font-bold">Not Happy Yet ?</h2>
             <p>
               <span className="font-bold">Email #1:</span>
-              <div className="underline text-center inline">
+              <span className="underline text-center inline">
                 <a
                   href="mailto:mirzaii4046@gmail.com"
                   className="font-extra-light mx-4"
                 >
                   mirzaii4046@gmail.com
                 </a>
-              </div>
+              </span>
             </p>
             <p>
               <span className="font-bold">Email #2:</span>
-              <div className="underline text-center inline">
+              <span className="underline text-center inline">
                 <a
                   href="mailto:mirzaii4046@gmail.com"
                   className="font-extra-light mx-4"
                 >
                   mirzaei2334@gmail.com
                 </a>
-              </div>
+              </span>
             </p>
             <p>
               <span className="font-bold">Email #3:</span>
-              <div className="underline text-center inline">
+              <span className="underline text-center inline">
                 <a
                   href="mailto:mirzaii4046@gmail.com"
                   className="font-extra-light mx-4"
                 >
                   am.mirzaeirad@yahoo.com
                 </a>
-              </div>
+              </span>
             </p>
           </div>
         </div>

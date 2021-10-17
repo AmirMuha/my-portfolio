@@ -10,11 +10,13 @@ import SmallPipe from "../UI/SmallPipe"
 import gsap from "gsap"
 import Confirm from "../UI/Confirm"
 import Editable, { QAndAEditTypes } from "../Dashboard/Editable"
+import Markdown from "../utility/Markdown"
 interface Props {
   editable?: boolean
+  data: GatsbyTypes.Portfolio_Question
 }
 
-const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
+const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
   const dropdownRef = useRef<HTMLButtonElement>()
   const [isAnswerOpen, setIsAnswerOpen] = useState<boolean>(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
@@ -59,8 +61,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
                 className="flex py-2 relative items-center pr-6 text-left justify-between"
               >
                 <p className="ml-3 mt-0 mr-0 mb-0 font-semibold">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit ?
-                  Lorem ipsum dolor sit amet, co
+                  {data.question}
                 </p>
                 <div
                   ref={dropdownRef as any}
@@ -71,12 +72,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               </button>
             </SmallPipe>
             {isAnswerOpen && (
-              <p className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos
-                neque obcaecati aut ut quas, odit perspiciatis, facere, quaerat
-                excepturi maxime assumenda. Perspiciatis provident laudantium
-                aperiam molestiae harum eos tempore sint.
-              </p>
+              <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
+                <Markdown>{data.answer.answer}</Markdown>
+              </div>
             )}
           </div>
           <div className="relative">
@@ -117,8 +115,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
               className="flex py-2 relative items-center pr-6 text-left justify-between"
             >
               <p className="ml-3 mt-0 mr-0 mb-0 font-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit ? Lorem
-                ipsum dolor sit.
+                {data.question}
               </p>
               <div
                 ref={dropdownRef as any}
@@ -129,12 +126,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ editable = false }) => {
             </button>
           </SmallPipe>
           {isAnswerOpen && (
-            <p className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos
-              neque obcaecati aut ut quas, odit perspiciatis, facere, quaerat
-              excepturi maxime assumenda. Perspiciatis provident laudantium
-              aperiam molestiae harum eos tempore sint.
-            </p>
+            <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
+              <Markdown>{data.answer.answer}</Markdown>
+            </div>
           )}
         </div>
       )}

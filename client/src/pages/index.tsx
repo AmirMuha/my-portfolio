@@ -1,17 +1,19 @@
-import { graphql, PageProps, useStaticQuery } from "gatsby"
+import { graphql, PageProps } from "gatsby"
 import React, { FC } from "react"
+import ContactMe from "../components/App/ContactMe"
 import InPageMenu from "../components/App/InPageMenu"
 import Projects from "../components/App/Projects"
 import Stack from "../components/App/Stack"
-import ContactMe from "../components/App/ContactMe"
 import TheHero from "../components/App/TheHero"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { SEO } from "../components/SEO"
+console.log(window)
 interface Props extends PageProps {
   data: {
     portfolio: {
       projects: GatsbyTypes.Portfolio_Project[]
+      me: GatsbyTypes.Portfolio_Admin
     }
   }
 }
@@ -21,7 +23,7 @@ const Home: FC<Props> = ({ data }) => {
     <>
       <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />
       <Layout>
-        <TheHero />
+        <TheHero data={data?.portfolio?.me} />
         <TheSection
           className="sm:hidden"
           style={{ paddingBottom: 25 }}
@@ -31,7 +33,7 @@ const Home: FC<Props> = ({ data }) => {
           <InPageMenu pipes="left" />
         </TheSection>
         <TheSection id="projects" name="Projects">
-          <Projects data={data.portfolio.projects || []} />
+          <Projects data={data?.portfolio?.projects || []} />
         </TheSection>
         <TheSection id="stack" name="Stack">
           <Stack />
@@ -56,20 +58,39 @@ const Home: FC<Props> = ({ data }) => {
 }
 
 export const query = graphql`
-  query {
+  {
     portfolio {
       projects {
+        name
+        image
         id
         github_url
-        summary
-        app_url
-        image
-        name
-        type
-        updatedAt
         createdAt
+        app_url
+        summary
+        updatedAt
+        type
+        tech_categories {
+          name
+          id
+          techs {
+            name
+            id
+          }
+        }
+      }
+      me {
+        email
+        github
+        heroImage
+        instagram
+        linkedIn
+        lname
+        resumes
+        whatsapp
       }
     }
   }
 `
+
 export default Home

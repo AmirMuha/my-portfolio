@@ -3,9 +3,7 @@ import path from "path"
 
 interface ProjectQuery {
   portfolio: {
-    projects: {
-      id: string
-    }[]
+    projects: GatsbyTypes.Portfolio_Project[]
   }
 }
 export const createPages = async ({
@@ -58,21 +56,30 @@ export const createPages = async ({
   }
   const ProjectTemplate = path.resolve("./src/templates/Project.tsx")
   const EditableProject = path.resolve("./src/templates/EditableProject.tsx")
-  results.data?.portfolio.projects.forEach(async (proj: any) => {
+  const getImageName = (n: string) => {
+    const imgExtRegex = /\.(png|jpg|webp|svg|jpeg)$/gi
+    if (!imgExtRegex.test(n)) {
+      return n
+    }
+    return n.split(imgExtRegex)[0]
+  }
+  results.data?.portfolio.projects.forEach(async proj => {
     createPage({
       path: `/projects/${proj.id}`,
       component: ProjectTemplate,
       context: {
         project: proj,
+        image: getImageName(proj.image),
       },
     })
   })
-  results.data?.portfolio.projects.forEach(async (proj: any) => {
+  results.data?.portfolio.projects.forEach(async proj => {
     createPage({
       path: `/dashboard/projects/${proj.id}`,
       component: EditableProject,
       context: {
         project: proj,
+        image: getImageName(proj.image),
       },
     })
   })

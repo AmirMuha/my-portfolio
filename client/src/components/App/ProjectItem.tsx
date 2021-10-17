@@ -1,9 +1,9 @@
-import { graphql, useStaticQuery } from "gatsby"
-import { GatsbyImage, getImage, StaticImage } from "gatsby-plugin-image"
+import { StaticImage } from "gatsby-plugin-image"
 import React, { FC, PropsWithChildren } from "react"
 import { Edit } from "../../icons/iconsJSX"
 import Button from "../UI/Button"
 import SmallPipe from "../UI/SmallPipe"
+import Markdown from "../utility/Markdown"
 import { ProjectItem as ProjectItemClass } from "./styles/ProjectItem.module.css"
 import TechItem from "./TechItem"
 
@@ -12,13 +12,6 @@ interface Props {
   editable?: boolean
   buttonText?: string
   data: GatsbyTypes.Portfolio_Project
-}
-interface ImageQueryType {
-  data: {
-    allFile: {
-      nodes: GatsbyTypes.File[]
-    }
-  }
 }
 const ProjectItem: FC<PropsWithChildren<Props>> = ({
   type,
@@ -36,14 +29,10 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
           <div className="flex-col gap-0 items-start mb-5 pl-6 pt-5">
             <div
               style={{ minHeight: 200, maxHeight: 300 }}
-              className="border-palatte-500 border-5 md:border-10 relative"
+              className="border-palatte-500 overflow-hidden border-5 md:border-10 relative"
             >
               <StaticImage
-                style={{
-                  maxHeight: "150px",
-                  maxWidth: "150px",
-                }}
-                src="../../images/pexels-pixabay-355952.jpg"
+                src="../../images/Tablet.png"
                 alt={`${data.image} Image`}
               />
 
@@ -65,7 +54,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
             <div className="ml-7 relative pt-5 border-l-5 md:border-l-10 border-palatte-500">
               <SmallPipe w="16" pipes="left">
                 <h1 className="font-bold flex gap-1 text-sm.2 mx-2">
-                  A Summary About The Project
+                  About The Project
                   {editable && (
                     <Button
                       color="100"
@@ -79,7 +68,9 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   )}
                 </h1>
               </SmallPipe>
-              <p className="px-5 pt-4 pb-5">{(data as any).summary}</p>
+              <div className="px-5 pt-4 pb-5">
+                <Markdown>{(data as any).summary}</Markdown>
+              </div>
               <SmallPipe w="16" pipes="left">
                 <h1 className="flex gap-1 font-bold text-sm.2 mx-2">
                   Techs Used
@@ -95,18 +86,17 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   )}
                 </h1>
               </SmallPipe>
-              <TechItem
-                style={{ border: "none", marginLeft: 0 }}
-                data={data.tech_categories}
-              />
-              <TechItem
-                style={{ border: "none", marginLeft: 0 }}
-                data={data.tech_categories}
-              />
-              <TechItem
-                style={{ border: "none", marginLeft: 0 }}
-                data={data.tech_categories}
-              />
+              {data.tech_categories?.length > 0 && (
+                <>
+                  {data.tech_categories.map(t => (
+                    <TechItem
+                      key={t.id}
+                      style={{ border: "none", marginLeft: 0 }}
+                      data={t}
+                    />
+                  ))}
+                </>
+              )}
               <div className="mt-5 relative">
                 <SmallPipe>
                   <Button
@@ -132,31 +122,24 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
           <div className={`flex-col gap-0 items-start mb-5 pt-5`}>
             <div className="flex pl-5">
               <div className="ProjectImage_Border relative">
-                <GatsbyImage
-                  style={{
-                    maxHeight: "150px",
-                    maxWidth: "150px",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                  image={{
-                    height: 100,
-                    width: 100,
-                    layout: "constrained",
-                    images: { fallback: { src: `/images/${data.image}` } },
-                  }}
-                  alt={`${data.image} Image`}
+                <StaticImage
+                  src="../../images/image-1.png"
+                  alt={`${data.name} Image`}
                 />
                 <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
               </div>
               <div className="pl-3 text-sm">
-                <p>{data.name}</p>
-                <p>{data.type}</p>
+                <p style={{ margin: 0 }}>{data.name}</p>
+                <p style={{ margin: 0 }}>{data.type}</p>
               </div>
             </div>
-            <TechItem data={data.tech_categories} />
-            <TechItem data={data.tech_categories} />
-            <TechItem data={data.tech_categories} />
+            {data.tech_categories?.length > 0 && (
+              <>
+                {data.tech_categories.map(t => (
+                  <TechItem data={t} key={t.id} />
+                ))}
+              </>
+            )}
             <div className={ProjectItemClass}>
               <div className="flex pt-3 items-center gap-0 relative">
                 <div className="h-pipe-sm md:h-pipe-lg w-6 bg-palatte-500"></div>

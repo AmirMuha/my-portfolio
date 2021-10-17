@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client"
-import { PageProps } from "gatsby"
+import { graphql, PageProps } from "gatsby"
 import React, { FC, useState } from "react"
 import AboutTheProject from "../components/App/AboutTheProject"
 import QAndA from "../components/App/QAndA"
@@ -14,29 +14,33 @@ import Button from "../components/UI/Button"
 import Confirm from "../components/UI/Confirm"
 import QAndA_Add from "../components/Dashboard/Q&A_Add"
 import Loading from "../components/UI/Loading"
-const query = gql`
-  query {
-    me {
-      id
-    }
-  }
-`
+import { getImage } from "gatsby-plugin-image"
+// const query = gql`
+//   query {
+//     me {
+//       id
+//     }
+//   }
+// `
 
 interface PageContext {
   project: GatsbyTypes.Portfolio_Project
 }
 interface Props extends PageProps {
+  data: {
+    file: GatsbyTypes.File
+  }
   pageContext: PageContext
 }
-const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
-  const { data, error, loading } = useQuery<GatsbyTypes.Portfolio_About>(query)
+const EditableProject: FC<Props> = ({ pageContext: { project }, data }) => {
+  // const { data, error, loading } = useQuery<GatsbyTypes.Portfolio_About>(query)
   const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
   const [projectName, setProjectName] = useState<string>("PROJECT_NAME")
-  if (error) {
-    console.log(error)
-  }
-  console.log(data)
-  console.log(project)
+  // if (error) {
+  //   console.log(error)
+  // }
+  // console.log(data)
+  const image = getImage(data.file?.childImageSharp?.gatsbyImageData!)
   const deleteProject = (v: boolean) => {
     console.log(v ? "Deleting  project." : "Not yet.")
   }
@@ -45,7 +49,7 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
   ]
   return (
     <>
-      {loading ? (
+      {false ? (
         <Loading />
       ) : (
         <>
@@ -56,10 +60,10 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
               titleValue={projectName}
               getTitleValue={v => setProjectName(v)}
               onSaveTitleValue={v => updateProjectName(v)}
-              name="Name of the project"
-              id="name-of-the-project"
+              name={project.name}
+              id={project.id}
             >
-              <AboutTheProject editable />
+              <AboutTheProject editable data={project} image={image!} />
             </TheSection>
             <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3">
               <TheSection
@@ -70,24 +74,16 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                 lgText="sm.4"
               >
                 <AddTechCategory />
-                <TechItem
-                  editable
-                  border={false}
-                  style={{ marginLeft: 0 }}
-                  data={{}}
-                />
-                <TechItem
-                  editable
-                  border={false}
-                  style={{ marginLeft: 0 }}
-                  data={{}}
-                />
-                <TechItem
-                  editable
-                  border={false}
-                  style={{ marginLeft: 0 }}
-                  data={{}}
-                />
+                {project.tech_categories?.length > 0 &&
+                  project.tech_categories.map(t => (
+                    <TechItem
+                      editable
+                      key={t.id}
+                      border={false}
+                      style={{ marginLeft: 0 }}
+                      data={t}
+                    />
+                  ))}
               </TheSection>
               <TheSection
                 name="Q&A"
@@ -96,9 +92,10 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                 style={{ paddingBottom: 25, flex: "1 1 0%" }}
               >
                 <QAndA_Add />
-                <QAndA editable />
-                <QAndA editable />
-                <QAndA editable />
+                {project.questions?.length > 0 &&
+                  project.questions.map(q => (
+                    <QAndA editable data={q} key={q.id} />
+                  ))}
               </TheSection>
             </div>
             <TheSection
@@ -108,9 +105,10 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
             >
               <AddSketch data={{}} />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
-                <Sketch editable />
-                <Sketch editable />
-                <Sketch editable />
+                {project.sketches?.length > 0 &&
+                  project.sketches.map(s => (
+                    <Sketch editable data={s} key={s.id} />
+                  ))}
               </div>
             </TheSection>
             <TheSection
@@ -129,10 +127,10 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
               {isDeleteBoxOpen && (
                 <Confirm
                   header
-                  title="Deleting PROJECT_NAME"
+                  title={`Deleting ${project.name}`}
                   onClose={() => setIsDeleteBoxOpen(false)}
                   confirmButtonText="Delete"
-                  text="Are you sure you want to delete PROJECT_NAME ?"
+                  text={`Are you sure you want to delete ${project.name} ?`}
                   getValue={v => deleteProject(v)}
                 ></Confirm>
               )}
@@ -143,5 +141,13 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
     </>
   )
 }
-
+export const queryImage = graphql`
+  query EditProjectImage($image: String) {
+    file(name: { eq: $image }) {
+      childImageSharp {
+        gatsbyImageData
+      }
+    }
+  }
+`
 export default EditableProject
