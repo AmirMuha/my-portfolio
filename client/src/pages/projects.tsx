@@ -44,6 +44,14 @@ export const query = graphql`
         name
         github_url
         summary
+        tech_categories {
+          id
+          name
+          techs {
+            id
+            name
+          }
+        }
       }
     }
   }

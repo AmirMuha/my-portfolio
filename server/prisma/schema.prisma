@@ -24,9 +24,11 @@ model Admin {
   heroImage String
   resumes   String[]
   confirmed Boolean   @default(false)
+  isPublished Boolean   @default(false)
   about     About[]
   messages  Message[]
   projects  Project[]
+  stacks    String[]
   /// @TypeGraphQL.omit(output: true, input: true)
   apikey    String?
   /// @TypeGraphQL.omit(output: true)

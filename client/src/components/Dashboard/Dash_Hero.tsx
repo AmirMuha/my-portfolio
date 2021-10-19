@@ -59,8 +59,8 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = props => {
               value={newProjectName}
             />
             <Button
-              normal
               color="100"
+              to={`/dashboard/add/project/${newProjectName}`}
               style={{ padding: "3.5px 10px" }}
               textColor="500"
             >

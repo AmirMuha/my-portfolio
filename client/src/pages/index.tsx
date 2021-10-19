@@ -8,7 +8,6 @@ import TheHero from "../components/App/TheHero"
 import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
 import { SEO } from "../components/SEO"
-console.log(window)
 interface Props extends PageProps {
   data: {
     portfolio: {

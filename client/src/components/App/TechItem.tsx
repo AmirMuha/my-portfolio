@@ -36,7 +36,7 @@ const TechItem: FC<Props> = ({
   return (
     <div
       style={style}
-      className={`flex-col justify-start gap-0 ml-14 ${
+      className={`flex-col justify-start gap-0 mr-6 ml-14 ${
         border && " border-l-5 md:border-l-10 border-palatte-500 "
       } ${className}`}
     >
@@ -73,7 +73,9 @@ const TechItem: FC<Props> = ({
       <ul className="ml-3">
         {data.techs?.length > 0 &&
           data.techs.map(t => (
-            <li className="inline-flex bg-palatte-200 px-2 m-1">{t.name}</li>
+            <li key={t.id} className="inline-flex bg-palatte-200 px-2 m-1">
+              {t.name}
+            </li>
           ))}
       </ul>
     </div>

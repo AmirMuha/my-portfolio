@@ -15,13 +15,6 @@ import Confirm from "../components/UI/Confirm"
 import QAndA_Add from "../components/Dashboard/Q&A_Add"
 import Loading from "../components/UI/Loading"
 import { getImage } from "gatsby-plugin-image"
-// const query = gql`
-//   query {
-//     me {
-//       id
-//     }
-//   }
-// `
 
 interface PageContext {
   project: GatsbyTypes.Portfolio_Project
@@ -33,13 +26,8 @@ interface Props extends PageProps {
   pageContext: PageContext
 }
 const EditableProject: FC<Props> = ({ pageContext: { project }, data }) => {
-  // const { data, error, loading } = useQuery<GatsbyTypes.Portfolio_About>(query)
   const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
   const [projectName, setProjectName] = useState<string>("PROJECT_NAME")
-  // if (error) {
-  //   console.log(error)
-  // }
-  // console.log(data)
   const image = getImage(data.file?.childImageSharp?.gatsbyImageData!)
   const deleteProject = (v: boolean) => {
     console.log(v ? "Deleting  project." : "Not yet.")

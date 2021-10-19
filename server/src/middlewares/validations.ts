@@ -1,4 +1,5 @@
 import {
+  IsNotEmpty,
   IsBoolean,
   IsEmail,
   IsString,
@@ -11,66 +12,66 @@ import { UseMiddleware } from "type-graphql";
 import { isLoggedIn } from "./isLoggedIn";
 
 export const adminPropsValidation = {
-  id: [IsString(), IsUUID()],
-  email: [IsString(), IsEmail()],
-  fname: [IsString(), Length(3, 20)],
-  lname: [IsString(), Length(3, 20)],
-  password: [IsString(), MinLength(8)],
-  github: [IsString(), IsUrl()],
-  linkedIn: [IsString(), IsUrl()],
-  instagram: [IsString(), IsUrl()],
-  whatsapp: [IsString()],
-  heroImage: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  email: [IsNotEmpty(), IsString(), IsEmail()],
+  fname: [IsNotEmpty(), IsString(), Length(3, 20)],
+  lname: [IsNotEmpty(), IsString(), Length(3, 20)],
+  password: [IsNotEmpty(), IsString(), MinLength(8)],
+  github: [IsNotEmpty(), IsString(), IsUrl()],
+  linkedIn: [IsNotEmpty(), IsString(), IsUrl()],
+  instagram: [IsNotEmpty(), IsString(), IsUrl()],
+  whatsapp: [IsNotEmpty(), IsString()],
+  heroImage: [IsNotEmpty(), IsString()],
 };
 
 export const aboutPropsValidation = {
-  id: [IsString(), IsUUID()],
-  body: [IsString()],
-  title: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  body: [IsNotEmpty(), IsString()],
+  title: [IsNotEmpty(), IsString()],
 };
 
 export const techPropsValidation = {
-  id: [IsString(), IsUUID()],
-  name: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  name: [IsNotEmpty(), IsString()],
 };
 
 export const techCategoryPropsValidation = {
-  id: [IsString(), IsUUID()],
-  name: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  name: [IsNotEmpty(), IsString()],
 };
 
 export const projectPropsValidation = {
-  id: [IsString(), IsUUID()],
-  image: [IsString()],
-  app_url: [IsString(), IsUrl()],
-  description: [IsString()],
-  github_url: [IsString(), IsUrl()],
-  name: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  image: [IsNotEmpty(), IsString()],
+  app_url: [IsNotEmpty(), IsString(), IsUrl()],
+  description: [IsNotEmpty(), IsString()],
+  github_url: [IsNotEmpty(), IsString(), IsUrl()],
+  name: [IsNotEmpty(), IsString()],
 };
 
 export const answerPropsValidation = {
-  id: [IsString(), IsUUID()],
-  answer: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  answer: [IsNotEmpty(), IsString()],
 };
 
 export const questionPropsValidation = {
-  id: [IsString(), IsUUID()],
-  question: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  question: [IsNotEmpty(), IsString()],
 };
 
 export const sketchPropsValidation = {
-  id: [IsString(), IsUUID()],
-  description: [IsString()],
-  summary: [IsString()],
-  download_link: [IsString(), IsUrl()],
-  image: [IsString()],
-  title: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  description: [IsNotEmpty(), IsString()],
+  summary: [IsNotEmpty(), IsString()],
+  download_link: [IsNotEmpty(), IsString(), IsUrl()],
+  image: [IsNotEmpty(), IsString()],
+  title: [IsNotEmpty(), IsString()],
 };
 export const messagePropsValidation = {
-  id: [IsString(), IsUUID()],
-  body: [IsString()],
+  id: [IsNotEmpty(), IsString(), IsUUID()],
+  body: [IsNotEmpty(), IsString()],
   from: [IsEmail()],
   read_status: [IsBoolean()],
   answer_status: [IsBoolean()],
-  subject: [IsString()],
+  subject: [IsNotEmpty(), IsString()],
 };

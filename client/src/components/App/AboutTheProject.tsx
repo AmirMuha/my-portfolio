@@ -1,47 +1,90 @@
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
-import React, { FC, PropsWithChildren, useState } from "react"
+import React, {
+  FC,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import audio from "../../04 Future.mp3"
 import { GitHub } from "../../icons/iconsJSX"
+import { useTheDispatch } from "../../store/store"
 import Editable from "../Dashboard/Editable"
 import Audio from "../UI/Audio"
 import Button from "../UI/Button"
+import {
+  setGithubUrlReducer,
+  setSummaryReducer,
+  setAppUrlReducer,
+  setImageReducer,
+} from "../../store/newProjectSlice"
 import { File } from "../UI/Input"
 import SmallPipe from "../UI/SmallPipe"
 import Markdown from "../utility/Markdown"
 interface Props {
-  image: IGatsbyImageData
+  image: IGatsbyImageData | string
   editable?: boolean
   data: GatsbyTypes.Portfolio_Project
+  type: "ADD" | "EDIT" | "NORMAL"
 }
 const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   editable = false,
   image,
+  type = "NORMAL",
   data,
 }) => {
-  const [summary, setSummary] = useState<string>(data.summary)
+  const imageRef = useRef<HTMLImageElement>()
+  const addNewProjectDispatch = useTheDispatch()
   const [imageFile, setImage] = useState<any>(null)
-  const [audioFile, setAudio] = useState<any>(null)
+  // const [audioFile, setAudio] = useState<any>(null)
+  const [summary, setSummary] = useState<string>("")
   const [githubUrl, setGithubUrl] = useState<string>("")
   const [appUrl, setAppUrl] = useState<string>("")
+  useEffect(() => {
+    setSummary(data.summary)
+    setImage(data.image)
+    setGithubUrl(data.github_url)
+    setAppUrl(data.app_url)
+  }, [data])
   const updateGithubUrl = () => {
     // mutate the update
-    console.log("Updating the github url ...")
+    if (type === "ADD") {
+      addNewProjectDispatch(setGithubUrlReducer({ url: githubUrl }))
+    } else {
+      console.log("Updating the github url ...")
+    }
   }
   const updateAppUrl = () => {
     // mutate the update
-    console.log("Updating the app url ...")
+    if (type === "ADD") {
+      addNewProjectDispatch(setAppUrlReducer({ url: appUrl }))
+    } else {
+      console.log("Updating the app url ...")
+    }
   }
   const updateImage = () => {
     // mutate the update
-    console.log("Updating the image ...")
+    if (type === "ADD") {
+      // addNewProjectDispatch(setImageReducer({ image: imageFile }))
+    } else {
+      console.log("Updating the image ...")
+      console.log(imageFile)
+    }
   }
-  const updateAudio = () => {
-    // mutate the update
-    console.log("Updating the audio ...")
-  }
+  // const updateAudio = () => {
+  //   // mutate the update
+  //   if (type === "ADD") {
+  //   } else {
+  //   }
+  //   console.log("Updating the audio ...")
+  // }
   const updateSummary = (v: string) => {
     // mutate the update
-    console.log("Updating the summary, new Value => " + v)
+    if (type === "ADD") {
+      addNewProjectDispatch(setSummaryReducer({ summary }))
+    } else {
+      console.log("Updating the summary, new Value => " + v)
+    }
   }
   const getGithubUrl = (v: string) => {
     console.log(v)
@@ -55,32 +98,46 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     console.log(v)
     setSummary(v)
   }
-  const getImageFile = (f: File) => {
-    console.log(f)
-    setImage(f)
+  const getImageFile = (f: any) => {
+    const i = new Blob(f, { type: f[0].type })
+    const s = URL.createObjectURL(i)
+    if (imageRef.current) {
+      imageRef.current.src = s
+    }
+    i.arrayBuffer().then(v => {
+      console.log(new Uint8Array(v))
+    })
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (reader.result) {
+        setImage(reader.result)
+      }
+    }
+    reader.readAsBinaryString(i)
   }
-  const getAudioFile = (f: File) => {
-    console.log(f)
-    setAudio(f)
-  }
+  // const getAudioFile = (f: File) => {
+  //   console.log(f)
+  //   setAudio(f)
+  // }
 
   return (
     <div>
       {editable ? (
         <div className="flex flex-col md:flex-row mb-6 ml-5">
-          <div className="w-full border-5 border-palatte-500 relative md:border-10">
-            <GatsbyImage
-              style={{
-                maxHeight: 400,
-                minHeight: 300,
-                minWidth: 300,
-                maxWidth: 500,
-              }}
-              image={image!}
-              alt={`${data.name} Image`}
-            />
+          <div
+            style={{
+              maxHeight: 400,
+              minHeight: 300,
+              minWidth: 300,
+              maxWidth: 500,
+            }}
+            className="w-full overflow-x-auto overflow-y-hidden flex-grow border-5 border-palatte-500 relative md:border-10"
+          >
+            <div>
+              <img ref={imageRef as any} alt={`${data.name} Image`} />
+            </div>
             <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
-            <div className="flex justify-between m-1.5 items-center">
+            <div className="flex absolute top-0 right-0 left-0 justify-between m-1.5 items-center">
               <Button
                 outline
                 disabled
@@ -146,7 +203,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               pipeStyle={{ width: 50 }}
               pipes="left"
             >
-              <h2 className="text-sm.4 font-bold mx-2">
+              <h2 className="text-sm lg:text-sm-4 font-bold mx-2">
                 Summary Of The Project
               </h2>
             </SmallPipe>
@@ -159,7 +216,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               onSave={updateSummary}
               value={summary}
             />
-            {false && (
+            {/* {false && (
               <div className="relative">
                 <SmallPipe pipeClassName="hidden md:flex">
                   <Audio src={audio} />
@@ -173,7 +230,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   />
                 </SmallPipe>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       ) : (
@@ -183,16 +240,18 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               maxHeight: 400,
               minHeight: 300,
               minWidth: 300,
+              maxWidth: 500,
             }}
-            className="w-full border-5 overflow-hidden border-palatte-500 relative md:border-10"
+            className="w-full flex-grow border-5 overflow-hidden border-palatte-500 relative md:border-10"
           >
-            <GatsbyImage
-              className="w-full"
-              image={image!}
-              alt={`${data.name} Image`}
-            />
+            <div>
+              <GatsbyImage
+                image={image as IGatsbyImageData}
+                alt={`${data.name} Image`}
+              />
+            </div>
             <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
-            <div className="flex justify-between m-1.5 items-center">
+            <div className="flex absolute top-0 right-0 left-0 justify-between m-1.5 items-center">
               <Button
                 outline
                 toUrl="https://github.com/AmirMuha"

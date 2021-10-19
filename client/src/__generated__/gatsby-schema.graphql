@@ -390,7 +390,29 @@ type SitePageContextProject {
   github_url: String
   app_url: String
   summary: String
+  tech_categories: [SitePageContextProjectTech_categories]
+  sketches: [SitePageContextProjectSketches]
   questions: [SitePageContextProjectQuestions]
+}
+
+type SitePageContextProjectTech_categories {
+  id: String
+  name: String
+  techs: [SitePageContextProjectTech_categoriesTechs]
+}
+
+type SitePageContextProjectTech_categoriesTechs {
+  id: String
+  name: String
+}
+
+type SitePageContextProjectSketches {
+  id: String
+  title: String
+  summary: String
+  description: String
+  download_link: String
+  image: String
 }
 
 type SitePageContextProjectQuestions {
@@ -3969,7 +3991,41 @@ input SitePageContextProjectFilterInput {
   github_url: StringQueryOperatorInput
   app_url: StringQueryOperatorInput
   summary: StringQueryOperatorInput
+  tech_categories: SitePageContextProjectTech_categoriesFilterListInput
+  sketches: SitePageContextProjectSketchesFilterListInput
   questions: SitePageContextProjectQuestionsFilterListInput
+}
+
+input SitePageContextProjectTech_categoriesFilterListInput {
+  elemMatch: SitePageContextProjectTech_categoriesFilterInput
+}
+
+input SitePageContextProjectTech_categoriesFilterInput {
+  id: StringQueryOperatorInput
+  name: StringQueryOperatorInput
+  techs: SitePageContextProjectTech_categoriesTechsFilterListInput
+}
+
+input SitePageContextProjectTech_categoriesTechsFilterListInput {
+  elemMatch: SitePageContextProjectTech_categoriesTechsFilterInput
+}
+
+input SitePageContextProjectTech_categoriesTechsFilterInput {
+  id: StringQueryOperatorInput
+  name: StringQueryOperatorInput
+}
+
+input SitePageContextProjectSketchesFilterListInput {
+  elemMatch: SitePageContextProjectSketchesFilterInput
+}
+
+input SitePageContextProjectSketchesFilterInput {
+  id: StringQueryOperatorInput
+  title: StringQueryOperatorInput
+  summary: StringQueryOperatorInput
+  description: StringQueryOperatorInput
+  download_link: StringQueryOperatorInput
+  image: StringQueryOperatorInput
 }
 
 input SitePageContextProjectQuestionsFilterListInput {
@@ -4187,6 +4243,17 @@ enum SitePageFieldsEnum {
   context___project___github_url
   context___project___app_url
   context___project___summary
+  context___project___tech_categories
+  context___project___tech_categories___id
+  context___project___tech_categories___name
+  context___project___tech_categories___techs
+  context___project___sketches
+  context___project___sketches___id
+  context___project___sketches___title
+  context___project___sketches___summary
+  context___project___sketches___description
+  context___project___sketches___download_link
+  context___project___sketches___image
   context___project___questions
   context___project___questions___id
   context___project___questions___question

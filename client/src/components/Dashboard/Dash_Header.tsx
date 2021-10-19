@@ -19,7 +19,7 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
   return (
     <header className="w-full py-1 px-3 border-b border-palatte-500">
       <nav className="container flex items-center justify-between mx-auto py-2">
-        <div className="lg:hidden">
+        <div className="md:hidden">
           <button onClick={onMenuClick}>
             <svg width="20" height="12" viewBox="0 0 20 12">
               <path
@@ -36,7 +36,7 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
           </NavLink>
         </div>
         <div className="flex items-center gap-5">
-          <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <NavLink onHover to="/dashboard">
               Dashboard
             </NavLink>
