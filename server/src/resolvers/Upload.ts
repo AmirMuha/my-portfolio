@@ -9,8 +9,8 @@ export class UploadResolver {
   async uploadSingleFile(
     @Arg("file", () => GraphQLUpload)
     { mimetype, createReadStream }: FileUpload
-  ): Promise<Boolean> {
-    const filename = `file-${new Date()}.${mimetype.split("/")[1]}`;
+  ): Promise<Boolean | Error> {
+    const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
     return new Promise((resolve, reject) => {
       const stream = createReadStream();
       stream
@@ -19,7 +19,10 @@ export class UploadResolver {
             path.join(__dirname, "../../src/uploads/", filename)
           )
         )
-        .on("error", () => reject(false))
+        .on("error", (e) => {
+          console.error(e);
+          reject(e);
+        })
         .on("finish", () => resolve(true));
     });
   }
@@ -29,7 +32,7 @@ export class UploadResolver {
     @Arg("files", () => [GraphQLUpload])
     files: FileUpload[]
   ): Promise<boolean> {
-    const promises: Promise<boolean>[] = [];
+    const promises: Promise<boolean | Error>[] = [];
     files.forEach(async (file) => {
       const { mimetype, createReadStream } = await file;
       const promise = new Promise<boolean>((resolve, reject) => {
@@ -41,7 +44,10 @@ export class UploadResolver {
               path.join(__dirname, "../../src/uploads/", filename)
             )
           )
-          .on("error", () => reject(false))
+          .on("error", (e) => {
+            console.error(e);
+            reject(e);
+          })
           .on("finish", () => resolve(true));
       });
       promises.push(promise);
