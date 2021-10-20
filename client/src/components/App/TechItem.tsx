@@ -1,5 +1,7 @@
 import React, { CSSProperties, FC, useState } from "react"
 import { Delete } from "../../icons/iconsJSX"
+import { setTechReducer } from "../../store/newProjectSlice"
+import { useTheDispatch } from "../../store/store"
 import Editable from "../Dashboard/Editable"
 import { TechState } from "../Dashboard/Editable/Editable_TechCategory"
 import Confirm from "../UI/Confirm"
@@ -10,6 +12,7 @@ interface Props {
   style?: CSSProperties
   border?: boolean
   editable?: boolean
+  mode?: "ADD" | "EDIT" | "NORMAL"
 }
 const TechItem: FC<Props> = ({
   editable = false,
@@ -17,7 +20,9 @@ const TechItem: FC<Props> = ({
   style,
   data,
   className = "",
+  mode = "NORMAL",
 }) => {
+  const dispatch = useTheDispatch()
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
   const openConfirm = () => {
     setIsConfirmOpen(true)
@@ -31,8 +36,18 @@ const TechItem: FC<Props> = ({
     console.log("deleting tech item with id " + id)
   }
   const updateTech = (v: TechState) => {
+    switch (mode) {
+      case "ADD":
+        dispatch(setTechReducer(v))
+        break
+      case "EDIT":
+        break
+      default:
+        break
+    }
     console.log(v)
   }
+  console.log(data)
   return (
     <div
       style={style}
@@ -46,6 +61,7 @@ const TechItem: FC<Props> = ({
           {editable && (
             <div className="flex gap-5 items-center">
               <Editable
+                type="ADD"
                 title={data.name}
                 techCategory
                 editButtonStyle={{ position: "initial" }}
@@ -72,8 +88,11 @@ const TechItem: FC<Props> = ({
       </SmallPipe>
       <ul className="ml-3">
         {data.techs?.length > 0 &&
-          data.techs.map(t => (
-            <li key={t.id} className="inline-flex bg-palatte-200 px-2 m-1">
+          data.techs.map((t, i) => (
+            <li
+              key={t.id ? t.id : i}
+              className="inline-flex bg-palatte-200 px-2 m-1"
+            >
               {t.name}
             </li>
           ))}

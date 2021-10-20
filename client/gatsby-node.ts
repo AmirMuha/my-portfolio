@@ -1,10 +1,15 @@
-import { CreatePagesArgs } from "gatsby"
+import { CreatePagesArgs, CreateWebpackConfigArgs } from "gatsby"
 import path from "path"
 
 interface ProjectQuery {
   portfolio: {
     projects: GatsbyTypes.Portfolio_Project[]
   }
+}
+export const onCreateWebpackConfig = ({ actions }: CreateWebpackConfigArgs) => {
+  actions.setWebpackConfig({
+    devtool: "eval-source-map",
+  })
 }
 export const createPages = async ({
   graphql,

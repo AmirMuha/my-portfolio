@@ -13,14 +13,14 @@ const Alert: FC<PropsWithChildren<Props>> = ({
   title,
   message,
   onClose,
-  autoClose = 5000,
+  autoClose = 5,
   header = true,
 }) => {
   useEffect(() => {
     if (autoClose) {
       setTimeout(() => {
         onClose()
-      }, autoClose)
+      }, autoClose * 1000)
     }
   }, [])
   return (

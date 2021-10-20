@@ -47,9 +47,11 @@ interface Props {
   getValue?: (v: any) => void
   getTechCategoryValue?: (v: any) => void
   onDeleteTech?: (id: string) => void
+  type?: "ADD" | "EDIT"
 }
 const Editable: FC<PropsWithChildren<Props>> = ({
   custom = false,
+  type = "EDIT",
   mode = "IN_POSITION",
   file = false,
   textareaRows,
@@ -136,6 +138,8 @@ const Editable: FC<PropsWithChildren<Props>> = ({
       )}
       {mode === "MODAL" && isEnable && techCategory && (
         <Editable_TechCategory
+          data={value as any}
+          mode={type}
           onClose={() => setIsEnable(prev => !prev)}
           onDeleteTech={id => onDeleteTech && onDeleteTech(id)}
           onSave={v => onSave(v)}

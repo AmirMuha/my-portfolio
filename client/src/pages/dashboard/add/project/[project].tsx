@@ -14,28 +14,33 @@ import Button from "../../../../components/UI/Button"
 import Confirm from "../../../../components/UI/Confirm"
 import QAndA_Add from "../../../../components/Dashboard/Q&A_Add"
 import {
-  setNameReducer,
   NewProjectState,
-  getUnFinishedProjects,
   UNSAVED_PROJECTS,
+  editNameReducer,
+  setStateReducer,
 } from "../../../../store/newProjectSlice"
 import { useTheDispatch, useTheSelector } from "../../../../store/store"
 import { CreateProjectMutation } from "../../../../util/mutations"
-
+import Alert from "../../../../components/UI/Alert"
+import { useAlert } from "../../../../util/useAlert"
 const project: FC<PageProps> = ({ children, params, location }) => {
+  const {
+    isOpen: alertIsOpen,
+    message: alertMessage,
+    title: alertTitle,
+    setAlert,
+  } = useAlert()
   const projectNameParam = params.project
   const dispatch = useTheDispatch()
   const data = useTheSelector(state => state.newProject)
+  const [newProjectName, setNewProjectName] = useState("")
   const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
   const [mutate] = useMutation<
     GatsbyTypes.Portfolio_Project,
     GatsbyTypes.Portfolio_ProjectCreateInput
   >(CreateProjectMutation)
   const [unsavedProjects, setUnsavedProjects] = useState<NewProjectState[]>([])
-  useEffect(() => {
-    dispatch(setNameReducer({ name: data.name || projectNameParam }))
-  }, [data.name, projectNameParam])
-  useEffect(() => {
+  const fetchPreviouslyEditingProject = () => {
     const fetchUnsavedProjects = localStorage.getItem(UNSAVED_PROJECTS)
     if (fetchUnsavedProjects) {
       const convertedFetchUnsavedProjects = JSON.parse(fetchUnsavedProjects)
@@ -45,13 +50,15 @@ const project: FC<PageProps> = ({ children, params, location }) => {
           convertedFetchUnsavedProjects[unsp] as any
         )
       }
+
       setUnsavedProjects(fetchUnsavedProjectsArray)
     }
-    dispatch(getUnFinishedProjects({ name: projectNameParam }))
-  }, [])
-  const continueFromHere = (n: string) => {
-    dispatch(getUnFinishedProjects({ name: n }))
   }
+  useEffect(() => {
+    setNewProjectName(projectNameParam)
+    dispatch(setStateReducer({ name: projectNameParam }))
+    fetchPreviouslyEditingProject()
+  }, [projectNameParam])
   const deleteProject = (v: boolean) => {
     if (v) {
       console.log("Deleting the projct", v)
@@ -64,7 +71,14 @@ const project: FC<PageProps> = ({ children, params, location }) => {
   }
   return (
     <>
-      <SEO title={`Adding ${data.name}`} />
+      {alertIsOpen && (
+        <Alert
+          title={alertTitle}
+          onClose={() => setAlert({ isOpen: false })}
+          message={alertMessage}
+        />
+      )}
+      <SEO title={`Adding New Project`} />
       <Dash_Layout>
         {unsavedProjects.length > 0 && (
           <TheSection
@@ -76,13 +90,12 @@ const project: FC<PageProps> = ({ children, params, location }) => {
             <div className="mx-5">
               <p>Projects you've been working on :</p>
               <div className="m-2">
-                <ul className="flex flex-wrap">
+                <ul className="flex flex-wrap gap-2">
                   {unsavedProjects.map(p => (
-                    <li className="list-none py-1 px-3" key={p.name}>
+                    <li className="list-none my-1" key={p.name}>
                       <Button
-                        normal
+                        to={`/dashboard/add/project/${p.name}`}
                         outline
-                        onClick={() => continueFromHere(p.name)}
                         color="200"
                         textColor="500"
                         borderColor="500"
@@ -98,14 +111,25 @@ const project: FC<PageProps> = ({ children, params, location }) => {
         )}
         <TheSection
           titleEditable
-          titleValue={data.name}
-          getTitleValue={v => dispatch(setNameReducer({ name: v }))}
-          name={data.name}
+          getTitleValue={v => {
+            window.history.replaceState(
+              "",
+              "",
+              `${window.location.origin}/dashboard/add/project/${v}`
+            ),
+              setNewProjectName(v)
+          }}
+          titleValue={newProjectName}
+          onSaveTitleValue={v => {
+            fetchPreviouslyEditingProject()
+            dispatch(editNameReducer({ name: v, prevName: data.name }))
+          }}
+          name={newProjectName}
           id="about-the-project"
         >
           <AboutTheProject
             editable
-            type="ADD"
+            mode="ADD"
             data={data as any}
             image={data.image!}
           />
@@ -120,10 +144,11 @@ const project: FC<PageProps> = ({ children, params, location }) => {
           >
             <AddTechCategory />
             {data.tech_categories?.length > 0 &&
-              data.tech_categories.map(t => (
+              data.tech_categories.map((t, i) => (
                 <TechItem
                   editable
-                  key={t.id}
+                  mode="ADD"
+                  key={t?.id ? t.id : i}
                   border={false}
                   style={{ marginLeft: 0 }}
                   data={t}

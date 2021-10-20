@@ -1,22 +1,97 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 export const UNSAVED_PROJECTS = "unsaved-projects"
-const storeLocally = (
+function storeLocally(
   state: NewProjectState,
   field: string,
   value: any,
-  projectName: string
-) => {
+  projectName: string,
+  editName?: { enabled: boolean; prevName: string } | any,
+  type: "PROJECT" | "TECH_CATEGORY" | "QANDA" | "SKETCH" | "TECH" = "PROJECT"
+): any {
   const unsavedProjects = localStorage.getItem(UNSAVED_PROJECTS)
   const unsavedDataObject = unsavedProjects ? JSON.parse(unsavedProjects) : {}
-  const newProjectObject = {
-    ...unsavedDataObject,
-    [projectName]: {
-      ...state,
-      [field]: value,
-    },
+  if (unsavedDataObject[projectName]) {
+    const existingProject = { ...unsavedDataObject[projectName] }
+    switch (type) {
+      case "PROJECT":
+        existingProject[field] = value
+        break
+      case "TECH_CATEGORY":
+        if (
+          !existingProject.tech_categories.find(
+            (tc: { name: string }) => tc.name === value
+          )
+        ) {
+          existingProject.tech_categories.push({ name: value, techs: [] })
+        }
+        break
+      case "TECH":
+        const receivedValue = value as { name: string; techs: string[] }
+        const foundTechCategory = existingProject.tech_categories.findIndex(
+          (tc: { name: string }) => tc.name === value
+        )
+        if (foundTechCategory) {
+          existingProject.tech_categories = existingProject.tech_categories.map(
+            (tc: { name: string; techs: { name: string }[] }) => {
+              if (tc.name === receivedValue.name) {
+                return {
+                  name: tc.name,
+                  techs: receivedValue.techs.map(t => ({ name: t })),
+                }
+              } else {
+                return tc
+              }
+            }
+          )
+        } else {
+          existingProject.tech_categories.push({
+            name: receivedValue.name,
+            techs: receivedValue.techs.map(t => ({ name: t })),
+          })
+        }
+        break
+      case "SKETCH":
+        break
+      case "QANDA":
+        break
+      default:
+        break
+    }
+    const newProjectObject = {
+      ...unsavedDataObject,
+      [projectName]: existingProject,
+    }
+    localStorage.setItem(UNSAVED_PROJECTS, JSON.stringify(newProjectObject))
+    return existingProject
+  } else {
+    let newProjectObject = {}
+    if (editName?.enabled) {
+      const unsavedDataObjectForEditing = { ...unsavedDataObject }
+      const projectProps = {
+        ...unsavedDataObjectForEditing[editName.prevName],
+        name: value,
+      }
+      delete unsavedDataObjectForEditing[projectName]
+      newProjectObject = {
+        ...unsavedDataObjectForEditing,
+        [projectName]: projectProps,
+      }
+      newProjectObject[editName.prevName] = undefined
+      localStorage.setItem(UNSAVED_PROJECTS, JSON.stringify(newProjectObject))
+      return projectProps
+    } else {
+      newProjectObject = {
+        ...unsavedDataObject,
+        [projectName]: {
+          ...state,
+          [field]: value,
+        },
+      }
+      localStorage.setItem(UNSAVED_PROJECTS, JSON.stringify(newProjectObject))
+      return { ...state, [field]: value }
+    }
   }
-  localStorage.setItem(UNSAVED_PROJECTS, JSON.stringify(newProjectObject))
 }
 
 export interface NewProjectState {
@@ -45,12 +120,6 @@ const newProjectSlice = createSlice({
   name: "NewProject",
   initialState,
   reducers: {
-    getUnFinishedProjects: (state, action: { payload: { name: string } }) => {
-      const newUnsavedProjects = localStorage.getItem(UNSAVED_PROJECTS)
-      return newUnsavedProjects
-        ? { ...JSON.parse(newUnsavedProjects)[action.payload.name] }
-        : { ...state }
-    },
     setImageReducer: (state, action: { payload: { image: any } }) => {
       if (action.payload.image) {
         console.log(action.payload.image)
@@ -76,21 +145,88 @@ const newProjectSlice = createSlice({
         state.github_url = action.payload.url
       }
     },
-    setNameReducer: (state, action: { payload: { name: string } }) => {
+    setStateReducer: (state, action: { payload: { name: string } }) => {
       if (action.payload.name) {
-        storeLocally(state, "name", action.payload.name, action.payload.name)
-        state.name = action.payload?.name
+        const projects = localStorage.getItem(UNSAVED_PROJECTS)
+        if (projects) {
+          const parsedProjects = JSON.parse(projects)
+          if (parsedProjects[action.payload.name]) {
+            return {
+              ...parsedProjects[action.payload.name],
+            }
+          } else {
+            storeLocally(
+              state,
+              "name",
+              action.payload.name,
+              action.payload.name
+            )
+            return { ...state, name: action.payload.name }
+          }
+        } else {
+          storeLocally(state, "name", action.payload.name, action.payload.name)
+          return { ...state, name: action.payload.name }
+        }
+      }
+    },
+    editNameReducer: (
+      state,
+      action: { payload: { name: string; prevName: string } }
+    ) => {
+      if (action.payload.name) {
+        const newState = storeLocally(
+          state,
+          "name",
+          action.payload.name,
+          action.payload.name,
+          {
+            enabled: true,
+            prevName: action.payload.prevName,
+          }
+        )
+        return { ...newState }
+      }
+    },
+    setTechCategoryReducer: (state, action: { payload: { name: string } }) => {
+      const project = storeLocally(
+        state,
+        "name",
+        action.payload.name,
+        state.name,
+        null,
+        "TECH_CATEGORY"
+      )
+      return {
+        ...project,
+      }
+    },
+    setTechReducer: (
+      state,
+      action: { payload: { name: string; techs: string[] } }
+    ) => {
+      const project = storeLocally(
+        state,
+        "name",
+        { name: action.payload.name, techs: action.payload.techs },
+        state.name,
+        null,
+        "TECH"
+      )
+      return {
+        ...project,
       }
     },
   },
 })
 
 export const {
-  setNameReducer,
+  setStateReducer,
+  editNameReducer,
   setAppUrlReducer,
   setGithubUrlReducer,
   setImageReducer,
   setSummaryReducer,
-  getUnFinishedProjects,
+  setTechCategoryReducer,
+  setTechReducer,
 } = newProjectSlice.actions
 export const NewProjectReducer = newProjectSlice.reducer

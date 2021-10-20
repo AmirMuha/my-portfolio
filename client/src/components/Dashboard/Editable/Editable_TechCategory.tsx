@@ -15,8 +15,8 @@ import Input from "../../UI/Input"
 import Modal from "../../UI/Modal"
 
 interface TechAction {
-  type: "CATEGORY_NAME" | "TECH"
-  value: string | string[]
+  type: "CATEGORY_NAME" | "TECH" | "TECH_CATEGORY" | "DELETE_TECH"
+  value: string | string[] | { name: string; techs: string[] }
 }
 export interface TechState {
   name: string
@@ -28,6 +28,15 @@ const techInitialState: TechState = {
 }
 const techReducer: Reducer<TechState, TechAction> = (state, action) => {
   switch (action.type) {
+    case "DELETE_TECH":
+      const techIndex = state.techs.findIndex(t => t === action.value)
+      state.techs.splice(techIndex, 1)
+      return state
+    case "TECH_CATEGORY":
+      return {
+        name: (action.value as any).name,
+        techs: (action.value as any).techs,
+      }
     case "TECH":
       if (typeof action.value === "string") {
         state.techs.push(action.value)
@@ -44,50 +53,80 @@ const techReducer: Reducer<TechState, TechAction> = (state, action) => {
 }
 
 interface Props {
+  mode?: "ADD" | "EDIT"
   onClose: () => void
   onSave: (v?: any) => void
   onDeleteTech: (id: string) => void
   title: string
   buttonStyle?: CSSProperties
   buttonClassName?: string
+  data:
+    | GatsbyTypes.Portfolio_TechCategory
+    | { name: string; techs: { name: string }[] }
   editButtonStyle?: CSSProperties
 }
 
 const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
   onDeleteTech,
   onClose,
+  mode = "EDIT",
+  data,
   onSave,
   title,
   buttonStyle,
   buttonClassName,
   editButtonStyle,
 }) => {
-  const [confirmBox, setConfirmBox] = useState({ open: false, id: "" })
+  const [_, rerender] = useState({})
+  const [confirmBox, setConfirmBox] = useState<{
+    open: boolean
+    id: string | number
+    name: string
+  }>({ open: false, id: "", name: "" })
   const [isInputEditable, setIsInputEditable] = useState<boolean>(true)
   const techInputRef = useRef<HTMLInputElement>()
   const inputRef = useRef<HTMLInputElement>()
   const [techState, dispatchTech] = useReducer(techReducer, techInitialState)
-  const deleteTechItem = () => {}
+  console.log(techState)
+  const deleteTechItem = (i: string | number, name: string) => {
+    if (typeof i === "string" && mode === "EDIT") {
+      onDeleteTech(i)
+      setConfirmBox({ open: true, id: i, name })
+    } else {
+      dispatchTech({
+        type: "DELETE_TECH",
+        value: name,
+      })
+      setConfirmBox({ open: false, id: "", name: "" })
+    }
+  }
   const sendBackTechValues = () => {
     onSave(techState)
     onClose()
   }
   useEffect(() => {
     dispatchTech({
-      type: "TECH",
-      value: [],
+      type: "TECH_CATEGORY",
+      value: {
+        name: data.name,
+        techs: data.techs.map(t => t.name),
+      },
     })
   }, [])
   return (
-    <Modal header title={`Editing ${title} Tech Category`} onClose={onClose}>
+    <Modal
+      header
+      title={`Editing ${techState.name} Tech Category`}
+      onClose={onClose}
+    >
       <div>
         <div className="flex items-center gap-2">
-          <span className="font-bold">{title} :</span>
+          <span className="font-bold">{techState.name} :</span>
           <Input
-            id={title as string}
-            name={title}
+            id={techState.name as string}
+            name={techState.name}
             type="text"
-            placeholder={title}
+            placeholder={techState.name}
             getValue={v => dispatchTech({ value: v, type: "CATEGORY_NAME" })}
             ref={inputRef as any}
             color={isInputEditable ? "100" : "200"}
@@ -136,12 +175,13 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
             ref={techInputRef as any}
           />
           <button
-            onClick={() =>
+            onClick={() => {
               dispatchTech({
                 value: techInputRef.current?.value! || "",
                 type: "TECH",
               })
-            }
+              rerender({})
+            }}
             className="border-palatte-500 border px-3 p-0.5"
           >
             Add
@@ -150,76 +190,35 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
         {confirmBox.open && (
           <Confirm
             text={
-              "Do your realy want to delete TECH_ITEM with id of " +
+              `Do your realy want to delete ${confirmBox.name} with id of ` +
               confirmBox.id
             }
-            getValue={deleteTechItem}
+            getValue={v => {
+              if (v) {
+                deleteTechItem(confirmBox.id, confirmBox.name)
+              }
+            }}
             confirmButtonText="Delete"
             title="Deleting Tech Item"
-            onClose={() => setConfirmBox({ open: false, id: "" })}
+            onClose={() => setConfirmBox({ open: false, id: "", name: "" })}
           />
         )}
         <ul className="py-3">
-          <li className="inline-flex items-center gap-2 bg-palatte-300 m-0.5 text-palatte-500 text-xs px-2 py-1">
-            ReactJS
-            <span
-              onClick={() => {
-                onDeleteTech("1")
-                setConfirmBox({ open: true, id: "1" })
-              }}
-              className="cursor-pointer icon-s-1"
-            >
-              {Close}
-            </span>
-          </li>
-          <li className="inline-flex items-center gap-2 bg-palatte-300 m-0.5 text-palatte-500 text-xs px-2 py-1">
-            VueJS
-            <span
-              onClick={() => {
-                onDeleteTech("2")
-                setConfirmBox({ open: true, id: "2" })
-              }}
-              className="cursor-pointer icon-s-1"
-            >
-              {Close}
-            </span>
-          </li>
-          <li className="inline-flex items-center gap-2 bg-palatte-300 m-0.5 text-palatte-500 text-xs px-2 py-1">
-            Socket.IO
-            <span
-              onClick={() => {
-                onDeleteTech("3")
-                setConfirmBox({ open: true, id: "3" })
-              }}
-              className="cursor-pointer icon-s-1"
-            >
-              {Close}
-            </span>
-          </li>
-          <li className="inline-flex items-center gap-2 bg-palatte-300 m-0.5 text-palatte-500 text-xs px-2 py-1">
-            TS
-            <span
-              onClick={() => {
-                onDeleteTech("4")
-                setConfirmBox({ open: true, id: "4" })
-              }}
-              className="cursor-pointer icon-s-1"
-            >
-              {Close}
-            </span>
-          </li>
-          <li className="inline-flex items-center gap-2 bg-palatte-300 m-0.5 text-palatte-500 text-xs px-2 py-1">
-            PostgresQL
-            <span
-              onClick={() => {
-                onDeleteTech("5")
-                setConfirmBox({ open: true, id: "5" })
-              }}
-              className="cursor-pointer icon-s-1"
-            >
-              {Close}
-            </span>
-          </li>
+          {techState.techs.length > 0 &&
+            techState.techs.map((t, i) => (
+              <li
+                key={i}
+                className="inline-flex items-center gap-2 bg-palatte-300 m-0.5 text-palatte-500 text-xs px-2 py-1"
+              >
+                {t}
+                <span
+                  onClick={() => setConfirmBox({ open: true, id: i, name: t })}
+                  className="cursor-pointer icon-s-1"
+                >
+                  {Close}
+                </span>
+              </li>
+            ))}
         </ul>
       </div>
       <div className="flex items-center gap-2 justify-end">

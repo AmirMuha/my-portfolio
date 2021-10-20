@@ -5,11 +5,11 @@ import path from "path";
 import { Arg, Mutation, Resolver } from "type-graphql";
 @Resolver()
 export class UploadResolver {
-  @Mutation(() => Boolean)
+  @Mutation(() => String || Error)
   async uploadSingleFile(
     @Arg("file", () => GraphQLUpload)
     { mimetype, createReadStream }: FileUpload
-  ): Promise<Boolean | Error> {
+  ): Promise<string | Error> {
     const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
     return new Promise((resolve, reject) => {
       const stream = createReadStream();
@@ -23,7 +23,7 @@ export class UploadResolver {
           console.error(e);
           reject(e);
         })
-        .on("finish", () => resolve(true));
+        .on("finish", () => resolve(filename));
     });
   }
 

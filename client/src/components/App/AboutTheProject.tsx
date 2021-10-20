@@ -6,11 +6,11 @@ import React, {
   useRef,
   useState,
 } from "react"
-import audio from "../../04 Future.mp3"
+// import audio from "../../04 Future.mp3"
 import { GitHub } from "../../icons/iconsJSX"
 import { useTheDispatch } from "../../store/store"
 import Editable from "../Dashboard/Editable"
-import Audio from "../UI/Audio"
+// import Audio from "../UI/Audio"
 import Button from "../UI/Button"
 import {
   setGithubUrlReducer,
@@ -18,37 +18,40 @@ import {
   setAppUrlReducer,
   setImageReducer,
 } from "../../store/newProjectSlice"
-import { File } from "../UI/Input"
 import SmallPipe from "../UI/SmallPipe"
 import Markdown from "../utility/Markdown"
+import { useMutation } from "@apollo/client"
+import { UploadFileMutation } from "../../util/mutations"
 interface Props {
   image: IGatsbyImageData | string
   editable?: boolean
   data: GatsbyTypes.Portfolio_Project
-  type: "ADD" | "EDIT" | "NORMAL"
+  mode: "ADD" | "EDIT" | "NORMAL"
 }
 const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   editable = false,
   image,
-  type = "NORMAL",
+  mode = "NORMAL",
   data,
 }) => {
+  const [mutateImage, mutateImageResult] = useMutation(UploadFileMutation)
   const imageRef = useRef<HTMLImageElement>()
   const addNewProjectDispatch = useTheDispatch()
-  const [imageFile, setImage] = useState<any>(null)
+  const [imageName, setImageName] = useState<string>("")
+  const [imageFile, setImageFile] = useState<FileList & Array<BlobPart>>()
   // const [audioFile, setAudio] = useState<any>(null)
   const [summary, setSummary] = useState<string>("")
   const [githubUrl, setGithubUrl] = useState<string>("")
   const [appUrl, setAppUrl] = useState<string>("")
   useEffect(() => {
     setSummary(data.summary)
-    setImage(data.image)
+    setImageName(data.image)
     setGithubUrl(data.github_url)
     setAppUrl(data.app_url)
   }, [data])
   const updateGithubUrl = () => {
     // mutate the update
-    if (type === "ADD") {
+    if (mode === "ADD") {
       addNewProjectDispatch(setGithubUrlReducer({ url: githubUrl }))
     } else {
       console.log("Updating the github url ...")
@@ -56,7 +59,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   }
   const updateAppUrl = () => {
     // mutate the update
-    if (type === "ADD") {
+    if (mode === "ADD") {
       addNewProjectDispatch(setAppUrlReducer({ url: appUrl }))
     } else {
       console.log("Updating the app url ...")
@@ -64,23 +67,30 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   }
   const updateImage = () => {
     // mutate the update
-    if (type === "ADD") {
-      // addNewProjectDispatch(setImageReducer({ image: imageFile }))
+    if (mode === "ADD") {
+      if (imageFile) {
+        mutateImage({
+          variables: {
+            image: imageFile[0],
+          },
+        })
+          .then(res => {
+            setImageName(res.data.uploadSingleFile)
+            addNewProjectDispatch(
+              setImageReducer({ image: res.data.uploadSingleFile })
+            )
+          })
+          .catch(e => console.log(e))
+      }
+      // also upload it to the server so when the user came back to edit he has this image and you can show it to them
     } else {
       console.log("Updating the image ...")
       console.log(imageFile)
     }
   }
-  // const updateAudio = () => {
-  //   // mutate the update
-  //   if (type === "ADD") {
-  //   } else {
-  //   }
-  //   console.log("Updating the audio ...")
-  // }
   const updateSummary = (v: string) => {
     // mutate the update
-    if (type === "ADD") {
+    if (mode === "ADD") {
       addNewProjectDispatch(setSummaryReducer({ summary }))
     } else {
       console.log("Updating the summary, new Value => " + v)
@@ -98,22 +108,13 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     console.log(v)
     setSummary(v)
   }
-  const getImageFile = (f: any) => {
+  const getImageFile = (f: FileList & BlobPart[]) => {
     const i = new Blob(f, { type: f[0].type })
     const s = URL.createObjectURL(i)
     if (imageRef.current) {
       imageRef.current.src = s
     }
-    i.arrayBuffer().then(v => {
-      console.log(new Uint8Array(v))
-    })
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (reader.result) {
-        setImage(reader.result)
-      }
-    }
-    reader.readAsBinaryString(i)
+    setImageFile(f)
   }
   // const getAudioFile = (f: File) => {
   //   console.log(f)
@@ -134,7 +135,11 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             className="w-full overflow-x-auto overflow-y-hidden flex-grow border-5 border-palatte-500 relative md:border-10"
           >
             <div>
-              <img ref={imageRef as any} alt={`${data.name} Image`} />
+              <img
+                ref={imageRef as any}
+                src={`http://localhost:3333/${imageName}`}
+                alt={`${data.name} Image`}
+              />
             </div>
             <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
             <div className="flex absolute top-0 right-0 left-0 justify-between m-1.5 items-center">
@@ -195,7 +200,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               value=""
             />
           </div>
-          <div className="flex-col flex-grow ml-7 border-l-5 border-palatte-500 relative md:border-l-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
+          <div className="flex-col flex-grow ml-7 border-l-5 border-b-5 border-palatte-500 relative md:border-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
             <SmallPipe
               style={{
                 display: "block",
@@ -276,7 +281,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               </Button>
             </div>
           </div>
-          <div className="flex-col ml-7 border-l-5 border-palatte-500 relative md:border-l-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
+          <div className="flex-col ml-7 border-l-5 border-b-5 border-palatte-500 relative md:border-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
             <SmallPipe
               style={{
                 display: "block",
@@ -291,13 +296,13 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             <div className="px-5 py-3">
               <Markdown>{data.summary}</Markdown>
             </div>
-            {false && (
+            {/* {false && (
               <div className="">
                 <SmallPipe pipeClassName="hidden md:flex">
                   <Audio src={audio} />
                 </SmallPipe>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}

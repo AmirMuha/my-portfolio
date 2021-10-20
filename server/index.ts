@@ -62,6 +62,7 @@ const main = async () => {
       },
     })
   );
+  app.use(Express.static(path.join(__dirname, "./src/uploads/")));
   applyMiddlewares();
   const schema = buildSchemaSync({
     resolvers: [...resolvers, UploadResolver] as any,

@@ -829,7 +829,7 @@ type Mutation {
   updateTech(data: TechUpdateInput!, where: TechWhereUniqueInput!): Tech
   updateTechCategory(data: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory
   uploadMultipleFiles(files: [Upload!]!): Boolean!
-  uploadSingleFile(file: Upload!): Boolean!
+  uploadSingleFile(file: Upload!): String!
 }
 
 input NestedBoolFilter {
