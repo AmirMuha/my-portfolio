@@ -88,7 +88,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
             textClassName="sm:text-sm"
           >
             <div className="mx-5">
-              <p>Projects you've been working on :</p>
+              <p>Projects you've been working on and haven't saved yet :</p>
               <div className="m-2">
                 <ul className="flex flex-wrap gap-2">
                   {unsavedProjects.map(p => (
