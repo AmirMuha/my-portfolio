@@ -3,9 +3,14 @@ import { gql } from "@apollo/client"
 // ##################################
 // ############### Create Mutations
 // ##################################
-export const UploadFileMutation = gql`
-  mutation UploadFile($image: Upload!) {
-    uploadSingleFile(file: $image)
+export const UploadSingleFileMutation = gql`
+  mutation UploadFile($file: Upload!) {
+    uploadSingleFile(file: $file)
+  }
+`
+export const UploadMultipleFileMutation = gql`
+  mutation UploadFiles($files: Upload!) {
+    uploadMultipleFile(files: $files)
   }
 `
 export const CreateProjectMutation = gql`

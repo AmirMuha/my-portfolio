@@ -14,6 +14,9 @@ const uploadLink = createUploadLink({
 export const wrapRootElement: FC<WrapRootElementBrowserArgs> = ({
   element,
 }) => {
+  if (window) {
+    ;(window as any).__SERVER_API__ = "http://localhost:3333"
+  }
   const cache = new InMemoryCache()
   const client = new ApolloClient({
     link: uploadLink,

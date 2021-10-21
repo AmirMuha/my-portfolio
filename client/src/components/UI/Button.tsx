@@ -157,19 +157,6 @@ const Button: FC<PropsWithChildren<Props>> = ({
           {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
         </button>
       )}
-      {toUrl && disabled && (
-        <div
-          style={style}
-          className={`${buttonClasses} ${className} ${
-            color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
-          } text-palatte-${textColor}`}
-        >
-          {iconPos === "left" && <span ref={iconRef as any}>{icon}</span>}
-          <span>{children}</span>
-          <span className="bg-palatte-500  w-0 h-full absolute top-0 left-0"></span>
-          {iconPos === "right" && <span ref={iconRef as any}>{icon}</span>}
-        </div>
-      )}
       {toUrl && !disabled && (
         <a
           href={toUrl}
@@ -191,7 +178,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
         </a>
       )}
 
-      {to && disabled && (
+      {(to || toUrl) && disabled && (
         <div
           style={style}
           className={`${buttonClasses} ${className} ${

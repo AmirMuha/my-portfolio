@@ -7,13 +7,17 @@ interface Props {
   title: string
   autoClose?: number
   onClose: () => void
+  backdrop?: boolean
+  position?: "TOP" | "BOTTOM" | "CENTER"
 }
 
 const Alert: FC<PropsWithChildren<Props>> = ({
   title,
   message,
+  backdrop = false,
   onClose,
   autoClose = 5,
+  position = "TOP",
   header = true,
 }) => {
   useEffect(() => {
@@ -27,10 +31,22 @@ const Alert: FC<PropsWithChildren<Props>> = ({
     <>
       {createPortal(
         <>
+          {backdrop && (
+            <div
+              onClick={onClose}
+              className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
+            ></div>
+          )}
           <dialog
             open
-            style={{ padding: 0, maxHeight: "80vh", maxWidth: "500px" }}
-            className="bg-palatte-100 fixed overflow-scroll top-20 right-5 w-3/4 border border-palatte-500"
+            style={{ padding: 0, maxHeight: "80vh", maxWidth: "600px" }}
+            className={`bg-palatte-100 fixed overflow-scroll ${
+              position === "TOP"
+                ? "top-20"
+                : position === "CENTER"
+                ? "top-1/2 transform -translate-y-1/2"
+                : "bottom-20"
+            } w-3/4 border border-palatte-500`}
           >
             <div>
               {header && title && (

@@ -78,6 +78,34 @@ function storeLocally(
         }
         break
       case "SKETCH":
+        if (value.id) {
+          const existingSketches: {
+            id: string
+            summary: string
+            description: string
+            download_link: string
+            image: string
+            title: string
+          }[] = [...existingProject.sketches]
+          const sketchInd = existingSketches.findIndex(q => q.id === value.id)
+          console.log("Before", existingSketches[sketchInd][field])
+          existingSketches.splice(sketchInd, 1, {
+            ...existingSketches[sketchInd],
+            [value.updateField]: value.updateValue,
+          })
+          console.log("After", existingSketches[sketchInd][field])
+          existingProject.sketches = existingSketches
+        } else {
+          existingProject.sketches.push({
+            id: new RandomNumber()[0],
+            summary: value.summary,
+            description: value.description,
+            image: value.image,
+            download_link: value.download_link,
+            title: value.title,
+          })
+        }
+
         break
       default:
         break
@@ -260,12 +288,50 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+    setSketchReducer: (
+      state,
+      action: {
+        payload: {
+          id?: string
+          description?: string
+          summary?: string
+          download_link?: string
+          image?: string
+          title?: string
+          updateValue?: string
+          updateField?: string
+        }
+      }
+    ) => {
+      const project = storeLocally(
+        state,
+        "sketches",
+        {
+          id: action.payload.id ? action.payload.id : undefined,
+          description: action.payload.description && action.payload.description,
+          summary: action.payload.summary && action.payload.summary,
+          download_link:
+            action.payload.download_link && action.payload.download_link,
+          image: action.payload.image && action.payload.image,
+          title: action.payload.title && action.payload.title,
+          updateValue: action.payload.updateValue && action.payload.updateValue,
+          updateField: action.payload.updateField && action.payload.updateField,
+        },
+        state.name,
+        null,
+        "SKETCH"
+      )
+      return {
+        ...project,
+      }
+    },
   },
 })
 
 export const {
   setStateReducer,
   editNameReducer,
+  setSketchReducer,
   setAppUrlReducer,
   setQAndA,
   setGithubUrlReducer,

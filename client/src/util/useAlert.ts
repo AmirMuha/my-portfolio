@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 export const useAlert = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [message, setMessage] = useState<string>("")
@@ -8,11 +8,13 @@ export const useAlert = () => {
     message?: string
     title?: string
   }) => {
-    if (obj.isOpen) {
+    if (obj.isOpen !== undefined) {
       setIsOpen(obj.isOpen)
-    } else if (obj.title) {
+    }
+    if (obj.title) {
       setTitle(obj.title)
-    } else if (obj.message) {
+    }
+    if (obj.message) {
       setMessage(obj.message)
     }
   }

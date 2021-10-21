@@ -21,12 +21,12 @@ import {
 import SmallPipe from "../UI/SmallPipe"
 import Markdown from "../utility/Markdown"
 import { useMutation } from "@apollo/client"
-import { UploadFileMutation } from "../../util/mutations"
+import { UploadSingleFileMutation } from "../../util/mutations"
 interface Props {
   image: IGatsbyImageData | string
   editable?: boolean
   data: GatsbyTypes.Portfolio_Project
-  mode: "ADD" | "EDIT" | "NORMAL"
+  mode?: "ADD" | "EDIT" | "NORMAL"
 }
 const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   editable = false,
@@ -34,7 +34,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   mode = "NORMAL",
   data,
 }) => {
-  const [mutateImage, mutateImageResult] = useMutation(UploadFileMutation)
+  const [mutateImage, mutateImageResult] = useMutation(UploadSingleFileMutation)
   const imageRef = useRef<HTMLImageElement>()
   const addNewProjectDispatch = useTheDispatch()
   const [imageName, setImageName] = useState<string>("")
@@ -71,7 +71,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
       if (imageFile) {
         mutateImage({
           variables: {
-            image: imageFile[0],
+            file: imageFile[0],
           },
         })
           .then(res => {
@@ -137,7 +137,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             <div>
               <img
                 ref={imageRef as any}
-                src={`http://localhost:3333/${imageName}`}
+                src={`${(window as any).__SERVER_API__}/${imageName}`}
                 alt={`${data.name} Image`}
               />
             </div>

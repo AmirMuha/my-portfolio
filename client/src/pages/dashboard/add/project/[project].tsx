@@ -172,7 +172,9 @@ const project: FC<PageProps> = ({ children, params, location }) => {
           <AddSketch data={{}} />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
             {data.sketches?.length > 0 &&
-              data.sketches.map(s => <Sketch editable data={s} key={s.id} />)}
+              data.sketches.map(s => (
+                <Sketch mode="ADD" editable data={s} key={s.id} />
+              ))}
           </div>
         </TheSection>
         <div className="mb-6">

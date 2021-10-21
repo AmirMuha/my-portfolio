@@ -19,7 +19,6 @@ interface Props {
 }
 
 const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
-  console.log(data)
   const dispatch = useTheDispatch()
   const dropdownRef = useRef<HTMLButtonElement>()
   const [isAnswerOpen, setIsAnswerOpen] = useState<boolean>(false)
