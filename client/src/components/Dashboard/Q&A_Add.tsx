@@ -1,13 +1,23 @@
 import React, { FC, PropsWithChildren, useState } from "react"
+import { setQAndA } from "../../store/newProjectSlice"
+import { useTheDispatch } from "../../store/store"
 import Button from "../UI/Button"
 import Input from "../UI/Input"
 import Modal from "../UI/Modal"
 import SmallPipe from "../UI/SmallPipe"
 import TextArea from "../UI/TextArea"
 
-interface Props {}
+interface Props {
+  /**
+   * Choose either you want to add a new Q&A or you want to edit one
+   * @property optional
+   * @default "EDIT" is the default value for mode property
+   */
+  mode?: "ADD" | "EDIT"
+}
 
-const QAndA: FC<PropsWithChildren<Props>> = props => {
+const QAndA: FC<PropsWithChildren<Props>> = ({ mode = "EDIT" }) => {
+  const dispatch = useTheDispatch()
   const [isBoxOpen, setIsBoxOpen] = useState<boolean>(false)
   const [newQuestion, setNewQuestion] = useState<string>("")
   const [newAnswer, setNewAnswer] = useState<string>("")
@@ -15,7 +25,12 @@ const QAndA: FC<PropsWithChildren<Props>> = props => {
     setIsBoxOpen(prev => !prev)
   }
   const saveQuestion = () => {
-    console.log({ answer: newAnswer, question: newQuestion })
+    if (mode === "ADD") {
+      dispatch(setQAndA({ question: newQuestion, answer: newAnswer }))
+      console.log({ answer: newAnswer, question: newQuestion })
+    } else {
+      console.log({ answer: newAnswer, question: newQuestion })
+    }
   }
   return (
     <>

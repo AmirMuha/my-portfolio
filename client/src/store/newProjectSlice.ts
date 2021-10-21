@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { RandomNumber } from "../util/RandomNumber"
 
 export const UNSAVED_PROJECTS = "unsaved-projects"
+
 function storeLocally(
   state: NewProjectState,
-  field: string,
+  field: keyof NewProjectState,
   value: any,
   projectName: string,
   editName?: { enabled: boolean; prevName: string } | any,
-  type: "PROJECT" | "TECH_CATEGORY" | "QANDA" | "SKETCH" | "TECH" = "PROJECT"
+  type: "PROJECT" | "TECH_CATEGORY" | "Q&A" | "SKETCH" | "TECH" = "PROJECT"
 ): any {
   const unsavedProjects = localStorage.getItem(UNSAVED_PROJECTS)
   const unsavedDataObject = unsavedProjects ? JSON.parse(unsavedProjects) : {}
@@ -51,9 +53,31 @@ function storeLocally(
           })
         }
         break
-      case "SKETCH":
+      case "Q&A":
+        if (value.id) {
+          const existingQuestions: {
+            question: string
+            answer: string
+            id: string
+          }[] = [...existingProject.questions]
+          const questionsInd = existingQuestions.findIndex(
+            q => q.id === value.id
+          )
+          existingQuestions.splice(questionsInd, 1, {
+            id: value.id,
+            question: value.question,
+            answer: value.answer,
+          })
+          existingProject.questions = existingQuestions
+        } else {
+          existingProject.questions.push({
+            id: new RandomNumber()[0],
+            question: value.question,
+            answer: value.answer,
+          })
+        }
         break
-      case "QANDA":
+      case "SKETCH":
         break
       default:
         break
@@ -216,6 +240,26 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+    setQAndA: (
+      state,
+      action: { payload: { question: string; answer: string; id?: string } }
+    ) => {
+      const project = storeLocally(
+        state,
+        "questions",
+        {
+          question: action.payload.question,
+          answer: action.payload.answer,
+          id: action.payload.id ? action.payload.id : undefined,
+        },
+        state.name,
+        null,
+        "Q&A"
+      )
+      return {
+        ...project,
+      }
+    },
   },
 })
 
@@ -223,6 +267,7 @@ export const {
   setStateReducer,
   editNameReducer,
   setAppUrlReducer,
+  setQAndA,
   setGithubUrlReducer,
   setImageReducer,
   setSummaryReducer,

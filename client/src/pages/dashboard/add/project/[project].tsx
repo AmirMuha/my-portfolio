@@ -23,6 +23,7 @@ import { useTheDispatch, useTheSelector } from "../../../../store/store"
 import { CreateProjectMutation } from "../../../../util/mutations"
 import Alert from "../../../../components/UI/Alert"
 import { useAlert } from "../../../../util/useAlert"
+
 const project: FC<PageProps> = ({ children, params, location }) => {
   const {
     isOpen: alertIsOpen,
@@ -64,6 +65,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
       console.log("Deleting the projct", v)
     }
   }
+
   const saveTheNewProject = () => {
     // mutate({variables: {
     //   name:
@@ -161,7 +163,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
             className="lg:col-span-2 lg:col-start-2"
             style={{ paddingBottom: 25, flex: "1 1 0%" }}
           >
-            <QAndA_Add />
+            <QAndA_Add mode="ADD" />
             {data.questions?.length > 0 &&
               data.questions.map(q => <QAndA editable data={q} key={q.id} />)}
           </TheSection>

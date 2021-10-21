@@ -11,12 +11,16 @@ import gsap from "gsap"
 import Confirm from "../UI/Confirm"
 import Editable, { QAndAEditTypes } from "../Dashboard/Editable"
 import Markdown from "../utility/Markdown"
+import { setQAndA } from "../../store/newProjectSlice"
+import { useTheDispatch } from "../../store/store"
 interface Props {
   editable?: boolean
   data: GatsbyTypes.Portfolio_Question
 }
 
 const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
+  console.log(data)
+  const dispatch = useTheDispatch()
   const dropdownRef = useRef<HTMLButtonElement>()
   const [isAnswerOpen, setIsAnswerOpen] = useState<boolean>(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
@@ -45,6 +49,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
     setIsAnswerOpen(prev => !prev)
   }, [isAnswerOpen])
   const updateQAndA = (v: QAndAEditTypes) => {
+    dispatch(setQAndA({ question: v.question, answer: v.answer, id: data.id }))
     console.log("updating the Q&A ... \n", v)
   }
   const deleteQAndA = (v: boolean) => {
@@ -73,7 +78,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
             </SmallPipe>
             {isAnswerOpen && (
               <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
-                <Markdown>{data.answer.answer}</Markdown>
+                <Markdown>
+                  {data.answer.answer ? data.answer.answer : data.answer}
+                </Markdown>
               </div>
             )}
           </div>
@@ -84,9 +91,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
                   position: "initial",
                 }}
                 mode="MODAL"
-                title={`Editing Question With ID ${1}`}
+                title={`Editing Question With ID ${data.id}`}
                 onSave={v => updateQAndA(v)}
-                value=""
+                value={data.question}
                 QAndA
               />
               <span
@@ -98,7 +105,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
             </div>
             {isConfirmOpen && (
               <Confirm
-                text="Do your realy want to delete TECH_CATEGORY_ITEM ?"
+                text={`Do your realy want to delete this question with id of ${data.id} ?`}
                 getValue={deleteQAndA}
                 confirmButtonText="Delete"
                 title="Deleting FrontEnd"
@@ -127,7 +134,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
           </SmallPipe>
           {isAnswerOpen && (
             <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
-              <Markdown>{data.answer.answer}</Markdown>
+              <Markdown>
+                {data.answer.answer ? data.answer.answer : data.answer}
+              </Markdown>
             </div>
           )}
         </div>

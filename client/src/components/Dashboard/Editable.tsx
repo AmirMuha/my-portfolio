@@ -14,6 +14,7 @@ import Editable_TechCategory from "./Editable/Editable_TechCategory"
 import Editable_TextArea from "./Editable/Editable_TextArea"
 
 export interface QAndAEditTypes {
+  id: string
   question: string
   answer: string
 }
