@@ -2634,6 +2634,10 @@ type Portfolio_TechCategoryUpdateInput = {
   readonly project: Maybe<Portfolio_ProjectUpdateOneRequiredWithoutTech_categoriesInput>;
 };
 
+type Portfolio_LoginReturnType = {
+  readonly token: Maybe<Scalars['String']>;
+};
+
 type Portfolio_LoginInputType = {
   readonly email: Scalars['String'];
   readonly password: Scalars['String'];
@@ -2697,7 +2701,7 @@ type Portfolio = {
   readonly teches: ReadonlyArray<Portfolio_Tech>;
   readonly techCategory: Maybe<Portfolio_TechCategory>;
   readonly techCategories: ReadonlyArray<Portfolio_TechCategory>;
-  readonly me: Portfolio_Admin;
+  readonly me: Maybe<Portfolio_Admin>;
   readonly getAdmin: Portfolio_Admin;
   readonly getNumOfAdmins: Maybe<Scalars['Int']>;
 };
@@ -5291,6 +5295,13 @@ type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccompo
 
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
+type EditProjectImageQueryVariables = Exact<{
+  image: Maybe<Scalars['String']>;
+}>;
+
+
+type EditProjectImageQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx3888931460QueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5300,23 +5311,7 @@ type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpages
         Pick<Portfolio_TechCategory, 'name' | 'id'>
         & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'name' | 'id'>> }
       )> }
-    )>, readonly me: Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'> } };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
-      Pick<Portfolio_Project, 'id' | 'image' | 'app_url' | 'type' | 'name' | 'github_url' | 'summary'>
-      & { readonly tech_categories: ReadonlyArray<(
-        Pick<Portfolio_TechCategory, 'id' | 'name'>
-        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'id' | 'name'>> }
-      )> }
-    )> } };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
+    )>, readonly me: Maybe<Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'>> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -5344,22 +5339,20 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
+
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721QueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsAppSketchTsx4046871794QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsAppSketchTsx4046871794Query = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
-
-type EditProjectImageQueryVariables = Exact<{
-  image: Maybe<Scalars['String']>;
-}>;
-
-
-type EditProjectImageQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
 type ProjectImageQueryVariables = Exact<{
   image: Maybe<Scalars['String']>;
@@ -5368,10 +5361,16 @@ type ProjectImageQueryVariables = Exact<{
 
 type ProjectImageQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
+      Pick<Portfolio_Project, 'id' | 'image' | 'app_url' | 'type' | 'name' | 'github_url' | 'summary'>
+      & { readonly tech_categories: ReadonlyArray<(
+        Pick<Portfolio_TechCategory, 'id' | 'name'>
+        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'id' | 'name'>> }
+      )> }
+    )> } };
 
 
 
@@ -5743,6 +5742,7 @@ export type ResolversTypes = {
   Portfolio_ProjectUpdateWithoutTech_categoriesInput: Portfolio_ProjectUpdateWithoutTech_categoriesInput;
   Portfolio_TechCategoryCreateInput: Portfolio_TechCategoryCreateInput;
   Portfolio_TechCategoryUpdateInput: Portfolio_TechCategoryUpdateInput;
+  Portfolio_LoginReturnType: ResolverTypeWrapper<Portfolio_LoginReturnType>;
   Portfolio_LoginInputType: Portfolio_LoginInputType;
   Portfolio_AdminCreateInput: Portfolio_AdminCreateInput;
   Portfolio_AdminUpdateInput: Portfolio_AdminUpdateInput;
@@ -6116,6 +6116,7 @@ export type ResolversParentTypes = {
   Portfolio_ProjectUpdateWithoutTech_categoriesInput: Portfolio_ProjectUpdateWithoutTech_categoriesInput;
   Portfolio_TechCategoryCreateInput: Portfolio_TechCategoryCreateInput;
   Portfolio_TechCategoryUpdateInput: Portfolio_TechCategoryUpdateInput;
+  Portfolio_LoginReturnType: Portfolio_LoginReturnType;
   Portfolio_LoginInputType: Portfolio_LoginInputType;
   Portfolio_AdminCreateInput: Portfolio_AdminCreateInput;
   Portfolio_AdminUpdateInput: Portfolio_AdminUpdateInput;
@@ -6782,6 +6783,11 @@ export type Portfolio_AffectedRowsOutputResolvers<ContextType = GatsbyResolverCo
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type Portfolio_LoginReturnTypeResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_LoginReturnType'] = ResolversParentTypes['Portfolio_LoginReturnType']> = {
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface Portfolio_UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Portfolio_Upload'], any> {
   name: 'Portfolio_Upload';
 }
@@ -6803,7 +6809,7 @@ export type PortfolioResolvers<ContextType = GatsbyResolverContext, ParentType e
   teches?: Resolver<Array<ResolversTypes['Portfolio_Tech']>, ParentType, ContextType, RequireFields<Portfolio_techesArgs, never>>;
   techCategory?: Resolver<Maybe<ResolversTypes['Portfolio_TechCategory']>, ParentType, ContextType, RequireFields<Portfolio_techCategoryArgs, 'where'>>;
   techCategories?: Resolver<Array<ResolversTypes['Portfolio_TechCategory']>, ParentType, ContextType, RequireFields<Portfolio_techCategoriesArgs, never>>;
-  me?: Resolver<ResolversTypes['Portfolio_Admin'], ParentType, ContextType>;
+  me?: Resolver<Maybe<ResolversTypes['Portfolio_Admin']>, ParentType, ContextType>;
   getAdmin?: Resolver<ResolversTypes['Portfolio_Admin'], ParentType, ContextType>;
   getNumOfAdmins?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -7183,6 +7189,7 @@ export type Resolvers<ContextType = GatsbyResolverContext> = {
   Portfolio_Sketch?: Portfolio_SketchResolvers<ContextType>;
   Portfolio_Message?: Portfolio_MessageResolvers<ContextType>;
   Portfolio_AffectedRowsOutput?: Portfolio_AffectedRowsOutputResolvers<ContextType>;
+  Portfolio_LoginReturnType?: Portfolio_LoginReturnTypeResolvers<ContextType>;
   Portfolio_Upload?: GraphQLScalarType;
   Portfolio?: PortfolioResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

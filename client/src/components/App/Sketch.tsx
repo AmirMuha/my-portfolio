@@ -5,12 +5,14 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { setSketchReducer } from "../../store/newProjectSlice"
+import { Delete } from "../../icons/iconsJSX"
+import { deleteReducer, setSketchReducer } from "../../store/newProjectSlice"
 import { useTheDispatch } from "../../store/store"
 import { useAlert } from "../../util/useAlert"
 import Editable from "../Dashboard/Editable"
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
+import Confirm from "../UI/Confirm"
 import Modal from "../UI/Modal"
 import Markdown from "../utility/Markdown"
 interface Props {
@@ -25,6 +27,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
 }) => {
   const dispatch = useTheDispatch()
   const { isOpen: isErrorOpen, message: errorMsg, setAlert } = useAlert()
+  const [isConfirmOpen, setConfirmBox] = useState(false)
   const [summary, setSummary] = useState<string>(data.summary)
   const [downloadLink, setDownloadLink] = useState<string>(data.download_link)
   const [description, setDescription] = useState<string>(data.description)
@@ -89,6 +92,11 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     // mutate the update
     console.log("Updating the image ...")
   }
+  const deleteSketch = (v: boolean) => {
+    if (v) {
+      dispatch(deleteReducer({ id: data.id, field: "sketches" }))
+    }
+  }
   return (
     <>
       {isErrorOpen && (
@@ -104,6 +112,15 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
       )}
       {editable ? (
         <div className="pl-5 pb-7 relative">
+          {isConfirmOpen && (
+            <Confirm
+              header
+              text={`Are you sure you want to delete sketch with id of ${data.id} ?`}
+              getValue={v => deleteSketch(v)}
+              title={`Deleting sketch with id of ${data.id}`}
+              onClose={() => setConfirmBox(false)}
+            />
+          )}
           <div
             style={{
               width: "auto",
@@ -125,6 +142,12 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               />
             </div>
             <div className="p-1.5 absolute border-5 md:border-10 border-palatte-500 bg-palatte-200 bg-opacity-50 top-0 left-0 right-0 bottom-0">
+              <span
+                onClick={() => setConfirmBox(true)}
+                className="cursor-pointer absolute top-2 right-2"
+              >
+                {Delete}
+              </span>
               <div className="flex items-center justify-between">
                 <Button
                   toUrl={`${(window as any).__SERVER_API__}/${

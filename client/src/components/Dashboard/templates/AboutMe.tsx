@@ -1,11 +1,10 @@
-import { PageProps } from "gatsby"
 import React, { FC, useReducer } from "react"
-import { bindActionCreators, Reducer } from "redux"
-import InPageMenu from "../../components/App/InPageMenu"
-import TheSection from "../../components/App/TheSection"
-import Dash_Layout from "../../components/Dashboard/Dash_Layout"
-import Editable from "../../components/Dashboard/Editable"
-import { SEO } from "../../components/SEO"
+import { Reducer } from "redux"
+import InPageMenu from "../../App/InPageMenu"
+import TheSection from "../../App/TheSection"
+import { SEO } from "../../SEO"
+import Dash_Layout from "../Dash_Layout"
+import Editable from "../Editable"
 
 const sampleText = `
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
@@ -85,7 +84,7 @@ const aboutRedcuer: Reducer<AboutMeState, AboutMeAction> = (state, action) => {
       )
   }
 }
-const EditAboutMe: FC<PageProps> = ({ children, params, data }) => {
+const EditAboutMe: FC = () => {
   const [abouts, dispatch] = useReducer(aboutRedcuer, aboutInitialState)
   const save = (v: string) => {
     console.log(`Saving the aboutMe`, v)

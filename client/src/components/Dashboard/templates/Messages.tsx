@@ -1,11 +1,10 @@
-import { PageProps } from "gatsby"
 import React, { FC, useReducer, useState } from "react"
-import TheSection from "../../components/App/TheSection"
-import Dash_Layout from "../../components/Dashboard/Dash_Layout"
-import Dash_Message from "../../components/Dashboard/Dash_Message"
-import { SEO } from "../../components/SEO"
-import Button from "../../components/UI/Button"
-import Input from "../../components/UI/Input"
+import TheSection from "../../App/TheSection"
+import { SEO } from "../../SEO"
+import Button from "../../UI/Button"
+import Input from "../../UI/Input"
+import Dash_Layout from "../Dash_Layout"
+import Dash_Message from "../Dash_Message"
 
 const filterInitialState: FilterInitialState = {
   answered: false,
@@ -70,7 +69,7 @@ const filterReducer: FilterReducerFnType = (state, action) => {
       return {} as any
   }
 }
-const Messages: FC<PageProps> = ({ children, params, data }) => {
+const Messages: FC = () => {
   const [filter, dispatchFilter] = useReducer(filterReducer, filterInitialState)
   const [searchValue, setSearchValue] = useState<string>("")
   const getSearchValue = (v: string) => {
@@ -158,12 +157,12 @@ const Messages: FC<PageProps> = ({ children, params, data }) => {
           style={{ paddingBottom: 25 }}
         >
           <div className="messages--container">
-            <Dash_Message />
-            <Dash_Message />
-            <Dash_Message />
-            <Dash_Message />
-            <Dash_Message />
-            <Dash_Message />
+            <Dash_Message data={{} as any} />
+            <Dash_Message data={{} as any} />
+            <Dash_Message data={{} as any} />
+            <Dash_Message data={{} as any} />
+            <Dash_Message data={{} as any} />
+            <Dash_Message data={{} as any} />
           </div>
         </TheSection>
       </Dash_Layout>

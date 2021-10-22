@@ -9,7 +9,13 @@ function storeLocally(
   value: any,
   projectName: string,
   editName?: { enabled: boolean; prevName: string } | any,
-  type: "PROJECT" | "TECH_CATEGORY" | "Q&A" | "SKETCH" | "TECH" = "PROJECT"
+  type:
+    | "PROJECT"
+    | "TECH_CATEGORY"
+    | "Q&A"
+    | "SKETCH"
+    | "TECH"
+    | "DELETE" = "PROJECT"
 ): any {
   const unsavedProjects = localStorage.getItem(UNSAVED_PROJECTS)
   const unsavedDataObject = unsavedProjects ? JSON.parse(unsavedProjects) : {}
@@ -106,6 +112,14 @@ function storeLocally(
           })
         }
 
+        break
+      case "DELETE":
+        if (value.id && value.field) {
+          const itemId = existingProject[value.field].findIndex(
+            (f: any) => f.id === value.id
+          )
+          existingProject[value.field].splice(itemId, 1)
+        }
         break
       default:
         break
@@ -325,6 +339,23 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+    deleteReducer: (
+      state,
+      action: { payload: { id: string; field: keyof NewProjectState } }
+    ) => {
+      const project = storeLocally(
+        state,
+        action.payload.field,
+        {
+          id: action.payload.id,
+          field: action.payload.field,
+        },
+        state.name,
+        null,
+        "DELETE"
+      )
+      return { ...project }
+    },
   },
 })
 
@@ -334,6 +365,7 @@ export const {
   setSketchReducer,
   setAppUrlReducer,
   setQAndA,
+  deleteReducer,
   setGithubUrlReducer,
   setImageReducer,
   setSummaryReducer,

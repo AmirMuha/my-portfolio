@@ -2683,6 +2683,10 @@ input Portfolio_TechCategoryUpdateInput {
   project: Portfolio_ProjectUpdateOneRequiredWithoutTech_categoriesInput
 }
 
+type Portfolio_LoginReturnType {
+  token: String
+}
+
 input Portfolio_LoginInputType {
   email: String!
   password: String!
@@ -2748,7 +2752,7 @@ type Portfolio {
   teches(where: Portfolio_TechWhereInput, orderBy: [Portfolio_TechOrderByWithRelationInput!], cursor: Portfolio_TechWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_TechScalarFieldEnum!]): [Portfolio_Tech!]!
   techCategory(where: Portfolio_TechCategoryWhereUniqueInput!): Portfolio_TechCategory
   techCategories(where: Portfolio_TechCategoryWhereInput, orderBy: [Portfolio_TechCategoryOrderByWithRelationInput!], cursor: Portfolio_TechCategoryWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_TechCategoryScalarFieldEnum!]): [Portfolio_TechCategory!]!
-  me: Portfolio_Admin!
+  me: Portfolio_Admin
   getAdmin: Portfolio_Admin!
   getNumOfAdmins: Int
 }

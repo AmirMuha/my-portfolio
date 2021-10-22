@@ -1,20 +1,19 @@
 import { useQuery } from "@apollo/client"
-import { PageProps } from "gatsby"
-import React, { FC, useEffect } from "react"
-import Stack from "../../components/App/Stack"
-import TheSection from "../../components/App/TheSection"
-import Dash_Hero from "../../components/Dashboard/Dash_Hero"
-import Dash_Layout from "../../components/Dashboard/Dash_Layout"
-import Dash_Message from "../../components/Dashboard/Dash_Message"
-import Dash_Projects from "../../components/Dashboard/Dash_Projects"
-import { SEO } from "../../components/SEO"
-import Loading from "../../components/UI/Loading"
+import React, { FC } from "react"
 import {
   QueryMessages,
   QueryProjectsWithTechCategories,
-} from "../../util/queries"
+} from "../../../util/queries"
+import Stack from "../../App/Stack"
+import TheSection from "../../App/TheSection"
+import { SEO } from "../../SEO"
+import Loading from "../../UI/Loading"
+import Dash_Hero from "../Dash_Hero"
+import Dash_Layout from "../Dash_Layout"
+import Dash_Message from "../Dash_Message"
+import Dash_Projects from "../Dash_Projects"
 
-const Dashboard: FC<PageProps> = ({ children, params }) => {
+const Dashboard: FC = () => {
   const { data: projectQueryData, loading: projectsLoading } = useQuery<{
     projects: GatsbyTypes.Portfolio_Project[]
   }>(QueryProjectsWithTechCategories)

@@ -26260,6 +26260,30 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "Portfolio_LoginReturnType",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": [
+          {
+            "name": "token",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "Portfolio_LoginInputType",
         "description": null,
@@ -27929,13 +27953,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Portfolio_Admin",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "Portfolio_Admin",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

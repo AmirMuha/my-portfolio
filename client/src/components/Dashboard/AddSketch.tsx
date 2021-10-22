@@ -68,7 +68,7 @@ const reducer: Reducer<ReducerState, ReducerAction> = (
     case "DOWNLOAD_LINK":
       return {
         ...state,
-        downloadUrl: value || "",
+        download_link: value || "",
       }
     default:
       return state
@@ -221,10 +221,10 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({ data }) => {
                 </button>
               </div>
               <Input
-                label="Download Url"
-                id="download-url"
-                name="download-url"
-                placeholder="Enter The Download URL"
+                label="Download Link"
+                id="download-link"
+                name="download-link"
+                placeholder="Enter The Download Link"
                 textColor="500"
                 color="200"
                 value={sketch.download_link}

@@ -587,6 +587,10 @@ input LoginInputType {
   password: String!
 }
 
+type LoginReturnType {
+  token: String
+}
+
 type Message {
   admin: Admin!
   admin_id: String!
@@ -816,7 +820,7 @@ type Mutation {
   deleteTech(where: TechWhereUniqueInput!): Tech
   deleteTechCategory(where: TechCategoryWhereUniqueInput!): TechCategory
   forgotPassword(email: String!): Boolean!
-  login(data: LoginInputType!): Boolean
+  login(data: LoginInputType!): LoginReturnType
   logout: Boolean
   resetPassword(code: Int, confirmPassword: String!, email: String!, newPassword: String!, token: String): String!
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
@@ -1273,7 +1277,7 @@ type Query {
   answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum!], orderBy: [AnswerOrderByWithRelationInput!], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
   getAdmin: Admin!
   getNumOfAdmins: Int
-  me: Admin!
+  me: Admin
   message(where: MessageWhereUniqueInput!): Message
   messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   project(where: ProjectWhereUniqueInput!): Project

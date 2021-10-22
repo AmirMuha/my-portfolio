@@ -1,10 +1,11 @@
-import { prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
   Args,
   Ctx,
+  Field,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
   UseMiddleware,
@@ -17,10 +18,7 @@ import {
 } from "../constants/envs-and-consts";
 import { isLoggedIn } from "../middlewares/isLoggedIn";
 import { redis } from "../redis-client";
-import {
-  ConfirmEmailArgsType,
-  ConfirmTokenOrCodeArgsType,
-} from "../types/arg-types/ConfirmEmailArgs";
+import { ConfirmTokenOrCodeArgsType } from "../types/arg-types/ConfirmEmailArgs";
 import { ForgotPasswordArgs } from "../types/arg-types/ForgotPasswordArgs";
 import { LoginArgsType } from "../types/arg-types/LoginArgs";
 import { ResetPasswordArgs } from "../types/arg-types/ResetPasswordArgs";
@@ -30,13 +28,18 @@ import { randomNumber } from "../utils/randomNumber";
 import { sendConfirmationEmail } from "../utils/sendConfirmationEmail";
 import { EmailTypes, sendEmail } from "../utils/sendEmail";
 
+@ObjectType()
+class LoginReturnType {
+  @Field(() => String, { nullable: true })
+  token?: string;
+}
 @Resolver()
 export class AuthResolver {
-  @Mutation(() => Boolean, { nullable: true })
+  @Mutation(() => LoginReturnType, { nullable: true })
   async login(
     @Ctx() { prisma, req }: MyContext,
     @Args() args: LoginArgsType
-  ): Promise<boolean | undefined> {
+  ): Promise<LoginReturnType | undefined> {
     const admin = await prisma.admin.findUnique({
       where: {
         email: args.data.email,
@@ -58,7 +61,9 @@ export class AuthResolver {
       expiresIn: `7d`,
     });
     req.session.token = token;
-    return true;
+    return {
+      token,
+    };
   }
   @UseMiddleware(isLoggedIn)
   @Mutation(() => Boolean, { nullable: true })
@@ -209,7 +214,7 @@ export class AuthResolver {
     return "Password successfully changed !";
   }
 
-  @Query(() => Admin)
+  @Query(() => Admin, { nullable: true })
   async me(@Ctx() { prisma }: MyContext): Promise<{
     email: string;
     fname: string;

@@ -11,7 +11,7 @@ import gsap from "gsap"
 import Confirm from "../UI/Confirm"
 import Editable, { QAndAEditTypes } from "../Dashboard/Editable"
 import Markdown from "../utility/Markdown"
-import { setQAndA } from "../../store/newProjectSlice"
+import { deleteReducer, setQAndA } from "../../store/newProjectSlice"
 import { useTheDispatch } from "../../store/store"
 interface Props {
   editable?: boolean
@@ -52,6 +52,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ data, editable = false }) => {
     console.log("updating the Q&A ... \n", v)
   }
   const deleteQAndA = (v: boolean) => {
+    if (v) {
+      dispatch(deleteReducer({ id: data.id, field: "questions" }))
+    }
     console.log(v ? "deleting Q&A" : "didn't delete")
   }
   return (

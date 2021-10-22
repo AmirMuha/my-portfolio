@@ -3,6 +3,48 @@ import { gql } from "@apollo/client"
 // ##################################
 // ############### Create Mutations
 // ##################################
+export const LoginMutation = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(data: { email: $email, password: $password }) {
+      token
+    }
+  }
+`
+export const SubmitAdminMutation = gql`
+  mutation SubmitAdmin(
+    $email: String!
+    $password: String!
+    $fname: String!
+    $lname: String!
+    $linkedIn: String!
+    $whatsapp: String!
+    $instagram: String!
+    $github: String!
+    $heroImage: String!
+    $resumes: [String!]!
+  ) {
+    createAdmin(
+      data: {
+        email: $email
+        password: $password
+        fname: $fname
+        lname: $lname
+        linkedIn: $linkedIn
+        whatsapp: $whatsapp
+        instagram: $instagram
+        github: $github
+        heroImage: $heroImage
+        resumes: { set: $resumes }
+      }
+    ) {
+      id
+      email
+      fname
+      lname
+      resumes
+    }
+  }
+`
 export const UploadSingleFileMutation = gql`
   mutation UploadFile($file: Upload!) {
     uploadSingleFile(file: $file)
