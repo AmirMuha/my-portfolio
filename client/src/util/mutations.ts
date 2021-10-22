@@ -10,6 +10,11 @@ export const LoginMutation = gql`
     }
   }
 `
+export const LogoutMutation = gql`
+  mutation Logout {
+    logout
+  }
+`
 export const SubmitAdminMutation = gql`
   mutation SubmitAdmin(
     $email: String!

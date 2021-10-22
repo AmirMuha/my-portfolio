@@ -309,14 +309,14 @@ type SitePage = Node & {
   readonly internalComponentName: Scalars['String'];
   readonly componentChunkName: Scalars['String'];
   readonly matchPath: Maybe<Scalars['String']>;
+  readonly isCreatedByStatefulCreatePages: Maybe<Scalars['Boolean']>;
+  readonly pluginCreator: Maybe<SitePlugin>;
+  readonly pluginCreatorId: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
   readonly children: ReadonlyArray<Node>;
   readonly internal: Internal;
-  readonly isCreatedByStatefulCreatePages: Maybe<Scalars['Boolean']>;
   readonly context: Maybe<SitePageContext>;
-  readonly pluginCreator: Maybe<SitePlugin>;
-  readonly pluginCreatorId: Maybe<Scalars['String']>;
 };
 
 type SitePageContext = {
@@ -716,6 +716,109 @@ type GraphQLSource = Node & {
   readonly internal: Internal;
   readonly typeName: Maybe<Scalars['String']>;
   readonly fieldName: Maybe<Scalars['String']>;
+};
+
+type StaticImage = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly sourceInstanceName: Maybe<Scalars['String']>;
+  readonly relativePath: Maybe<Scalars['String']>;
+  readonly extension: Maybe<Scalars['String']>;
+  readonly prettySize: Maybe<Scalars['String']>;
+  readonly modifiedTime: Maybe<Scalars['Date']>;
+  readonly accessTime: Maybe<Scalars['Date']>;
+  readonly changeTime: Maybe<Scalars['Date']>;
+  readonly birthTime: Maybe<Scalars['Date']>;
+  readonly root: Maybe<Scalars['String']>;
+  readonly dir: Maybe<Scalars['String']>;
+  readonly base: Maybe<Scalars['String']>;
+  readonly ext: Maybe<Scalars['String']>;
+  readonly name: Maybe<Scalars['String']>;
+  readonly absolutePath: Maybe<Scalars['String']>;
+  readonly relativeDirectory: Maybe<Scalars['String']>;
+  readonly dev: Maybe<Scalars['Int']>;
+  readonly mode: Maybe<Scalars['Int']>;
+  readonly nlink: Maybe<Scalars['Int']>;
+  readonly uid: Maybe<Scalars['Int']>;
+  readonly rdev: Maybe<Scalars['Int']>;
+  readonly blksize: Maybe<Scalars['Int']>;
+  readonly ino: Maybe<Scalars['Int']>;
+  readonly size: Maybe<Scalars['Int']>;
+  readonly blocks: Maybe<Scalars['Int']>;
+  readonly atimeMs: Maybe<Scalars['Float']>;
+  readonly mtimeMs: Maybe<Scalars['Float']>;
+  readonly ctimeMs: Maybe<Scalars['Float']>;
+  readonly birthtimeMs: Maybe<Scalars['Int']>;
+  readonly atime: Maybe<Scalars['Date']>;
+  readonly mtime: Maybe<Scalars['Date']>;
+  readonly ctime: Maybe<Scalars['Date']>;
+  readonly birthtime: Maybe<Scalars['Date']>;
+};
+
+
+type StaticImage_modifiedTimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_accessTimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_changeTimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_birthTimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_atimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_mtimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_ctimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type StaticImage_birthtimeArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
 };
 
 type Portfolio_About = {
@@ -2845,6 +2948,8 @@ type Query = {
   readonly allSiteBuildMetadata: SiteBuildMetadataConnection;
   readonly graphQlSource: Maybe<GraphQLSource>;
   readonly allGraphQlSource: GraphQLSourceConnection;
+  readonly staticImage: Maybe<StaticImage>;
+  readonly allStaticImage: StaticImageConnection;
   readonly portfolio: Portfolio;
 };
 
@@ -3001,14 +3106,14 @@ type Query_sitePageArgs = {
   internalComponentName: Maybe<StringQueryOperatorInput>;
   componentChunkName: Maybe<StringQueryOperatorInput>;
   matchPath: Maybe<StringQueryOperatorInput>;
+  isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
+  pluginCreator: Maybe<SitePluginFilterInput>;
+  pluginCreatorId: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
   parent: Maybe<NodeFilterInput>;
   children: Maybe<NodeFilterListInput>;
   internal: Maybe<InternalFilterInput>;
-  isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
   context: Maybe<SitePageContextFilterInput>;
-  pluginCreator: Maybe<SitePluginFilterInput>;
-  pluginCreatorId: Maybe<StringQueryOperatorInput>;
 };
 
 
@@ -3096,6 +3201,54 @@ type Query_graphQlSourceArgs = {
 type Query_allGraphQlSourceArgs = {
   filter: Maybe<GraphQLSourceFilterInput>;
   sort: Maybe<GraphQLSourceSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_staticImageArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  sourceInstanceName: Maybe<StringQueryOperatorInput>;
+  relativePath: Maybe<StringQueryOperatorInput>;
+  extension: Maybe<StringQueryOperatorInput>;
+  prettySize: Maybe<StringQueryOperatorInput>;
+  modifiedTime: Maybe<DateQueryOperatorInput>;
+  accessTime: Maybe<DateQueryOperatorInput>;
+  changeTime: Maybe<DateQueryOperatorInput>;
+  birthTime: Maybe<DateQueryOperatorInput>;
+  root: Maybe<StringQueryOperatorInput>;
+  dir: Maybe<StringQueryOperatorInput>;
+  base: Maybe<StringQueryOperatorInput>;
+  ext: Maybe<StringQueryOperatorInput>;
+  name: Maybe<StringQueryOperatorInput>;
+  absolutePath: Maybe<StringQueryOperatorInput>;
+  relativeDirectory: Maybe<StringQueryOperatorInput>;
+  dev: Maybe<IntQueryOperatorInput>;
+  mode: Maybe<IntQueryOperatorInput>;
+  nlink: Maybe<IntQueryOperatorInput>;
+  uid: Maybe<IntQueryOperatorInput>;
+  rdev: Maybe<IntQueryOperatorInput>;
+  blksize: Maybe<IntQueryOperatorInput>;
+  ino: Maybe<IntQueryOperatorInput>;
+  size: Maybe<IntQueryOperatorInput>;
+  blocks: Maybe<IntQueryOperatorInput>;
+  atimeMs: Maybe<FloatQueryOperatorInput>;
+  mtimeMs: Maybe<FloatQueryOperatorInput>;
+  ctimeMs: Maybe<FloatQueryOperatorInput>;
+  birthtimeMs: Maybe<IntQueryOperatorInput>;
+  atime: Maybe<DateQueryOperatorInput>;
+  mtime: Maybe<DateQueryOperatorInput>;
+  ctime: Maybe<DateQueryOperatorInput>;
+  birthtime: Maybe<DateQueryOperatorInput>;
+};
+
+
+type Query_allStaticImageArgs = {
+  filter: Maybe<StaticImageFilterInput>;
+  sort: Maybe<StaticImageSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -4182,71 +4335,6 @@ type SiteFunctionSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type SitePageContextFilterInput = {
-  readonly project: Maybe<SitePageContextProjectFilterInput>;
-  readonly image: Maybe<StringQueryOperatorInput>;
-};
-
-type SitePageContextProjectFilterInput = {
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly name: Maybe<StringQueryOperatorInput>;
-  readonly image: Maybe<StringQueryOperatorInput>;
-  readonly type: Maybe<StringQueryOperatorInput>;
-  readonly github_url: Maybe<StringQueryOperatorInput>;
-  readonly app_url: Maybe<StringQueryOperatorInput>;
-  readonly summary: Maybe<StringQueryOperatorInput>;
-  readonly tech_categories: Maybe<SitePageContextProjectTech_categoriesFilterListInput>;
-  readonly sketches: Maybe<SitePageContextProjectSketchesFilterListInput>;
-  readonly questions: Maybe<SitePageContextProjectQuestionsFilterListInput>;
-};
-
-type SitePageContextProjectTech_categoriesFilterListInput = {
-  readonly elemMatch: Maybe<SitePageContextProjectTech_categoriesFilterInput>;
-};
-
-type SitePageContextProjectTech_categoriesFilterInput = {
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly name: Maybe<StringQueryOperatorInput>;
-  readonly techs: Maybe<SitePageContextProjectTech_categoriesTechsFilterListInput>;
-};
-
-type SitePageContextProjectTech_categoriesTechsFilterListInput = {
-  readonly elemMatch: Maybe<SitePageContextProjectTech_categoriesTechsFilterInput>;
-};
-
-type SitePageContextProjectTech_categoriesTechsFilterInput = {
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly name: Maybe<StringQueryOperatorInput>;
-};
-
-type SitePageContextProjectSketchesFilterListInput = {
-  readonly elemMatch: Maybe<SitePageContextProjectSketchesFilterInput>;
-};
-
-type SitePageContextProjectSketchesFilterInput = {
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly title: Maybe<StringQueryOperatorInput>;
-  readonly summary: Maybe<StringQueryOperatorInput>;
-  readonly description: Maybe<StringQueryOperatorInput>;
-  readonly download_link: Maybe<StringQueryOperatorInput>;
-  readonly image: Maybe<StringQueryOperatorInput>;
-};
-
-type SitePageContextProjectQuestionsFilterListInput = {
-  readonly elemMatch: Maybe<SitePageContextProjectQuestionsFilterInput>;
-};
-
-type SitePageContextProjectQuestionsFilterInput = {
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly question: Maybe<StringQueryOperatorInput>;
-  readonly answer: Maybe<SitePageContextProjectQuestionsAnswerFilterInput>;
-};
-
-type SitePageContextProjectQuestionsAnswerFilterInput = {
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly answer: Maybe<StringQueryOperatorInput>;
-};
-
 type SitePluginFilterInput = {
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
@@ -4334,6 +4422,71 @@ type SitePluginPackageJsonPeerDependenciesFilterInput = {
   readonly version: Maybe<StringQueryOperatorInput>;
 };
 
+type SitePageContextFilterInput = {
+  readonly project: Maybe<SitePageContextProjectFilterInput>;
+  readonly image: Maybe<StringQueryOperatorInput>;
+};
+
+type SitePageContextProjectFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+  readonly image: Maybe<StringQueryOperatorInput>;
+  readonly type: Maybe<StringQueryOperatorInput>;
+  readonly github_url: Maybe<StringQueryOperatorInput>;
+  readonly app_url: Maybe<StringQueryOperatorInput>;
+  readonly summary: Maybe<StringQueryOperatorInput>;
+  readonly tech_categories: Maybe<SitePageContextProjectTech_categoriesFilterListInput>;
+  readonly sketches: Maybe<SitePageContextProjectSketchesFilterListInput>;
+  readonly questions: Maybe<SitePageContextProjectQuestionsFilterListInput>;
+};
+
+type SitePageContextProjectTech_categoriesFilterListInput = {
+  readonly elemMatch: Maybe<SitePageContextProjectTech_categoriesFilterInput>;
+};
+
+type SitePageContextProjectTech_categoriesFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+  readonly techs: Maybe<SitePageContextProjectTech_categoriesTechsFilterListInput>;
+};
+
+type SitePageContextProjectTech_categoriesTechsFilterListInput = {
+  readonly elemMatch: Maybe<SitePageContextProjectTech_categoriesTechsFilterInput>;
+};
+
+type SitePageContextProjectTech_categoriesTechsFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+};
+
+type SitePageContextProjectSketchesFilterListInput = {
+  readonly elemMatch: Maybe<SitePageContextProjectSketchesFilterInput>;
+};
+
+type SitePageContextProjectSketchesFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly title: Maybe<StringQueryOperatorInput>;
+  readonly summary: Maybe<StringQueryOperatorInput>;
+  readonly description: Maybe<StringQueryOperatorInput>;
+  readonly download_link: Maybe<StringQueryOperatorInput>;
+  readonly image: Maybe<StringQueryOperatorInput>;
+};
+
+type SitePageContextProjectQuestionsFilterListInput = {
+  readonly elemMatch: Maybe<SitePageContextProjectQuestionsFilterInput>;
+};
+
+type SitePageContextProjectQuestionsFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly question: Maybe<StringQueryOperatorInput>;
+  readonly answer: Maybe<SitePageContextProjectQuestionsAnswerFilterInput>;
+};
+
+type SitePageContextProjectQuestionsAnswerFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly answer: Maybe<StringQueryOperatorInput>;
+};
+
 type SitePageConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<SitePageEdge>;
@@ -4385,6 +4538,89 @@ type SitePageFieldsEnum =
   | 'internalComponentName'
   | 'componentChunkName'
   | 'matchPath'
+  | 'isCreatedByStatefulCreatePages'
+  | 'pluginCreator.id'
+  | 'pluginCreator.parent.id'
+  | 'pluginCreator.parent.parent.id'
+  | 'pluginCreator.parent.parent.children'
+  | 'pluginCreator.parent.children'
+  | 'pluginCreator.parent.children.id'
+  | 'pluginCreator.parent.children.children'
+  | 'pluginCreator.parent.internal.content'
+  | 'pluginCreator.parent.internal.contentDigest'
+  | 'pluginCreator.parent.internal.description'
+  | 'pluginCreator.parent.internal.fieldOwners'
+  | 'pluginCreator.parent.internal.ignoreType'
+  | 'pluginCreator.parent.internal.mediaType'
+  | 'pluginCreator.parent.internal.owner'
+  | 'pluginCreator.parent.internal.type'
+  | 'pluginCreator.children'
+  | 'pluginCreator.children.id'
+  | 'pluginCreator.children.parent.id'
+  | 'pluginCreator.children.parent.children'
+  | 'pluginCreator.children.children'
+  | 'pluginCreator.children.children.id'
+  | 'pluginCreator.children.children.children'
+  | 'pluginCreator.children.internal.content'
+  | 'pluginCreator.children.internal.contentDigest'
+  | 'pluginCreator.children.internal.description'
+  | 'pluginCreator.children.internal.fieldOwners'
+  | 'pluginCreator.children.internal.ignoreType'
+  | 'pluginCreator.children.internal.mediaType'
+  | 'pluginCreator.children.internal.owner'
+  | 'pluginCreator.children.internal.type'
+  | 'pluginCreator.internal.content'
+  | 'pluginCreator.internal.contentDigest'
+  | 'pluginCreator.internal.description'
+  | 'pluginCreator.internal.fieldOwners'
+  | 'pluginCreator.internal.ignoreType'
+  | 'pluginCreator.internal.mediaType'
+  | 'pluginCreator.internal.owner'
+  | 'pluginCreator.internal.type'
+  | 'pluginCreator.resolve'
+  | 'pluginCreator.name'
+  | 'pluginCreator.version'
+  | 'pluginCreator.pluginOptions.base64Width'
+  | 'pluginCreator.pluginOptions.stripMetadata'
+  | 'pluginCreator.pluginOptions.defaultQuality'
+  | 'pluginCreator.pluginOptions.failOnError'
+  | 'pluginCreator.pluginOptions.autoFix'
+  | 'pluginCreator.pluginOptions.language'
+  | 'pluginCreator.pluginOptions.includeResolvers'
+  | 'pluginCreator.pluginOptions.outputPath'
+  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql'
+  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson'
+  | 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql'
+  | 'pluginCreator.pluginOptions.specialChars'
+  | 'pluginCreator.pluginOptions.name'
+  | 'pluginCreator.pluginOptions.path'
+  | 'pluginCreator.pluginOptions.isTSX'
+  | 'pluginCreator.pluginOptions.jsxPragma'
+  | 'pluginCreator.pluginOptions.allExtensions'
+  | 'pluginCreator.pluginOptions.typeName'
+  | 'pluginCreator.pluginOptions.fieldName'
+  | 'pluginCreator.pluginOptions.url'
+  | 'pluginCreator.pluginOptions.pathCheck'
+  | 'pluginCreator.nodeAPIs'
+  | 'pluginCreator.browserAPIs'
+  | 'pluginCreator.ssrAPIs'
+  | 'pluginCreator.pluginFilepath'
+  | 'pluginCreator.packageJson.name'
+  | 'pluginCreator.packageJson.description'
+  | 'pluginCreator.packageJson.version'
+  | 'pluginCreator.packageJson.main'
+  | 'pluginCreator.packageJson.license'
+  | 'pluginCreator.packageJson.dependencies'
+  | 'pluginCreator.packageJson.dependencies.name'
+  | 'pluginCreator.packageJson.dependencies.version'
+  | 'pluginCreator.packageJson.devDependencies'
+  | 'pluginCreator.packageJson.devDependencies.name'
+  | 'pluginCreator.packageJson.devDependencies.version'
+  | 'pluginCreator.packageJson.peerDependencies'
+  | 'pluginCreator.packageJson.peerDependencies.name'
+  | 'pluginCreator.packageJson.peerDependencies.version'
+  | 'pluginCreator.packageJson.keywords'
+  | 'pluginCreatorId'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -4471,7 +4707,6 @@ type SitePageFieldsEnum =
   | 'internal.mediaType'
   | 'internal.owner'
   | 'internal.type'
-  | 'isCreatedByStatefulCreatePages'
   | 'context.project.id'
   | 'context.project.name'
   | 'context.project.image'
@@ -4493,89 +4728,7 @@ type SitePageFieldsEnum =
   | 'context.project.questions'
   | 'context.project.questions.id'
   | 'context.project.questions.question'
-  | 'context.image'
-  | 'pluginCreator.id'
-  | 'pluginCreator.parent.id'
-  | 'pluginCreator.parent.parent.id'
-  | 'pluginCreator.parent.parent.children'
-  | 'pluginCreator.parent.children'
-  | 'pluginCreator.parent.children.id'
-  | 'pluginCreator.parent.children.children'
-  | 'pluginCreator.parent.internal.content'
-  | 'pluginCreator.parent.internal.contentDigest'
-  | 'pluginCreator.parent.internal.description'
-  | 'pluginCreator.parent.internal.fieldOwners'
-  | 'pluginCreator.parent.internal.ignoreType'
-  | 'pluginCreator.parent.internal.mediaType'
-  | 'pluginCreator.parent.internal.owner'
-  | 'pluginCreator.parent.internal.type'
-  | 'pluginCreator.children'
-  | 'pluginCreator.children.id'
-  | 'pluginCreator.children.parent.id'
-  | 'pluginCreator.children.parent.children'
-  | 'pluginCreator.children.children'
-  | 'pluginCreator.children.children.id'
-  | 'pluginCreator.children.children.children'
-  | 'pluginCreator.children.internal.content'
-  | 'pluginCreator.children.internal.contentDigest'
-  | 'pluginCreator.children.internal.description'
-  | 'pluginCreator.children.internal.fieldOwners'
-  | 'pluginCreator.children.internal.ignoreType'
-  | 'pluginCreator.children.internal.mediaType'
-  | 'pluginCreator.children.internal.owner'
-  | 'pluginCreator.children.internal.type'
-  | 'pluginCreator.internal.content'
-  | 'pluginCreator.internal.contentDigest'
-  | 'pluginCreator.internal.description'
-  | 'pluginCreator.internal.fieldOwners'
-  | 'pluginCreator.internal.ignoreType'
-  | 'pluginCreator.internal.mediaType'
-  | 'pluginCreator.internal.owner'
-  | 'pluginCreator.internal.type'
-  | 'pluginCreator.resolve'
-  | 'pluginCreator.name'
-  | 'pluginCreator.version'
-  | 'pluginCreator.pluginOptions.base64Width'
-  | 'pluginCreator.pluginOptions.stripMetadata'
-  | 'pluginCreator.pluginOptions.defaultQuality'
-  | 'pluginCreator.pluginOptions.failOnError'
-  | 'pluginCreator.pluginOptions.autoFix'
-  | 'pluginCreator.pluginOptions.language'
-  | 'pluginCreator.pluginOptions.includeResolvers'
-  | 'pluginCreator.pluginOptions.outputPath'
-  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql'
-  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson'
-  | 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql'
-  | 'pluginCreator.pluginOptions.specialChars'
-  | 'pluginCreator.pluginOptions.name'
-  | 'pluginCreator.pluginOptions.path'
-  | 'pluginCreator.pluginOptions.isTSX'
-  | 'pluginCreator.pluginOptions.jsxPragma'
-  | 'pluginCreator.pluginOptions.allExtensions'
-  | 'pluginCreator.pluginOptions.typeName'
-  | 'pluginCreator.pluginOptions.fieldName'
-  | 'pluginCreator.pluginOptions.url'
-  | 'pluginCreator.pluginOptions.pathCheck'
-  | 'pluginCreator.nodeAPIs'
-  | 'pluginCreator.browserAPIs'
-  | 'pluginCreator.ssrAPIs'
-  | 'pluginCreator.pluginFilepath'
-  | 'pluginCreator.packageJson.name'
-  | 'pluginCreator.packageJson.description'
-  | 'pluginCreator.packageJson.version'
-  | 'pluginCreator.packageJson.main'
-  | 'pluginCreator.packageJson.license'
-  | 'pluginCreator.packageJson.dependencies'
-  | 'pluginCreator.packageJson.dependencies.name'
-  | 'pluginCreator.packageJson.dependencies.version'
-  | 'pluginCreator.packageJson.devDependencies'
-  | 'pluginCreator.packageJson.devDependencies.name'
-  | 'pluginCreator.packageJson.devDependencies.version'
-  | 'pluginCreator.packageJson.peerDependencies'
-  | 'pluginCreator.packageJson.peerDependencies.name'
-  | 'pluginCreator.packageJson.peerDependencies.version'
-  | 'pluginCreator.packageJson.keywords'
-  | 'pluginCreatorId';
+  | 'context.image';
 
 type SitePageGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -4592,14 +4745,14 @@ type SitePageFilterInput = {
   readonly internalComponentName: Maybe<StringQueryOperatorInput>;
   readonly componentChunkName: Maybe<StringQueryOperatorInput>;
   readonly matchPath: Maybe<StringQueryOperatorInput>;
+  readonly isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
+  readonly pluginCreator: Maybe<SitePluginFilterInput>;
+  readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
   readonly internal: Maybe<InternalFilterInput>;
-  readonly isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
   readonly context: Maybe<SitePageContextFilterInput>;
-  readonly pluginCreator: Maybe<SitePluginFilterInput>;
-  readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePageSortInput = {
@@ -5290,6 +5443,224 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type StaticImageConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<StaticImageEdge>;
+  readonly nodes: ReadonlyArray<StaticImage>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<StaticImageGroupConnection>;
+};
+
+
+type StaticImageConnection_distinctArgs = {
+  field: StaticImageFieldsEnum;
+};
+
+
+type StaticImageConnection_maxArgs = {
+  field: StaticImageFieldsEnum;
+};
+
+
+type StaticImageConnection_minArgs = {
+  field: StaticImageFieldsEnum;
+};
+
+
+type StaticImageConnection_sumArgs = {
+  field: StaticImageFieldsEnum;
+};
+
+
+type StaticImageConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: StaticImageFieldsEnum;
+};
+
+type StaticImageEdge = {
+  readonly next: Maybe<StaticImage>;
+  readonly node: StaticImage;
+  readonly previous: Maybe<StaticImage>;
+};
+
+type StaticImageFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'sourceInstanceName'
+  | 'relativePath'
+  | 'extension'
+  | 'prettySize'
+  | 'modifiedTime'
+  | 'accessTime'
+  | 'changeTime'
+  | 'birthTime'
+  | 'root'
+  | 'dir'
+  | 'base'
+  | 'ext'
+  | 'name'
+  | 'absolutePath'
+  | 'relativeDirectory'
+  | 'dev'
+  | 'mode'
+  | 'nlink'
+  | 'uid'
+  | 'rdev'
+  | 'blksize'
+  | 'ino'
+  | 'size'
+  | 'blocks'
+  | 'atimeMs'
+  | 'mtimeMs'
+  | 'ctimeMs'
+  | 'birthtimeMs'
+  | 'atime'
+  | 'mtime'
+  | 'ctime'
+  | 'birthtime';
+
+type StaticImageGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<StaticImageEdge>;
+  readonly nodes: ReadonlyArray<StaticImage>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type StaticImageFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly sourceInstanceName: Maybe<StringQueryOperatorInput>;
+  readonly relativePath: Maybe<StringQueryOperatorInput>;
+  readonly extension: Maybe<StringQueryOperatorInput>;
+  readonly prettySize: Maybe<StringQueryOperatorInput>;
+  readonly modifiedTime: Maybe<DateQueryOperatorInput>;
+  readonly accessTime: Maybe<DateQueryOperatorInput>;
+  readonly changeTime: Maybe<DateQueryOperatorInput>;
+  readonly birthTime: Maybe<DateQueryOperatorInput>;
+  readonly root: Maybe<StringQueryOperatorInput>;
+  readonly dir: Maybe<StringQueryOperatorInput>;
+  readonly base: Maybe<StringQueryOperatorInput>;
+  readonly ext: Maybe<StringQueryOperatorInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+  readonly absolutePath: Maybe<StringQueryOperatorInput>;
+  readonly relativeDirectory: Maybe<StringQueryOperatorInput>;
+  readonly dev: Maybe<IntQueryOperatorInput>;
+  readonly mode: Maybe<IntQueryOperatorInput>;
+  readonly nlink: Maybe<IntQueryOperatorInput>;
+  readonly uid: Maybe<IntQueryOperatorInput>;
+  readonly rdev: Maybe<IntQueryOperatorInput>;
+  readonly blksize: Maybe<IntQueryOperatorInput>;
+  readonly ino: Maybe<IntQueryOperatorInput>;
+  readonly size: Maybe<IntQueryOperatorInput>;
+  readonly blocks: Maybe<IntQueryOperatorInput>;
+  readonly atimeMs: Maybe<FloatQueryOperatorInput>;
+  readonly mtimeMs: Maybe<FloatQueryOperatorInput>;
+  readonly ctimeMs: Maybe<FloatQueryOperatorInput>;
+  readonly birthtimeMs: Maybe<IntQueryOperatorInput>;
+  readonly atime: Maybe<DateQueryOperatorInput>;
+  readonly mtime: Maybe<DateQueryOperatorInput>;
+  readonly ctime: Maybe<DateQueryOperatorInput>;
+  readonly birthtime: Maybe<DateQueryOperatorInput>;
+};
+
+type StaticImageSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<StaticImageFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404QueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5456,7 +5827,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   File: ResolverTypeWrapper<File>;
-  Node: ResolversTypes['File'] | ResolversTypes['Directory'] | ResolversTypes['Site'] | ResolversTypes['SiteFunction'] | ResolversTypes['SitePage'] | ResolversTypes['ImageSharp'] | ResolversTypes['SitePlugin'] | ResolversTypes['SiteBuildMetadata'] | ResolversTypes['GraphQLSource'];
+  Node: ResolversTypes['File'] | ResolversTypes['Directory'] | ResolversTypes['Site'] | ResolversTypes['SiteFunction'] | ResolversTypes['SitePage'] | ResolversTypes['ImageSharp'] | ResolversTypes['SitePlugin'] | ResolversTypes['SiteBuildMetadata'] | ResolversTypes['GraphQLSource'] | ResolversTypes['StaticImage'];
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Internal: ResolverTypeWrapper<Internal>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -5506,6 +5877,7 @@ export type ResolversTypes = {
   SitePluginPackageJsonPeerDependencies: ResolverTypeWrapper<SitePluginPackageJsonPeerDependencies>;
   SiteBuildMetadata: ResolverTypeWrapper<SiteBuildMetadata>;
   GraphQLSource: ResolverTypeWrapper<GraphQLSource>;
+  StaticImage: ResolverTypeWrapper<StaticImage>;
   Portfolio_About: ResolverTypeWrapper<Portfolio_About>;
   Portfolio_DateTime: ResolverTypeWrapper<Scalars['Portfolio_DateTime']>;
   Portfolio_Admin: ResolverTypeWrapper<Portfolio_Admin>;
@@ -5791,17 +6163,6 @@ export type ResolversTypes = {
   SiteFunctionGroupConnection: ResolverTypeWrapper<SiteFunctionGroupConnection>;
   SiteFunctionFilterInput: SiteFunctionFilterInput;
   SiteFunctionSortInput: SiteFunctionSortInput;
-  SitePageContextFilterInput: SitePageContextFilterInput;
-  SitePageContextProjectFilterInput: SitePageContextProjectFilterInput;
-  SitePageContextProjectTech_categoriesFilterListInput: SitePageContextProjectTech_categoriesFilterListInput;
-  SitePageContextProjectTech_categoriesFilterInput: SitePageContextProjectTech_categoriesFilterInput;
-  SitePageContextProjectTech_categoriesTechsFilterListInput: SitePageContextProjectTech_categoriesTechsFilterListInput;
-  SitePageContextProjectTech_categoriesTechsFilterInput: SitePageContextProjectTech_categoriesTechsFilterInput;
-  SitePageContextProjectSketchesFilterListInput: SitePageContextProjectSketchesFilterListInput;
-  SitePageContextProjectSketchesFilterInput: SitePageContextProjectSketchesFilterInput;
-  SitePageContextProjectQuestionsFilterListInput: SitePageContextProjectQuestionsFilterListInput;
-  SitePageContextProjectQuestionsFilterInput: SitePageContextProjectQuestionsFilterInput;
-  SitePageContextProjectQuestionsAnswerFilterInput: SitePageContextProjectQuestionsAnswerFilterInput;
   SitePluginFilterInput: SitePluginFilterInput;
   SitePluginPluginOptionsFilterInput: SitePluginPluginOptionsFilterInput;
   SitePluginPluginOptionsEmitSchemaFilterInput: SitePluginPluginOptionsEmitSchemaFilterInput;
@@ -5813,6 +6174,17 @@ export type ResolversTypes = {
   SitePluginPackageJsonDevDependenciesFilterInput: SitePluginPackageJsonDevDependenciesFilterInput;
   SitePluginPackageJsonPeerDependenciesFilterListInput: SitePluginPackageJsonPeerDependenciesFilterListInput;
   SitePluginPackageJsonPeerDependenciesFilterInput: SitePluginPackageJsonPeerDependenciesFilterInput;
+  SitePageContextFilterInput: SitePageContextFilterInput;
+  SitePageContextProjectFilterInput: SitePageContextProjectFilterInput;
+  SitePageContextProjectTech_categoriesFilterListInput: SitePageContextProjectTech_categoriesFilterListInput;
+  SitePageContextProjectTech_categoriesFilterInput: SitePageContextProjectTech_categoriesFilterInput;
+  SitePageContextProjectTech_categoriesTechsFilterListInput: SitePageContextProjectTech_categoriesTechsFilterListInput;
+  SitePageContextProjectTech_categoriesTechsFilterInput: SitePageContextProjectTech_categoriesTechsFilterInput;
+  SitePageContextProjectSketchesFilterListInput: SitePageContextProjectSketchesFilterListInput;
+  SitePageContextProjectSketchesFilterInput: SitePageContextProjectSketchesFilterInput;
+  SitePageContextProjectQuestionsFilterListInput: SitePageContextProjectQuestionsFilterListInput;
+  SitePageContextProjectQuestionsFilterInput: SitePageContextProjectQuestionsFilterInput;
+  SitePageContextProjectQuestionsAnswerFilterInput: SitePageContextProjectQuestionsAnswerFilterInput;
   SitePageConnection: ResolverTypeWrapper<SitePageConnection>;
   SitePageEdge: ResolverTypeWrapper<SitePageEdge>;
   SitePageFieldsEnum: SitePageFieldsEnum;
@@ -5841,12 +6213,18 @@ export type ResolversTypes = {
   GraphQLSourceGroupConnection: ResolverTypeWrapper<GraphQLSourceGroupConnection>;
   GraphQLSourceFilterInput: GraphQLSourceFilterInput;
   GraphQLSourceSortInput: GraphQLSourceSortInput;
+  StaticImageConnection: ResolverTypeWrapper<StaticImageConnection>;
+  StaticImageEdge: ResolverTypeWrapper<StaticImageEdge>;
+  StaticImageFieldsEnum: StaticImageFieldsEnum;
+  StaticImageGroupConnection: ResolverTypeWrapper<StaticImageGroupConnection>;
+  StaticImageFilterInput: StaticImageFilterInput;
+  StaticImageSortInput: StaticImageSortInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   File: File;
-  Node: ResolversParentTypes['File'] | ResolversParentTypes['Directory'] | ResolversParentTypes['Site'] | ResolversParentTypes['SiteFunction'] | ResolversParentTypes['SitePage'] | ResolversParentTypes['ImageSharp'] | ResolversParentTypes['SitePlugin'] | ResolversParentTypes['SiteBuildMetadata'] | ResolversParentTypes['GraphQLSource'];
+  Node: ResolversParentTypes['File'] | ResolversParentTypes['Directory'] | ResolversParentTypes['Site'] | ResolversParentTypes['SiteFunction'] | ResolversParentTypes['SitePage'] | ResolversParentTypes['ImageSharp'] | ResolversParentTypes['SitePlugin'] | ResolversParentTypes['SiteBuildMetadata'] | ResolversParentTypes['GraphQLSource'] | ResolversParentTypes['StaticImage'];
   ID: Scalars['ID'];
   Internal: Internal;
   String: Scalars['String'];
@@ -5890,6 +6268,7 @@ export type ResolversParentTypes = {
   SitePluginPackageJsonPeerDependencies: SitePluginPackageJsonPeerDependencies;
   SiteBuildMetadata: SiteBuildMetadata;
   GraphQLSource: GraphQLSource;
+  StaticImage: StaticImage;
   Portfolio_About: Portfolio_About;
   Portfolio_DateTime: Scalars['Portfolio_DateTime'];
   Portfolio_Admin: Portfolio_Admin;
@@ -6160,17 +6539,6 @@ export type ResolversParentTypes = {
   SiteFunctionGroupConnection: SiteFunctionGroupConnection;
   SiteFunctionFilterInput: SiteFunctionFilterInput;
   SiteFunctionSortInput: SiteFunctionSortInput;
-  SitePageContextFilterInput: SitePageContextFilterInput;
-  SitePageContextProjectFilterInput: SitePageContextProjectFilterInput;
-  SitePageContextProjectTech_categoriesFilterListInput: SitePageContextProjectTech_categoriesFilterListInput;
-  SitePageContextProjectTech_categoriesFilterInput: SitePageContextProjectTech_categoriesFilterInput;
-  SitePageContextProjectTech_categoriesTechsFilterListInput: SitePageContextProjectTech_categoriesTechsFilterListInput;
-  SitePageContextProjectTech_categoriesTechsFilterInput: SitePageContextProjectTech_categoriesTechsFilterInput;
-  SitePageContextProjectSketchesFilterListInput: SitePageContextProjectSketchesFilterListInput;
-  SitePageContextProjectSketchesFilterInput: SitePageContextProjectSketchesFilterInput;
-  SitePageContextProjectQuestionsFilterListInput: SitePageContextProjectQuestionsFilterListInput;
-  SitePageContextProjectQuestionsFilterInput: SitePageContextProjectQuestionsFilterInput;
-  SitePageContextProjectQuestionsAnswerFilterInput: SitePageContextProjectQuestionsAnswerFilterInput;
   SitePluginFilterInput: SitePluginFilterInput;
   SitePluginPluginOptionsFilterInput: SitePluginPluginOptionsFilterInput;
   SitePluginPluginOptionsEmitSchemaFilterInput: SitePluginPluginOptionsEmitSchemaFilterInput;
@@ -6182,6 +6550,17 @@ export type ResolversParentTypes = {
   SitePluginPackageJsonDevDependenciesFilterInput: SitePluginPackageJsonDevDependenciesFilterInput;
   SitePluginPackageJsonPeerDependenciesFilterListInput: SitePluginPackageJsonPeerDependenciesFilterListInput;
   SitePluginPackageJsonPeerDependenciesFilterInput: SitePluginPackageJsonPeerDependenciesFilterInput;
+  SitePageContextFilterInput: SitePageContextFilterInput;
+  SitePageContextProjectFilterInput: SitePageContextProjectFilterInput;
+  SitePageContextProjectTech_categoriesFilterListInput: SitePageContextProjectTech_categoriesFilterListInput;
+  SitePageContextProjectTech_categoriesFilterInput: SitePageContextProjectTech_categoriesFilterInput;
+  SitePageContextProjectTech_categoriesTechsFilterListInput: SitePageContextProjectTech_categoriesTechsFilterListInput;
+  SitePageContextProjectTech_categoriesTechsFilterInput: SitePageContextProjectTech_categoriesTechsFilterInput;
+  SitePageContextProjectSketchesFilterListInput: SitePageContextProjectSketchesFilterListInput;
+  SitePageContextProjectSketchesFilterInput: SitePageContextProjectSketchesFilterInput;
+  SitePageContextProjectQuestionsFilterListInput: SitePageContextProjectQuestionsFilterListInput;
+  SitePageContextProjectQuestionsFilterInput: SitePageContextProjectQuestionsFilterInput;
+  SitePageContextProjectQuestionsAnswerFilterInput: SitePageContextProjectQuestionsAnswerFilterInput;
   SitePageConnection: SitePageConnection;
   SitePageEdge: SitePageEdge;
   SitePageGroupConnection: SitePageGroupConnection;
@@ -6205,6 +6584,11 @@ export type ResolversParentTypes = {
   GraphQLSourceGroupConnection: GraphQLSourceGroupConnection;
   GraphQLSourceFilterInput: GraphQLSourceFilterInput;
   GraphQLSourceSortInput: GraphQLSourceSortInput;
+  StaticImageConnection: StaticImageConnection;
+  StaticImageEdge: StaticImageEdge;
+  StaticImageGroupConnection: StaticImageGroupConnection;
+  StaticImageFilterInput: StaticImageFilterInput;
+  StaticImageSortInput: StaticImageSortInput;
 };
 
 export type dateformatDirectiveArgs = {   formatString?: Maybe<Scalars['String']>;
@@ -6295,7 +6679,7 @@ export type FileResolvers<ContextType = GatsbyResolverContext, ParentType extend
 };
 
 export type NodeResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'File' | 'Directory' | 'Site' | 'SiteFunction' | 'SitePage' | 'ImageSharp' | 'SitePlugin' | 'SiteBuildMetadata' | 'GraphQLSource', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'File' | 'Directory' | 'Site' | 'SiteFunction' | 'SitePage' | 'ImageSharp' | 'SitePlugin' | 'SiteBuildMetadata' | 'GraphQLSource' | 'StaticImage', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType>;
   children?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
@@ -6402,14 +6786,14 @@ export type SitePageResolvers<ContextType = GatsbyResolverContext, ParentType ex
   internalComponentName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   componentChunkName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   matchPath?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  isCreatedByStatefulCreatePages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  pluginCreator?: Resolver<Maybe<ResolversTypes['SitePlugin']>, ParentType, ContextType>;
+  pluginCreatorId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType>;
   children?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   internal?: Resolver<ResolversTypes['Internal'], ParentType, ContextType>;
-  isCreatedByStatefulCreatePages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   context?: Resolver<Maybe<ResolversTypes['SitePageContext']>, ParentType, ContextType>;
-  pluginCreator?: Resolver<Maybe<ResolversTypes['SitePlugin']>, ParentType, ContextType>;
-  pluginCreatorId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -6647,6 +7031,46 @@ export type GraphQLSourceResolvers<ContextType = GatsbyResolverContext, ParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type StaticImageResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['StaticImage'] = ResolversParentTypes['StaticImage']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  parent?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType>;
+  children?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
+  internal?: Resolver<ResolversTypes['Internal'], ParentType, ContextType>;
+  sourceInstanceName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  relativePath?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  extension?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  prettySize?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  modifiedTime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_modifiedTimeArgs, never>>;
+  accessTime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_accessTimeArgs, never>>;
+  changeTime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_changeTimeArgs, never>>;
+  birthTime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_birthTimeArgs, never>>;
+  root?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dir?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  base?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ext?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  absolutePath?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  relativeDirectory?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dev?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  mode?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  nlink?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  uid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  rdev?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  blksize?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  ino?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  size?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  blocks?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  atimeMs?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  mtimeMs?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  ctimeMs?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  birthtimeMs?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  atime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_atimeArgs, never>>;
+  mtime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_mtimeArgs, never>>;
+  ctime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_ctimeArgs, never>>;
+  birthtime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<StaticImage_birthtimeArgs, never>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Portfolio_AboutResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_About'] = ResolversParentTypes['Portfolio_About']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -6834,6 +7258,8 @@ export type QueryResolvers<ContextType = GatsbyResolverContext, ParentType exten
   allSiteBuildMetadata?: Resolver<ResolversTypes['SiteBuildMetadataConnection'], ParentType, ContextType, RequireFields<Query_allSiteBuildMetadataArgs, never>>;
   graphQlSource?: Resolver<Maybe<ResolversTypes['GraphQLSource']>, ParentType, ContextType, RequireFields<Query_graphQlSourceArgs, never>>;
   allGraphQlSource?: Resolver<ResolversTypes['GraphQLSourceConnection'], ParentType, ContextType, RequireFields<Query_allGraphQlSourceArgs, never>>;
+  staticImage?: Resolver<Maybe<ResolversTypes['StaticImage']>, ParentType, ContextType, RequireFields<Query_staticImageArgs, never>>;
+  allStaticImage?: Resolver<ResolversTypes['StaticImageConnection'], ParentType, ContextType, RequireFields<Query_allStaticImageArgs, never>>;
   portfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType>;
 };
 
@@ -6996,7 +7422,7 @@ export type SitePageEdgeResolvers<ContextType = GatsbyResolverContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SitePageFieldsEnumResolvers = { path: 'undefined', component: 'undefined', internalComponentName: 'undefined', componentChunkName: 'undefined', matchPath: 'undefined', id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type', isCreatedByStatefulCreatePages: 'undefined', context___project___id: 'context.project.id', context___project___name: 'context.project.name', context___project___image: 'context.project.image', context___project___type: 'context.project.type', context___project___github_url: 'context.project.github_url', context___project___app_url: 'context.project.app_url', context___project___summary: 'context.project.summary', context___project___tech_categories: 'context.project.tech_categories', context___project___tech_categories___id: 'context.project.tech_categories.id', context___project___tech_categories___name: 'context.project.tech_categories.name', context___project___tech_categories___techs: 'context.project.tech_categories.techs', context___project___sketches: 'context.project.sketches', context___project___sketches___id: 'context.project.sketches.id', context___project___sketches___title: 'context.project.sketches.title', context___project___sketches___summary: 'context.project.sketches.summary', context___project___sketches___description: 'context.project.sketches.description', context___project___sketches___download_link: 'context.project.sketches.download_link', context___project___sketches___image: 'context.project.sketches.image', context___project___questions: 'context.project.questions', context___project___questions___id: 'context.project.questions.id', context___project___questions___question: 'context.project.questions.question', context___image: 'context.image', pluginCreator___id: 'pluginCreator.id', pluginCreator___parent___id: 'pluginCreator.parent.id', pluginCreator___parent___parent___id: 'pluginCreator.parent.parent.id', pluginCreator___parent___parent___children: 'pluginCreator.parent.parent.children', pluginCreator___parent___children: 'pluginCreator.parent.children', pluginCreator___parent___children___id: 'pluginCreator.parent.children.id', pluginCreator___parent___children___children: 'pluginCreator.parent.children.children', pluginCreator___parent___internal___content: 'pluginCreator.parent.internal.content', pluginCreator___parent___internal___contentDigest: 'pluginCreator.parent.internal.contentDigest', pluginCreator___parent___internal___description: 'pluginCreator.parent.internal.description', pluginCreator___parent___internal___fieldOwners: 'pluginCreator.parent.internal.fieldOwners', pluginCreator___parent___internal___ignoreType: 'pluginCreator.parent.internal.ignoreType', pluginCreator___parent___internal___mediaType: 'pluginCreator.parent.internal.mediaType', pluginCreator___parent___internal___owner: 'pluginCreator.parent.internal.owner', pluginCreator___parent___internal___type: 'pluginCreator.parent.internal.type', pluginCreator___children: 'pluginCreator.children', pluginCreator___children___id: 'pluginCreator.children.id', pluginCreator___children___parent___id: 'pluginCreator.children.parent.id', pluginCreator___children___parent___children: 'pluginCreator.children.parent.children', pluginCreator___children___children: 'pluginCreator.children.children', pluginCreator___children___children___id: 'pluginCreator.children.children.id', pluginCreator___children___children___children: 'pluginCreator.children.children.children', pluginCreator___children___internal___content: 'pluginCreator.children.internal.content', pluginCreator___children___internal___contentDigest: 'pluginCreator.children.internal.contentDigest', pluginCreator___children___internal___description: 'pluginCreator.children.internal.description', pluginCreator___children___internal___fieldOwners: 'pluginCreator.children.internal.fieldOwners', pluginCreator___children___internal___ignoreType: 'pluginCreator.children.internal.ignoreType', pluginCreator___children___internal___mediaType: 'pluginCreator.children.internal.mediaType', pluginCreator___children___internal___owner: 'pluginCreator.children.internal.owner', pluginCreator___children___internal___type: 'pluginCreator.children.internal.type', pluginCreator___internal___content: 'pluginCreator.internal.content', pluginCreator___internal___contentDigest: 'pluginCreator.internal.contentDigest', pluginCreator___internal___description: 'pluginCreator.internal.description', pluginCreator___internal___fieldOwners: 'pluginCreator.internal.fieldOwners', pluginCreator___internal___ignoreType: 'pluginCreator.internal.ignoreType', pluginCreator___internal___mediaType: 'pluginCreator.internal.mediaType', pluginCreator___internal___owner: 'pluginCreator.internal.owner', pluginCreator___internal___type: 'pluginCreator.internal.type', pluginCreator___resolve: 'pluginCreator.resolve', pluginCreator___name: 'pluginCreator.name', pluginCreator___version: 'pluginCreator.version', pluginCreator___pluginOptions___base64Width: 'pluginCreator.pluginOptions.base64Width', pluginCreator___pluginOptions___stripMetadata: 'pluginCreator.pluginOptions.stripMetadata', pluginCreator___pluginOptions___defaultQuality: 'pluginCreator.pluginOptions.defaultQuality', pluginCreator___pluginOptions___failOnError: 'pluginCreator.pluginOptions.failOnError', pluginCreator___pluginOptions___autoFix: 'pluginCreator.pluginOptions.autoFix', pluginCreator___pluginOptions___language: 'pluginCreator.pluginOptions.language', pluginCreator___pluginOptions___includeResolvers: 'pluginCreator.pluginOptions.includeResolvers', pluginCreator___pluginOptions___outputPath: 'pluginCreator.pluginOptions.outputPath', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxschemaxgraphql: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson', pluginCreator___pluginOptions___emitPluginDocuments___src___generated___gatsby_plugin_documents_graphql: 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql', pluginCreator___pluginOptions___specialChars: 'pluginCreator.pluginOptions.specialChars', pluginCreator___pluginOptions___name: 'pluginCreator.pluginOptions.name', pluginCreator___pluginOptions___path: 'pluginCreator.pluginOptions.path', pluginCreator___pluginOptions___isTSX: 'pluginCreator.pluginOptions.isTSX', pluginCreator___pluginOptions___jsxPragma: 'pluginCreator.pluginOptions.jsxPragma', pluginCreator___pluginOptions___allExtensions: 'pluginCreator.pluginOptions.allExtensions', pluginCreator___pluginOptions___typeName: 'pluginCreator.pluginOptions.typeName', pluginCreator___pluginOptions___fieldName: 'pluginCreator.pluginOptions.fieldName', pluginCreator___pluginOptions___url: 'pluginCreator.pluginOptions.url', pluginCreator___pluginOptions___pathCheck: 'pluginCreator.pluginOptions.pathCheck', pluginCreator___nodeAPIs: 'pluginCreator.nodeAPIs', pluginCreator___browserAPIs: 'pluginCreator.browserAPIs', pluginCreator___ssrAPIs: 'pluginCreator.ssrAPIs', pluginCreator___pluginFilepath: 'pluginCreator.pluginFilepath', pluginCreator___packageJson___name: 'pluginCreator.packageJson.name', pluginCreator___packageJson___description: 'pluginCreator.packageJson.description', pluginCreator___packageJson___version: 'pluginCreator.packageJson.version', pluginCreator___packageJson___main: 'pluginCreator.packageJson.main', pluginCreator___packageJson___license: 'pluginCreator.packageJson.license', pluginCreator___packageJson___dependencies: 'pluginCreator.packageJson.dependencies', pluginCreator___packageJson___dependencies___name: 'pluginCreator.packageJson.dependencies.name', pluginCreator___packageJson___dependencies___version: 'pluginCreator.packageJson.dependencies.version', pluginCreator___packageJson___devDependencies: 'pluginCreator.packageJson.devDependencies', pluginCreator___packageJson___devDependencies___name: 'pluginCreator.packageJson.devDependencies.name', pluginCreator___packageJson___devDependencies___version: 'pluginCreator.packageJson.devDependencies.version', pluginCreator___packageJson___peerDependencies: 'pluginCreator.packageJson.peerDependencies', pluginCreator___packageJson___peerDependencies___name: 'pluginCreator.packageJson.peerDependencies.name', pluginCreator___packageJson___peerDependencies___version: 'pluginCreator.packageJson.peerDependencies.version', pluginCreator___packageJson___keywords: 'pluginCreator.packageJson.keywords', pluginCreatorId: 'undefined' };
+export type SitePageFieldsEnumResolvers = { path: 'undefined', component: 'undefined', internalComponentName: 'undefined', componentChunkName: 'undefined', matchPath: 'undefined', isCreatedByStatefulCreatePages: 'undefined', pluginCreator___id: 'pluginCreator.id', pluginCreator___parent___id: 'pluginCreator.parent.id', pluginCreator___parent___parent___id: 'pluginCreator.parent.parent.id', pluginCreator___parent___parent___children: 'pluginCreator.parent.parent.children', pluginCreator___parent___children: 'pluginCreator.parent.children', pluginCreator___parent___children___id: 'pluginCreator.parent.children.id', pluginCreator___parent___children___children: 'pluginCreator.parent.children.children', pluginCreator___parent___internal___content: 'pluginCreator.parent.internal.content', pluginCreator___parent___internal___contentDigest: 'pluginCreator.parent.internal.contentDigest', pluginCreator___parent___internal___description: 'pluginCreator.parent.internal.description', pluginCreator___parent___internal___fieldOwners: 'pluginCreator.parent.internal.fieldOwners', pluginCreator___parent___internal___ignoreType: 'pluginCreator.parent.internal.ignoreType', pluginCreator___parent___internal___mediaType: 'pluginCreator.parent.internal.mediaType', pluginCreator___parent___internal___owner: 'pluginCreator.parent.internal.owner', pluginCreator___parent___internal___type: 'pluginCreator.parent.internal.type', pluginCreator___children: 'pluginCreator.children', pluginCreator___children___id: 'pluginCreator.children.id', pluginCreator___children___parent___id: 'pluginCreator.children.parent.id', pluginCreator___children___parent___children: 'pluginCreator.children.parent.children', pluginCreator___children___children: 'pluginCreator.children.children', pluginCreator___children___children___id: 'pluginCreator.children.children.id', pluginCreator___children___children___children: 'pluginCreator.children.children.children', pluginCreator___children___internal___content: 'pluginCreator.children.internal.content', pluginCreator___children___internal___contentDigest: 'pluginCreator.children.internal.contentDigest', pluginCreator___children___internal___description: 'pluginCreator.children.internal.description', pluginCreator___children___internal___fieldOwners: 'pluginCreator.children.internal.fieldOwners', pluginCreator___children___internal___ignoreType: 'pluginCreator.children.internal.ignoreType', pluginCreator___children___internal___mediaType: 'pluginCreator.children.internal.mediaType', pluginCreator___children___internal___owner: 'pluginCreator.children.internal.owner', pluginCreator___children___internal___type: 'pluginCreator.children.internal.type', pluginCreator___internal___content: 'pluginCreator.internal.content', pluginCreator___internal___contentDigest: 'pluginCreator.internal.contentDigest', pluginCreator___internal___description: 'pluginCreator.internal.description', pluginCreator___internal___fieldOwners: 'pluginCreator.internal.fieldOwners', pluginCreator___internal___ignoreType: 'pluginCreator.internal.ignoreType', pluginCreator___internal___mediaType: 'pluginCreator.internal.mediaType', pluginCreator___internal___owner: 'pluginCreator.internal.owner', pluginCreator___internal___type: 'pluginCreator.internal.type', pluginCreator___resolve: 'pluginCreator.resolve', pluginCreator___name: 'pluginCreator.name', pluginCreator___version: 'pluginCreator.version', pluginCreator___pluginOptions___base64Width: 'pluginCreator.pluginOptions.base64Width', pluginCreator___pluginOptions___stripMetadata: 'pluginCreator.pluginOptions.stripMetadata', pluginCreator___pluginOptions___defaultQuality: 'pluginCreator.pluginOptions.defaultQuality', pluginCreator___pluginOptions___failOnError: 'pluginCreator.pluginOptions.failOnError', pluginCreator___pluginOptions___autoFix: 'pluginCreator.pluginOptions.autoFix', pluginCreator___pluginOptions___language: 'pluginCreator.pluginOptions.language', pluginCreator___pluginOptions___includeResolvers: 'pluginCreator.pluginOptions.includeResolvers', pluginCreator___pluginOptions___outputPath: 'pluginCreator.pluginOptions.outputPath', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxschemaxgraphql: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson', pluginCreator___pluginOptions___emitPluginDocuments___src___generated___gatsby_plugin_documents_graphql: 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql', pluginCreator___pluginOptions___specialChars: 'pluginCreator.pluginOptions.specialChars', pluginCreator___pluginOptions___name: 'pluginCreator.pluginOptions.name', pluginCreator___pluginOptions___path: 'pluginCreator.pluginOptions.path', pluginCreator___pluginOptions___isTSX: 'pluginCreator.pluginOptions.isTSX', pluginCreator___pluginOptions___jsxPragma: 'pluginCreator.pluginOptions.jsxPragma', pluginCreator___pluginOptions___allExtensions: 'pluginCreator.pluginOptions.allExtensions', pluginCreator___pluginOptions___typeName: 'pluginCreator.pluginOptions.typeName', pluginCreator___pluginOptions___fieldName: 'pluginCreator.pluginOptions.fieldName', pluginCreator___pluginOptions___url: 'pluginCreator.pluginOptions.url', pluginCreator___pluginOptions___pathCheck: 'pluginCreator.pluginOptions.pathCheck', pluginCreator___nodeAPIs: 'pluginCreator.nodeAPIs', pluginCreator___browserAPIs: 'pluginCreator.browserAPIs', pluginCreator___ssrAPIs: 'pluginCreator.ssrAPIs', pluginCreator___pluginFilepath: 'pluginCreator.pluginFilepath', pluginCreator___packageJson___name: 'pluginCreator.packageJson.name', pluginCreator___packageJson___description: 'pluginCreator.packageJson.description', pluginCreator___packageJson___version: 'pluginCreator.packageJson.version', pluginCreator___packageJson___main: 'pluginCreator.packageJson.main', pluginCreator___packageJson___license: 'pluginCreator.packageJson.license', pluginCreator___packageJson___dependencies: 'pluginCreator.packageJson.dependencies', pluginCreator___packageJson___dependencies___name: 'pluginCreator.packageJson.dependencies.name', pluginCreator___packageJson___dependencies___version: 'pluginCreator.packageJson.dependencies.version', pluginCreator___packageJson___devDependencies: 'pluginCreator.packageJson.devDependencies', pluginCreator___packageJson___devDependencies___name: 'pluginCreator.packageJson.devDependencies.name', pluginCreator___packageJson___devDependencies___version: 'pluginCreator.packageJson.devDependencies.version', pluginCreator___packageJson___peerDependencies: 'pluginCreator.packageJson.peerDependencies', pluginCreator___packageJson___peerDependencies___name: 'pluginCreator.packageJson.peerDependencies.name', pluginCreator___packageJson___peerDependencies___version: 'pluginCreator.packageJson.peerDependencies.version', pluginCreator___packageJson___keywords: 'pluginCreator.packageJson.keywords', pluginCreatorId: 'undefined', id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type', context___project___id: 'context.project.id', context___project___name: 'context.project.name', context___project___image: 'context.project.image', context___project___type: 'context.project.type', context___project___github_url: 'context.project.github_url', context___project___app_url: 'context.project.app_url', context___project___summary: 'context.project.summary', context___project___tech_categories: 'context.project.tech_categories', context___project___tech_categories___id: 'context.project.tech_categories.id', context___project___tech_categories___name: 'context.project.tech_categories.name', context___project___tech_categories___techs: 'context.project.tech_categories.techs', context___project___sketches: 'context.project.sketches', context___project___sketches___id: 'context.project.sketches.id', context___project___sketches___title: 'context.project.sketches.title', context___project___sketches___summary: 'context.project.sketches.summary', context___project___sketches___description: 'context.project.sketches.description', context___project___sketches___download_link: 'context.project.sketches.download_link', context___project___sketches___image: 'context.project.sketches.image', context___project___questions: 'context.project.questions', context___project___questions___id: 'context.project.questions.id', context___project___questions___question: 'context.project.questions.question', context___image: 'context.image' };
 
 export type SitePageGroupConnectionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['SitePageGroupConnection'] = ResolversParentTypes['SitePageGroupConnection']> = {
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -7136,6 +7562,38 @@ export type GraphQLSourceGroupConnectionResolvers<ContextType = GatsbyResolverCo
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type StaticImageConnectionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['StaticImageConnection'] = ResolversParentTypes['StaticImageConnection']> = {
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  edges?: Resolver<Array<ResolversTypes['StaticImageEdge']>, ParentType, ContextType>;
+  nodes?: Resolver<Array<ResolversTypes['StaticImage']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  distinct?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType, RequireFields<StaticImageConnection_distinctArgs, 'field'>>;
+  max?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<StaticImageConnection_maxArgs, 'field'>>;
+  min?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<StaticImageConnection_minArgs, 'field'>>;
+  sum?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<StaticImageConnection_sumArgs, 'field'>>;
+  group?: Resolver<Array<ResolversTypes['StaticImageGroupConnection']>, ParentType, ContextType, RequireFields<StaticImageConnection_groupArgs, 'field'>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StaticImageEdgeResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['StaticImageEdge'] = ResolversParentTypes['StaticImageEdge']> = {
+  next?: Resolver<Maybe<ResolversTypes['StaticImage']>, ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['StaticImage'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['StaticImage']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StaticImageFieldsEnumResolvers = { id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type', sourceInstanceName: 'undefined', relativePath: 'undefined', extension: 'undefined', prettySize: 'undefined', modifiedTime: 'undefined', accessTime: 'undefined', changeTime: 'undefined', birthTime: 'undefined', root: 'undefined', dir: 'undefined', base: 'undefined', ext: 'undefined', name: 'undefined', absolutePath: 'undefined', relativeDirectory: 'undefined', dev: 'undefined', mode: 'undefined', nlink: 'undefined', uid: 'undefined', rdev: 'undefined', blksize: 'undefined', ino: 'undefined', size: 'undefined', blocks: 'undefined', atimeMs: 'undefined', mtimeMs: 'undefined', ctimeMs: 'undefined', birthtimeMs: 'undefined', atime: 'undefined', mtime: 'undefined', ctime: 'undefined', birthtime: 'undefined' };
+
+export type StaticImageGroupConnectionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['StaticImageGroupConnection'] = ResolversParentTypes['StaticImageGroupConnection']> = {
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  edges?: Resolver<Array<ResolversTypes['StaticImageEdge']>, ParentType, ContextType>;
+  nodes?: Resolver<Array<ResolversTypes['StaticImage']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  field?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fieldValue?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = GatsbyResolverContext> = {
   File?: FileResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;
@@ -7175,6 +7633,7 @@ export type Resolvers<ContextType = GatsbyResolverContext> = {
   SitePluginPackageJsonPeerDependencies?: SitePluginPackageJsonPeerDependenciesResolvers<ContextType>;
   SiteBuildMetadata?: SiteBuildMetadataResolvers<ContextType>;
   GraphQLSource?: GraphQLSourceResolvers<ContextType>;
+  StaticImage?: StaticImageResolvers<ContextType>;
   Portfolio_About?: Portfolio_AboutResolvers<ContextType>;
   Portfolio_DateTime?: GraphQLScalarType;
   Portfolio_Admin?: Portfolio_AdminResolvers<ContextType>;
@@ -7230,6 +7689,10 @@ export type Resolvers<ContextType = GatsbyResolverContext> = {
   GraphQLSourceEdge?: GraphQLSourceEdgeResolvers<ContextType>;
   GraphQLSourceFieldsEnum?: GraphQLSourceFieldsEnumResolvers;
   GraphQLSourceGroupConnection?: GraphQLSourceGroupConnectionResolvers<ContextType>;
+  StaticImageConnection?: StaticImageConnectionResolvers<ContextType>;
+  StaticImageEdge?: StaticImageEdgeResolvers<ContextType>;
+  StaticImageFieldsEnum?: StaticImageFieldsEnumResolvers;
+  StaticImageGroupConnection?: StaticImageGroupConnectionResolvers<ContextType>;
 };
 
 

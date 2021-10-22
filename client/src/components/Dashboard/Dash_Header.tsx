@@ -1,5 +1,9 @@
-import React, { FC, PropsWithChildren } from "react"
-import { createPortal } from "react-dom"
+import { useMutation } from "@apollo/client"
+import { navigate } from "gatsby-link"
+import React, { FC, PropsWithChildren, useState } from "react"
+import { Exit } from "../../icons/iconsJSX"
+import { LogoutMutation } from "../../util/mutations"
+import { useAuth } from "../../util/useAuth"
 import NavLink from "../UI/NavLink"
 
 interface Props {
@@ -16,6 +20,20 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
   onMessagesClick,
   brand = "AMIRMUHA",
 }) => {
+  const [mutate] = useMutation(LogoutMutation)
+
+  const { data: isLoggedIn } = useAuth()
+  const logout = () => {
+    if (isLoggedIn) {
+      mutate()
+        .then(() => {
+          navigate("/dashboard/auth/")
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  }
   return (
     <header className="w-full py-1 px-3 border-b border-palatte-500">
       <nav className="container flex items-center justify-between mx-auto py-2">
@@ -46,9 +64,15 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
             <NavLink onHover to="/dashboard/about-me">
               About Me
             </NavLink>
-            <NavLink onHover to="/">
-              Back To Website
-            </NavLink>
+            {isLoggedIn && (
+              <button
+                onClick={logout}
+                className="flex border-b border-palatte-500 gap-2 items-center"
+              >
+                <span>Logout</span>
+                <span>{Exit}</span>
+              </button>
+            )}
           </div>
           <button onClick={onMessagesClick} className="relative">
             <svg width="26" height="19" viewBox="0 0 27 22">

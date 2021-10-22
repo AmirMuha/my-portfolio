@@ -27,6 +27,7 @@ interface Props {
   id: string
   style?: React.CSSProperties
   offon?: boolean
+  multiple?: boolean
   label?: string
   value?: any
   name?: string
@@ -42,6 +43,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
     textColor = "100",
     style,
     color = "100",
+    multiple = false,
     pattern,
     required = false,
     readOnly = false,
@@ -106,7 +108,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
             </Button>
           </div>
           <input
-            multiple={true}
+            multiple={multiple}
             hidden={true}
             required={required}
             onChange={e =>
@@ -135,6 +137,8 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
             style={style}
             className={`px-3 py-2 w-full ${className} bg-palatte-${color}`}
             id={id}
+            autoComplete="off"
+            autoCorrect="off"
             readOnly={readOnly}
             required={required}
             type={type}
