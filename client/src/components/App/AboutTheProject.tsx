@@ -6,11 +6,9 @@ import React, {
   useRef,
   useState,
 } from "react"
-// import audio from "../../04 Future.mp3"
 import { GitHub } from "../../icons/iconsJSX"
 import { useTheDispatch } from "../../store/store"
 import Editable from "../Dashboard/Editable"
-// import Audio from "../UI/Audio"
 import Button from "../UI/Button"
 import {
   setGithubUrlReducer,
@@ -21,7 +19,16 @@ import {
 import SmallPipe from "../UI/SmallPipe"
 import Markdown from "../utility/Markdown"
 import { useMutation } from "@apollo/client"
-import { UploadSingleFileMutation } from "../../util/mutations"
+import {
+  UpdateProjectAppUrlMutation,
+  UpdateProjectgithub_urlMutation,
+  UpdateProjectImageMutation,
+  UpdateProjectSummaryMutation,
+  UpdateProjectTypeMutation,
+  UploadSingleFileMutation,
+} from "../../util/mutations"
+import { useAlert } from "../../util/useAlert"
+import Alert from "../UI/Alert"
 interface Props {
   image: IGatsbyImageData | string
   editable?: boolean
@@ -34,12 +41,24 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   mode = "NORMAL",
   data,
 }) => {
+  const {
+    message: alertMessage,
+    isOpen: isAlertOpen,
+    title: alertTitle,
+    setAlert,
+  } = useAlert()
   const [mutateImage, mutateImageResult] = useMutation(UploadSingleFileMutation)
+  const [mutateProjectAppUrlUpdate] = useMutation(UpdateProjectAppUrlMutation)
+  const [mutateProjectImageUpdate] = useMutation(UpdateProjectImageMutation)
+  const [mutateProjectGithubUrlUpdate] = useMutation(
+    UpdateProjectgithub_urlMutation
+  )
+  const [mutateProjectSummaryUpdate] = useMutation(UpdateProjectSummaryMutation)
+  const [mutateProjectTypeUpdate] = useMutation(UpdateProjectTypeMutation)
   const imageRef = useRef<HTMLImageElement>()
   const addNewProjectDispatch = useTheDispatch()
   const [imageName, setImageName] = useState<string>("")
   const [imageFile, setImageFile] = useState<FileList & Array<BlobPart>>()
-  // const [audioFile, setAudio] = useState<any>(null)
   const [summary, setSummary] = useState<string>("")
   const [githubUrl, setGithubUrl] = useState<string>("")
   const [appUrl, setAppUrl] = useState<string>("")
@@ -54,7 +73,30 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     if (mode === "ADD") {
       addNewProjectDispatch(setGithubUrlReducer({ url: githubUrl }))
     } else {
-      console.log("Updating the github url ...")
+      mutateProjectGithubUrlUpdate({
+        variables: {
+          github_url: githubUrl,
+          id: data.id,
+        },
+      })
+        .then(res => {
+          setGithubUrl(res.data.updateProject.github_url)
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "GitHub Url updated successfully !",
+          })
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message ||
+                "Something went wrong, Couldn't update the GitHub Url.",
+          })
+        })
     }
   }
   const updateAppUrl = () => {
@@ -62,7 +104,30 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     if (mode === "ADD") {
       addNewProjectDispatch(setAppUrlReducer({ url: appUrl }))
     } else {
-      console.log("Updating the app url ...")
+      mutateProjectAppUrlUpdate({
+        variables: {
+          app_url: appUrl,
+          id: data.id,
+        },
+      })
+        .then(res => {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "App Url updated successfully !",
+          })
+          setAppUrl(res.data.updateProject.app_url)
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message ||
+                "Something went wrong, Couldn't update the App Url.",
+          })
+        })
     }
   }
   const updateImage = () => {
@@ -80,12 +145,57 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               setImageReducer({ image: res.data.uploadSingleFile })
             )
           })
-          .catch(e => console.log(e))
+          .catch(e => {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message: e.errors
+                ? e.errors[0].message
+                : e.message ||
+                  "Something went wrong, Couldn't upload the image.",
+            })
+          })
       }
-      // also upload it to the server so when the user came back to edit he has this image and you can show it to them
     } else {
-      console.log("Updating the image ...")
-      console.log(imageFile)
+      if (!imageFile) {
+        setAlert({
+          isOpen: true,
+          title: "Error",
+          message: "Please choose the new image.",
+        })
+      } else {
+        mutateProjectImageUpdate({
+          variables: {
+            file: imageFile[0],
+            projectId: data.id,
+            prevname: data.image,
+          },
+        })
+          .then(res => {
+            console.log(res.data)
+            const isResError =
+              res.data.updateImage?.match(/\.(jpeg|jpg|webp|png|svg)$/gi) &&
+              res.data.updateImage.includes("ENOENT")
+            setAlert({
+              isOpen: true,
+              title: isResError ? "Error" : "Success",
+              message: isResError
+                ? res.data.updateImage
+                : "Image updated successfully !",
+            })
+            setImageName(res.data.updateImage)
+          })
+          .catch(e => {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message: e.errors
+                ? e.errors[0].message
+                : e.message ||
+                  "Something went wrong, Couldn't update the image.",
+            })
+          })
+      }
     }
   }
   const updateSummary = (v: string) => {
@@ -93,19 +203,39 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     if (mode === "ADD") {
       addNewProjectDispatch(setSummaryReducer({ summary }))
     } else {
-      console.log("Updating the summary, new Value => " + v)
+      mutateProjectSummaryUpdate({
+        variables: {
+          summary: summary,
+          id: data.id,
+        },
+      })
+        .then(res => {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "Summary updated successfully !",
+          })
+          setAppUrl(res.data.updateProject.summary)
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message ||
+                "Something went wrong, Couldn't update the Summary.",
+          })
+        })
     }
   }
   const getGithubUrl = (v: string) => {
-    console.log(v)
     setGithubUrl(v)
   }
   const getAppUrl = (v: string) => {
-    console.log(v)
     setAppUrl(v)
   }
   const getSummary = (v: string) => {
-    console.log(v)
     setSummary(v)
   }
   const getImageFile = (f: FileList & BlobPart[]) => {
@@ -116,26 +246,31 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     }
     setImageFile(f)
   }
-  // const getAudioFile = (f: File) => {
-  //   console.log(f)
-  //   setAudio(f)
-  // }
-
   return (
     <div>
+      {isAlertOpen && (
+        <Alert
+          onClose={() => setAlert({ isOpen: false })}
+          header
+          backdrop
+          position="TOP"
+          message={alertMessage}
+          autoClose={3}
+          title={alertTitle}
+        />
+      )}
       {editable ? (
         <div className="flex flex-col md:flex-row mb-6 ml-5">
-          <div
-            style={{
-              maxHeight: 400,
-              minHeight: 300,
-              minWidth: 300,
-              maxWidth: 500,
-            }}
-            className="w-full overflow-x-auto overflow-y-hidden flex-grow border-5 border-palatte-500 relative md:border-10"
-          >
+          <div className="w-full overflow-x-auto overflow-y-hidden flex-grow border-5 border-palatte-500 relative md:border-10">
             <div>
               <img
+                style={{
+                  maxHeight: 400,
+                  minHeight: 300,
+                  minWidth: 300,
+                  maxWidth: 500,
+                  objectFit: "cover",
+                }}
                 ref={imageRef as any}
                 src={`${(window as any).__SERVER_API__}/${imageName}`}
                 alt={`${data.name} Image`}
@@ -221,37 +356,22 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               onSave={updateSummary}
               value={summary}
             />
-            {/* {false && (
-              <div className="relative">
-                <SmallPipe pipeClassName="hidden md:flex">
-                  <Audio src={audio} />
-                  <Editable
-                    file
-                    acceptableFileTypes="audio/*"
-                    mode="IN_POSITION"
-                    onSave={updateAudio}
-                    getValue={getAudioFile}
-                    value=""
-                  />
-                </SmallPipe>
-              </div>
-            )} */}
           </div>
         </div>
       ) : (
         <div className="flex flex-col md:flex-row mb-6 ml-5 ">
-          <div
-            style={{
-              maxHeight: 400,
-              minHeight: 300,
-              minWidth: 300,
-              maxWidth: 500,
-            }}
-            className="w-full flex-grow border-5 overflow-hidden border-palatte-500 relative md:border-10"
-          >
+          <div className="w-full flex-grow border-5 overflow-hidden border-palatte-500 relative md:border-10">
             <div>
-              <GatsbyImage
-                image={image as IGatsbyImageData}
+              <img
+                style={{
+                  maxHeight: 400,
+                  minHeight: 300,
+                  minWidth: 300,
+                  maxWidth: 500,
+                  objectFit: "cover",
+                }}
+                ref={imageRef as any}
+                src={`${(window as any).__SERVER_API__}/${imageName}`}
                 alt={`${data.name} Image`}
               />
             </div>
@@ -296,13 +416,6 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             <div className="px-5 py-3">
               <Markdown>{data.summary}</Markdown>
             </div>
-            {/* {false && (
-              <div className="">
-                <SmallPipe pipeClassName="hidden md:flex">
-                  <Audio src={audio} />
-                </SmallPipe>
-              </div>
-            )} */}
           </div>
         </div>
       )}

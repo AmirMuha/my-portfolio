@@ -102,42 +102,47 @@ export const CreateProjectMutation = gql`
 // // ############### Update Mutations
 // // ##################################
 export const UpdateProjectSummaryMutation = gql`
-  mutation UpdateProject($id: String!, $summary: String) {
-    updateProject(data: { summary: { set: $summary } }) {
+  mutation UpdateProjectSummary($id: String!, $summary: String) {
+    updateProject(data: { summary: { set: $summary } }, where: { id: $id }) {
       summary
     }
   }
 `
 export const UpdateProjectTypeMutation = gql`
-  mutation UpdateProject($id: String!, $type: String) {
-    updateProject(data: { type: { set: $type } }) {
+  mutation UpdateProjectType($id: String!, $type: String) {
+    updateProject(data: { type: { set: $type } }, where: { id: $id }) {
       type
     }
   }
 `
 export const UpdateProjectImageMutation = gql`
-  mutation UpdateProject($id: String!, $Image: String) {
-    updateProject(data: { Image: { set: $Image } }) {
-      Image
-    }
+  mutation UpdateProjectImage(
+    $file: Upload!
+    $projectId: String!
+    $prevname: String!
+  ) {
+    updateImage(file: $file, projectId: $projectId, prevname: $prevname)
   }
 `
 export const UpdateProjectAppUrlMutation = gql`
-  mutation UpdateProject($id: String!, $app_url: String) {
-    updateProject(data: { app_url: { set: $app_url } }) {
+  mutation UpdateProjectAppUrl($id: String!, $app_url: String) {
+    updateProject(data: { app_url: { set: $app_url } }, where: { id: $id }) {
       app_url
     }
   }
 `
 export const UpdateProjectgithub_urlMutation = gql`
-  mutation UpdateProject($id: String!, $github_url: String) {
-    updateProject(data: { github_url: { set: $github_url } }) {
+  mutation UpdateProjectGitHubUrl($id: String!, $github_url: String) {
+    updateProject(
+      data: { github_url: { set: $github_url } }
+      where: { id: $id }
+    ) {
       github_url
     }
   }
 `
 export const UpdateProjectNameMutation = gql`
-  mutation UpdateProject($id: String!, $name: String) {
+  mutation UpdateProjectName($id: String!, $name: String) {
     updateProject(data: { name: { set: $name } }, where: { id: $id }) {
       name
     }
