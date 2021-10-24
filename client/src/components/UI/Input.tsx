@@ -109,7 +109,8 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
           </div>
           <input
             multiple={multiple}
-            hidden={true}
+            hidden
+            name={name}
             required={required}
             onChange={e =>
               getValue(e.currentTarget.value, e.currentTarget?.files)

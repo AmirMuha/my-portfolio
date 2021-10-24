@@ -21,36 +21,6 @@ export const createPages = async ({
       portfolio {
         projects {
           id
-          name
-          image
-          type
-          github_url
-          app_url
-          summary
-          tech_categories {
-            id
-            name
-            techs {
-              id
-              name
-            }
-          }
-          sketches {
-            id
-            title
-            summary
-            description
-            download_link
-            image
-          }
-          questions {
-            id
-            question
-            answer {
-              id
-              answer
-            }
-          }
         }
       }
     }
@@ -84,7 +54,6 @@ export const createPages = async ({
       component: EditableProject,
       context: {
         project: proj,
-        image: getImageName(proj.image),
       },
     })
   })

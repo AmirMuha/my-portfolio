@@ -5,8 +5,8 @@ import React, { FC, PropsWithChildren, ReactElement, useRef } from "react"
 import {
   Button as ButtonClass,
   Button_Outlined,
-  Button_Underlined,
   Button_Pulse,
+  Button_Underlined,
 } from "./styles/Button.module.css"
 gsap.registerPlugin(CSSRulePlugin)
 interface Props {
@@ -28,6 +28,7 @@ interface Props {
   toUrl?: string
   style?: React.CSSProperties
   iconPos?: "right" | "left"
+  type?: "button" | "reset" | "submit"
 }
 
 export type IconAnimations =
@@ -46,6 +47,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
   borderColor = "500",
   textColor = "100",
   pulse = false,
+  type = "button",
   fill = false,
   normal = false,
   className = "",
@@ -142,6 +144,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
           onClick={onClick}
           style={style}
           disabled={disabled}
+          type={type}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
           onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
           className={`${buttonClasses} ${className} ${

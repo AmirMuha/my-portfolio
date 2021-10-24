@@ -1,19 +1,21 @@
 import { gql } from "@apollo/client"
 
-export const QueryProjectsWithRelations = gql`
-  query {
-    projects {
+export const IsThereAdminQuery = gql`
+  query IsThereAdminQuery {
+    isThereAnAdmin
+  }
+`
+
+export const QuerySingleProjectWithRelations = gql`
+  query QuerySingleProject($id: String!) {
+    project(where: { id: $id }) {
+      id
+      name
       app_url
       github_url
-      id
       image
-      name
-      summary
       type
-      sketch {
-        id
-        image
-      }
+      summary
       questions {
         id
         question
@@ -22,12 +24,57 @@ export const QueryProjectsWithRelations = gql`
           answer
         }
       }
-      tech_categories {
-        name
+      sketches {
         id
+        title
+        description
+        summary
+        download_link
+        image
+      }
+      tech_categories {
+        id
+        name
         techs {
-          name
           id
+          name
+        }
+      }
+    }
+  }
+`
+export const QueryProjectsWithRelations = gql`
+  query QueryAllProjects {
+    projects {
+      id
+      name
+      app_url
+      github_url
+      image
+      type
+      summary
+      questions {
+        id
+        question
+        answer {
+          id
+          answer
+        }
+      }
+      sketches {
+        id
+        title
+        description
+        summary
+        download_link
+        image
+      }
+      tech_categories {
+        id
+        name
+        techs {
+          id
+          name
         }
       }
     }

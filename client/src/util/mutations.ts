@@ -56,19 +56,19 @@ export const UploadSingleFileMutation = gql`
   }
 `
 export const UploadMultipleFileMutation = gql`
-  mutation UploadFiles($files: Upload!) {
-    uploadMultipleFile(files: $files)
+  mutation UploadFiles($files: [Upload!]!) {
+    uploadMultipleFiles(files: $files)
   }
 `
 export const CreateProjectMutation = gql`
   mutation CreateProject(
     $for: String
-    $name: String
-    $image: String
-    $type: String
-    $github_url: String
-    $app_url: String
-    $summary: String
+    $name: String!
+    $image: String!
+    $type: String!
+    $github_url: String!
+    $app_url: String!
+    $summary: String!
   ) {
     createProject(
       data: {
@@ -101,7 +101,48 @@ export const CreateProjectMutation = gql`
 // // ##################################
 // // ############### Update Mutations
 // // ##################################
-// export const UpdateProjectMutation = gql``
+export const UpdateProjectSummaryMutation = gql`
+  mutation UpdateProject($id: String!, $summary: String) {
+    updateProject(data: { summary: { set: $summary } }) {
+      summary
+    }
+  }
+`
+export const UpdateProjectTypeMutation = gql`
+  mutation UpdateProject($id: String!, $type: String) {
+    updateProject(data: { type: { set: $type } }) {
+      type
+    }
+  }
+`
+export const UpdateProjectImageMutation = gql`
+  mutation UpdateProject($id: String!, $Image: String) {
+    updateProject(data: { Image: { set: $Image } }) {
+      Image
+    }
+  }
+`
+export const UpdateProjectAppUrlMutation = gql`
+  mutation UpdateProject($id: String!, $app_url: String) {
+    updateProject(data: { app_url: { set: $app_url } }) {
+      app_url
+    }
+  }
+`
+export const UpdateProjectgithub_urlMutation = gql`
+  mutation UpdateProject($id: String!, $github_url: String) {
+    updateProject(data: { github_url: { set: $github_url } }) {
+      github_url
+    }
+  }
+`
+export const UpdateProjectNameMutation = gql`
+  mutation UpdateProject($id: String!, $name: String) {
+    updateProject(data: { name: { set: $name } }, where: { id: $id }) {
+      name
+    }
+  }
+`
 // export const UpdateMessageMutation = gql``
 // export const UpdateSketchMutation = gql``
 // export const UpdateTechCategoryMutation = gql``
@@ -112,7 +153,13 @@ export const CreateProjectMutation = gql`
 // // ##################################
 // // ############### Delete Mutations
 // // ##################################
-// export const DeleteProjectMutation = gql``
+export const DeleteProjectMutation = gql`
+  mutation DeleteProject($id: String!) {
+    deleteProject(where: { id: $id }) {
+      id
+    }
+  }
+`
 // export const DeleteMessageMutation = gql``
 // export const DeleteSketchMutation = gql``
 // export const DeleteTechCategoryMutation = gql``
