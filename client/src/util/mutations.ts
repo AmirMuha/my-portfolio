@@ -93,8 +93,29 @@ export const CreateProjectMutation = gql`
 `
 // export const CreateMessageMutation = gql``
 // export const CreateSketchMutation = gql``
-// export const CreateTechCategoryMutation = gql``
-// export const CreateTechMutation = gql``
+export const CreateTechCategoryMutation = gql`
+  mutation CreateTechCategory($name: String!, $projectId: String!) {
+    createTechCategory(
+      data: { name: $name, project: { connect: { id: $projectId } } }
+    ) {
+      id
+      name
+    }
+  }
+`
+export const CreateTechMutation = gql`
+  mutation CreateTech($name: String!, $techCategoryId: String!) {
+    createTech(
+      data: {
+        name: $name
+        tech_categories: { connect: { id: $techCategoryId } }
+      }
+    ) {
+      id
+      name
+    }
+  }
+`
 // export const CreateAboutMutation = gql``
 // export const CreateQuestionMutation = gql``
 // export const CreateAnswerMutation = gql``
@@ -150,8 +171,30 @@ export const UpdateProjectNameMutation = gql`
 `
 // export const UpdateMessageMutation = gql``
 // export const UpdateSketchMutation = gql``
-// export const UpdateTechCategoryMutation = gql``
-// export const UpdateTechMutation = gql``
+export const UpdateTechCategoryMutation = gql`
+  mutation UpdateTechCategory($name: String!, $techCategoryId: String!) {
+    updateTechCategory(
+      data: { name: { set: $name } }
+      where: { id: $techCategoryId }
+    ) {
+      id
+      name
+      techs {
+        id
+        name
+      }
+    }
+  }
+`
+// export const UpdateTechMutation = gql`
+//   mutation UpdateTech($name: String!, $techId: String!) {
+//     updateTech(data: { name: { set: $name } }, where: { id: $techId }) {
+//       id
+//       name
+//       tech_category_id
+//     }
+//   }
+// `
 // export const UpdateAboutMutation = gql``
 // export const UpdateQuestionMutation = gql``
 // export const UpdateAnswerMutation = gql``
@@ -167,8 +210,20 @@ export const DeleteProjectMutation = gql`
 `
 // export const DeleteMessageMutation = gql``
 // export const DeleteSketchMutation = gql``
-// export const DeleteTechCategoryMutation = gql``
-// export const DeleteTechMutation = gql``
+export const DeleteTechCategoryMutation = gql`
+  mutation DeleteTechCategory($id: String!) {
+    deleteTechCategory(where: { id: $id }) {
+      id
+    }
+  }
+`
+export const DeleteTechMutation = gql`
+  mutation DeleteTech($id: String!) {
+    deleteTech(where: { id: $id }) {
+      id
+    }
+  }
+`
 // export const DeleteAboutMutation = gql``
 // export const DeleteQuestionMutation = gql``
 // export const DeleteAnswerMutation = gql``

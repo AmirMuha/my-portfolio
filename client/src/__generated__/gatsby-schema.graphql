@@ -379,51 +379,10 @@ type SitePage implements Node {
 
 type SitePageContext {
   project: SitePageContextProject
-  image: String
 }
 
 type SitePageContextProject {
   id: String
-  name: String
-  image: String
-  type: String
-  github_url: String
-  app_url: String
-  summary: String
-  tech_categories: [SitePageContextProjectTech_categories]
-  sketches: [SitePageContextProjectSketches]
-  questions: [SitePageContextProjectQuestions]
-}
-
-type SitePageContextProjectTech_categories {
-  id: String
-  name: String
-  techs: [SitePageContextProjectTech_categoriesTechs]
-}
-
-type SitePageContextProjectTech_categoriesTechs {
-  id: String
-  name: String
-}
-
-type SitePageContextProjectSketches {
-  id: String
-  title: String
-  summary: String
-  description: String
-  download_link: String
-  image: String
-}
-
-type SitePageContextProjectQuestions {
-  id: String
-  question: String
-  answer: SitePageContextProjectQuestionsAnswer
-}
-
-type SitePageContextProjectQuestionsAnswer {
-  id: String
-  answer: String
 }
 
 enum ImageFormat {
@@ -2752,6 +2711,7 @@ type Portfolio {
   teches(where: Portfolio_TechWhereInput, orderBy: [Portfolio_TechOrderByWithRelationInput!], cursor: Portfolio_TechWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_TechScalarFieldEnum!]): [Portfolio_Tech!]!
   techCategory(where: Portfolio_TechCategoryWhereUniqueInput!): Portfolio_TechCategory
   techCategories(where: Portfolio_TechCategoryWhereInput, orderBy: [Portfolio_TechCategoryOrderByWithRelationInput!], cursor: Portfolio_TechCategoryWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_TechCategoryScalarFieldEnum!]): [Portfolio_TechCategory!]!
+  isThereAnAdmin: Boolean!
   me: Portfolio_Admin
   getAdmin: Portfolio_Admin!
   getNumOfAdmins: Int
@@ -3760,67 +3720,10 @@ input SiteFunctionSortInput {
 
 input SitePageContextFilterInput {
   project: SitePageContextProjectFilterInput
-  image: StringQueryOperatorInput
 }
 
 input SitePageContextProjectFilterInput {
   id: StringQueryOperatorInput
-  name: StringQueryOperatorInput
-  image: StringQueryOperatorInput
-  type: StringQueryOperatorInput
-  github_url: StringQueryOperatorInput
-  app_url: StringQueryOperatorInput
-  summary: StringQueryOperatorInput
-  tech_categories: SitePageContextProjectTech_categoriesFilterListInput
-  sketches: SitePageContextProjectSketchesFilterListInput
-  questions: SitePageContextProjectQuestionsFilterListInput
-}
-
-input SitePageContextProjectTech_categoriesFilterListInput {
-  elemMatch: SitePageContextProjectTech_categoriesFilterInput
-}
-
-input SitePageContextProjectTech_categoriesFilterInput {
-  id: StringQueryOperatorInput
-  name: StringQueryOperatorInput
-  techs: SitePageContextProjectTech_categoriesTechsFilterListInput
-}
-
-input SitePageContextProjectTech_categoriesTechsFilterListInput {
-  elemMatch: SitePageContextProjectTech_categoriesTechsFilterInput
-}
-
-input SitePageContextProjectTech_categoriesTechsFilterInput {
-  id: StringQueryOperatorInput
-  name: StringQueryOperatorInput
-}
-
-input SitePageContextProjectSketchesFilterListInput {
-  elemMatch: SitePageContextProjectSketchesFilterInput
-}
-
-input SitePageContextProjectSketchesFilterInput {
-  id: StringQueryOperatorInput
-  title: StringQueryOperatorInput
-  summary: StringQueryOperatorInput
-  description: StringQueryOperatorInput
-  download_link: StringQueryOperatorInput
-  image: StringQueryOperatorInput
-}
-
-input SitePageContextProjectQuestionsFilterListInput {
-  elemMatch: SitePageContextProjectQuestionsFilterInput
-}
-
-input SitePageContextProjectQuestionsFilterInput {
-  id: StringQueryOperatorInput
-  question: StringQueryOperatorInput
-  answer: SitePageContextProjectQuestionsAnswerFilterInput
-}
-
-input SitePageContextProjectQuestionsAnswerFilterInput {
-  id: StringQueryOperatorInput
-  answer: StringQueryOperatorInput
 }
 
 input SitePluginFilterInput {
@@ -4022,27 +3925,6 @@ enum SitePageFieldsEnum {
   internal___type
   isCreatedByStatefulCreatePages
   context___project___id
-  context___project___name
-  context___project___image
-  context___project___type
-  context___project___github_url
-  context___project___app_url
-  context___project___summary
-  context___project___tech_categories
-  context___project___tech_categories___id
-  context___project___tech_categories___name
-  context___project___tech_categories___techs
-  context___project___sketches
-  context___project___sketches___id
-  context___project___sketches___title
-  context___project___sketches___summary
-  context___project___sketches___description
-  context___project___sketches___download_link
-  context___project___sketches___image
-  context___project___questions
-  context___project___questions___id
-  context___project___questions___question
-  context___image
   pluginCreator___id
   pluginCreator___parent___id
   pluginCreator___parent___parent___id

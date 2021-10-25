@@ -67,6 +67,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
   }
 
   const saveTheNewProject = () => {
+    console.log(data)
     // mutate({variables: {
     //   name:
     // }})
@@ -144,7 +145,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
             textClassName="sm:text-sm"
             lgText="sm.4"
           >
-            <AddTechCategory />
+            <AddTechCategory mode="ADD" />
             {data.tech_categories?.length > 0 &&
               data.tech_categories.map((t, i) => (
                 <TechItem

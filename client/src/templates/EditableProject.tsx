@@ -15,6 +15,8 @@ import Alert from "../components/UI/Alert"
 import Button from "../components/UI/Button"
 import Confirm from "../components/UI/Confirm"
 import Loading from "../components/UI/Loading"
+import { setProjectStateReducer } from "../store/editProject"
+import { useTheDispatch, useTheSelector } from "../store/store"
 import {
   DeleteProjectMutation,
   UpdateProjectNameMutation,
@@ -26,16 +28,15 @@ interface PageContext {
   project: GatsbyTypes.Portfolio_Project
 }
 interface Props extends PageProps {
-  data: {
-    file: GatsbyTypes.File
-  }
   pageContext: PageContext
 }
 const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
+  const data = useTheSelector(state => state.editProject)
+  const dispatchEditProjectStore = useTheDispatch()
   const [mutateProjectDeletion] = useMutation(DeleteProjectMutation)
   const [mutateProject] = useMutation(UpdateProjectNameMutation)
   const {
-    data,
+    data: fetchedData,
     error: projectQueringError,
     loading: isLoadingProject,
   } = useQuery<{ project: GatsbyTypes.Portfolio_Project }>(
@@ -47,13 +48,30 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
   const { isOpen: isErrorOpen, message: errorMessage, setAlert } = useAlert()
   const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
   const [projectName, setProjectName] = useState<string>(
-    data?.project.name || ""
+    fetchedData?.project.name || ""
   )
+  console.log(data)
   useEffect(() => {
-    if (data && !projectQueringError && !isLoadingProject) {
-      setProjectName(data.project.name)
+    if (fetchedData && !projectQueringError && !isLoadingProject) {
+      dispatchEditProjectStore(
+        setProjectStateReducer({
+          data: {
+            app_url: fetchedData.project.app_url,
+            github_url: fetchedData.project.github_url,
+            type: fetchedData.project.type,
+            name: fetchedData.project.name,
+            id: fetchedData.project.id,
+            image: fetchedData.project.image,
+            summary: fetchedData.project.summary,
+            questions: fetchedData.project.questions as any,
+            sketches: fetchedData.project.sketches as any,
+            tech_categories: fetchedData.project.tech_categories as any,
+          },
+        })
+      )
+      setProjectName(fetchedData.project.name)
     }
-  })
+  }, [isLoadingProject])
   const deleteProject = (v: boolean) => {
     if (v) {
       mutateProjectDeletion({
@@ -110,10 +128,10 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
               onClose={() => setAlert({ isOpen: false, message: "" })}
             />
           )}
-          <SEO title={`Editing ${data?.project.name}`} />
+          <SEO title={`Editing ${data.name}`} />
           {!isLoadingProject && (
             <Dash_Layout>
-              {data?.project && (
+              {data && (
                 <>
                   <TheSection
                     titleEditable
@@ -121,12 +139,12 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                     getTitleValue={v => setProjectName(v)}
                     onSaveTitleValue={v => updateProjectName(v)}
                     name={projectName}
-                    id={data?.project.id}
+                    id={data.id}
                   >
                     <AboutTheProject
                       editable
-                      data={data?.project}
-                      image={data?.project.image!}
+                      data={data as any}
+                      image={data.image!}
                     />
                   </TheSection>
                   <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3">
@@ -137,11 +155,12 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                       textClassName="sm:text-sm"
                       lgText="sm.4"
                     >
-                      <AddTechCategory />
-                      {data?.project.tech_categories?.length > 0 &&
-                        data?.project.tech_categories.map(t => (
+                      <AddTechCategory projectId={project.id} />
+                      {data.tech_categories?.length > 0 &&
+                        data.tech_categories.map(t => (
                           <TechItem
                             editable
+                            mode="EDIT"
                             key={t.id}
                             border={false}
                             style={{ marginLeft: 0 }}
@@ -156,8 +175,8 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                       style={{ paddingBottom: 25, flex: "1 1 0%" }}
                     >
                       <QAndA_Add />
-                      {data?.project.questions?.length > 0 &&
-                        data?.project.questions.map(q => (
+                      {data.questions?.length > 0 &&
+                        data.questions.map(q => (
                           <QAndA editable data={q} key={q.id} />
                         ))}
                     </TheSection>
@@ -169,8 +188,8 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                   >
                     <AddSketch data={{}} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
-                      {data?.project.sketches?.length > 0 &&
-                        data?.project.sketches.map(s => (
+                      {data.sketches?.length > 0 &&
+                        data.sketches.map(s => (
                           <Sketch editable data={s} key={s.id} />
                         ))}
                     </div>
@@ -191,10 +210,10 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                     {isDeleteBoxOpen && (
                       <Confirm
                         header
-                        title={`Deleting ${data?.project.name}`}
+                        title={`Deleting ${data.name}`}
                         onClose={() => setIsDeleteBoxOpen(false)}
                         confirmButtonText="Delete"
-                        text={`Are you sure you want to delete ${data?.project.name} ?`}
+                        text={`Are you sure you want to delete ${data.name} ?`}
                         getValue={v => deleteProject(v)}
                       ></Confirm>
                     )}

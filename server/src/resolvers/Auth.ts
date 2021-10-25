@@ -213,7 +213,11 @@ export class AuthResolver {
     req.session.token = "";
     return "Password successfully changed !";
   }
-
+  @Query(() => Boolean)
+  async isThereAnAdmin(@Ctx() { prisma }: MyContext): Promise<boolean> {
+    const foundadmin = await prisma.admin.findFirst({});
+    return foundadmin ? true : false;
+  }
   @Query(() => Admin, { nullable: true })
   async me(@Ctx() { prisma }: MyContext): Promise<{
     email: string;

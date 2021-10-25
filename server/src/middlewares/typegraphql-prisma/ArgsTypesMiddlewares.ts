@@ -1,7 +1,6 @@
 import { ValidateNested } from "class-validator";
 import {
   applyArgsTypesEnhanceMap,
-  ArgConfig,
   ArgsTypesEnhanceMap,
 } from "../../../prisma/generated/type-graphql";
 // ##############################################
@@ -17,15 +16,15 @@ const argsTypesEnhanceMap: ArgsTypesEnhanceMap = {
   CreateSketchArgs: { fields: { data: [ValidateNested()] } },
   CreateQuestionArgs: { fields: { data: [ValidateNested()] } },
   CreateAnswerArgs: { fields: { data: [ValidateNested()] } },
-  UpdateAdminArgs: { fields: { data: [ValidateNested()] } },
-  UpdateAboutArgs: { fields: { data: [ValidateNested()] } },
-  UpdateMessageArgs: { fields: { data: [ValidateNested()] } },
-  UpdateTechArgs: { fields: { data: [ValidateNested()] } },
-  UpdateProjectArgs: { fields: { data: [ValidateNested()] } },
-  UpdateTechCategoryArgs: { fields: { data: [ValidateNested()] } },
-  UpdateSketchArgs: { fields: { data: [ValidateNested()] } },
-  UpdateQuestionArgs: { fields: { data: [ValidateNested()] } },
-  UpdateAnswerArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateAdminArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateAboutArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateMessageArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateTechArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateProjectArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateTechCategoryArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateSketchArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateQuestionArgs: { fields: { data: [ValidateNested()] } },
+  // UpdateAnswerArgs: { fields: { data: [ValidateNested()] } },
   DeleteAdminArgs: { fields: { where: [ValidateNested()] } },
   DeleteAboutArgs: { fields: { where: [ValidateNested()] } },
   DeleteMessageArgs: { fields: { where: [ValidateNested()] } },

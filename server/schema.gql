@@ -826,13 +826,14 @@ type Mutation {
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
+  updateImage(file: Upload!, prevname: String!, projectId: String!): String
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
   updateSketch(data: SketchUpdateInput!, where: SketchWhereUniqueInput!): Sketch
   updateTech(data: TechUpdateInput!, where: TechWhereUniqueInput!): Tech
   updateTechCategory(data: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory
-  uploadMultipleFiles(files: [Upload!]!): Boolean!
+  uploadMultipleFiles(files: [Upload!]!): [String!]
   uploadSingleFile(file: Upload!): String!
 }
 
@@ -1277,6 +1278,7 @@ type Query {
   answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum!], orderBy: [AnswerOrderByWithRelationInput!], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
   getAdmin: Admin!
   getNumOfAdmins: Int
+  isThereAnAdmin: Boolean!
   me: Admin
   message(where: MessageWhereUniqueInput!): Message
   messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByWithRelationInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!

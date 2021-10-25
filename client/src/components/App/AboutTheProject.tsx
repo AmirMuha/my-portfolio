@@ -215,7 +215,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             title: "Success",
             message: "Summary updated successfully !",
           })
-          setAppUrl(res.data.updateProject.summary)
+          setSummary(res.data.updateProject.summary)
         })
         .catch(e => {
           setAlert({
