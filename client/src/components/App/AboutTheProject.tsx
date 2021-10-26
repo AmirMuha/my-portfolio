@@ -260,15 +260,16 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
         />
       )}
       {editable ? (
-        <div className="flex flex-col md:flex-row mb-6 ml-5">
-          <div className="w-full overflow-x-auto overflow-y-hidden flex-grow border-5 border-palatte-500 relative md:border-10">
+        <div className="flex flex-col lg:flex-row mb-6 ml-5">
+          <div
+            style={{ maxWidth: "500px" }}
+            className="overflow-hidden flex-grow border-5 border-palatte-500 relative md:border-10"
+          >
             <div>
               <img
                 style={{
-                  maxHeight: 400,
-                  minHeight: 300,
-                  minWidth: 300,
-                  maxWidth: 500,
+                  minWidth: "500px",
+                  maxHeight: "300px",
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
@@ -335,7 +336,10 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               value=""
             />
           </div>
-          <div className="flex-col flex-grow ml-7 border-l-5 border-b-5 border-palatte-500 relative md:border-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
+          <div
+            style={{ maxWidth: "600px" }}
+            className="flex-col flex-grow overflow-auto ml-7 border-l-5 border-b-5 md:border-l-10 md:border-b-10 border-palatte-500 relative lg:border-0 lg:ml-0 pt-5 lg:pt-0 lg:mt-5"
+          >
             <SmallPipe
               style={{
                 display: "block",
@@ -351,6 +355,8 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               className="px-5 py-3"
               mode="IN_POSITION"
               textarea
+              saveAndCloseContainerStyle={{ marginRight: 20, marginTop: 20 }}
+              editButtonStyle={{ marginRight: 20, marginTop: 20 }}
               position="tr"
               getValue={getSummary}
               onSave={updateSummary}
@@ -359,15 +365,16 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row mb-6 ml-5 ">
-          <div className="w-full flex-grow border-5 overflow-hidden border-palatte-500 relative md:border-10">
+        <div className="flex flex-col lg:flex-row mb-6 ml-5 ">
+          <div
+            style={{ maxWidth: "500px" }}
+            className="w-full flex-grow border-5 overflow-hidden border-palatte-500 relative md:border-10"
+          >
             <div>
               <img
                 style={{
-                  maxHeight: 400,
-                  minHeight: 300,
-                  minWidth: 300,
-                  maxWidth: 500,
+                  minWidth: "500px",
+                  maxHeight: "300px",
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
@@ -401,7 +408,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               </Button>
             </div>
           </div>
-          <div className="flex-col ml-7 border-l-5 border-b-5 border-palatte-500 relative md:border-0 md:ml-0 pt-5 md:pt-0 md:mt-5">
+          <div className="flex-col ml-7 overflow-auto border-l-5 border-b-5 border-palatte-500 relative lg:border-0 lg:ml-0 pt-5 md:pt-0 md:mt-5">
             <SmallPipe
               style={{
                 display: "block",
@@ -413,7 +420,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 Summary Of The Project
               </h2>
             </SmallPipe>
-            <div className="px-5 py-3">
+            <div className=" px-5 py-3">
               <Markdown>{data.summary}</Markdown>
             </div>
           </div>

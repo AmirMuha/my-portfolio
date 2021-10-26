@@ -49,10 +49,14 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
   getValue,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>()
+  const [newText, setNewText] = useState<string>("")
   const [isPreviewBoxOpen, setIsPreviewBoxOpen] = useState<boolean>(false)
   const save = () => {
     if (textAreaRef.current) {
       onSave(textAreaRef.current.value)
+      setIsPreviewBoxOpen(false)
+    } else {
+      onSave(newText)
       setIsPreviewBoxOpen(false)
     }
   }
@@ -92,7 +96,10 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
           }`}
         >
           <button
-            onClick={() => setIsPreviewBoxOpen(prev => !prev)}
+            onClick={() => {
+              setNewText(textAreaRef.current ? textAreaRef.current.value : "")
+              setIsPreviewBoxOpen(prev => !prev)
+            }}
             className="border border-palatte-500 rounded-full px-3 py-1 bg-palatte-500 text-palatte-100 text-tiny"
           >
             {isPreviewBoxOpen ? "Raw Text" : "Preview"}

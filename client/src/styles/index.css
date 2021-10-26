@@ -274,3 +274,25 @@ input::placeholder {
     grid-auto-rows: minmax(min-content, max-content);
   }
 }
+
+table {
+  width: 100%;
+  overflow-x: scroll;
+}
+table thead {
+  border: 1px solid #1e0b00;
+  background: #f0af8a;
+}
+table tbody {
+  border-bottom: 1px solid #1e0b00;
+  border-right: 1px solid #1e0b00;
+  border-left: 1px solid #1e0b00;
+}
+table tr {
+  border-bottom: 1px solid #1e0b00;
+}
+table thead tr th,
+td {
+  padding: 5px 20px;
+  text-align: center;
+}

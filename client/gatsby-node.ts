@@ -21,6 +21,32 @@ export const createPages = async ({
       portfolio {
         projects {
           id
+          name
+          type
+          summary
+          image
+          sketches {
+            id
+            title
+            description
+            summary
+          }
+          tech_categories {
+            id
+            name
+            techs {
+              id
+              name
+            }
+          }
+          questions {
+            id
+            question
+            answer {
+              id
+              answer
+            }
+          }
         }
       }
     }
@@ -53,7 +79,7 @@ export const createPages = async ({
       path: `/dashboard/projects/${proj.id}`,
       component: EditableProject,
       context: {
-        project: proj,
+        project: proj.id,
       },
     })
   })
