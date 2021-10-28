@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client"
-import { navigate, PageProps } from "gatsby"
+import { PageProps } from "gatsby"
 import React, { FC, useEffect, useState } from "react"
 import AboutTheProject from "../components/App/AboutTheProject"
 import QAndA from "../components/App/QAndA"
@@ -50,7 +50,6 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
   const [projectName, setProjectName] = useState<string>(
     fetchedData?.project.name || ""
   )
-  console.log(data)
   useEffect(() => {
     if (fetchedData && !projectQueringError && !isLoadingProject) {
       dispatchEditProjectStore(
@@ -174,7 +173,7 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                       className="lg:col-span-2 lg:col-start-2"
                       style={{ paddingBottom: 25, flex: "1 1 0%" }}
                     >
-                      <QAndA_Add />
+                      <QAndA_Add projectId={project.id} />
                       {data.questions?.length > 0 &&
                         data.questions.map(q => (
                           <QAndA editable data={q} key={q.id} />
@@ -186,7 +185,8 @@ const EditableProject: FC<Props> = ({ pageContext: { project } }) => {
                     id="sketches"
                     style={{ marginBottom: 25 }}
                   >
-                    <AddSketch data={{}} />
+                    <AddSketch projectId={project.id} />
+                    {}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
                       {data.sketches?.length > 0 &&
                         data.sketches.map(s => (

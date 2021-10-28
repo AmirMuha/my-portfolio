@@ -78,12 +78,22 @@ export class AdminWhereInput {
   @TypeGraphQL.Field(_type => StringNullableListFilter, {
     nullable: true
   })
+  stack?: StringNullableListFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
   resumes?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
   })
   confirmed?: BoolFilter | undefined;
+
+  @TypeGraphQL.Field(_type => BoolFilter, {
+    nullable: true
+  })
+  isPublished?: BoolFilter | undefined;
 
   @TypeGraphQL.Field(_type => AboutListRelationFilter, {
     nullable: true
@@ -99,6 +109,11 @@ export class AdminWhereInput {
     nullable: true
   })
   projects?: ProjectListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  stacks?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

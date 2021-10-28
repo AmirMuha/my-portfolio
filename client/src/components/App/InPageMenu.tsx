@@ -7,7 +7,6 @@ interface Props {
   className?: string
   pipes?: "both-side" | "left" | "right"
 }
-
 const InPageMenu: FC<PropsWithChildren<Props>> = ({
   style,
   pipes = "both-side",

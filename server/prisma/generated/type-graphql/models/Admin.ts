@@ -59,6 +59,11 @@ export class Admin {
   @TypeGraphQL.Field(_type => [String], {
     nullable: false
   })
+  stack!: string[];
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: false
+  })
   resumes!: string[];
 
   @TypeGraphQL.Field(_type => Boolean, {
@@ -66,11 +71,21 @@ export class Admin {
   })
   confirmed!: boolean;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: false
+  })
+  isPublished!: boolean;
+
   about?: About[];
 
   messages?: Message[];
 
   projects?: Project[];
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: false
+  })
+  stacks!: string[];
 
   apikey?: string | null;
 

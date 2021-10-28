@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client"
 import React, {
   FC,
   PropsWithChildren,
@@ -5,9 +6,25 @@ import React, {
   useRef,
   useState,
 } from "react"
+
 import { Delete } from "../../icons/iconsJSX"
+import {
+  deleteSketchReducer,
+  updateDownloadLinkReducer,
+  updateSketchDescriptionRedcuer,
+  updateSketchImageReducer,
+  updateSketchSummaryReducer,
+} from "../../store/editProject"
 import { deleteReducer, setSketchReducer } from "../../store/newProjectSlice"
 import { useTheDispatch } from "../../store/store"
+import {
+  UpdateSummarySketchMutation,
+  UpdateImageSketchMutation,
+  UpdateDescriptionSketchMutation,
+  UpdateDownloadLinkSketchMutation,
+  UpdateImageMutation,
+  DeleteSketchMutation,
+} from "../../util/mutations"
 import { useAlert } from "../../util/useAlert"
 import Editable from "../Dashboard/Editable"
 import Alert from "../UI/Alert"
@@ -15,23 +32,37 @@ import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
 import Modal from "../UI/Modal"
 import Markdown from "../utility/Markdown"
+
 interface Props {
   editable?: boolean
   mode?: "ADD" | "EDIT"
   data: GatsbyTypes.Portfolio_Sketch
 }
+
 const Sketch: FC<PropsWithChildren<Props>> = ({
   mode = "EDIT",
   data,
   editable = false,
 }) => {
+  const [mutateSummary] = useMutation(UpdateSummarySketchMutation)
+  const [mutateImageUpdate] = useMutation(UpdateImageMutation)
+  const [mutateDescription] = useMutation(UpdateDescriptionSketchMutation)
+  const [mutateDownloadLink] = useMutation(UpdateDownloadLinkSketchMutation)
+  const [mutateImage] = useMutation(UpdateImageSketchMutation)
   const dispatch = useTheDispatch()
-  const { isOpen: isErrorOpen, message: errorMsg, setAlert } = useAlert()
+  const {
+    isOpen: isAlertOpen,
+    message: alertMessage,
+    setAlert,
+    title: alertTitle,
+  } = useAlert()
   const [isConfirmOpen, setConfirmBox] = useState(false)
+  const imageRef = useRef<HTMLImageElement>()
   const [summary, setSummary] = useState<string>(data.summary)
   const [downloadLink, setDownloadLink] = useState<string>(data.download_link)
   const [description, setDescription] = useState<string>(data.description)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [mutateSketchDelete] = useMutation(DeleteSketchMutation)
   const [imageFile, setImage] = useState<any>(null)
   const paragraphRef = useRef<HTMLParagraphElement>()
   useEffect(() => {
@@ -51,8 +82,6 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             id: data.id,
           })
         )
-      } else {
-        // editing
       }
     } else {
       setAlert({
@@ -63,50 +92,201 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
   }
   const updateDownloadLink = (v: string) => {
     // mutate the update
-    updateFn("download_link", v)
-    console.log("Updating the download, new Value => " + v)
+    if (mode === "ADD") {
+      updateFn("download_link", v)
+    } else {
+      mutateDownloadLink({
+        variables: {
+          id: data.id,
+          download_link: v,
+        },
+      })
+        .then(res => {
+          setAlert({
+            isOpen: true,
+            message: "Updated downloadLink successfully.",
+            title: "Success",
+          })
+          dispatch(
+            updateDownloadLinkReducer({
+              id: data.id,
+              download_link: res.data.updateSketch.download_link,
+            })
+          )
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message || "Couldn't udpate the download link.",
+          })
+        })
+    }
   }
   const updateSketchDescription = (v: string) => {
-    // mutate the update
-    updateFn("description", v)
-    console.log("Updating the Description, new Value => " + v)
+    if (mode === "ADD") {
+      updateFn("description", v)
+    } else {
+      mutateDescription({
+        variables: {
+          id: data.id,
+          description: v,
+        },
+      })
+        .then(res => {
+          setAlert({
+            isOpen: true,
+            message: "Updated sketch description successfully.",
+            title: "Success",
+          })
+          dispatch(
+            updateSketchDescriptionRedcuer({
+              id: data.id,
+              description: res.data.updateSketch.description,
+            })
+          )
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message || "Couldn't update sketch description.",
+          })
+        })
+    }
   }
   const updateSketchSummary = (v: string) => {
     // mutate the update
-    updateFn("summary", v)
-    console.log("Updating the summary, new Value => " + v)
+    if (mode === "ADD") {
+      updateFn("summary", v)
+    } else {
+      mutateSummary({
+        variables: {
+          id: data.id,
+          summary: v,
+        },
+      })
+        .then(res => {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "Updated sketch summary successfully.",
+          })
+          dispatch(
+            updateSketchSummaryReducer({
+              id: data.id,
+              summary: res.data.updateSketch.summary,
+            })
+          )
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message || "Couldn't update sketch summary.",
+          })
+        })
+    }
   }
   const getDescriptionValue = (v: string) => {
-    console.log(v)
     setDescription(v)
   }
   const getSketchSummary = (v: string) => {
-    console.log(v)
     setSummary(v)
   }
   const getImageFile = (f: File) => {
-    console.log(f)
     setImage(f)
+    const newImageSrc = URL.createObjectURL(f[0])
+    if (imageRef.current) {
+      imageRef.current.src = newImageSrc
+    }
   }
   const updateImage = () => {
-    // mutate the update
-    console.log("Updating the image ...")
+    if (mode === "ADD") {
+    } else {
+      mutateImageUpdate({
+        variables: {
+          id: data.id,
+          prevname: data.image,
+          file: imageFile[0],
+          field: "sketch",
+        },
+      })
+        .then(res => {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "Updated sketch image successfully.",
+          })
+          console.log(res)
+          dispatch(
+            updateSketchImageReducer({
+              id: data.id,
+              image: res.data.updateImage,
+            })
+          )
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? e.errors[0].message
+              : e.message || "Couldn't update sketch image.",
+          })
+        })
+    }
   }
   const deleteSketch = (v: boolean) => {
     if (v) {
-      dispatch(deleteReducer({ id: data.id, field: "sketches" }))
+      if (mode === "ADD") {
+        dispatch(deleteReducer({ id: data.id, field: "sketches" }))
+      } else {
+        mutateSketchDelete({
+          variables: {
+            id: data.id,
+          },
+        })
+          .then(res => {
+            setAlert({
+              isOpen: true,
+              title: "Success",
+              message: "Deleted sketch successfully",
+            })
+            dispatch(
+              deleteSketchReducer({
+                id: data.id,
+              })
+            )
+          })
+          .catch(e => {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message: e.errors
+                ? e.errors[0].message
+                : e.message || "Couldn't delete sketch.",
+            })
+          })
+      }
     }
   }
   return (
     <>
-      {isErrorOpen && (
+      {isAlertOpen && (
         <Alert
           header
-          title="Error"
+          title={alertTitle}
           onClose={() => setAlert({ isOpen: false, message: "" })}
           backdrop
-          position="CENTER"
-          message={errorMsg}
+          position="TOP"
+          message={alertMessage}
           autoClose={5}
         />
       )}
@@ -133,6 +313,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               <img
                 src={`${(window as any).__SERVER_API__}/${data.image}`}
                 alt={data.title}
+                ref={imageRef as any}
                 style={{
                   width: "auto",
                   height: 400,
@@ -242,6 +423,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
                 <img
                   src={`${(window as any).__SERVER_API__}/${data.image}`}
                   alt={data.title}
+                  ref={imageRef as any}
                   style={{
                     width: "auto",
                     height: 400,

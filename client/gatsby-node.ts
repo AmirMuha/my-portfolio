@@ -79,7 +79,7 @@ export const createPages = async ({
       path: `/dashboard/projects/${proj.id}`,
       component: EditableProject,
       context: {
-        project: proj.id,
+        project: { id: proj.id },
       },
     })
   })

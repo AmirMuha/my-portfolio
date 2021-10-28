@@ -84,15 +84,6 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
         </div>
         <div className="text-center grid grid-cols-1 self-end gap-2 m-3">
           <Button
-            to="/dashboard/messages"
-            outline
-            borderColor="100"
-            color="500"
-            textColor="100"
-          >
-            Messages
-          </Button>
-          <Button
             to="/dashboard"
             outline
             borderColor="100"

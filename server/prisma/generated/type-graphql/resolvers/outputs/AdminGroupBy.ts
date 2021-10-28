@@ -58,12 +58,27 @@ export class AdminGroupBy {
   @TypeGraphQL.Field(_type => [String], {
     nullable: true
   })
+  stack!: string[] | null;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
   resumes!: string[] | null;
 
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })
   confirmed!: boolean;
+
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: false
+  })
+  isPublished!: boolean;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  stacks!: string[] | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

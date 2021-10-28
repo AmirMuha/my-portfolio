@@ -22,7 +22,7 @@ import { useMutation } from "@apollo/client"
 import {
   UpdateProjectAppUrlMutation,
   UpdateProjectgithub_urlMutation,
-  UpdateProjectImageMutation,
+  UpdateImageMutation,
   UpdateProjectSummaryMutation,
   UpdateProjectTypeMutation,
   UploadSingleFileMutation,
@@ -49,7 +49,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   } = useAlert()
   const [mutateImage, mutateImageResult] = useMutation(UploadSingleFileMutation)
   const [mutateProjectAppUrlUpdate] = useMutation(UpdateProjectAppUrlMutation)
-  const [mutateProjectImageUpdate] = useMutation(UpdateProjectImageMutation)
+  const [mutateProjectImageUpdate] = useMutation(UpdateImageMutation)
   const [mutateProjectGithubUrlUpdate] = useMutation(
     UpdateProjectgithub_urlMutation
   )
@@ -167,7 +167,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
         mutateProjectImageUpdate({
           variables: {
             file: imageFile[0],
-            projectId: data.id,
+            id: data.id,
             prevname: data.image,
           },
         })

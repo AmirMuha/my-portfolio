@@ -1,5 +1,11 @@
+import { useMutation } from "@apollo/client"
 import React, { FC, PropsWithChildren, useState } from "react"
 import { JS, NodeJS, ReactJS, TS, VueJS } from "../../icons/iconsJSX"
+import {
+  CreateStackMutation,
+  DeleteStackMutation,
+  UploadSingleFileMutation,
+} from "../../util/mutations"
 import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
 import Input, { File } from "../UI/Input"
@@ -8,29 +14,60 @@ import SmallPipe from "../UI/SmallPipe"
 interface Props {
   style?: React.CSSProperties
   className?: string
+  data?: string[]
   editable?: boolean
 }
 
 const Stack: FC<PropsWithChildren<Props>> = ({
   className,
   style,
+  data,
   editable = false,
 }) => {
+  const [mutateImageUrl] = useMutation(CreateStackMutation)
+  const [mutateNewImage] = useMutation(UploadSingleFileMutation)
+  const [mtuateDelete] = useMutation(DeleteStackMutation)
   const [newStackImageUrl, setNewStackImageUrl] = useState<string>("")
   const [newStackImageFile, setNewStackImageFile] = useState<File>()
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState({
     isOpen: false,
-    id: "",
+    image: "",
   })
-  const deleteStackItem = (d: boolean, id: string) => {
+  const [adminId, setAdminId] = useState<string>("")
+  const deleteStackItem = (d: boolean, image: string) => {
     if (d) {
-      console.log("Deleting the stack item with id %s", id)
+      console.log("Deleting the stack item with id %s")
     }
   }
+  const saveStackUrl = () => {
+    mutateImageUrl({
+      variables: {
+        id: adminId,
+        image: newStackImageUrl,
+      },
+    })
+      .then(res => {})
+      .catch(e => {})
+  }
+  const saveImage = () => {}
   return (
     <>
       {editable ? (
         <div>
+          {data?.length! > 0 && (
+            <div
+              style={{ width: "100vw" }}
+              className="bg-palatte-500 w-full pb-2 pt-3"
+            >
+              <ul className="flex px-3 stack items-center gap-2">
+                {data?.map(s => (
+                  <li title="TypeScript">
+                    <img src={s} alt={s + "image"} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <SmallPipe className="flex w-full items-center mb-3">
             <div className="flex-grow">
               <Input
@@ -43,7 +80,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
                 getValue={v => setNewStackImageUrl(v)}
               />
             </div>
-            <Button normal className="text-sm.2" outline>
+            <Button onClick={saveStackUrl} normal className="text-sm.2" outline>
               save
             </Button>
           </SmallPipe>
@@ -59,7 +96,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
                 getValue={v => setNewStackImageFile(v)}
               />
             </div>
-            <Button normal className="text-sm.2" outline>
+            <Button onClick={saveImage} normal className="text-sm.2" outline>
               save
             </Button>
           </SmallPipe>
@@ -71,7 +108,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               <li title="Delete TypeScript">
                 <button
                   onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, id: "1" })
+                    setIsConfirmDeleteOpen({ isOpen: true, image: "1" })
                   }
                 >
                   {TS}
@@ -80,7 +117,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               <li title="Delete JavaScript">
                 <button
                   onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, id: "2" })
+                    setIsConfirmDeleteOpen({ isOpen: true, image: "2" })
                   }
                 >
                   {JS}
@@ -89,7 +126,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               <li title="Delete NodeJS">
                 <button
                   onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, id: "4" })
+                    setIsConfirmDeleteOpen({ isOpen: true, image: "4" })
                   }
                 >
                   {NodeJS}
@@ -98,7 +135,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               <li title="Delete ReactJS">
                 <button
                   onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, id: "5" })
+                    setIsConfirmDeleteOpen({ isOpen: true, image: "5" })
                   }
                 >
                   {ReactJS}
@@ -107,7 +144,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               <li title="Delete VueJS">
                 <button
                   onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, id: "6" })
+                    setIsConfirmDeleteOpen({ isOpen: true, image: "6" })
                   }
                 >
                   {VueJS}
@@ -119,9 +156,9 @@ const Stack: FC<PropsWithChildren<Props>> = ({
                 header
                 title={`Deleting Stack Item`}
                 text="Are you sure you want to delete NodeJS Stack Item ?"
-                getValue={v => deleteStackItem(v, isConfirmDeleteOpen.id)}
+                getValue={v => deleteStackItem(v, isConfirmDeleteOpen.image)}
                 onClose={() =>
-                  setIsConfirmDeleteOpen({ isOpen: false, id: "" })
+                  setIsConfirmDeleteOpen({ isOpen: false, image: "" })
                 }
               ></Confirm>
             )}

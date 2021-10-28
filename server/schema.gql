@@ -167,9 +167,12 @@ type Admin {
   heroImage: String!
   id: String!
   instagram: String!
+  isPublished: Boolean!
   linkedIn: String!
   lname: String!
   resumes: [String!]!
+  stack: [String!]!
+  stacks: [String!]!
   updatedAt: DateTime!
   whatsapp: String!
 }
@@ -190,12 +193,15 @@ input AdminCreateInput {
   heroImage: String!
   id: String
   instagram: String!
+  isPublished: Boolean
   linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  stack: AdminCreatestackInput
+  stacks: AdminCreatestacksInput
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -242,12 +248,15 @@ input AdminCreateWithoutAboutInput {
   heroImage: String!
   id: String
   instagram: String!
+  isPublished: Boolean
   linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  stack: AdminCreatestackInput
+  stacks: AdminCreatestacksInput
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -262,11 +271,14 @@ input AdminCreateWithoutMessagesInput {
   heroImage: String!
   id: String
   instagram: String!
+  isPublished: Boolean
   linkedIn: String!
   lname: String!
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  stack: AdminCreatestackInput
+  stacks: AdminCreatestacksInput
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -281,16 +293,27 @@ input AdminCreateWithoutProjectsInput {
   heroImage: String!
   id: String
   instagram: String!
+  isPublished: Boolean
   linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   resumes: AdminCreateresumesInput
+  stack: AdminCreatestackInput
+  stacks: AdminCreatestacksInput
   updatedAt: DateTime
   whatsapp: String!
 }
 
 input AdminCreateresumesInput {
+  set: [String!]!
+}
+
+input AdminCreatestackInput {
+  set: [String!]!
+}
+
+input AdminCreatestacksInput {
   set: [String!]!
 }
 
@@ -304,12 +327,15 @@ input AdminOrderByWithRelationInput {
   heroImage: SortOrder
   id: SortOrder
   instagram: SortOrder
+  isPublished: SortOrder
   linkedIn: SortOrder
   lname: SortOrder
   messages: MessageOrderByRelationAggregateInput
   password: SortOrder
   projects: ProjectOrderByRelationAggregateInput
   resumes: SortOrder
+  stack: SortOrder
+  stacks: SortOrder
   updatedAt: SortOrder
   whatsapp: SortOrder
 }
@@ -329,12 +355,15 @@ input AdminUpdateInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
+  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  stack: AdminUpdatestackInput
+  stacks: AdminUpdatestacksInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -372,12 +401,15 @@ input AdminUpdateWithoutAboutInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
+  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  stack: AdminUpdatestackInput
+  stacks: AdminUpdatestacksInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -392,11 +424,14 @@ input AdminUpdateWithoutMessagesInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
+  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  stack: AdminUpdatestackInput
+  stacks: AdminUpdatestacksInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -411,16 +446,29 @@ input AdminUpdateWithoutProjectsInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
+  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   resumes: AdminUpdateresumesInput
+  stack: AdminUpdatestackInput
+  stacks: AdminUpdatestacksInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
 
 input AdminUpdateresumesInput {
+  push: [String!]
+  set: [String!]
+}
+
+input AdminUpdatestackInput {
+  push: [String!]
+  set: [String!]
+}
+
+input AdminUpdatestacksInput {
   push: [String!]
   set: [String!]
 }
@@ -453,12 +501,15 @@ input AdminWhereInput {
   heroImage: StringFilter
   id: StringFilter
   instagram: StringFilter
+  isPublished: BoolFilter
   linkedIn: StringFilter
   lname: StringFilter
   messages: MessageListRelationFilter
   password: StringFilter
   projects: ProjectListRelationFilter
   resumes: StringNullableListFilter
+  stack: StringNullableListFilter
+  stacks: StringNullableListFilter
   updatedAt: DateTimeFilter
   whatsapp: StringFilter
 }
@@ -826,7 +877,7 @@ type Mutation {
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
-  updateImage(file: Upload!, prevname: String!, projectId: String!): String
+  updateImage(field: String, file: Upload!, id: String!, prevname: String!): String
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question

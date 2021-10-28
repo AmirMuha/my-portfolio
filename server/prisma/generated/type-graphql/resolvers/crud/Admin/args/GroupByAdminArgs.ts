@@ -20,7 +20,7 @@ export class GroupByAdminArgs {
   @TypeGraphQL.Field(_type => [AdminScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "email" | "fname" | "lname" | "linkedIn" | "whatsapp" | "instagram" | "github" | "heroImage" | "resumes" | "confirmed" | "apikey" | "password" | "createdAt" | "updatedAt">;
+  by!: Array<"id" | "email" | "fname" | "lname" | "linkedIn" | "whatsapp" | "instagram" | "github" | "heroImage" | "stack" | "resumes" | "confirmed" | "isPublished" | "stacks" | "apikey" | "password" | "createdAt" | "updatedAt">;
 
   @TypeGraphQL.Field(_type => AdminScalarWhereWithAggregatesInput, {
     nullable: true

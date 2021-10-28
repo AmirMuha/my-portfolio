@@ -13,28 +13,29 @@ generator typegraphql {
 }
 
 model Admin {
-  id        String    @id @unique @default(uuid()) @db.Uuid
-  email     String    @unique
-  fname     String
-  lname     String
-  linkedIn  String
-  whatsapp  String
-  instagram String
-  github    String
-  heroImage String
-  resumes   String[]
-  confirmed Boolean   @default(false)
+  id          String    @id @unique @default(uuid()) @db.Uuid
+  email       String    @unique
+  fname       String
+  lname       String
+  linkedIn    String
+  whatsapp    String
+  instagram   String
+  github      String
+  heroImage   String
+  stack       String[]
+  resumes     String[]
+  confirmed   Boolean   @default(false)
   isPublished Boolean   @default(false)
-  about     About[]
-  messages  Message[]
-  projects  Project[]
-  stacks    String[]
+  about       About[]
+  messages    Message[]
+  projects    Project[]
+  stacks      String[]
   /// @TypeGraphQL.omit(output: true, input: true)
-  apikey    String?
+  apikey      String?
   /// @TypeGraphQL.omit(output: true)
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Project {

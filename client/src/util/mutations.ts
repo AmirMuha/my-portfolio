@@ -60,6 +60,11 @@ export const UploadMultipleFileMutation = gql`
     uploadMultipleFiles(files: $files)
   }
 `
+export const CreateStackMutation = gql`
+  mutation CreateStack($id: String!, $image: String!) {
+    updateAdmin(data: { stack: { push: $image } }, where: { id: $id })
+  }
+`
 export const CreateProjectMutation = gql`
   mutation CreateProject(
     $for: String
@@ -92,7 +97,35 @@ export const CreateProjectMutation = gql`
   }
 `
 // export const CreateMessageMutation = gql``
-// export const CreateSketchMutation = gql``
+export const CreateSketchMutation = gql`
+  mutation CreateSketch(
+    $projectId: String!
+    $summary: String!
+    $description: String!
+    $download_link: String!
+    $image: String!
+    $title: String!
+  ) {
+    createSketch(
+      data: {
+        title: $title
+        description: $description
+        summary: $summary
+        download_link: $download_link
+        image: $image
+        project: { connect: { id: $projectId } }
+      }
+    ) {
+      id
+      title
+      summary
+      description
+      download_link
+      image
+      project_id
+    }
+  }
+`
 export const CreateTechCategoryMutation = gql`
   mutation CreateTechCategory($name: String!, $projectId: String!) {
     createTechCategory(
@@ -117,11 +150,32 @@ export const CreateTechMutation = gql`
   }
 `
 // export const CreateAboutMutation = gql``
-// export const CreateQuestionMutation = gql``
-// export const CreateAnswerMutation = gql``
+export const CreateQuestionMutation = gql`
+  mutation CreateQuestion(
+    $question: String!
+    $answer: String!
+    $projectId: String!
+  ) {
+    createQuestion(
+      data: {
+        question: $question
+        project: { connect: { id: $projectId } }
+        answer: { create: { answer: $answer } }
+      }
+    ) {
+      id
+      question
+      answer {
+        id
+        answer
+      }
+    }
+  }
+`
 // // ##################################
 // // ############### Update Mutations
 // // ##################################
+
 export const UpdateProjectSummaryMutation = gql`
   mutation UpdateProjectSummary($id: String!, $summary: String) {
     updateProject(data: { summary: { set: $summary } }, where: { id: $id }) {
@@ -136,13 +190,14 @@ export const UpdateProjectTypeMutation = gql`
     }
   }
 `
-export const UpdateProjectImageMutation = gql`
-  mutation UpdateProjectImage(
+export const UpdateImageMutation = gql`
+  mutation UpdateImage(
     $file: Upload!
-    $projectId: String!
+    $id: String!
     $prevname: String!
+    $field: String
   ) {
-    updateImage(file: $file, projectId: $projectId, prevname: $prevname)
+    updateImage(file: $file, id: $id, prevname: $prevname, field: $field)
   }
 `
 export const UpdateProjectAppUrlMutation = gql`
@@ -170,7 +225,60 @@ export const UpdateProjectNameMutation = gql`
   }
 `
 // export const UpdateMessageMutation = gql``
-// export const UpdateSketchMutation = gql``
+export const UpdateDescriptionSketchMutation = gql`
+  mutation UpdateSketchDescription($id: String!, $description: String!) {
+    updateSketch(
+      data: { description: { set: $description } }
+      where: { id: $id }
+    ) {
+      id
+      title
+      description
+      summary
+      image
+      download_link
+    }
+  }
+`
+export const UpdateImageSketchMutation = gql`
+  mutation UpdateSketchImage($id: String!, $image: String!) {
+    updateSketch(data: { image: { set: $image } }, where: { id: $id }) {
+      id
+      title
+      description
+      summary
+      image
+      download_link
+    }
+  }
+`
+export const UpdateDownloadLinkSketchMutation = gql`
+  mutation UpdateSketchDownloadLink($id: String!, $download_link: String!) {
+    updateSketch(
+      data: { download_link: { set: $download_link } }
+      where: { id: $id }
+    ) {
+      id
+      title
+      description
+      summary
+      image
+      download_link
+    }
+  }
+`
+export const UpdateSummarySketchMutation = gql`
+  mutation UpdateSketchSummary($id: String!, $summary: String!) {
+    updateSketch(data: { summary: { set: $summary } }, where: { id: $id }) {
+      id
+      title
+      description
+      summary
+      image
+      download_link
+    }
+  }
+`
 export const UpdateTechCategoryMutation = gql`
   mutation UpdateTechCategory($name: String!, $techCategoryId: String!) {
     updateTechCategory(
@@ -196,11 +304,33 @@ export const UpdateTechCategoryMutation = gql`
 //   }
 // `
 // export const UpdateAboutMutation = gql``
-// export const UpdateQuestionMutation = gql``
+export const UpdateQuestionMutation = gql`
+  mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
+    updateQuestion(
+      data: {
+        question: { set: $question }
+        answer: { update: { answer: { set: $answer } } }
+      }
+      where: { id: $id }
+    ) {
+      id
+      question
+      answer {
+        id
+        answer
+      }
+    }
+  }
+`
 // export const UpdateAnswerMutation = gql``
 // // ##################################
 // // ############### Delete Mutations
 // // ##################################
+export const DeleteStackMutation = gql`
+  mutation UpdateStack($id: String!, $images: String!) {
+    updateAdmin(data: { stack: { set: $images } }, where: { id: $id })
+  }
+`
 export const DeleteProjectMutation = gql`
   mutation DeleteProject($id: String!) {
     deleteProject(where: { id: $id }) {
@@ -209,7 +339,13 @@ export const DeleteProjectMutation = gql`
   }
 `
 // export const DeleteMessageMutation = gql``
-// export const DeleteSketchMutation = gql``
+export const DeleteSketchMutation = gql`
+  mutation DeleteSketch($id: String!) {
+    deleteSketch(where: { id: $id }) {
+      id
+    }
+  }
+`
 export const DeleteTechCategoryMutation = gql`
   mutation DeleteTechCategory($id: String!) {
     deleteTechCategory(where: { id: $id }) {
@@ -225,5 +361,10 @@ export const DeleteTechMutation = gql`
   }
 `
 // export const DeleteAboutMutation = gql``
-// export const DeleteQuestionMutation = gql``
-// export const DeleteAnswerMutation = gql``
+export const DeleteQuestionMutation = gql`
+  mutation DeleteQuestion($id: String!) {
+    deleteQuestion(where: { id: $id }) {
+      id
+    }
+  }
+`

@@ -36,7 +36,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
   const data = useTheSelector(state => state.newProject)
   const [newProjectName, setNewProjectName] = useState("")
   const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
-  const [mutate] = useMutation<
+  const [mutateNewProject] = useMutation<
     GatsbyTypes.Portfolio_Project,
     GatsbyTypes.Portfolio_ProjectCreateInput
   >(CreateProjectMutation)
@@ -51,7 +51,6 @@ const project: FC<PageProps> = ({ children, params, location }) => {
           convertedFetchUnsavedProjects[unsp] as any
         )
       }
-
       setUnsavedProjects(fetchUnsavedProjectsArray)
     }
   }
@@ -61,9 +60,8 @@ const project: FC<PageProps> = ({ children, params, location }) => {
     fetchPreviouslyEditingProject()
   }, [projectNameParam])
   const deleteProject = (v: boolean) => {
-    if (v) {
-      console.log("Deleting the projct", v)
-    }
+    // if (v) {
+    // }
   }
 
   const saveTheNewProject = () => {
@@ -170,7 +168,7 @@ const project: FC<PageProps> = ({ children, params, location }) => {
           </TheSection>
         </div>
         <TheSection name="Sketches" id="sketches" style={{ marginBottom: 25 }}>
-          <AddSketch data={{}} />
+          <AddSketch mode="ADD" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
             {data.sketches?.length > 0 &&
               data.sketches.map(s => (

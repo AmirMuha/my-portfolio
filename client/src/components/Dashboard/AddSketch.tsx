@@ -6,9 +6,13 @@ import React, {
   useReducer,
   useState,
 } from "react"
+import { addNewSketchReducer } from "../../store/editProject"
 import { setSketchReducer } from "../../store/newProjectSlice"
 import { useTheDispatch } from "../../store/store"
-import { UploadSingleFileMutation } from "../../util/mutations"
+import {
+  CreateSketchMutation,
+  UploadSingleFileMutation,
+} from "../../util/mutations"
 import { useAlert } from "../../util/useAlert"
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
@@ -75,62 +79,126 @@ const reducer: Reducer<ReducerState, ReducerAction> = (
   }
 }
 interface Props {
-  data: any
+  projectId?: string
+  mode?: "ADD" | "EDIT"
 }
 
-const AddSketch: FC<PropsWithChildren<Props>> = ({ data }) => {
+const AddSketch: FC<PropsWithChildren<Props>> = ({
+  projectId,
+  mode = "EDIT",
+}) => {
   const dispatchNewSketch = useTheDispatch()
   const [mutateImage] = useMutation(UploadSingleFileMutation)
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { isOpen: errorIsOpen, message: errorMsg, setAlert } = useAlert()
+  const {
+    title: alertTitle,
+    isOpen: isAlertOpen,
+    message: alertMessage,
+    setAlert,
+  } = useAlert()
+  const [mutateNewSketch] = useMutation(CreateSketchMutation)
   const [isSummaryPreviewBoxOpen, setIsSummaryPreviewBoxOpen] =
     useState<boolean>(false)
   const [isDescriptionPreviewBoxOpen, setIsDescriptionPreviewBoxOpen] =
     useState<boolean>(false)
   const [sketch, dispatch] = useReducer(reducer, initialState)
   const save = () => {
-    // mutate the new sketch
     let hasError = false
     for (const s in sketch) {
       if (!sketch[s]) {
         hasError = true
         setAlert({
           isOpen: true,
+          title: "Error",
           message: `${s} field is required please provide some value.`,
         })
       }
     }
     if (!hasError) {
-      mutateImage({ variables: { file: sketch.image } })
-        .then(res => {
-          if (res.data?.uploadSingleFile) {
-            dispatchNewSketch(
-              setSketchReducer({
-                ...sketch,
-                image: res.data.uploadSingleFile,
-              })
-            )
-          }
-        })
-        .catch(e => {
-          console.log(e)
-          setAlert({
-            isOpen: true,
-            message: `Something went wrong during uploading the image: ${sketch.imageName}.`,
-            title: "Server Error",
+      if (mode === "ADD") {
+        mutateImage({ variables: { file: sketch.image } })
+          .then(res => {
+            if (res.data?.uploadSingleFile) {
+              dispatchNewSketch(
+                setSketchReducer({
+                  ...sketch,
+                  image: res.data.uploadSingleFile,
+                })
+              )
+            }
           })
+          .catch(e => {
+            setAlert({
+              isOpen: true,
+              message: `Something went wrong during uploading the image: ${sketch.imageName}.`,
+              title: "Server Error",
+            })
+          })
+      } else {
+        mutateImage({
+          variables: {
+            file: sketch.image,
+          },
         })
+          .then(res => {
+            mutateNewSketch({
+              variables: {
+                projectId: projectId,
+                summary: sketch.summary,
+                description: sketch.description,
+                download_link: sketch.download_link,
+                image: res.data.uploadSingleFile,
+                title: sketch.title,
+              },
+            })
+              .then(resp => {
+                setAlert({
+                  isOpen: true,
+                  title: "Success",
+                  message: "Added a new sketch successfully.",
+                })
+                dispatchNewSketch(
+                  addNewSketchReducer({
+                    id: resp.data.createSketch.id,
+                    description: resp.data.createSketch.description,
+                    summary: resp.data.createSketch.summary,
+                    title: resp.data.createSketch.title,
+                    image: resp.data.createSketch.image,
+                    download_link: resp.data.createSketch.download_link,
+                  })
+                )
+              })
+              .catch(e => {
+                setAlert({
+                  isOpen: true,
+                  title: "Error",
+                  message: e.errors
+                    ? e.errors[0].message
+                    : e.message || "Couldn't add a new sketch.",
+                })
+              })
+          })
+          .catch(e => {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message: e.errors
+                ? e.errors[0].message
+                : e.message || "Couldn't upload the image.",
+            })
+          })
+      }
     }
   }
   return (
     <>
-      {errorIsOpen && (
+      {isAlertOpen && (
         <Alert
           header
-          position="CENTER"
+          position="TOP"
           onClose={() => setAlert({ isOpen: false, message: "" })}
-          title="Error"
-          message={errorMsg}
+          title={alertTitle}
+          message={alertMessage}
           backdrop
           autoClose={5}
         />

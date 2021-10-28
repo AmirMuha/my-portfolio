@@ -29,7 +29,6 @@ import {
   ConfirmTokenOrCodeArgsType,
 } from "../types/arg-types/ConfirmEmailArgs";
 import { JwtVerifyWithPayloadType } from "../types/JwtVerifyWithPayloadType";
-
 @Resolver(Admin)
 export class AdminCrudResolver {
   @UseMiddleware(CountAdmins)

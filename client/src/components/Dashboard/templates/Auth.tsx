@@ -118,7 +118,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
     if (loggedIn) {
       navigate("/dashboard/")
     } else {
-      if (foundAdmins) {
+      if (foundAdmins.data?.isThereAnAdmin) {
         setThereIsAdmin(true)
       }
     }
@@ -182,7 +182,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
           mutateFile({ variables: { file: files.heroImage } })
         } else {
           throw new Error(
-            "Couldn't create an admin, there is one propably, don't bother yourself."
+            "Couldn't create an admin, there is one probably, don't bother yourself."
           )
         }
         setIsSubmitLoading(false)
@@ -190,7 +190,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
         setIsSubmitLoading(false)
         setAlert({
           isOpen: true,
-          message: e.message || "Something went wront please try again later",
+          message: e.message || "Something went wrong please try again later",
         })
       }
     }
@@ -214,67 +214,69 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
         >
           <div className="mx-4 my-10 relative">
             {isLoginLoading && <InBoxLoading text={false} />}
-            <div className="bg-palatte-100 p-5 border border-palatte-500 ">
-              <p
-                style={{ margin: "0 0 10px 0" }}
-                className="text-sm.8 text-center font-bold mb-1"
-              >
-                Login
-              </p>
-              <form
-                className="grid grid-cols-1 sm:grid-cols-7 gap-2"
-                onSubmit={e => submitLoginForm(e)}
-              >
-                <div className="sm:col-span-3">
-                  <Input
-                    placeholder="Enter Email"
-                    id="email:login"
-                    textColor="500"
-                    name="email:login"
-                    label="Email"
-                    type="email"
-                    value={loginCredentials.email}
-                    getValue={v =>
-                      setLoginCredentials(prev => ({ ...prev, email: v }))
-                    }
-                    color="200"
-                    required
-                  />
-                </div>
-                <div className="relative sm:col-span-3">
-                  <Input
-                    id="password:login"
-                    textColor="500"
-                    className="w-full"
-                    label="Password"
-                    style={{ paddingRight: 20 }}
-                    name="password:login"
-                    value={loginCredentials.password}
-                    getValue={v =>
-                      setLoginCredentials(prev => ({ ...prev, password: v }))
-                    }
-                    color="200"
-                    required
-                    placeholder="Enter Your Password"
-                    type={canSeePassword ? "text" : "password"}
-                  />
-                  <span
-                    onClick={() => setCanSeePassword(prev => !prev)}
-                    title="Show Password"
-                    className="cursor-pointer p-2 absolute right-0 icon-palatte-400 bottom-1 transform"
-                  >
-                    {Eye}
-                  </span>
-                </div>
-                <button
-                  type="submit"
-                  className="py-2 px-3 sm:col-span-1 self-end text-palatte-100 border border-palatte-100 hover:bg-palatte-400 bg-palatte-300"
-                  style={{ height: "fit-content" }}
+            {isThereAdminAlready && (
+              <div className="bg-palatte-100 p-5 border border-palatte-500 ">
+                <p
+                  style={{ margin: "0 0 10px 0" }}
+                  className="text-sm.8 text-center font-bold mb-1"
                 >
                   Login
-                </button>
-              </form>
-            </div>
+                </p>
+                <form
+                  className="grid grid-cols-1 sm:grid-cols-7 gap-2"
+                  onSubmit={e => submitLoginForm(e)}
+                >
+                  <div className="sm:col-span-3">
+                    <Input
+                      placeholder="Enter Email"
+                      id="email:login"
+                      textColor="500"
+                      name="email:login"
+                      label="Email"
+                      type="email"
+                      value={loginCredentials.email}
+                      getValue={v =>
+                        setLoginCredentials(prev => ({ ...prev, email: v }))
+                      }
+                      color="200"
+                      required
+                    />
+                  </div>
+                  <div className="relative sm:col-span-3">
+                    <Input
+                      id="password:login"
+                      textColor="500"
+                      className="w-full"
+                      label="Password"
+                      style={{ paddingRight: 20 }}
+                      name="password:login"
+                      value={loginCredentials.password}
+                      getValue={v =>
+                        setLoginCredentials(prev => ({ ...prev, password: v }))
+                      }
+                      color="200"
+                      required
+                      placeholder="Enter Your Password"
+                      type={canSeePassword ? "text" : "password"}
+                    />
+                    <span
+                      onClick={() => setCanSeePassword(prev => !prev)}
+                      title="Show Password"
+                      className="cursor-pointer p-2 absolute right-0 icon-palatte-400 bottom-1 transform"
+                    >
+                      {Eye}
+                    </span>
+                  </div>
+                  <button
+                    type="submit"
+                    className="py-2 px-3 sm:col-span-1 self-end text-palatte-100 border border-palatte-100 hover:bg-palatte-400 bg-palatte-300"
+                    style={{ height: "fit-content" }}
+                  >
+                    Login
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
           {!isThereAdminAlready && (
             <div className="mt-2 mx-4 mb-10 relative">

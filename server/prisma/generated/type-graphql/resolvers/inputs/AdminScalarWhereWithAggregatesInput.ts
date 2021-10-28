@@ -75,12 +75,27 @@ export class AdminScalarWhereWithAggregatesInput {
   @TypeGraphQL.Field(_type => StringNullableListFilter, {
     nullable: true
   })
+  stack?: StringNullableListFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
   resumes?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => BoolWithAggregatesFilter, {
     nullable: true
   })
   confirmed?: BoolWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => BoolWithAggregatesFilter, {
+    nullable: true
+  })
+  isPublished?: BoolWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  stacks?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true
