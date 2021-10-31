@@ -215,7 +215,14 @@ input::-ms-input-placeholder {
 input::placeholder {
   color: #aa6239ab;
 }
-
+.num-input input[type="number"]::-webkit-outer-spin-button,
+.num-input input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.num-input input[type="number"] {
+  -moz-appearance: none;
+}
 .checkbox input[type="checkbox"] {
   appearance: none;
 }

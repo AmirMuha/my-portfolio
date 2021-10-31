@@ -841,8 +841,8 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
-  confimEmail(code: Int, email: String, token: String): Boolean
   confirmAdminDelete(code: Int, email: String, token: String): Boolean!
+  confirmEmail(code: Int, email: String, token: String): Boolean
   confirmTokenOrCode(code: Int, email: String, token: String): Boolean!
   createAbout(data: AboutCreateInput!): About!
   createAdmin(data: AdminCreateInput!): Admin

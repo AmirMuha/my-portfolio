@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client"
 import { navigate } from "gatsby-link"
-import React, { FC, PropsWithChildren, useState } from "react"
+import React, { FC, PropsWithChildren } from "react"
 import { Exit } from "../../icons/iconsJSX"
 import { LogoutMutation } from "../../util/mutations"
 import { useAuth } from "../../util/useAuth"
@@ -13,7 +13,6 @@ interface Props {
   brand?: string
 }
 
-const newMessagesLength = ["asdf", "Sdfs"]
 const Dash_Header: FC<PropsWithChildren<Props>> = ({
   page = "dashboard",
   onMenuClick,

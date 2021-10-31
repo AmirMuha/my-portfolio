@@ -7347,6 +7347,30 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "args": [],
@@ -7381,6 +7405,46 @@
                 "kind": "SCALAR",
                 "name": "Boolean",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPublished",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,
@@ -8232,6 +8296,18 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_StringNullableListFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
@@ -8245,6 +8321,18 @@
           },
           {
             "name": "confirmed",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_BoolFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPublished",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -8285,6 +8373,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_ProjectListRelationFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_StringNullableListFilter",
               "ofType": null
             },
             "defaultValue": null,
@@ -10556,6 +10656,18 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Portfolio_SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
@@ -10569,6 +10681,18 @@
           },
           {
             "name": "confirmed",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Portfolio_SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPublished",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10609,6 +10733,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_ProjectOrderByRelationAggregateInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Portfolio_SortOrder",
               "ofType": null
             },
             "defaultValue": null,
@@ -13714,6 +13850,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -13754,11 +13902,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminCreateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -13796,7 +13968,79 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "Portfolio_AdminCreatestackInput",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "set",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "Portfolio_AdminCreateresumesInput",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "set",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "Portfolio_AdminCreatestacksInput",
         "description": null,
         "specifiedByUrl": null,
         "fields": null,
@@ -16518,6 +16762,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_BoolFieldUpdateOperationsInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -16554,11 +16810,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminUpdateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -16620,7 +16900,111 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "Portfolio_AdminUpdatestackInput",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "set",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "push",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "Portfolio_AdminUpdateresumesInput",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "set",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "push",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "Portfolio_AdminUpdatestacksInput",
         "description": null,
         "specifiedByUrl": null,
         "fields": null,
@@ -21442,6 +21826,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -21482,11 +21878,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminCreateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -22718,6 +23138,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_BoolFieldUpdateOperationsInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -22754,11 +23186,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminUpdateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -23762,6 +24218,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -23802,11 +24270,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminCreateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -24250,6 +24742,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_BoolFieldUpdateOperationsInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -24286,11 +24790,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminUpdateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -26906,6 +27434,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -26946,11 +27486,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminCreateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminCreatestacksInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -27126,6 +27690,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPublished",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_BoolFieldUpdateOperationsInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "type": {
@@ -27162,11 +27738,35 @@
             "deprecationReason": null
           },
           {
+            "name": "stack",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestackInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "resumes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Portfolio_AdminUpdateresumesInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stacks",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Portfolio_AdminUpdatestacksInput",
               "ofType": null
             },
             "defaultValue": null,

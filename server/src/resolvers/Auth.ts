@@ -57,7 +57,7 @@ export class AuthResolver {
       admin.password
     );
     if (!isPassCorrect) throw new Error("Email or Password is incorrect.");
-    const token = await jwt.sign({ id: admin.id }, JWT_PRIVATE_KEY, {
+    const token = jwt.sign({ id: admin.id }, JWT_PRIVATE_KEY, {
       expiresIn: `7d`,
     });
     req.session.token = token;
@@ -73,7 +73,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
-  async confimEmail(
+  async confirmEmail(
     @Ctx() { prisma }: MyContext,
     @Args() args: ConfirmTokenOrCodeArgsType
   ): Promise<boolean | undefined> {
@@ -120,7 +120,7 @@ export class AuthResolver {
       where: { email: args.email },
     });
     if (!admin) throw new Error("There is no admin with the given email.");
-    const token = await jwt.sign({ id: data.userId }, JWT_PRIVATE_KEY, {
+    const token = jwt.sign({ id: data.userId }, JWT_PRIVATE_KEY, {
       expiresIn: 10 * 60,
     });
     const confirmation_code = randomNumber(1000, 9999);

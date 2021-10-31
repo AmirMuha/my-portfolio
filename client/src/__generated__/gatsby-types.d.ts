@@ -791,8 +791,11 @@ type Portfolio_Admin = {
   readonly instagram: Scalars['String'];
   readonly github: Scalars['String'];
   readonly heroImage: Scalars['String'];
+  readonly stack: ReadonlyArray<Scalars['String']>;
   readonly resumes: ReadonlyArray<Scalars['String']>;
   readonly confirmed: Scalars['Boolean'];
+  readonly isPublished: Scalars['Boolean'];
+  readonly stacks: ReadonlyArray<Scalars['String']>;
   readonly createdAt: Scalars['Portfolio_DateTime'];
   readonly updatedAt: Scalars['Portfolio_DateTime'];
   readonly _count: Maybe<Portfolio_AdminCount>;
@@ -871,11 +874,14 @@ type Portfolio_AdminWhereInput = {
   readonly instagram: Maybe<Portfolio_StringFilter>;
   readonly github: Maybe<Portfolio_StringFilter>;
   readonly heroImage: Maybe<Portfolio_StringFilter>;
+  readonly stack: Maybe<Portfolio_StringNullableListFilter>;
   readonly resumes: Maybe<Portfolio_StringNullableListFilter>;
   readonly confirmed: Maybe<Portfolio_BoolFilter>;
+  readonly isPublished: Maybe<Portfolio_BoolFilter>;
   readonly about: Maybe<Portfolio_AboutListRelationFilter>;
   readonly messages: Maybe<Portfolio_MessageListRelationFilter>;
   readonly projects: Maybe<Portfolio_ProjectListRelationFilter>;
+  readonly stacks: Maybe<Portfolio_StringNullableListFilter>;
   readonly password: Maybe<Portfolio_StringFilter>;
   readonly createdAt: Maybe<Portfolio_DateTimeFilter>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFilter>;
@@ -1098,11 +1104,14 @@ type Portfolio_AdminOrderByWithRelationInput = {
   readonly instagram: Maybe<Portfolio_SortOrder>;
   readonly github: Maybe<Portfolio_SortOrder>;
   readonly heroImage: Maybe<Portfolio_SortOrder>;
+  readonly stack: Maybe<Portfolio_SortOrder>;
   readonly resumes: Maybe<Portfolio_SortOrder>;
   readonly confirmed: Maybe<Portfolio_SortOrder>;
+  readonly isPublished: Maybe<Portfolio_SortOrder>;
   readonly about: Maybe<Portfolio_AboutOrderByRelationAggregateInput>;
   readonly messages: Maybe<Portfolio_MessageOrderByRelationAggregateInput>;
   readonly projects: Maybe<Portfolio_ProjectOrderByRelationAggregateInput>;
+  readonly stacks: Maybe<Portfolio_SortOrder>;
   readonly password: Maybe<Portfolio_SortOrder>;
   readonly createdAt: Maybe<Portfolio_SortOrder>;
   readonly updatedAt: Maybe<Portfolio_SortOrder>;
@@ -1443,15 +1452,26 @@ type Portfolio_AdminCreateWithoutAboutInput = {
   readonly github: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
+  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
 };
 
+type Portfolio_AdminCreatestackInput = {
+  readonly set: ReadonlyArray<Scalars['String']>;
+};
+
 type Portfolio_AdminCreateresumesInput = {
+  readonly set: ReadonlyArray<Scalars['String']>;
+};
+
+type Portfolio_AdminCreatestacksInput = {
   readonly set: ReadonlyArray<Scalars['String']>;
 };
 
@@ -1723,10 +1743,13 @@ type Portfolio_AdminUpdateWithoutAboutInput = {
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
 };
@@ -1735,7 +1758,17 @@ type Portfolio_BoolFieldUpdateOperationsInput = {
   readonly set: Maybe<Scalars['Boolean']>;
 };
 
+type Portfolio_AdminUpdatestackInput = {
+  readonly set: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly push: Maybe<ReadonlyArray<Scalars['String']>>;
+};
+
 type Portfolio_AdminUpdateresumesInput = {
+  readonly set: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly push: Maybe<ReadonlyArray<Scalars['String']>>;
+};
+
+type Portfolio_AdminUpdatestacksInput = {
   readonly set: Maybe<ReadonlyArray<Scalars['String']>>;
   readonly push: Maybe<ReadonlyArray<Scalars['String']>>;
 };
@@ -2169,10 +2202,13 @@ type Portfolio_AdminCreateWithoutProjectsInput = {
   readonly github: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
+  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
   readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
 };
@@ -2302,10 +2338,13 @@ type Portfolio_AdminUpdateWithoutProjectsInput = {
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
   readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
 };
@@ -2394,10 +2433,13 @@ type Portfolio_AdminCreateWithoutMessagesInput = {
   readonly github: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
+  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
 };
@@ -2443,10 +2485,13 @@ type Portfolio_AdminUpdateWithoutMessagesInput = {
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
 };
@@ -2707,10 +2752,13 @@ type Portfolio_AdminCreateInput = {
   readonly github: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
+  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
   readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
@@ -2727,10 +2775,13 @@ type Portfolio_AdminUpdateInput = {
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
+  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
   readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
@@ -5523,6 +5574,11 @@ type StaticImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
+
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx3888931460QueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5534,38 +5590,10 @@ type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpages
       )> }
     )>, readonly me: Maybe<Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'>> } };
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
-
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404QueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
-      Pick<Portfolio_Project, 'id' | 'image' | 'app_url' | 'type' | 'name' | 'github_url' | 'summary'>
-      & { readonly tech_categories: ReadonlyArray<(
-        Pick<Portfolio_TechCategory, 'id' | 'name'>
-        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'id' | 'name'>> }
-      )> }
-    )> } };
-
-type ProjectImageQueryVariables = Exact<{
-  image: Maybe<Scalars['String']>;
-}>;
-
-
-type ProjectImageQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -5593,10 +5621,33 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
+      Pick<Portfolio_Project, 'id' | 'image' | 'app_url' | 'type' | 'name' | 'github_url' | 'summary'>
+      & { readonly tech_categories: ReadonlyArray<(
+        Pick<Portfolio_TechCategory, 'id' | 'name'>
+        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'id' | 'name'>> }
+      )> }
+    )> } };
+
+type ProjectImageQueryVariables = Exact<{
+  image: Maybe<Scalars['String']>;
+}>;
+
+
+type ProjectImageQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
 
 
 
@@ -5804,7 +5855,9 @@ export type ResolversTypes = {
   Portfolio_AboutCreateInput: Portfolio_AboutCreateInput;
   Portfolio_AdminCreateNestedOneWithoutAboutInput: Portfolio_AdminCreateNestedOneWithoutAboutInput;
   Portfolio_AdminCreateWithoutAboutInput: Portfolio_AdminCreateWithoutAboutInput;
+  Portfolio_AdminCreatestackInput: Portfolio_AdminCreatestackInput;
   Portfolio_AdminCreateresumesInput: Portfolio_AdminCreateresumesInput;
+  Portfolio_AdminCreatestacksInput: Portfolio_AdminCreatestacksInput;
   Portfolio_MessageCreateNestedManyWithoutAdminInput: Portfolio_MessageCreateNestedManyWithoutAdminInput;
   Portfolio_MessageCreateWithoutAdminInput: Portfolio_MessageCreateWithoutAdminInput;
   Portfolio_MessageCreateOrConnectWithoutAdminInput: Portfolio_MessageCreateOrConnectWithoutAdminInput;
@@ -5847,7 +5900,9 @@ export type ResolversTypes = {
   Portfolio_AdminUpsertWithoutAboutInput: Portfolio_AdminUpsertWithoutAboutInput;
   Portfolio_AdminUpdateWithoutAboutInput: Portfolio_AdminUpdateWithoutAboutInput;
   Portfolio_BoolFieldUpdateOperationsInput: Portfolio_BoolFieldUpdateOperationsInput;
+  Portfolio_AdminUpdatestackInput: Portfolio_AdminUpdatestackInput;
   Portfolio_AdminUpdateresumesInput: Portfolio_AdminUpdateresumesInput;
+  Portfolio_AdminUpdatestacksInput: Portfolio_AdminUpdatestacksInput;
   Portfolio_MessageUpdateManyWithoutAdminInput: Portfolio_MessageUpdateManyWithoutAdminInput;
   Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput: Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput;
   Portfolio_MessageUpdateWithoutAdminInput: Portfolio_MessageUpdateWithoutAdminInput;
@@ -6167,7 +6222,9 @@ export type ResolversParentTypes = {
   Portfolio_AboutCreateInput: Portfolio_AboutCreateInput;
   Portfolio_AdminCreateNestedOneWithoutAboutInput: Portfolio_AdminCreateNestedOneWithoutAboutInput;
   Portfolio_AdminCreateWithoutAboutInput: Portfolio_AdminCreateWithoutAboutInput;
+  Portfolio_AdminCreatestackInput: Portfolio_AdminCreatestackInput;
   Portfolio_AdminCreateresumesInput: Portfolio_AdminCreateresumesInput;
+  Portfolio_AdminCreatestacksInput: Portfolio_AdminCreatestacksInput;
   Portfolio_MessageCreateNestedManyWithoutAdminInput: Portfolio_MessageCreateNestedManyWithoutAdminInput;
   Portfolio_MessageCreateWithoutAdminInput: Portfolio_MessageCreateWithoutAdminInput;
   Portfolio_MessageCreateOrConnectWithoutAdminInput: Portfolio_MessageCreateOrConnectWithoutAdminInput;
@@ -6210,7 +6267,9 @@ export type ResolversParentTypes = {
   Portfolio_AdminUpsertWithoutAboutInput: Portfolio_AdminUpsertWithoutAboutInput;
   Portfolio_AdminUpdateWithoutAboutInput: Portfolio_AdminUpdateWithoutAboutInput;
   Portfolio_BoolFieldUpdateOperationsInput: Portfolio_BoolFieldUpdateOperationsInput;
+  Portfolio_AdminUpdatestackInput: Portfolio_AdminUpdatestackInput;
   Portfolio_AdminUpdateresumesInput: Portfolio_AdminUpdateresumesInput;
+  Portfolio_AdminUpdatestacksInput: Portfolio_AdminUpdatestacksInput;
   Portfolio_MessageUpdateManyWithoutAdminInput: Portfolio_MessageUpdateManyWithoutAdminInput;
   Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput: Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput;
   Portfolio_MessageUpdateWithoutAdminInput: Portfolio_MessageUpdateWithoutAdminInput;
@@ -6857,8 +6916,11 @@ export type Portfolio_AdminResolvers<ContextType = GatsbyResolverContext, Parent
   instagram?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   github?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   heroImage?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  stack?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   resumes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   confirmed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isPublished?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  stacks?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
   _count?: Resolver<Maybe<ResolversTypes['Portfolio_AdminCount']>, ParentType, ContextType>;

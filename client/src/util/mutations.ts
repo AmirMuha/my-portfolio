@@ -1,5 +1,9 @@
 import { gql } from "@apollo/client"
-
+export const ConfirmEmailMutation = gql`
+  mutation ConfirmEmail($code: Int!, $email: String!) {
+    confirmEmail(code: $code, email: $email)
+  }
+`
 // ##################################
 // ############### Create Mutations
 // ##################################
