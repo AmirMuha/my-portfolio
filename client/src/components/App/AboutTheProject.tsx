@@ -6,29 +6,31 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { GitHub } from "../../icons/iconsJSX"
-import { useTheDispatch } from "../../store/store"
-import Editable from "../Dashboard/Editable"
-import Button from "../UI/Button"
 import {
-  setGithubUrlReducer,
-  setSummaryReducer,
-  setAppUrlReducer,
-  setImageReducer,
-} from "../../store/newProjectSlice"
-import SmallPipe from "../UI/SmallPipe"
-import Markdown from "../utility/Markdown"
-import { useMutation } from "@apollo/client"
-import {
-  UpdateProjectAppUrlMutation,
-  UpdateProjectgithub_urlMutation,
   UpdateImageMutation,
+  UpdateProjectAppUrlMutation,
   UpdateProjectSummaryMutation,
   UpdateProjectTypeMutation,
+  UpdateProjectgithub_urlMutation,
   UploadSingleFileMutation,
 } from "../../util/mutations"
-import { useAlert } from "../../util/useAlert"
+import {
+  setAppUrlReducer,
+  setGithubUrlReducer,
+  setImageReducer,
+  setSummaryReducer,
+} from "../../store/newProjectSlice"
+
 import Alert from "../UI/Alert"
+import Button from "../UI/Button"
+import Editable from "../Dashboard/Editable"
+import { GitHub } from "../../icons/iconsJSX"
+import Markdown from "../utility/Markdown"
+import SmallPipe from "../UI/SmallPipe"
+import { useAlert } from "../../util/useAlert"
+import { useMutation } from "@apollo/client"
+import { useTheDispatch } from "../../store/store"
+
 interface Props {
   image: IGatsbyImageData | string
   editable?: boolean
@@ -62,8 +64,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   const [summary, setSummary] = useState<string>("")
   const [githubUrl, setGithubUrl] = useState<string>("")
   const [appUrl, setAppUrl] = useState<string>("")
+
   useEffect(() => {
-    setSummary(data.summary)
+    setSummary(data.summary || "Enter a brief summary of the project.")
     setImageName(data.image)
     setGithubUrl(data.github_url)
     setAppUrl(data.app_url)
@@ -94,7 +97,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             message: e.errors
               ? e.errors[0].message
               : e.message ||
-                "Something went wrong, Couldn't update the GitHub Url.",
+              "Something went wrong, Couldn't update the GitHub Url.",
           })
         })
     }
@@ -125,7 +128,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             message: e.errors
               ? e.errors[0].message
               : e.message ||
-                "Something went wrong, Couldn't update the App Url.",
+              "Something went wrong, Couldn't update the App Url.",
           })
         })
     }
@@ -152,7 +155,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               message: e.errors
                 ? e.errors[0].message
                 : e.message ||
-                  "Something went wrong, Couldn't upload the image.",
+                "Something went wrong, Couldn't upload the image.",
             })
           })
       }
@@ -192,7 +195,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               message: e.errors
                 ? e.errors[0].message
                 : e.message ||
-                  "Something went wrong, Couldn't update the image.",
+                "Something went wrong, Couldn't update the image.",
             })
           })
       }
@@ -224,7 +227,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             message: e.errors
               ? e.errors[0].message
               : e.message ||
-                "Something went wrong, Couldn't update the Summary.",
+              "Something went wrong, Couldn't update the Summary.",
           })
         })
     }
@@ -273,8 +276,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${imageName}`}
-                alt={`${data.name} Image`}
+                src={`${(window as any).__SERVER_API__}/${imageName || "default-project.jpeg"
+                  }`}
+                alt={`${data.name || "Default"} Image`}
               />
             </div>
             <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
@@ -378,7 +382,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${imageName}`}
+                src={`${(window as any).__SERVER_API__}/${imageName || "default-project.jpeg"}`}
                 alt={`${data.name} Image`}
               />
             </div>
@@ -421,7 +425,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               </h2>
             </SmallPipe>
             <div className=" px-5 py-3">
-              <Markdown>{data.summary}</Markdown>
+              <Markdown>{data.summary || "Write a brief summary of the project."}</Markdown>
             </div>
           </div>
         </div>

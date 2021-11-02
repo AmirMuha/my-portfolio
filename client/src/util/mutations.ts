@@ -101,6 +101,25 @@ export const CreateProjectMutation = gql`
   }
 `
 // export const CreateMessageMutation = gql``
+export const CreateManySketchMutation = gql`
+  mutation CreateManySketches(
+      $data: [SingleSketch!]!
+    ){
+    createManySketch(
+      date: $data
+    ){
+      count
+    }
+  }
+  type SingleSketch {
+    title: String!
+    description: String!
+    summary: String!
+    image: String!
+    download_link: String!
+    project_id: String!
+  }
+`
 export const CreateSketchMutation = gql`
   mutation CreateSketch(
     $projectId: String!

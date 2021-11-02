@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client"
-import { navigate } from "gatsby-link"
+import { navigate } from "gatsby"
 import React, { FC, PropsWithChildren } from "react"
 import { Exit } from "../../icons/iconsJSX"
 import { LogoutMutation } from "../../util/mutations"
@@ -22,16 +22,20 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
   const [mutate] = useMutation(LogoutMutation)
 
   const { data: isLoggedIn } = useAuth()
-  const logout = () => {
+  const logout = (): any => {
     if (isLoggedIn) {
       mutate()
         .then(() => {
           navigate("/dashboard/auth/")
         })
         .catch(e => {
-          console.log(e)
+          navigate("/dashboard/auth/")
         })
+      return null
     }
+  }
+  if (!isLoggedIn) {
+    return null
   }
   return (
     <header className="w-full py-1 px-3 border-b border-palatte-500">
@@ -53,7 +57,7 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
           </NavLink>
         </div>
         <div className="flex items-center gap-5">
-          <div className="hidden md:flex items-center gap-4">
+          <div className="px-2 hidden md:flex items-center gap-4">
             <NavLink onHover to="/dashboard">
               Dashboard
             </NavLink>

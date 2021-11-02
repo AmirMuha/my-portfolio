@@ -1,23 +1,20 @@
-import { useMutation } from "@apollo/client"
 import React, { FC, PropsWithChildren, useState } from "react"
-import {
-  addNewTechCategoryReducer,
-  updateProjectFieldReducer,
-} from "../../store/editProject"
-import { setTechCategoryReducer } from "../../store/newProjectSlice"
-import { useTheDispatch } from "../../store/store"
-import { CreateTechCategoryMutation } from "../../util/mutations"
-import { useAlert } from "../../util/useAlert"
+
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
+import { CreateTechCategoryMutation } from "../../util/mutations"
 import Input from "../UI/Input"
-import SmallPipe from "../UI/SmallPipe"
+import SmallPipe from '../UI/SmallPipe';
+import { addNewTechCategoryReducer } from "../../store/editProject"
+import { setTechCategoryReducer } from "../../store/newProjectSlice"
+import { useAlert } from "../../util/useAlert"
+import { useMutation } from "@apollo/client"
+import { useTheDispatch } from "../../store/store"
 
 interface Props {
   mode?: "ADD" | "EDIT"
   projectId?: string
 }
-
 const AddTechCategory: FC<PropsWithChildren<Props>> = ({
   mode = "EDIT",
   projectId,
@@ -36,6 +33,7 @@ const AddTechCategory: FC<PropsWithChildren<Props>> = ({
         message: "Added but not saved yet a new tech category.",
         isOpen: true,
       })
+      setNewTechCategory("")
     } else {
       mutateNewTechCategory({
         variables: {
@@ -55,6 +53,7 @@ const AddTechCategory: FC<PropsWithChildren<Props>> = ({
             message: "Added a new tech category successfully.",
             isOpen: true,
           })
+          setNewTechCategory("")
         })
         .catch(e => {
           setAlert({
@@ -101,5 +100,4 @@ const AddTechCategory: FC<PropsWithChildren<Props>> = ({
     </>
   )
 }
-
 export default AddTechCategory

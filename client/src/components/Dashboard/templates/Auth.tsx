@@ -1,14 +1,16 @@
 import { useMutation, useQuery } from "@apollo/client"
+import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import React, {
   FC,
   Reducer,
-  useRef,
   useEffect,
   useReducer,
+  useRef,
   useState,
 } from "react"
-import { RouteComponentProps } from "@reach/router"
+import Button from "../../../components/UI/Button"
+import Modal from "../../../components/UI/Modal"
 import { Eye, Reset } from "../../../icons/iconsJSX"
 import {
   ConfirmEmailMutation,
@@ -17,15 +19,12 @@ import {
   UploadMultipleFileMutation,
   UploadSingleFileMutation,
 } from "../../../util/mutations"
-import Input from "../../UI/Input"
-import InBoxLoading from "../../UI/InBoxLoading"
-import { useAlert } from "../../../util/useAlert"
-import Alert from "../../UI/Alert"
 import { IsThereAdminQuery } from "../../../util/queries"
+import { useAlert } from "../../../util/useAlert"
 import { useAuth } from "../../../util/useAuth"
-import Modal from "../../../components/UI/Modal"
-import Button from "../../../components/UI/Button"
-
+import Alert from "../../UI/Alert"
+import InBoxLoading from "../../UI/InBoxLoading"
+import Input from "../../UI/Input"
 enum Credentials {
   "EMAIL_SUB",
   "PASS_SUB",
@@ -95,11 +94,11 @@ const credentialsReducer: Reducer<CredentialsState, CredentialsAction> = (
       return { ...state, heroImage: action.value }
     case Credentials.RESUMES:
       return { ...state, resumes: action.value }
-
     default:
       return state
   }
 }
+
 enum ConfirmCodeTypes {
   ONE,
   TWO,
@@ -107,7 +106,6 @@ enum ConfirmCodeTypes {
   FOUR,
   RESET,
 }
-
 interface ConfirmCodeState {
   confirmCode_1: string
   confirmCode_2: string
@@ -206,13 +204,13 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
   useEffect(() => {
     if (loggedIn) {
       navigate("/dashboard/")
-    } else {
-      if (foundAdmins.data?.isThereAnAdmin) {
-        setThereIsAdmin(true)
-      }
+    }
+  }, [])
+  useEffect(() => {
+    if (foundAdmins.data?.isThereAnAdmin) {
+      setThereIsAdmin(true)
     }
   })
-
   const getCodeNum = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: ConfirmCodeTypes
@@ -242,8 +240,8 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
         },
       })
         .then(res => {
-          console.log(res.data.confirmEmail)
-          if (res.data.confirmEmail) {
+          console.log(res.data)
+          if (res.data.login.token) {
             navigate("/dashboard/")
           } else {
             setAlert({
@@ -255,15 +253,23 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
           setIsLoginLoading(false)
         })
         .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message:
-              e.message ||
-              "Couldn't login, please try again with the correct credentials.",
-          })
-          setIsEmailConfirmOpen(true)
-          setIsEnterEmailCodeOpen(true)
+          if (isEmailConfirmBoxOpen) {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message: "The code your entered either expired or isn't correct.",
+            })
+          } else {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message:
+                e.message ||
+                "Couldn't login, please try again with the correct credentials.",
+            })
+            setIsEmailConfirmOpen(true)
+            setIsEnterEmailCodeOpen(true)
+          }
           setIsLoginLoading(false)
         })
     } else {

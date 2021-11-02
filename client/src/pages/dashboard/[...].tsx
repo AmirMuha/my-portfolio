@@ -11,7 +11,7 @@ const DashboardHomePage: FC<PageProps> = ({ children, data, params }) => {
     <Router>
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/dashboard/messages" component={Messages} />
-      <PrivateRoute path="/dashboard" component={AboutMe} />
+      <PrivateRoute path="/dashboard/about-me" component={AboutMe} />
       <Auth path="/dashboard/auth" />
     </Router>
   )

@@ -1,15 +1,16 @@
-import { useMutation } from "@apollo/client"
-import React, { FC, PropsWithChildren, useState } from "react"
-import { JS, NodeJS, ReactJS, TS, VueJS } from "../../icons/iconsJSX"
 import {
   CreateStackMutation,
   DeleteStackMutation,
   UploadSingleFileMutation,
 } from "../../util/mutations"
+import Input, { File } from "../UI/Input"
+import { JS, NodeJS, ReactJS, TS, VueJS } from "../../icons/iconsJSX"
+import React, { FC, PropsWithChildren, useState } from "react"
+
 import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
-import Input, { File } from "../UI/Input"
 import SmallPipe from "../UI/SmallPipe"
+import { useMutation } from "@apollo/client"
 
 interface Props {
   style?: React.CSSProperties
@@ -17,7 +18,6 @@ interface Props {
   data?: string[]
   editable?: boolean
 }
-
 const Stack: FC<PropsWithChildren<Props>> = ({
   className,
   style,
@@ -68,6 +68,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               </ul>
             </div>
           )}
+          <div className="grid grid-cols-1 lg:grid-cols-2">
           <SmallPipe className="flex w-full items-center mb-3">
             <div className="flex-grow">
               <Input
@@ -84,7 +85,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               save
             </Button>
           </SmallPipe>
-          <SmallPipe className="flex w-full items-center my-3">
+          <SmallPipe className="flex w-full items-center my-3 lg:mt-0">
             <div className="flex-grow">
               <Input
                 color="200"
@@ -100,6 +101,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               save
             </Button>
           </SmallPipe>
+          </div>
           <div
             style={{ width: "100vw" }}
             className="bg-palatte-500 w-full pb-2 pt-3"

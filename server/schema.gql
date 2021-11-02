@@ -847,6 +847,9 @@ type Mutation {
   createAbout(data: AboutCreateInput!): About!
   createAdmin(data: AdminCreateInput!): Admin
   createAnswer(data: AnswerCreateInput!): Answer!
+  createManyQuestion(data: [QuestionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManySketch(data: [SketchCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyTechCategory(data: [TechCategoryCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createMessage(data: MessageCreateInput!): Message!
   createProject(data: ProjectCreateInput!): Project!
   createQuestion(data: QuestionCreateInput!): Question!
@@ -1366,6 +1369,13 @@ input QuestionCreateInput {
   question: String!
 }
 
+input QuestionCreateManyInput {
+  answer_id: String!
+  id: String
+  project_id: String!
+  question: String!
+}
+
 input QuestionCreateManyProjectInput {
   answer_id: String!
   id: String
@@ -1556,6 +1566,16 @@ input SketchCreateInput {
   id: String
   image: String!
   project: ProjectCreateNestedOneWithoutSketchesInput!
+  summary: String!
+  title: String!
+}
+
+input SketchCreateManyInput {
+  description: String!
+  download_link: String!
+  id: String
+  image: String!
+  project_id: String!
   summary: String!
   title: String!
 }
@@ -1772,6 +1792,12 @@ input TechCategoryCreateInput {
   name: String!
   project: ProjectCreateNestedOneWithoutTech_categoriesInput!
   techs: TechCreateNestedManyWithoutTech_categoriesInput
+}
+
+input TechCategoryCreateManyInput {
+  id: String
+  name: String!
+  project_id: String!
 }
 
 input TechCategoryCreateManyProjectInput {
