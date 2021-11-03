@@ -1,16 +1,17 @@
-import { useMutation } from "@apollo/client"
 import React, { FC, PropsWithChildren, useState } from "react"
-import { addNewQuestionReducer } from "../../store/editProject"
-import { setQAndA } from "../../store/newProjectSlice"
-import { useTheDispatch } from "../../store/store"
-import { CreateQuestionMutation } from "../../util/mutations"
-import { useAlert } from "../../util/useAlert"
+
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
+import { CreateQuestionMutation } from "../../util/mutations"
 import Input from "../UI/Input"
 import Modal from "../UI/Modal"
 import SmallPipe from "../UI/SmallPipe"
 import TextArea from "../UI/TextArea"
+import { addNewQuestionReducer } from "../../store/editProject"
+import { setQAndA } from "../../store/newProjectSlice"
+import { useAlert } from "../../util/useAlert"
+import { useMutation } from "@apollo/client"
+import { useTheDispatch } from "../../store/store"
 
 interface Props {
   mode?: "ADD" | "EDIT"
@@ -32,9 +33,27 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
   const closeModal = () => {
     setIsBoxOpen(prev => !prev)
   }
+  const createSuccessMessage = () => {
+    setAlert({
+      isOpen: true,
+      title: "Success",
+      message: "Added new Q&A successfully."
+    })
+    setNewQuestion("")
+    setNewAnswer("")
+  }
   const saveQuestion = () => {
+    if(!newQuestion || !newAnswer) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message:"Question and Answer fields are required."
+      })
+      return
+    }
     if (mode === "ADD") {
       dispatch(setQAndA({ question: newQuestion, answer: newAnswer }))
+      createSuccessMessage ()
     } else {
       mutateNewQuestion({
         variables: {
@@ -52,11 +71,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
               answerId: res.data.createQuestion.answer.id,
             })
           )
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "Created a new Q&A successfully.",
-          })
+          createSuccessMessage ()
         })
         .catch(e => {
           setAlert({
@@ -84,6 +99,11 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
       )}
       {isBoxOpen && (
         <Modal onClose={closeModal} header title="Add New Question AND Answer">
+        <form onSubmit={e => {
+          e.preventDefault();
+          saveQuestion()
+          closeModal()
+        }}>
           <Input
             id="new-question"
             label="Question"
@@ -109,17 +129,18 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
             <Button
               normal
               outline
+              type="submit"
               borderColor="500"
               color="100"
               textColor="500"
-              onClick={closeModal}
             >
               Close
             </Button>
-            <Button normal onClick={saveQuestion}>
+            <Button type="submit" normal >
               Save
             </Button>
           </div>
+          </form>
         </Modal>
       )}
       <SmallPipe className="mb-3">
