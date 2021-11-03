@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client"
+import { Close, Edit } from "../../../icons/iconsJSX"
 import React, {
   CSSProperties,
   FC,
@@ -9,16 +9,17 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { Close, Edit } from "../../../icons/iconsJSX"
-import { addNewTechReducer } from "../../../store/editProject"
-import { useTheDispatch } from "../../../store/store"
-import { CreateTechMutation } from "../../../util/mutations"
-import { useAlert } from "../../../util/useAlert"
+
 import Alert from "../../UI/Alert"
 import Button from "../../UI/Button"
 import Confirm from "../../UI/Confirm"
+import { CreateTechMutation } from "../../../util/mutations"
 import Input from "../../UI/Input"
 import Modal from "../../UI/Modal"
+import { addNewTechReducer } from "../../../store/editProject"
+import { useAlert } from "../../../util/useAlert"
+import { useMutation } from "@apollo/client"
+import { useTheDispatch } from "../../../store/store"
 
 interface TechAction {
   type: "CATEGORY_NAME" | "TECH" | "TECH_CATEGORY" | "DELETE_TECH"
@@ -114,10 +115,18 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
     }
   }
   const sendBackTechValues = () => {
-    console.log(techState)
+    if(!techState.name){
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Please make sure category name is not empty."
+      })
+      return
+    }
     onSave(techState)
     onClose()
   }
+
   useEffect(() => {
     dispatchTech({
       type: "TECH_CATEGORY",
@@ -127,13 +136,24 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
       },
     })
   }, [])
+
   const addNewTech = () => {
+    if (techInputRef.current) {
+      if(!techInputRef.current.value) {
+        setAlert({ isOpen: true, title: "Error", message: "Tech name field is required, you should provide a value."})
+        return
+      }
+    }
     if (mode === "ADD") {
-      dispatchTech({
-        value: techInputRef.current?.value! || "",
-        type: "TECH",
-      })
-      rerender({})
+      if (techInputRef.current) {
+        dispatchTech({
+          value: techInputRef.current?.value! || "",
+          type: "TECH",
+        })
+        techInputRef.current.value = ""
+        techInputRef.current.focus()
+        rerender({})
+      }
     } else {
       mutateNewTech({
         variables: {
@@ -154,6 +174,10 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
             title: "Success",
             message: "Added a new tech Successfully.",
           })
+          if (techInputRef.current) {
+            techInputRef.current.value = ""
+            techInputRef.current.focus()
+          }
         })
         .catch(e => {
           setAlert({
@@ -166,6 +190,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
         })
     }
   }
+
   return (
     <>
       {isAlertOpen && (
@@ -180,6 +205,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
       )}
       <Modal
         header
+        maxWidth="500px"
         title={`Editing ${
           mode === "ADD" ? techState.name : data.name
         } Tech Category`}
@@ -188,7 +214,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
         <div>
           <div className="flex items-center gap-2">
             <span className="font-bold">
-              {mode === "ADD" ? techState.name : data.name} :
+              Category Name :
             </span>
             <Input
               id={
@@ -204,6 +230,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
               color={isInputEditable ? "100" : "200"}
               style={{ padding: "4px 15px" }}
               value={techState.name}
+              containerClasses="flex-grow"
               readOnly={isInputEditable}
             />
             {!isInputEditable ? (
@@ -236,22 +263,36 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
             )}
           </div>
           <hr className="bg-palatte-500 my-3" />
-          <div className="flex items-center  gap-2">
-            <span className="font-bold">Techs :</span>
-            <input
-              id={`${title as string}-new-tech`}
-              name={`${title as string}-new-tech`}
-              type="text"
-              placeholder="New Tech Name"
-              className="px-3 text-palatte-500 py-1 bg-palatte-200"
-              ref={techInputRef as any}
-            />
-            <button
-              onClick={addNewTech}
-              className="border-palatte-500 border px-3 p-0.5"
+          <div className="flex items-center gap-4">
+            <form
+              className="w-full"
+              onSubmit={e => {
+                e.preventDefault()
+                addNewTech()
+              }}
             >
-              Add
-            </button>
+              <label
+                className="font-bold mr-4 block sm:inline"
+                htmlFor={`${title as string}-new-tech`}
+              >
+                Techs :
+              </label>
+              <div className="flex">
+                <input
+                  id={`${title as string}-new-tech`}
+                  name={`${title as string}-new-tech`}
+                  type="text"
+                  placeholder="New Tech Name"
+                  className="px-3 flex-grow text-palatte-500 py-1 bg-palatte-200"
+                  ref={techInputRef as any}
+                />
+                <button
+                  className="bg-palatte-500 text-palatte-100 border-palatte-500 border px-3 p-0.5"
+                >
+                  Add
+                </button>
+              </div>
+            </form>
           </div>
           {confirmBox.open && (
             <Confirm
@@ -269,7 +310,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
               onClose={() => setConfirmBox({ open: false, id: "", name: "" })}
             />
           )}
-          <ul className="py-3">
+          <ul className="ml-0 py-3">
             {techState.techs.length > 0 &&
               mode === "ADD" &&
               techState.techs.map((t, i) => (
@@ -308,7 +349,7 @@ const Editable_TechCategory: FC<PropsWithChildren<Props>> = ({
               ))}
           </ul>
         </div>
-        <div className="flex items-center gap-2 justify-end">
+        <div className="grid grid-cols-2 sm:flex items-center gap-2 justify-end">
           <Button onClick={onClose} normal outline color="100" textColor="500">
             Close
           </Button>
