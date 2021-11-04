@@ -20,7 +20,7 @@ export class GroupByQuestionArgs {
   @TypeGraphQL.Field(_type => [QuestionScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "question" | "answer_id" | "project_id">;
+  by!: Array<"id" | "question" | "answer" | "project_id">;
 
   @TypeGraphQL.Field(_type => QuestionScalarWhereWithAggregatesInput, {
     nullable: true

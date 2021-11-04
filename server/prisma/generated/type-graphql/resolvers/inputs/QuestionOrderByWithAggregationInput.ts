@@ -24,7 +24,7 @@ export class QuestionOrderByWithAggregationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  answer_id?: "asc" | "desc" | undefined;
+  answer?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true

@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { AnswerCreateNestedOneWithoutQuestionInput } from "../inputs/AnswerCreateNestedOneWithoutQuestionInput";
 import { ProjectCreateNestedOneWithoutQuestionsInput } from "../inputs/ProjectCreateNestedOneWithoutQuestionsInput";
 
 @TypeGraphQL.InputType({
@@ -19,10 +18,10 @@ export class QuestionCreateInput {
   })
   question!: string;
 
-  @TypeGraphQL.Field(_type => AnswerCreateNestedOneWithoutQuestionInput, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  answer!: AnswerCreateNestedOneWithoutQuestionInput;
+  answer!: string;
 
   @TypeGraphQL.Field(_type => ProjectCreateNestedOneWithoutQuestionsInput, {
     nullable: false

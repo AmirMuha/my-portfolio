@@ -36,7 +36,7 @@ export class QuestionScalarWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  answer_id?: StringFilter | undefined;
+  answer?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

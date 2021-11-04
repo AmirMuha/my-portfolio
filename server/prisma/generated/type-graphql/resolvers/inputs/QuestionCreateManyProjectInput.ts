@@ -20,5 +20,5 @@ export class QuestionCreateManyProjectInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  answer_id!: string;
+  answer!: string;
 }

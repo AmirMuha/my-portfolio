@@ -1,6 +1,5 @@
 export { About } from "./About";
 export { Admin } from "./Admin";
-export { Answer } from "./Answer";
 export { Message } from "./Message";
 export { Project } from "./Project";
 export { Question } from "./Question";

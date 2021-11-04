@@ -17,4 +17,9 @@ export class QuestionUpdateManyMutationInput {
     nullable: true
   })
   question?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  answer?: StringFieldUpdateOperationsInput | undefined;
 }

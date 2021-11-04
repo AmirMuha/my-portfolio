@@ -23,7 +23,7 @@ export class QuestionGroupBy {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  answer_id!: string;
+  answer!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false

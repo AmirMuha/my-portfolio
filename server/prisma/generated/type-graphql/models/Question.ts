@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
-import { Answer } from "../models/Answer";
 import { Project } from "../models/Project";
 
 @TypeGraphQL.ObjectType({
@@ -19,12 +18,10 @@ export class Question {
   })
   question!: string;
 
-  answer?: Answer;
-
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  answer_id!: string;
+  answer!: string;
 
   project?: Project;
 
