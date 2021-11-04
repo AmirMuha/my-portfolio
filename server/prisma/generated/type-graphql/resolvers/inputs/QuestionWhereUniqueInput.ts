@@ -11,9 +11,4 @@ export class QuestionWhereUniqueInput {
     nullable: true
   })
   id?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  answer_id?: string | undefined;
 }

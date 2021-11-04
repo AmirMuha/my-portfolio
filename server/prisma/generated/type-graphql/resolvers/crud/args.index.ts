@@ -1,6 +1,5 @@
 export * from "./About/args";
 export * from "./Admin/args";
-export * from "./Answer/args";
 export * from "./Message/args";
 export * from "./Project/args";
 export * from "./Question/args";

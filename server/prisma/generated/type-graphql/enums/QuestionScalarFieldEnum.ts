@@ -3,7 +3,7 @@ import * as TypeGraphQL from "type-graphql";
 export enum QuestionScalarFieldEnum {
   id = "id",
   question = "question",
-  answer_id = "answer_id",
+  answer = "answer",
   project_id = "project_id"
 }
 TypeGraphQL.registerEnumType(QuestionScalarFieldEnum, {

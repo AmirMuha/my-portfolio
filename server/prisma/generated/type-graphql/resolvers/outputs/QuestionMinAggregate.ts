@@ -20,7 +20,7 @@ export class QuestionMinAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  answer_id!: string | null;
+  answer!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

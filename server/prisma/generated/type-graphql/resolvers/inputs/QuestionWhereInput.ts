@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { AnswerRelationFilter } from "../inputs/AnswerRelationFilter";
 import { ProjectRelationFilter } from "../inputs/ProjectRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
@@ -35,15 +34,10 @@ export class QuestionWhereInput {
   })
   question?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => AnswerRelationFilter, {
-    nullable: true
-  })
-  answer?: AnswerRelationFilter | undefined;
-
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  answer_id?: StringFilter | undefined;
+  answer?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => ProjectRelationFilter, {
     nullable: true

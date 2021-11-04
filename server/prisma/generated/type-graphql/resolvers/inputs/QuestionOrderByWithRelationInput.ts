@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { AnswerOrderByWithRelationInput } from "../inputs/AnswerOrderByWithRelationInput";
 import { ProjectOrderByWithRelationInput } from "../inputs/ProjectOrderByWithRelationInput";
 import { SortOrder } from "../../enums/SortOrder";
 
@@ -20,15 +19,10 @@ export class QuestionOrderByWithRelationInput {
   })
   question?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => AnswerOrderByWithRelationInput, {
-    nullable: true
-  })
-  answer?: AnswerOrderByWithRelationInput | undefined;
-
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  answer_id?: "asc" | "desc" | undefined;
+  answer?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => ProjectOrderByWithRelationInput, {
     nullable: true

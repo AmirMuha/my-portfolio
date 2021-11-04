@@ -1,6 +1,5 @@
 export { AboutScalarFieldEnum } from "./AboutScalarFieldEnum";
 export { AdminScalarFieldEnum } from "./AdminScalarFieldEnum";
-export { AnswerScalarFieldEnum } from "./AnswerScalarFieldEnum";
 export { MessageScalarFieldEnum } from "./MessageScalarFieldEnum";
 export { ProjectScalarFieldEnum } from "./ProjectScalarFieldEnum";
 export { QueryMode } from "./QueryMode";

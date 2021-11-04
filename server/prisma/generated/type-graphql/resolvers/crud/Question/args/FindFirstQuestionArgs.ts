@@ -35,5 +35,5 @@ export class FindFirstQuestionArgs {
   @TypeGraphQL.Field(_type => [QuestionScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "question" | "answer_id" | "project_id"> | undefined;
+  distinct?: Array<"id" | "question" | "answer" | "project_id"> | undefined;
 }

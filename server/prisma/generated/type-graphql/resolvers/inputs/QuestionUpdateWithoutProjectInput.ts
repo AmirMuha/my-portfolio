@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { AnswerUpdateOneRequiredWithoutQuestionInput } from "../inputs/AnswerUpdateOneRequiredWithoutQuestionInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType({
@@ -19,8 +18,8 @@ export class QuestionUpdateWithoutProjectInput {
   })
   question?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => AnswerUpdateOneRequiredWithoutQuestionInput, {
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
-  answer?: AnswerUpdateOneRequiredWithoutQuestionInput | undefined;
+  answer?: StringFieldUpdateOperationsInput | undefined;
 }
