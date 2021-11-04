@@ -1,9 +1,10 @@
-import { UseMiddleware } from "type-graphql";
 import {
-  applyResolversEnhanceMap,
   ResolversEnhanceMap,
+  applyResolversEnhanceMap,
 } from "../../../prisma/generated/type-graphql";
+
 import { ConnectToAdmin } from "../ConnectToAdmin";
+import { UseMiddleware } from "type-graphql";
 import { isLoggedIn } from "../isLoggedIn";
 // import { Update } from "../Update";
 
@@ -41,12 +42,6 @@ const resolversEnhanceMap: ResolversEnhanceMap = {
     createMessage: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
     deleteMessage: [UseMiddleware(isLoggedIn)],
     deleteManyMessage: [UseMiddleware(isLoggedIn)],
-  },
-  Answer: {
-    updateAnswer: [UseMiddleware(isLoggedIn)],
-    createAnswer: [UseMiddleware(isLoggedIn)],
-    deleteAnswer: [UseMiddleware(isLoggedIn)],
-    deleteManyAnswer: [UseMiddleware(isLoggedIn)],
   },
   Question: {
     updateQuestion: [UseMiddleware(isLoggedIn)],

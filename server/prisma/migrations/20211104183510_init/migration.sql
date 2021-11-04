@@ -60,18 +60,10 @@ CREATE TABLE "Tech" (
 CREATE TABLE "Question" (
     "id" UUID NOT NULL,
     "question" TEXT NOT NULL,
-    "answer_id" UUID NOT NULL,
+    "answer" TEXT NOT NULL,
     "project_id" UUID NOT NULL,
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Answer" (
-    "id" UUID NOT NULL,
-    "answer" TEXT NOT NULL,
-
-    CONSTRAINT "Answer_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -132,12 +124,6 @@ CREATE UNIQUE INDEX "Tech_id_key" ON "Tech"("id");
 CREATE UNIQUE INDEX "Question_id_key" ON "Question"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Question_answer_id_key" ON "Question"("answer_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Answer_id_key" ON "Answer"("id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Sketch_id_key" ON "Sketch"("id");
 
 -- CreateIndex
@@ -154,9 +140,6 @@ ALTER TABLE "TechCategory" ADD CONSTRAINT "TechCategory_project_id_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "Tech" ADD CONSTRAINT "Tech_tech_category_id_fkey" FOREIGN KEY ("tech_category_id") REFERENCES "TechCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_answer_id_fkey" FOREIGN KEY ("answer_id") REFERENCES "Answer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Question" ADD CONSTRAINT "Question_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

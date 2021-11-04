@@ -1,15 +1,13 @@
 import {
-  IsNotEmpty,
   IsBoolean,
   IsEmail,
+  IsNotEmpty,
   IsString,
-  IsUrl,
   IsUUID,
+  IsUrl,
   Length,
   MinLength,
 } from "class-validator";
-import { UseMiddleware } from "type-graphql";
-import { isLoggedIn } from "./isLoggedIn";
 
 export const adminPropsValidation = {
   id: [IsNotEmpty(), IsString(), IsUUID()],
@@ -47,11 +45,6 @@ export const projectPropsValidation = {
   description: [IsNotEmpty(), IsString()],
   github_url: [IsNotEmpty(), IsString(), IsUrl()],
   name: [IsNotEmpty(), IsString()],
-};
-
-export const answerPropsValidation = {
-  id: [IsNotEmpty(), IsString(), IsUUID()],
-  answer: [IsNotEmpty(), IsString()],
 };
 
 export const questionPropsValidation = {

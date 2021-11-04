@@ -1,12 +1,11 @@
 import {
-  applyModelsEnhanceMap,
   ModelConfig,
   ModelsEnhanceMap,
+  applyModelsEnhanceMap,
 } from "../../../prisma/generated/type-graphql";
 import {
   aboutPropsValidation,
   adminPropsValidation,
-  answerPropsValidation,
   messagePropsValidation,
   projectPropsValidation,
   questionPropsValidation,
@@ -43,11 +42,6 @@ const messageModelConfig: ModelConfig<"Message"> = {
     ...messagePropsValidation,
   },
 };
-const answerModelConfig: ModelConfig<"Answer"> = {
-  fields: {
-    ...answerPropsValidation,
-  },
-};
 const questionModelConfig: ModelConfig<"Question"> = {
   fields: {
     ...questionPropsValidation,
@@ -75,7 +69,6 @@ const modelsEnhanceMap: ModelsEnhanceMap = {
   Tech: techModelConfig,
   TechCategory: techCategoryModelConfig,
   Question: questionModelConfig,
-  Answer: answerModelConfig,
 };
 // ##############################################
 // ####################### APPLICATION ##########

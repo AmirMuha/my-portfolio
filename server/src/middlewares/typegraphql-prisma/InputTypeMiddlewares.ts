@@ -1,12 +1,11 @@
 import {
-  applyInputTypesEnhanceMap,
   InputTypeConfig,
   InputTypesEnhanceMap,
+  applyInputTypesEnhanceMap,
 } from "../../../prisma/generated/type-graphql";
 import {
   aboutPropsValidation,
   adminPropsValidation,
-  answerPropsValidation,
   messagePropsValidation,
   projectPropsValidation,
   questionPropsValidation,
@@ -48,12 +47,6 @@ const questionUpdateInputTypeConfig: InputTypeConfig<"QuestionUpdateInput"> = {
 const questionCreateInputTypeConfig: InputTypeConfig<"QuestionCreateInput"> = {
   fields: { ...questionPropsValidation },
 };
-const answerUpdateInputTypeConfig: InputTypeConfig<"AnswerUpdateInput"> = {
-  fields: { ...answerPropsValidation },
-};
-const answerCreateInputTypeConfig: InputTypeConfig<"AnswerCreateInput"> = {
-  fields: { ...answerPropsValidation },
-};
 const sketchUpdateInputTypeConfig: InputTypeConfig<"SketchUpdateInput"> = {
   fields: { ...sketchPropsValidation },
 };
@@ -85,8 +78,6 @@ const inputTypesEnhanceMap: InputTypesEnhanceMap = {
   TechCategoryUpdateInput: techCategoryUpdateInputTypeConfig,
   QuestionCreateInput: questionCreateInputTypeConfig,
   QuestionUpdateInput: questionUpdateInputTypeConfig,
-  AnswerCreateInput: answerCreateInputTypeConfig,
-  AnswerUpdateInput: answerUpdateInputTypeConfig,
   SketchCreateInput: sketchCreateInputTypeConfig,
   SketchUpdateInput: sketchUpdateInputTypeConfig,
   ProjectCreateInput: projectCreateInputTypeConfig,

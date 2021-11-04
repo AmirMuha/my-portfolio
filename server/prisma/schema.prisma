@@ -73,16 +73,9 @@ model Tech {
 model Question {
   id         String  @id @unique @default(uuid()) @db.Uuid
   question   String  @db.Text
-  answer     Answer  @relation(fields: [answer_id], references: [id], onDelete: Cascade)
-  answer_id  String  @unique @db.Uuid
+  answer     String  @db.Text
   project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id String  @db.Uuid
-}
-
-model Answer {
-  id       String    @id @unique @default(uuid()) @db.Uuid
-  answer   String    @db.Text
-  question Question?
 }
 
 model Sketch {

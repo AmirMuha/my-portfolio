@@ -849,9 +849,11 @@ type Mutation {
   createAnswer(data: AnswerCreateInput!): Answer!
   createManyQuestion(data: [QuestionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManySketch(data: [SketchCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyTech(data: [TechCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTechCategory(data: [TechCategoryCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createMessage(data: MessageCreateInput!): Message!
   createProject(data: ProjectCreateInput!): Project!
+  createProjectWithNestedRelations: String!
   createQuestion(data: QuestionCreateInput!): Question!
   createSketch(data: SketchCreateInput!): Sketch!
   createTech(data: TechCreateInput!): Tech!
@@ -1969,6 +1971,12 @@ input TechCreateInput {
   id: String
   name: String!
   tech_categories: TechCategoryCreateNestedOneWithoutTechsInput!
+}
+
+input TechCreateManyInput {
+  id: String
+  name: String!
+  tech_category_id: String!
 }
 
 input TechCreateManyTech_categoriesInput {

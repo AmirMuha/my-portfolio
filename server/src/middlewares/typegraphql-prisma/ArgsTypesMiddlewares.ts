@@ -1,8 +1,9 @@
-import { ValidateNested } from "class-validator";
 import {
-  applyArgsTypesEnhanceMap,
   ArgsTypesEnhanceMap,
+  applyArgsTypesEnhanceMap,
 } from "../../../prisma/generated/type-graphql";
+
+import { ValidateNested } from "class-validator";
 // ##############################################
 // ####################### ENHANCEMENT ##########
 // ##############################################
@@ -15,7 +16,6 @@ const argsTypesEnhanceMap: ArgsTypesEnhanceMap = {
   CreateTechCategoryArgs: { fields: { data: [ValidateNested()] } },
   CreateSketchArgs: { fields: { data: [ValidateNested()] } },
   CreateQuestionArgs: { fields: { data: [ValidateNested()] } },
-  CreateAnswerArgs: { fields: { data: [ValidateNested()] } },
   // UpdateAdminArgs: { fields: { data: [ValidateNested()] } },
   // UpdateAboutArgs: { fields: { data: [ValidateNested()] } },
   // UpdateMessageArgs: { fields: { data: [ValidateNested()] } },
@@ -24,7 +24,6 @@ const argsTypesEnhanceMap: ArgsTypesEnhanceMap = {
   // UpdateTechCategoryArgs: { fields: { data: [ValidateNested()] } },
   // UpdateSketchArgs: { fields: { data: [ValidateNested()] } },
   // UpdateQuestionArgs: { fields: { data: [ValidateNested()] } },
-  // UpdateAnswerArgs: { fields: { data: [ValidateNested()] } },
   DeleteAdminArgs: { fields: { where: [ValidateNested()] } },
   DeleteAboutArgs: { fields: { where: [ValidateNested()] } },
   DeleteMessageArgs: { fields: { where: [ValidateNested()] } },
@@ -33,7 +32,6 @@ const argsTypesEnhanceMap: ArgsTypesEnhanceMap = {
   DeleteTechCategoryArgs: { fields: { where: [ValidateNested()] } },
   DeleteSketchArgs: { fields: { where: [ValidateNested()] } },
   DeleteQuestionArgs: { fields: { where: [ValidateNested()] } },
-  DeleteAnswerArgs: { fields: { where: [ValidateNested()] } },
   FindUniqueAdminArgs: { fields: { where: [ValidateNested()] } },
   FindUniqueAboutArgs: { fields: { where: [ValidateNested()] } },
   FindUniqueMessageArgs: { fields: { where: [ValidateNested()] } },
@@ -42,7 +40,6 @@ const argsTypesEnhanceMap: ArgsTypesEnhanceMap = {
   FindUniqueTechCategoryArgs: { fields: { where: [ValidateNested()] } },
   FindUniqueSketchArgs: { fields: { where: [ValidateNested()] } },
   FindUniqueQuestionArgs: { fields: { where: [ValidateNested()] } },
-  FindUniqueAnswerArgs: { fields: { where: [ValidateNested()] } },
 };
 // ##############################################
 // ####################### APPLICATION ##########
