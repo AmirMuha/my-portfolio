@@ -1,4 +1,4 @@
-import { Root, Resolver, Mutation, Args, UseMiddleware } from "type-graphql";
+import { Ctx, Resolver, Mutation, Args, UseMiddleware } from "type-graphql";
 import { CreateProjectWithNestedRelationsArgs } from "../types/arg-types/CreateProjectWithNestedRelationsArgs";
 import { isLoggedIn } from "../middlewares/isLoggedIn";
 import { MyContext } from "../types/MyContext";
@@ -6,13 +6,13 @@ import { MyContext } from "../types/MyContext";
 @Resolver()
 export class CreateProjectWithNestedRelationsResolver {
   @UseMiddleware(isLoggedIn)
-  @Mutation(() => String)
+  @Mutation(() => Boolean || String)
   async createProjectWithNestedRelations(
-    @Root() { prisma }: MyContext,
-    @Args() {data}: CreateProjectWithNestedRelationsArgs
-  ): Promise<String> {
+    @Ctx() { prisma, data: { userId } }: MyContext,
+    @Args() { data }: CreateProjectWithNestedRelationsArgs
+  ): Promise<boolean | string> {
+    let questionsPromise;
     const sketchPromises = [];
-    const questionPromises = [];
     const techCategoriesPromises = [];
     const project = await prisma.project.create({
       data: {
@@ -22,12 +22,13 @@ export class CreateProjectWithNestedRelationsResolver {
         name: data.name,
         type: data.type,
         image: data.image,
-        admin_id: data.adminId,
+        admin_id: userId,
       },
       select: {
         id: true,
       },
     });
+
     for await (const sk of data.sketches) {
       const skPromise = await prisma.sketch.create({
         data: {
@@ -39,16 +40,20 @@ export class CreateProjectWithNestedRelationsResolver {
           project_id: project.id,
         },
       });
-      sketchPromises.push(skPromise);
+      if (skPromise) {
+        sketchPromises.push(skPromise);
+      }
     }
 
-    await prisma.question.createMany({
-      data: data.questions.map((q) => ({
-        project_id: project.id,
-        question: q.question,
-        answer: q.answer,
-      })),
-    });
+    if (data.questions.length > 0) {
+      questionsPromise = await prisma.question.createMany({
+        data: data.questions.map((q) => ({
+          project_id: project.id,
+          question: q.question,
+          answer: q.answer,
+        })),
+      });
+    }
 
     for await (const tc of data.techCategories) {
       const tcPromise = await prisma.techCategory.create({
@@ -58,8 +63,27 @@ export class CreateProjectWithNestedRelationsResolver {
           project_id: project.id,
         },
       });
-      techCategoriesPromises.push(tcPromise);
+      if (tcPromise) {
+        techCategoriesPromises.push(tcPromise);
+      }
     }
-    return "working";
+
+    return Promise.all([
+      ...techCategoriesPromises,
+      ...sketchPromises,
+      questionsPromise,
+    ])
+      .then(() => {
+        return true;
+      })
+      .catch(async (e) => {
+        console.log(e);
+        await prisma.project.delete({
+          where: {
+            id: project.id,
+          },
+        });
+        return e.message;
+      });
   }
 }
