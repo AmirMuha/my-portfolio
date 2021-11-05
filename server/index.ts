@@ -1,40 +1,38 @@
-import { config as EnvConfig } from "dotenv";
-EnvConfig({
-  path: `.env.${process.env.NODE_ENV}`,
-});
+import "reflect-metadata";
+import "./src/utils/configuringEnvironmentVariables"
+
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
-  ApolloServerPluginLandingPageProductionDefault,
+  ApolloServerPluginLandingPageProductionDefault
 } from "apollo-server-core";
-import { ApolloServer } from "apollo-server-express";
-import redisStore from "connect-redis";
-import { graphqlUploadExpress } from "graphql-upload";
-import cors from "cors";
-import Express from "express";
-import session from "express-session";
-import helmet from "helmet";
-import morgan from "morgan";
-import path from "path";
-import "reflect-metadata";
-import { buildSchemaSync } from "type-graphql";
-import { v4 } from "uuid";
-import resolvers from "./src/resolvers/allResolvers";
-import { black } from "./src/chalk";
 // import { TechCategoryResolver } from "./prisma/generated/type-graphql";
 import {
   HOST,
   PORT,
   SESSION_MAX_AGE,
   SESSION_SECRET,
-  __prod__,
+  __prod__
 } from "./src/constants/envs-and-consts";
-import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
-import { Upload } from "graphql-upload";
-import prisma from "./src/prisma-client";
-import { redis } from "./src/redis-client";
 
+import { ApolloServer } from "apollo-server-express";
+import Express from "express";
 import { MyContext } from "./src/types/MyContext";
 import { UploadResolver } from "./src/resolvers/Upload";
+import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
+import { black } from "./src/chalk";
+import { buildSchemaSync } from "type-graphql";
+import cors from "cors";
+import { graphqlUploadExpress } from "graphql-upload";
+import helmet from "helmet";
+import morgan from "morgan";
+import path from "path";
+import prisma from "./src/prisma-client";
+import { redis } from "./src/redis-client";
+import redisStore from "connect-redis";
+import resolvers from "./src/resolvers/allResolvers";
+import session from "express-session";
+import { v4 } from "uuid";
+
 const app = Express();
 const RedisStore = redisStore(session);
 
