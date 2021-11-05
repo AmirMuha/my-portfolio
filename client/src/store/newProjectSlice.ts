@@ -211,7 +211,7 @@ const newProjectSlice = createSlice({
     setTypeReducer: (state, action: { payload: { type: string } }) => {
       if (action.payload.type) {
         storeLocally(state, "type", action.payload.type, state.name)
-        state.app_url = action.payload.type
+        state.type = action.payload.type
       }
     },
     setGithubUrlReducer: (state, action: { payload: { url: string } }) => {

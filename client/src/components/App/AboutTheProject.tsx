@@ -238,7 +238,6 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           },
         })
           .then(res => {
-            console.log(res.data)
             const isResError =
               res.data.updateImage?.match(/\.(jpeg|jpg|webp|png|svg)$/gi) &&
               res.data.updateImage.includes("ENOENT")
@@ -427,7 +426,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   <h2 className="text-sm lg:text-sm-4 font-bold mx-2">
                     Type :{" "}
                   </h2>
-                  <span>{projectType || "Project Type"}</span>
+                  <span>{data.type || "Project Type"}</span>
                 </div>
                 <Editable
                   editButtonStyle={{ marginRight: -50 }}
