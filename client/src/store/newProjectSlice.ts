@@ -28,23 +28,29 @@ function storeLocally(
       case "TECH_CATEGORY":
         if (
           !existingProject.tech_categories.find(
-            (tc: { name: string }) => tc.name === value
+            (tc: { id: string }) => tc.id === value.id
+          && value.id && value.name
           )
         ) {
-          existingProject.tech_categories.push({ name: value, techs: [] })
+          existingProject.tech_categories.push({
+            id: new RandomNumber()[0],
+            name: value.name,
+            techs: [],
+          })
         }
         break
       case "TECH":
-        const receivedValue = value as { name: string; techs: string[] }
+        const receivedValue = value as { id: string,name: string; techs: string[] }
         const foundTechCategory = existingProject.tech_categories.findIndex(
-          (tc: { name: string }) => tc.name === value
+          (tc: { id: string }) => tc.id === value
         )
         if (foundTechCategory) {
           existingProject.tech_categories = existingProject.tech_categories.map(
-            (tc: { name: string; techs: { name: string }[] }) => {
-              if (tc.name === receivedValue.name) {
+            (tc: { id: string;name: string; techs: { name: string }[] }) => {
+              if (tc.id === receivedValue.id) {
                 return {
-                  name: tc.name,
+                  id: receivedValue.id,
+                  name: receivedValue.name,
                   techs: receivedValue.techs.map(t => ({ name: t })),
                 }
               } else {
@@ -54,6 +60,7 @@ function storeLocally(
           )
         } else {
           existingProject.tech_categories.push({
+            id: new RandomNumber()[0],
             name: receivedValue.name,
             techs: receivedValue.techs.map(t => ({ name: t })),
           })
@@ -94,12 +101,10 @@ function storeLocally(
             title: string
           }[] = [...existingProject.sketches]
           const sketchInd = existingSketches.findIndex(q => q.id === value.id)
-          console.log("Before", existingSketches[sketchInd][field])
           existingSketches.splice(sketchInd, 1, {
             ...existingSketches[sketchInd],
             [value.updateField]: value.updateValue,
           })
-          console.log("After", existingSketches[sketchInd][field])
           existingProject.sketches = existingSketches
         } else {
           existingProject.sketches.push({
@@ -111,7 +116,6 @@ function storeLocally(
             title: value.title,
           })
         }
-
         break
       case "DELETE":
         if (value.id && value.field) {
@@ -188,7 +192,6 @@ const newProjectSlice = createSlice({
   reducers: {
     setImageReducer: (state, action: { payload: { image: any } }) => {
       if (action.payload.image) {
-        console.log(action.payload.image)
         storeLocally(state, "image", action.payload.image, state.name)
         state.image = action.payload.image
       }
@@ -203,6 +206,12 @@ const newProjectSlice = createSlice({
       if (action.payload.url) {
         storeLocally(state, "app_url", action.payload.url, state.name)
         state.app_url = action.payload.url
+      }
+    },
+    setTypeReducer: (state, action: { payload: { type: string } }) => {
+      if (action.payload.type) {
+        storeLocally(state, "type", action.payload.type, state.name)
+        state.app_url = action.payload.type
       }
     },
     setGithubUrlReducer: (state, action: { payload: { url: string } }) => {
@@ -253,11 +262,17 @@ const newProjectSlice = createSlice({
         return { ...newState }
       }
     },
-    setTechCategoryReducer: (state, action: { payload: { name: string } }) => {
+    setTechCategoryReducer: (
+      state,
+      action: { payload: { id?: string; name: string } }
+    ) => {
       const project = storeLocally(
         state,
         "name",
-        action.payload.name,
+        {
+          id: action.payload.id,
+          name: action.payload.name,
+        },
         state.name,
         null,
         "TECH_CATEGORY"
@@ -266,14 +281,23 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+
     setTechReducer: (
       state,
-      action: { payload: { name: string; techs: string[] } }
+      action: {
+        payload: {id?: string; name: string; techs: string[] }
+      }
     ) => {
       const project = storeLocally(
         state,
         "name",
-        { name: action.payload.name, techs: action.payload.techs },
+        {
+          id: action.payload.id
+            ? action.payload.id
+            : undefined,
+          name: action.payload.name,
+          techs: action.payload.techs,
+        },
         state.name,
         null,
         "TECH"
@@ -282,6 +306,7 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+
     setQAndA: (
       state,
       action: { payload: { question: string; answer: string; id?: string } }
@@ -302,6 +327,7 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+
     setSketchReducer: (
       state,
       action: {
@@ -339,6 +365,7 @@ const newProjectSlice = createSlice({
         ...project,
       }
     },
+
     deleteReducer: (
       state,
       action: { payload: { id: string; field: keyof NewProjectState } }
@@ -370,6 +397,6 @@ export const {
   setImageReducer,
   setSummaryReducer,
   setTechCategoryReducer,
-  setTechReducer,
+  setTechReducer,setTypeReducer
 } = newProjectSlice.actions
 export const NewProjectReducer = newProjectSlice.reducer

@@ -19,14 +19,17 @@ import {
   setGithubUrlReducer,
   setImageReducer,
   setSummaryReducer,
+  setTypeReducer,
 } from "../../store/newProjectSlice"
 
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
 import Editable from "../Dashboard/Editable"
 import { GitHub } from "../../icons/iconsJSX"
+import Input from "../UI/Input"
 import Markdown from "../utility/Markdown"
 import SmallPipe from "../UI/SmallPipe"
+import { getErrorMessage } from "../../util/getErrorMessage"
 import { useAlert } from "../../util/useAlert"
 import { useMutation } from "@apollo/client"
 import { useTheDispatch } from "../../store/store"
@@ -35,12 +38,12 @@ interface Props {
   image: IGatsbyImageData | string
   editable?: boolean
   data: GatsbyTypes.Portfolio_Project
-  mode?: "ADD" | "EDIT" | "NORMAL"
+  mode?: "ADD" | "EDIT"
 }
 const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   editable = false,
   image,
-  mode = "NORMAL",
+  mode = "EDIT",
   data,
 }) => {
   const {
@@ -64,15 +67,62 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   const [summary, setSummary] = useState<string>("")
   const [githubUrl, setGithubUrl] = useState<string>("")
   const [appUrl, setAppUrl] = useState<string>("")
+  const [projectType, setProjectType] = useState<string>("")
 
   useEffect(() => {
     setSummary(data.summary || "Enter a brief summary of the project.")
     setImageName(data.image)
     setGithubUrl(data.github_url)
     setAppUrl(data.app_url)
+    setProjectType(data.type)
   }, [data])
+
+  const updateType = () => {
+    if (!projectType) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Type is required, please provide some value.",
+      })
+      return
+    }
+    if (mode === "ADD") {
+      addNewProjectDispatch(setTypeReducer({ type: projectType }))
+    } else {
+      mutateProjectTypeUpdate({
+        variables: {
+          type: projectType,
+          id: data.id,
+        },
+      })
+        .then(() => {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "Updated project type successfully.",
+          })
+        })
+        .catch(e => {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message: e.errors
+              ? getErrorMessage(e)
+              : "Couldn't update the type for unknown reasons.",
+          })
+        })
+    }
+  }
+
   const updateGithubUrl = () => {
-    // mutate the update
+    if (!githubUrl) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "GitHub URL is required, please provide some value.",
+      })
+      return
+    }
     if (mode === "ADD") {
       addNewProjectDispatch(setGithubUrlReducer({ url: githubUrl }))
     } else {
@@ -95,15 +145,22 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             isOpen: true,
             title: "Error",
             message: e.errors
-              ? e.errors[0].message
-              : e.message ||
-              "Something went wrong, Couldn't update the GitHub Url.",
+              ? getErrorMessage(e)
+              : "Something went wrong, Couldn't update the GitHub Url.",
           })
         })
     }
   }
+
   const updateAppUrl = () => {
-    // mutate the update
+    if (!appUrl) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "App URL is required, please provide some value.",
+      })
+      return
+    }
     if (mode === "ADD") {
       addNewProjectDispatch(setAppUrlReducer({ url: appUrl }))
     } else {
@@ -126,15 +183,22 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             isOpen: true,
             title: "Error",
             message: e.errors
-              ? e.errors[0].message
-              : e.message ||
-              "Something went wrong, Couldn't update the App Url.",
+              ? getErrorMessage(e)
+              : "Something went wrong, Couldn't update the App Url.",
           })
         })
     }
   }
+
   const updateImage = () => {
-    // mutate the update
+    if (!imageFile) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Image is required, please provide some value.",
+      })
+      return
+    }
     if (mode === "ADD") {
       if (imageFile) {
         mutateImage({
@@ -153,9 +217,8 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               isOpen: true,
               title: "Error",
               message: e.errors
-                ? e.errors[0].message
-                : e.message ||
-                "Something went wrong, Couldn't upload the image.",
+                ? getErrorMessage(e)
+                : "Something went wrong, Couldn't upload the image.",
             })
           })
       }
@@ -193,16 +256,22 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               isOpen: true,
               title: "Error",
               message: e.errors
-                ? e.errors[0].message
-                : e.message ||
-                "Something went wrong, Couldn't update the image.",
+                ? getErrorMessage(e)
+                : "Something went wrong, Couldn't update the image.",
             })
           })
       }
     }
   }
+
   const updateSummary = (v: string) => {
-    // mutate the update
+    if(summary) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Summary is required, please provide some value."
+      })
+    }
     if (mode === "ADD") {
       addNewProjectDispatch(setSummaryReducer({ summary }))
     } else {
@@ -225,13 +294,13 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             isOpen: true,
             title: "Error",
             message: e.errors
-              ? e.errors[0].message
-              : e.message ||
-              "Something went wrong, Couldn't update the Summary.",
+              ? getErrorMessage(e)
+              : "Something went wrong, Couldn't update the Summary.",
           })
         })
     }
   }
+
   const getGithubUrl = (v: string) => {
     setGithubUrl(v)
   }
@@ -241,6 +310,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   const getSummary = (v: string) => {
     setSummary(v)
   }
+
   const getImageFile = (f: FileList & BlobPart[]) => {
     const i = new Blob(f, { type: f[0].type })
     const s = URL.createObjectURL(i)
@@ -276,8 +346,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${imageName || "default-project.jpeg"
-                  }`}
+                src={`${(window as any).__SERVER_API__}/${
+                  imageName || "default-project.jpeg"
+                }`}
                 alt={`${data.name || "Default"} Image`}
               />
             </div>
@@ -351,6 +422,34 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               pipeStyle={{ width: 50 }}
               pipes="left"
             >
+              <div className="relative mt-4 sm:mt-0">
+                <div className="flex gap-2 items-center">
+                  <h2 className="text-sm lg:text-sm-4 font-bold mx-2">
+                    Type :{" "}
+                  </h2>
+                  <span>{projectType || "Project Type"}</span>
+                </div>
+                <Editable
+                  editButtonStyle={{ marginRight: -50 }}
+                  mode="MODAL"
+                  position="tr"
+                  custom
+                  title="Type"
+                  inputType="text"
+                  onSave={updateType}
+                  customInputId="project-type"
+                  value={projectType}
+                  getValue={v => setProjectType(v)}
+                />
+              </div>
+            </SmallPipe>
+            <SmallPipe
+              style={{
+                display: "block",
+              }}
+              pipeStyle={{ width: 50 }}
+              pipes="left"
+            >
               <h2 className="text-sm lg:text-sm-4 font-bold mx-2">
                 Summary Of The Project
               </h2>
@@ -382,7 +481,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${imageName || "default-project.jpeg"}`}
+                src={`${(window as any).__SERVER_API__}/${
+                  imageName || "default-project.jpeg"
+                }`}
                 alt={`${data.name} Image`}
               />
             </div>
@@ -425,7 +526,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               </h2>
             </SmallPipe>
             <div className=" px-5 py-3">
-              <Markdown>{data.summary || "Write a brief summary of the project."}</Markdown>
+              <Markdown>
+                {data.summary || "Write a brief summary of the project."}
+              </Markdown>
             </div>
           </div>
         </div>
