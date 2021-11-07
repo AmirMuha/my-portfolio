@@ -164,7 +164,7 @@ const EditProjectSlice = createSlice({
     updateProjectFieldReducer: (
       state,
       action: {
-        payload: { field: keyof ProjectStateTypes; value: any; id: string }
+        payload: { field: keyof ProjectStateTypes; value: any }
       }
     ) => {
       return {
