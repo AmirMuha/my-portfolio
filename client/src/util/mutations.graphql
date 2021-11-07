@@ -1,0 +1,330 @@
+mutation DeleteFile($filename: String!) {
+  deleteFile(filename: $filename)
+}
+mutation ConfirmEmail($code: Int!, $email: String!) {
+  confirmEmail(code: $code, email: $email)
+}
+mutation Login($email: String!, $password: String!) {
+  login(data: { email: $email, password: $password }) {
+    token
+  }
+}
+mutation Logout {
+  logout
+}
+mutation SubmitAdmin(
+  $email: String!
+  $password: String!
+  $fname: String!
+  $lname: String!
+  $linkedIn: String!
+  $whatsapp: String!
+  $instagram: String!
+  $github: String!
+  $heroImage: String!
+  $resumes: [String!]!
+) {
+  createAdmin(
+    data: {
+      email: $email
+      password: $password
+      fname: $fname
+      lname: $lname
+      linkedIn: $linkedIn
+      whatsapp: $whatsapp
+      instagram: $instagram
+      github: $github
+      heroImage: $heroImage
+      resumes: { set: $resumes }
+    }
+  ) {
+    id
+    email
+    fname
+    lname
+    resumes
+  }
+}
+mutation UploadFile($file: Upload!) {
+  uploadSingleFile(file: $file)
+}
+mutation UploadFiles($files: [Upload!]!) {
+  uploadMultipleFiles(files: $files)
+}
+# // ##################################
+# // ############### Create Mutations
+# // ##################################
+mutation CreateStack($id: String!, $image: [String!]) {
+  updateAdmin(data: { stack: { push: $image } }, where: { id: $id }) {
+    id
+  }
+}
+mutation CreateProjectWithRelations(
+  $name: String!
+  $summary: String!
+  $image: String!
+  $github_url: String!
+  $app_url: String!
+  $type: String!
+  $techCategories: [TechCategoryCreateInput_PWNR!]!
+  $questions: [QuestionCreateInput_PWNR!]!
+  $sketches: [SketchCreateInput_PWNR!]!
+) {
+  createProjectWithNestedRelations(
+    data: {
+      name: $name
+      summary: $summary
+      type: $type
+      image: $image
+      github_url: $github_url
+      app_url: $app_url
+      techCategories: $techCategories
+      questions: $questions
+      sketches: $sketches
+    }
+  )
+}
+mutation CreateProject(
+  $for: String
+  $name: String!
+  $image: String!
+  $type: String!
+  $github_url: String!
+  $app_url: String!
+  $summary: String!
+) {
+  createProject(
+    data: {
+      name: $name
+      image: $image
+      type: $type
+      github_url: $github_url
+      app_url: $app_url
+      summary: $summary
+      admin: { connect: { email: $for } }
+    }
+  ) {
+    id
+    name
+    image
+    type
+    github_url
+    app_url
+    summary
+  }
+}
+
+mutation CreateManySketches($data: [SketchCreateManyInput!]!) {
+  createManySketch(data: $data) {
+    count
+  }
+}
+
+mutation CreateSketch(
+  $projectId: String!
+  $summary: String!
+  $description: String!
+  $download_link: String!
+  $image: String!
+  $title: String!
+) {
+  createSketch(
+    data: {
+      title: $title
+      description: $description
+      summary: $summary
+      download_link: $download_link
+      image: $image
+      project: { connect: { id: $projectId } }
+    }
+  ) {
+    id
+    title
+    summary
+    description
+    download_link
+    image
+    project_id
+  }
+}
+mutation CreateTechCategory($name: String!, $projectId: String!) {
+  createTechCategory(
+    data: { name: $name, project: { connect: { id: $projectId } } }
+  ) {
+    id
+    name
+  }
+}
+mutation CreateTech($name: String!, $techCategoryId: String!) {
+  createTech(
+    data: { name: $name, tech_categories: { connect: { id: $techCategoryId } } }
+  ) {
+    id
+    name
+  }
+}
+mutation CreateQuestion(
+  $question: String!
+  $answer: String!
+  $projectId: String!
+) {
+  createQuestion(
+    data: {
+      question: $question
+      answer: $answer
+      project: { connect: { id: $projectId } }
+    }
+  ) {
+    id
+    question
+    answer
+  }
+}
+# // // ##################################
+# // // ############### Update Mutations
+# // // ##################################
+
+mutation UpdateProjectSummary($id: String!, $summary: String) {
+  updateProject(data: { summary: { set: $summary } }, where: { id: $id }) {
+    summary
+  }
+}
+mutation UpdateProjectType($id: String!, $type: String) {
+  updateProject(data: { type: { set: $type } }, where: { id: $id }) {
+    type
+  }
+}
+mutation UpdateImage(
+  $file: Upload!
+  $id: String!
+  $prevname: String!
+  $field: String
+) {
+  updateImage(
+    file: $file
+    id: $id
+    prevname: $prevname
+    field: $field
+    isEdit: true
+  )
+}
+mutation UpdateProjectAppUrl($id: String!, $app_url: String) {
+  updateProject(data: { app_url: { set: $app_url } }, where: { id: $id }) {
+    app_url
+  }
+}
+mutation UpdateProjectGitHubUrl($id: String!, $github_url: String!) {
+  updateProject(
+    data: { github_url: { set: $github_url } }
+    where: { id: $id }
+  ) {
+    github_url
+  }
+}
+mutation UpdateProjectName($id: String!, $name: String) {
+  updateProject(data: { name: { set: $name } }, where: { id: $id }) {
+    name
+  }
+}
+mutation UpdateSketchDescription($id: String!, $description: String!) {
+  updateSketch(
+    data: { description: { set: $description } }
+    where: { id: $id }
+  ) {
+    id
+    title
+    description
+    summary
+    image
+    download_link
+  }
+}
+mutation UpdateSketchImage($id: String!, $image: String!) {
+  updateSketch(data: { image: { set: $image } }, where: { id: $id }) {
+    id
+    title
+    description
+    summary
+    image
+    download_link
+  }
+}
+mutation UpdateSketchDownloadLink($id: String!, $download_link: String!) {
+  updateSketch(
+    data: { download_link: { set: $download_link } }
+    where: { id: $id }
+  ) {
+    id
+    title
+    description
+    summary
+    image
+    download_link
+  }
+}
+mutation UpdateSketchSummary($id: String!, $summary: String!) {
+  updateSketch(data: { summary: { set: $summary } }, where: { id: $id }) {
+    id
+    title
+    description
+    summary
+    image
+    download_link
+  }
+}
+mutation UpdateTechCategory($name: String!, $techCategoryId: String!) {
+  updateTechCategory(
+    data: { name: { set: $name } }
+    where: { id: $techCategoryId }
+  ) {
+    id
+    name
+    techs {
+      id
+      name
+    }
+  }
+}
+mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
+  updateQuestion(
+    data: {
+      question: { set: $question }
+      answer: { set: $answer }
+    }
+    where: { id: $id }
+  ) {
+    id
+    question
+    answer
+  }
+}
+mutation UpdateStack($id: String!, $images: [String!]) {
+  updateAdmin(data: { stack: { set: $images } }, where: { id: $id }){
+    id
+  }
+}
+mutation DeleteProject($id: String!) {
+  deleteProject(where: { id: $id }) {
+    id
+  }
+}
+mutation DeleteSketch($id: String!) {
+  deleteSketch(where: { id: $id }) {
+    id
+  }
+}
+mutation DeleteTechCategory($id: String!) {
+  deleteTechCategory(where: { id: $id }) {
+    id
+  }
+}
+mutation DeleteTech($id: String!) {
+  deleteTech(where: { id: $id }) {
+    id
+  }
+}
+mutation DeleteQuestion($id: String!) {
+  deleteQuestion(where: { id: $id }) {
+    id
+  }
+}

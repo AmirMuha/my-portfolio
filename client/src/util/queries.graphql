@@ -1,0 +1,109 @@
+query IsThereAdminQuery {
+  isThereAnAdmin
+}
+query QuerySingleProjectWithRelations($id: String!) {
+  project(where: { id: $id }) {
+    id
+    name
+    app_url
+    github_url
+    image
+    type
+    summary
+    questions {
+      id
+      question
+      answer
+    }
+    sketches {
+      id
+      title
+      description
+      summary
+      download_link
+      image
+    }
+    tech_categories {
+      id
+      name
+      techs {
+        id
+        name
+      }
+    }
+  }
+}
+query QueryProjectsWithRelations {
+  projects {
+    id
+    name
+    app_url
+    github_url
+    image
+    type
+    summary
+    questions {
+      id
+      question
+      answer 
+    }
+    sketches {
+      id
+      title
+      description
+      summary
+      download_link
+      image
+    }
+    tech_categories {
+      id
+      name
+      techs {
+        id
+        name
+      }
+    }
+  }
+}
+query QueryProjectsWithTechCategories{
+  projects {
+    app_url
+    github_url
+    id
+    image
+    name
+    summary
+    type
+    tech_categories {
+      name
+      id
+      techs {
+        name
+        id
+      }
+    }
+  }
+}
+query QueryProjectsWithoutRelations{
+  projects {
+    app_url
+    github_url
+    id
+    image
+    name
+    summary
+    type
+  }
+}
+query QueryMessages{
+  messages {
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    id
+    read_status
+    subject
+  }
+}
