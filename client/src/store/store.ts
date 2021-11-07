@@ -1,13 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
+
 import { EditProjectReducer } from "./editProject"
 import { NewProjectReducer } from "./newProjectSlice"
+import UnsavedProjectsReducer from "./unsavedProjectsSclice"
+import { configureStore } from "@reduxjs/toolkit"
 import { reducer as dashboardReducer } from "./projectSlice"
 export const store = configureStore({
   reducer: {
     dashboard: dashboardReducer,
     newProject: NewProjectReducer,
     editProject: EditProjectReducer,
+    unsavedProjects: UnsavedProjectsReducer
   },
 })
 
