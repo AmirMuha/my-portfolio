@@ -1,37 +1,36 @@
-import { useMutation } from "@apollo/client"
 import React, {
   FC,
   PropsWithChildren,
   useEffect,
   useRef,
-  useState,
+  useState
 } from "react"
-
-import { Delete } from "../../icons/iconsJSX"
+import { deleteReducer, setSketchReducer } from "../../store/newProjectSlice"
 import {
   deleteSketchReducer,
   updateDownloadLinkReducer,
   updateSketchDescriptionRedcuer,
   updateSketchImageReducer,
-  updateSketchSummaryReducer,
+  updateSketchSummaryReducer
 } from "../../store/editProject"
-import { deleteReducer, setSketchReducer } from "../../store/newProjectSlice"
-import { useTheDispatch } from "../../store/store"
 import {
-  UpdateSummarySketchMutation,
-  UpdateImageSketchMutation,
-  UpdateDescriptionSketchMutation,
-  UpdateDownloadLinkSketchMutation,
-  UpdateImageMutation,
-  DeleteSketchMutation,
-} from "../../util/mutations"
-import { useAlert } from "../../util/useAlert"
-import Editable from "../Dashboard/Editable"
+  useDeleteSketchMutation,
+  useUpdateImageMutation,
+  useUpdateSketchDescriptionMutation,
+  useUpdateSketchDownloadLinkMutation,
+  useUpdateSketchSummaryMutation
+} from "../../types/graphql-types"
+
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
-import Modal from "../UI/Modal"
+import { Delete } from "../../icons/iconsJSX"
+import Editable from "../Dashboard/Editable"
 import Markdown from "../utility/Markdown"
+import Modal from "../UI/Modal"
+import { useAlert } from "../../util/useAlert"
+import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useTheDispatch } from "../../store/store"
 
 interface Props {
   editable?: boolean
@@ -44,11 +43,32 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
   data,
   editable = false,
 }) => {
-  const [mutateSummary] = useMutation(UpdateSummarySketchMutation)
-  const [mutateImageUpdate] = useMutation(UpdateImageMutation)
-  const [mutateDescription] = useMutation(UpdateDescriptionSketchMutation)
-  const [mutateDownloadLink] = useMutation(UpdateDownloadLinkSketchMutation)
-  const [mutateImage] = useMutation(UpdateImageSketchMutation)
+  const [
+    mutateSummary,
+    { error: updateSketchSummaryError, loading: updateSketchSummaryLoading },
+  ] = useUpdateSketchSummaryMutation()
+  const [
+    mutateImageUpdate,
+    { error: udpateSketchImageError, loading: updateSketchImageLoading },
+  ] = useUpdateImageMutation()
+  const [
+    mutateDescription,
+    {
+      error: updateSketchDescriptionError,
+      loading: updateSketchDescriptionLoading,
+    },
+  ] = useUpdateSketchDescriptionMutation()
+  const [
+    mutateDownloadLink,
+    {
+      error: updateSketchDownloadLinkError,
+      loading: updateSketchDownloadLinkLoading,
+    },
+  ] = useUpdateSketchDownloadLinkMutation()
+  const [
+    mutateSketchDelete,
+    { error: deleteSketchError, loading: deleteSketchLoading },
+  ] = useDeleteSketchMutation()
   const dispatch = useTheDispatch()
   const {
     isOpen: isAlertOpen,
@@ -56,21 +76,45 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     setAlert,
     title: alertTitle,
   } = useAlert()
+  useAlertGraphqlError(
+    updateSketchSummaryError,
+    updateSketchSummaryLoading,
+    setAlert
+  )
+  useAlertGraphqlError(
+    updateSketchDescriptionError,
+    updateSketchDescriptionLoading,
+    setAlert
+  )
+  useAlertGraphqlError(
+    udpateSketchImageError,
+    updateSketchImageLoading,
+    setAlert
+  )
+  useAlertGraphqlError(
+    updateSketchDownloadLinkError,
+    updateSketchDownloadLinkLoading,
+    setAlert
+  )
+  useAlertGraphqlError(deleteSketchError, deleteSketchLoading, setAlert)
   const [isConfirmOpen, setConfirmBox] = useState(false)
   const imageRef = useRef<HTMLImageElement>()
   const [summary, setSummary] = useState<string>(data.summary)
   const [downloadLink, setDownloadLink] = useState<string>(data.download_link)
   const [description, setDescription] = useState<string>(data.description)
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [mutateSketchDelete] = useMutation(DeleteSketchMutation)
   const [imageFile, setImage] = useState<any>(null)
   const paragraphRef = useRef<HTMLParagraphElement>()
   useEffect(() => {
     paragraphRef.current?.scrollTo(0, 0)
   }, [paragraphRef])
-  const getDownloadLink = (v: string) => {
-    console.log(v)
-    setDownloadLink(v)
+
+  const unknownError = () => {
+    setAlert({
+      isOpen: true,
+       title: "Error",
+       message: "Unknown Error: Something went wrong."
+    })
   }
   const updateFn = (field: keyof GatsbyTypes.Portfolio_Sketch, val: string) => {
     if (val) {
@@ -91,7 +135,6 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     }
   }
   const updateDownloadLink = (v: string) => {
-    // mutate the update
     if (mode === "ADD") {
       updateFn("download_link", v)
     } else {
@@ -102,97 +145,159 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
         },
       })
         .then(res => {
-          setAlert({
-            isOpen: true,
-            message: "Updated downloadLink successfully.",
-            title: "Success",
-          })
-          dispatch(
-            updateDownloadLinkReducer({
-              id: data.id,
-              download_link: res.data.updateSketch.download_link,
+          if(res.data && res.data.updateSketch) {
+            setAlert({
+              isOpen: true,
+              message: "Updated downloadLink successfully.",
+              title: "Success",
             })
-          )
-        })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message || "Couldn't udpate the download link.",
-          })
+            dispatch(
+              updateDownloadLinkReducer({
+                id: data.id,
+                download_link: res.data.updateSketch.download_link,
+              })
+            )
+          } else {
+            unknownError()
+          }
         })
     }
   }
+
   const updateSketchDescription = (v: string) => {
-    if (mode === "ADD") {
-      updateFn("description", v)
+    if(v || v.length > 500) {
+      if (mode === "ADD") {
+        updateFn("description", v)
+      } else {
+        mutateDescription({
+          variables: {
+            id: data.id,
+            description: v,
+          },
+        })
+          .then(res => {
+            if(res.data && res.data.updateSketch) {
+              setAlert({
+                isOpen: true,
+                message: "Updated sketch description successfully.",
+                title: "Success",
+              })
+              dispatch(
+                updateSketchDescriptionRedcuer({
+                  id: data.id,
+                  description: res.data.updateSketch.description,
+                })
+              )
+            } else {
+              unknownError()
+            }
+          })
+        }
     } else {
-      mutateDescription({
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Description must be at least 500 charactors long."
+      })
+    }
+  }
+
+  const updateSketchSummary = (v: string) => {
+    if(v && v.length >50 && v.length < 150) {
+      if (mode === "ADD") {
+        updateFn("summary", v)
+      } else {
+        mutateSummary({
+          variables: {
+            id: data.id,
+            summary: v,
+          },
+        })
+          .then(res => {
+            if(res.data && res.data.updateSketch) {
+              setAlert({
+                isOpen: true,
+                title: "Success",
+                message: "Updated sketch summary successfully.",
+              })
+              dispatch(
+                updateSketchSummaryReducer({
+                  id: data.id,
+                  summary: res.data.updateSketch.summary,
+                })
+              )
+            } else {
+              unknownError()
+            }
+          })
+      }
+    } else {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Summary must be at least 50 and at most 150 charactors long."
+      })
+    }
+  }
+
+  const updateImage = () => {
+    if (mode === "ADD") {
+    } else {
+      mutateImageUpdate({
         variables: {
           id: data.id,
-          description: v,
+          prevname: data.image,
+          file: imageFile[0],
+          field: "sketch",
         },
       })
         .then(res => {
-          setAlert({
-            isOpen: true,
-            message: "Updated sketch description successfully.",
-            title: "Success",
-          })
-          dispatch(
-            updateSketchDescriptionRedcuer({
-              id: data.id,
-              description: res.data.updateSketch.description,
+          if(res.data && res.data.updateImage) {
+            setAlert({
+              isOpen: true,
+              title: "Success",
+              message: "Updated sketch image successfully.",
             })
-          )
-        })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message || "Couldn't update sketch description.",
-          })
+            dispatch(
+              updateSketchImageReducer({
+                id: data.id,
+                image: res.data.updateImage,
+              })
+            )
+          } else {
+            unknownError()
+          }
         })
     }
   }
-  const updateSketchSummary = (v: string) => {
-    // mutate the update
-    if (mode === "ADD") {
-      updateFn("summary", v)
-    } else {
-      mutateSummary({
-        variables: {
-          id: data.id,
-          summary: v,
-        },
-      })
-        .then(res => {
+
+  const deleteSketch = (v: boolean) => {
+    if (v) {
+      if (mode === "ADD") {
+        dispatch(deleteReducer({ id: data.id, field: "sketches" }))
+      } else {
+        mutateSketchDelete({
+          variables: {
+            id: data.id,
+          },
+        }).then(() => {
           setAlert({
             isOpen: true,
             title: "Success",
-            message: "Updated sketch summary successfully.",
+            message: "Deleted sketch successfully",
           })
           dispatch(
-            updateSketchSummaryReducer({
+            deleteSketchReducer({
               id: data.id,
-              summary: res.data.updateSketch.summary,
             })
           )
         })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message || "Couldn't update sketch summary.",
-          })
-        })
+      }
     }
+  }
+
+  const getDownloadLink = (v: string) => {
+    setDownloadLink(v)
   }
   const getDescriptionValue = (v: string) => {
     setDescription(v)
@@ -207,76 +312,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
       imageRef.current.src = newImageSrc
     }
   }
-  const updateImage = () => {
-    if (mode === "ADD") {
-    } else {
-      mutateImageUpdate({
-        variables: {
-          id: data.id,
-          prevname: data.image,
-          file: imageFile[0],
-          field: "sketch",
-        },
-      })
-        .then(res => {
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "Updated sketch image successfully.",
-          })
-          console.log(res)
-          dispatch(
-            updateSketchImageReducer({
-              id: data.id,
-              image: res.data.updateImage,
-            })
-          )
-        })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message || "Couldn't update sketch image.",
-          })
-        })
-    }
-  }
-  const deleteSketch = (v: boolean) => {
-    if (v) {
-      if (mode === "ADD") {
-        dispatch(deleteReducer({ id: data.id, field: "sketches" }))
-      } else {
-        mutateSketchDelete({
-          variables: {
-            id: data.id,
-          },
-        })
-          .then(res => {
-            setAlert({
-              isOpen: true,
-              title: "Success",
-              message: "Deleted sketch successfully",
-            })
-            dispatch(
-              deleteSketchReducer({
-                id: data.id,
-              })
-            )
-          })
-          .catch(e => {
-            setAlert({
-              isOpen: true,
-              title: "Error",
-              message: e.errors
-                ? e.errors[0].message
-                : e.message || "Couldn't delete sketch.",
-            })
-          })
-      }
-    }
-  }
+
   return (
     <>
       {isAlertOpen && (
@@ -311,7 +347,9 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
           >
             <div className="overflow-hidden">
               <img
-                src={`${(window as any).__SERVER_API__}/${data.image}`}
+                src={`${(window as any).__SERVER_API__}/${
+                  mode === "ADD" ? "temp/" : ""
+                }${data.image}`}
                 alt={data.title}
                 ref={imageRef as any}
                 style={{
@@ -421,7 +459,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             <div className="relative">
               <div className="overflow-hidden">
                 <img
-                  src={`${(window as any).__SERVER_API__}/${data.image}`}
+                  src={`${(window as any).__SERVER_API__}/temp/${data.image}`}
                   alt={data.title}
                   ref={imageRef as any}
                   style={{
