@@ -1,9 +1,10 @@
 import { MiddlewareFn, NextFn } from "type-graphql";
+
+import { JWT_PRIVATE_KEY } from "../constants/envs-and-consts";
+import { JwtVerifyWithPayloadType } from "../types/JwtVerifyWithPayloadType";
 import { MyContext } from "../types/MyContext";
 import { Props } from "../types/Props";
 import jwt from "jsonwebtoken";
-import { JWT_PRIVATE_KEY } from "../constants/envs-and-consts";
-import { JwtVerifyWithPayloadType } from "../types/JwtVerifyWithPayloadType";
 
 export const isLoggedIn: MiddlewareFn<MyContext> = async (
   { context: { data, req, prisma }, args, info, root }: Props,
@@ -23,9 +24,9 @@ export const isLoggedIn: MiddlewareFn<MyContext> = async (
   if (!token) {
     throw new Error("Either your session exprired or you are not logged in.");
   }
-  const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+  const verifiedToken = jwt.verify(token, JWT_PRIVATE_KEY, {
     complete: true,
-  })) as JwtVerifyWithPayloadType;
+  }) as JwtVerifyWithPayloadType;
   if (!verifiedToken.payload.id) {
     throw new Error("Either your session exprired or you are not logged in.");
   }
