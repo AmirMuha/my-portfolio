@@ -1,24 +1,26 @@
-import { useMutation } from "@apollo/client"
-import React, { CSSProperties, FC, useState } from "react"
-import { Delete } from "../../icons/iconsJSX"
-import {
-  deleteTechCategoryReducer,
-  deleteTechReducer,
-  updateTechCategoryReducer,
-} from "../../store/editProject"
-import { setTechReducer } from "../../store/newProjectSlice"
-import { useTheDispatch } from "../../store/store"
 import {
   DeleteTechCategoryMutation,
   DeleteTechMutation,
-  UpdateTechCategoryMutation,
+  UpdateTechCategoryMutation
 } from "../../util/mutations"
-import { useAlert } from "../../util/useAlert"
-import Editable from "../Dashboard/Editable"
-import { TechState } from "../Dashboard/Editable/Editable_TechCategory"
+import React, { CSSProperties, FC, useState } from "react"
+import { deleteReducer, setTechReducer } from "../../store/newProjectSlice"
+import {
+  deleteTechCategoryReducer,
+  deleteTechReducer,
+  updateTechCategoryReducer
+} from "../../store/editProject"
+
 import Alert from "../UI/Alert"
 import Confirm from "../UI/Confirm"
+import { Delete } from "../../icons/iconsJSX"
+import Editable from "../Dashboard/Editable"
 import SmallPipe from "../UI/SmallPipe"
+import { TechState } from "../Dashboard/Editable/Editable_TechCategory"
+import { useAlert } from "../../util/useAlert"
+import { useMutation } from "@apollo/client"
+import { useTheDispatch } from "../../store/store"
+
 interface Props {
   data: GatsbyTypes.Portfolio_TechCategory
   className?: string
@@ -35,6 +37,7 @@ const TechItem: FC<Props> = ({
   className = "",
   mode = "EDIT",
 }) => {
+
   const dispatch = useTheDispatch()
   const {
     message: alertMessage,
@@ -43,47 +46,65 @@ const TechItem: FC<Props> = ({
     setAlert,
   } = useAlert()
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
-  const dispatchTechCategory = useTheDispatch()
   const [mutateDeleteTechCategory] = useMutation(DeleteTechCategoryMutation)
   const [mutateDeleteTech] = useMutation(DeleteTechMutation)
   const [mutateUpdate] = useMutation(UpdateTechCategoryMutation)
   const openConfirm = () => {
     setIsConfirmOpen(true)
   }
+
+  const deleteTechCategoryLocally = () => {
+    if(mode === "ADD") {
+      dispatch(
+        deleteReducer({
+          id: data.id,
+          field: "tech_categories",
+        })
+      )
+    } else {
+      dispatch(deleteTechCategoryReducer({
+        id: data.id
+      }))
+    }
+    setAlert({
+      isOpen:true,
+      title: "Success",
+      message: "Delete tech category successfully."
+    })
+  }
+
   const deleteTechCategory = (v: boolean) => {
     if (v) {
-      mutateDeleteTechCategory({
-        variables: {
-          id: data.id,
-        },
-      })
-        .then(res => {
-          dispatchTechCategory(
-            deleteTechCategoryReducer({
-              id: data.id,
-            })
-          )
+      if (mode === "ADD") {
+        deleteTechCategoryLocally()
+      } else {
+        mutateDeleteTechCategory({
+          variables: {
+            id: data.id,
+          },
         })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message ||
-                "Something went wrong, Couldn't delete tech category.",
+          .then(() => {
+            deleteTechCategoryLocally()
           })
-        })
+          .catch(() => {
+            setAlert({
+              isOpen: true,
+              title: "Error",
+              message: "Something went wrong, Couldn't delete tech category.",
+            })
+          })
+      }
     }
   }
+
   const deleteTech = (id: string) => {
     mutateDeleteTech({
       variables: {
         id,
       },
     })
-      .then(res => {
-        dispatchTechCategory(
+      .then(()=> {
+        dispatch(
           deleteTechReducer({
             techCategoryId: data.id,
             techId: id,
@@ -95,20 +116,22 @@ const TechItem: FC<Props> = ({
           message: "Deleted tech successfully.",
         })
       })
-      .catch(e => {
+      .catch(() => {
         setAlert({
           isOpen: true,
           title: "Error",
-          message: e.errors
-            ? e.errors[0].message
-            : e.message ||
-              "Something went wrong, Couldn't delete tech category.",
+          message: "Something went wrong, Couldn't delete tech category.",
         })
       })
   }
+
   const updateTech = (v: TechState) => {
     if (mode === "ADD") {
-      dispatch(setTechReducer(v))
+      dispatch(setTechReducer({
+        id: data.id,
+        name: v.name,
+        techs: v.techs
+      }))
     } else if (mode === "EDIT") {
       mutateUpdate({
         variables: {
@@ -117,7 +140,7 @@ const TechItem: FC<Props> = ({
         },
       })
         .then(res => {
-          dispatchTechCategory(
+          dispatch(
             updateTechCategoryReducer({
               id: res.data.updateTechCategory.id,
               name: v.name,
@@ -129,14 +152,11 @@ const TechItem: FC<Props> = ({
             message: "Updated tech category successfully.",
           })
         })
-        .catch(e => {
+        .catch(() => {
           setAlert({
             isOpen: true,
             title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message ||
-                "Something went wrong, Couldn't update tech category.",
+            message: "Something went wrong, Couldn't update tech category.",
           })
         })
     }
