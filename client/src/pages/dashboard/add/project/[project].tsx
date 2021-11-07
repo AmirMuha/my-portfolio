@@ -1,14 +1,13 @@
-import {
-  CreateManySketchMutation,
-  CreateProjectMutation,
-} from "../../../../util/mutations"
-import {
-  NewProjectState,
-  UNSAVED_PROJECTS,
-  editNameReducer,
-  setStateReducer,
-} from "../../../../store/newProjectSlice"
+import { PageProps, navigate } from "gatsby"
 import React, { FC, useEffect, useState } from "react"
+import {
+  deleteUnsavedProjectReducer,
+  fetchUnsavedProjectsReducer
+} from "../../../../store/unsavedProjectsSclice"
+import {
+  editNameReducer,
+  setStateReducer
+} from "../../../../store/newProjectSlice"
 import { useTheDispatch, useTheSelector } from "../../../../store/store"
 
 import AboutTheProject from "../../../../components/App/AboutTheProject"
@@ -17,18 +16,20 @@ import AddTechCategory from "../../../../components/Dashboard/AddTechCategory"
 import Alert from "../../../../components/UI/Alert"
 import Button from "../../../../components/UI/Button"
 import Dash_Layout from "../../../../components/Dashboard/Dash_Layout"
-import Loading from "../../../../components/UI/Loading"
-import { PageProps } from "gatsby"
+import InBoxLoading from "../../../../components/UI/InBoxLoading"
 import QAndA from "../../../../components/App/QAndA"
 import QAndA_Add from "../../../../components/Dashboard/Q&A_Add"
 import { SEO } from "../../../../components/SEO"
 import Sketch from "../../../../components/App/Sketch"
 import TechItem from "../../../../components/App/TechItem"
 import TheSection from "../../../../components/App/TheSection"
+import UnsavedProjects from "../../../../components/Dashboard/UnsavedProjects"
+import { createPortal } from "react-dom"
 import { useAlert } from "../../../../util/useAlert"
-import { useMutation } from "@apollo/client"
+import { useAlertGraphqlError } from '../../../../util/useAlertGraphqlError'
+import { useCreateProjectWithRelationsMutation } from "../../../../types/graphql-types"
 
-const project: FC<PageProps> = ({ children, params, location }) => {
+const project: FC<PageProps> = ({ params }) => {
   const {
     isOpen: alertIsOpen,
     message: alertMessage,
@@ -39,168 +40,114 @@ const project: FC<PageProps> = ({ children, params, location }) => {
   const dispatch = useTheDispatch()
   const data = useTheSelector(state => state.newProject)
   const [newProjectName, setNewProjectName] = useState("")
-  const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [mutateManySketch] = useMutation(CreateManySketchMutation)
-  const [mutateNewProject] = useMutation<
-    GatsbyTypes.Portfolio_Project,
-    GatsbyTypes.Portfolio_ProjectCreateInput
-  >(CreateProjectMutation)
-  const [unsavedProjects, setUnsavedProjects] = useState<NewProjectState[]>([])
-  const fetchPreviouslyEditingProject = () => {
-    const fetchUnsavedProjects = localStorage.getItem(UNSAVED_PROJECTS)
-    if (fetchUnsavedProjects) {
-      const convertedFetchUnsavedProjects = JSON.parse(fetchUnsavedProjects)
-      let fetchUnsavedProjectsArray: NewProjectState[] = []
-      for (const unsp in convertedFetchUnsavedProjects) {
-        fetchUnsavedProjectsArray.push(
-          convertedFetchUnsavedProjects[unsp] as any
-        )
-      }
-      setUnsavedProjects(fetchUnsavedProjectsArray)
-    }
-  }
+  const [mutateNewProject,{error,loading}] = useCreateProjectWithRelationsMutation()
+
+  useAlertGraphqlError(error, loading, setAlert, () => setIsLoading(false))
   useEffect(() => {
     setNewProjectName(projectNameParam)
     dispatch(setStateReducer({ name: projectNameParam }))
-    fetchPreviouslyEditingProject()
+    dispatch(fetchUnsavedProjectsReducer)
   }, [projectNameParam])
-  const deleteProject = (v: boolean) => {
-    setIsLoading(true)
-    // if (v) {
-
-    // }
-  }
+  const [isNameChanged, setIsNameChanged] = useState<boolean>(false)
 
   const saveTheNewProject = () => {
-    console.log(data)
     setIsLoading(true)
     const errors: string[] = []
     for (const e in data) {
       if (data[e] === undefined || data[e] === "") errors.push(e)
     }
     if (errors.length > 0) {
+      setIsLoading(false)
       setAlert({
         isOpen: true,
         title: "Error",
         message: `The folowing fields are required: ${errors.join(", ")}.`,
       })
-      setIsLoading(false)
-      return
-    }
-    mutateNewProject({
-      variables: {
-        name: data.name,
-        summary: data.summary,
-        image: data.image,
-        type: data.type,
-        app_url: data.app_url,
-        github_url: data.github_url,
-      },
-    } as any)
-      .then(res => {
-        if (data.sketches.length > 0) {
-          mutateManySketch({
-            variables: {
-              data: data.sketches.map(s => ({
-                title: s.title,
-                download_link: s.download_link,
-                summary: s.summary,
-                description: s.description,
-                image: s.image,
-                project_id: (res.data as any).createProject?.id,
-              })),
-            },
-          }).catch(e => {
-            setAlert({
-              isOpen: true,
-              title: "Error",
-              message: e.errors
-                ? e.errors[0].message
-                : e.message ||
-                  "Couldn't create some or all new sketches,please try again later.",
+    } else {
+      mutateNewProject({
+        variables: {
+          name: data.name,
+          app_url: data.app_url,
+          github_url: data.github_url,
+          summary: data.summary,
+          image: data.image,
+          type: data.type,
+          questions: data.questions.map(q =>({
+            question: q.question,
+            answer: q.answer,
+          })),
+          sketches: data.sketches.map(s => ({
+            title: s.title,
+            summary: s.summary,
+            description: s.description,
+            download_link: s.download_link,
+            image: s.image,
+          })),
+          techCategories: data.tech_categories.map(tc => ({
+            name: tc.name,
+            techs: tc.techs,
+          })),
+        } as any,
+      })
+        .then(() => {
+          dispatch(
+            deleteUnsavedProjectReducer({
+              name: data.name,
             })
-          })
-        }
-      })
-      .catch(e => {
-        setAlert({
-          isOpen: true,
-          title: "Error",
-          message: e.errors
-            ? e.errors[0].message
-            : e.message ||
-              "Couldn't create the project, something went wrong, please try again later.",
-        })
-        setIsLoading(false)
-      })
+          )
+          navigate("/dashboard")
+        }).catch(() => {})
+    }
+  }
+
+  const getNewProjectName = (name: string) => {
+    window.history.replaceState(
+      "",
+      "",
+      `${window.location.origin}/dashboard/add/project/${name}`
+    )
+    if (isNameChanged) {
+      setIsNameChanged(false)
+    }
+    setNewProjectName(name)
   }
 
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoading && (
+        <>
+          {createPortal(
+            <div className="fixed inset-0">
+              <InBoxLoading />
+            </div>,
+            document.body
+          )}
+        </>
+      )}
       {alertIsOpen && (
         <Alert
           title={alertTitle}
           onClose={() => setAlert({ isOpen: false })}
           message={alertMessage}
+          backdrop
         />
       )}
       <SEO title={`Adding New Project`} />
       <Dash_Layout>
-        {unsavedProjects.length > 0 && (
-          <TheSection
-            name="Pick Up Where You Left"
-            id="pick-up-where-you-left"
-            style={{ paddingBottom: 25 }}
-            textClassName="sm:text-sm"
-          >
-            <div className="mx-5">
-              <p>Projects you've been working on and haven't saved yet :</p>
-              <div className="m-2">
-                <ul className="flex flex-wrap gap-2">
-                  {unsavedProjects.map(p => (
-                    <li className="list-none my-1" key={p.name}>
-                      <Button
-                        to={`/dashboard/add/project/${p.name}`}
-                        outline
-                        color="200"
-                        textColor="500"
-                        borderColor="500"
-                      >
-                        {p.name}
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </TheSection>
-        )}
+        <UnsavedProjects isNameChanged={isNameChanged} param={newProjectName} />
         <TheSection
           titleEditable
-          getTitleValue={v => {
-            window.history.replaceState(
-              "",
-              "",
-              `${window.location.origin}/dashboard/add/project/${v}`
-            ),
-              setNewProjectName(v)
-          }}
+          getTitleValue={v => getNewProjectName(v)}
           titleValue={newProjectName}
           onSaveTitleValue={v => {
-            fetchPreviouslyEditingProject()
+            setIsNameChanged(true)
             dispatch(editNameReducer({ name: v, prevName: data.name }))
           }}
           name={newProjectName}
           id="about-the-project"
         >
-          <AboutTheProject
-            editable
-            mode="ADD"
-            data={data as any}
-            image={data.image || "default-project.jpeg"}
-          />
+          <AboutTheProject editable mode="ADD" data={data as any} />
         </TheSection>
         <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3">
           <TheSection
@@ -225,13 +172,17 @@ const project: FC<PageProps> = ({ children, params, location }) => {
           </TheSection>
           <TheSection
             name="Q&A"
+            textClassName="sm:text-sm"
+            lgText="sm.4"
             id="Questions-and-answers"
             className="lg:col-span-2 lg:col-start-2"
             style={{ paddingBottom: 25, flex: "1 1 0%" }}
           >
             <QAndA_Add mode="ADD" />
             {data.questions?.length > 0 &&
-              data.questions.map(q => <QAndA editable data={q} key={q.id} />)}
+              data.questions.map(q => (
+                <QAndA mode="ADD" editable data={q} key={q.id} />
+              ))}
           </TheSection>
         </div>
         <TheSection name="Sketches" id="sketches" style={{ marginBottom: 25 }}>
