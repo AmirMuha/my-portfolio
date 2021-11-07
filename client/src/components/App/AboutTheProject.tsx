@@ -1,4 +1,3 @@
-import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
 import React, {
   FC,
   PropsWithChildren,
@@ -7,42 +6,41 @@ import React, {
   useState,
 } from "react"
 import {
-  UpdateImageMutation,
-  UpdateProjectAppUrlMutation,
-  UpdateProjectSummaryMutation,
-  UpdateProjectTypeMutation,
-  UpdateProjectgithub_urlMutation,
-  UploadSingleFileMutation,
-} from "../../util/mutations"
-import {
   setAppUrlReducer,
   setGithubUrlReducer,
   setImageReducer,
   setSummaryReducer,
   setTypeReducer,
 } from "../../store/newProjectSlice"
+import {
+  useUpdateImageMutation,
+  useUpdateProjectAppUrlMutation,
+  useUpdateProjectGitHubUrlMutation,
+  useUpdateProjectSummaryMutation,
+  useUpdateProjectTypeMutation,
+  useUploadFileMutation,
+} from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
 import Editable from "../Dashboard/Editable"
 import { GitHub } from "../../icons/iconsJSX"
-import Input from "../UI/Input"
 import Markdown from "../utility/Markdown"
 import SmallPipe from "../UI/SmallPipe"
-import { getErrorMessage } from "../../util/getErrorMessage"
+import {
+  updateProjectFieldReducer
+} from "../../store/editProject"
 import { useAlert } from "../../util/useAlert"
-import { useMutation } from "@apollo/client"
+import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
 import { useTheDispatch } from "../../store/store"
 
 interface Props {
-  image: IGatsbyImageData | string
   editable?: boolean
   data: GatsbyTypes.Portfolio_Project
   mode?: "ADD" | "EDIT"
 }
 const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   editable = false,
-  image,
   mode = "EDIT",
   data,
 }) => {
@@ -52,14 +50,25 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     title: alertTitle,
     setAlert,
   } = useAlert()
-  const [mutateImage, mutateImageResult] = useMutation(UploadSingleFileMutation)
-  const [mutateProjectAppUrlUpdate] = useMutation(UpdateProjectAppUrlMutation)
-  const [mutateProjectImageUpdate] = useMutation(UpdateImageMutation)
-  const [mutateProjectGithubUrlUpdate] = useMutation(
-    UpdateProjectgithub_urlMutation
-  )
-  const [mutateProjectSummaryUpdate] = useMutation(UpdateProjectSummaryMutation)
-  const [mutateProjectTypeUpdate] = useMutation(UpdateProjectTypeMutation)
+  const [mutateImage, { error: uploadFileError, loading: uploadFileLoading }] =
+    useUploadFileMutation()
+  const [
+    mutateProjectGithubUrlUpdate,
+    { error: updateGithubUrlError, loading: updateGithubUrlLoading },
+  ] = useUpdateProjectGitHubUrlMutation()
+  const [mutateProjectImageUpdate] = useUpdateImageMutation()
+  const [
+    mutateProjectAppUrlUpdate,
+    { error: udpateAppUrlError, loading: updateAppUrlLoading },
+  ] = useUpdateProjectAppUrlMutation()
+  const [
+    mutateProjectSummaryUpdate,
+    { error: updateSummaryError, loading: updateSummaryLoading },
+  ] = useUpdateProjectSummaryMutation()
+  const [
+    mutateProjectTypeUpdate,
+    { error: updateTypeError, loading: updateTypeLoading },
+  ] = useUpdateProjectTypeMutation()
   const imageRef = useRef<HTMLImageElement>()
   const addNewProjectDispatch = useTheDispatch()
   const [imageName, setImageName] = useState<string>("")
@@ -68,6 +77,12 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   const [githubUrl, setGithubUrl] = useState<string>("")
   const [appUrl, setAppUrl] = useState<string>("")
   const [projectType, setProjectType] = useState<string>("")
+
+  useAlertGraphqlError(updateGithubUrlError, updateGithubUrlLoading, setAlert)
+  useAlertGraphqlError(uploadFileError, uploadFileLoading, setAlert)
+  useAlertGraphqlError(udpateAppUrlError, updateAppUrlLoading, setAlert)
+  useAlertGraphqlError(updateSummaryError, updateSummaryLoading, setAlert)
+  useAlertGraphqlError(updateTypeError, updateTypeLoading, setAlert)
 
   useEffect(() => {
     setSummary(data.summary || "Enter a brief summary of the project.")
@@ -94,26 +109,26 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           type: projectType,
           id: data.id,
         },
-      })
-        .then(() => {
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "Updated project type successfully.",
-          })
+      }).then(() => {
+        setAlert({
+          isOpen: true,
+          title: "Success",
+          message: "Updated project type successfully.",
         })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? getErrorMessage(e)
-              : "Couldn't update the type for unknown reasons.",
-          })
-        })
+        addNewProjectDispatch(updateProjectFieldReducer({
+          value: projectType,
+          field: "type"
+        }))
+      }).catch(() => {})
     }
   }
-
+  const unknownError = () => {
+    setAlert({
+      isOpen: true,
+      title: "Error",
+      message: "Unknown Error: Something went wrong, please try again later.",
+    })
+  }
   const updateGithubUrl = () => {
     if (!githubUrl) {
       setAlert({
@@ -131,24 +146,18 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           github_url: githubUrl,
           id: data.id,
         },
-      })
-        .then(res => {
+      }).then(res => {
+        if (res.data && res.data.updateProject) {
           setGithubUrl(res.data.updateProject.github_url)
           setAlert({
             isOpen: true,
             title: "Success",
             message: "GitHub Url updated successfully !",
           })
-        })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? getErrorMessage(e)
-              : "Something went wrong, Couldn't update the GitHub Url.",
-          })
-        })
+        } else {
+          unknownError()
+        }
+      }).catch(() => {})
     }
   }
 
@@ -169,24 +178,18 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           app_url: appUrl,
           id: data.id,
         },
-      })
-        .then(res => {
+      }).then(res => {
+        if (res.data && res.data.updateProject) {
           setAlert({
             isOpen: true,
             title: "Success",
             message: "App Url updated successfully !",
           })
           setAppUrl(res.data.updateProject.app_url)
-        })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? getErrorMessage(e)
-              : "Something went wrong, Couldn't update the App Url.",
-          })
-        })
+        } else {
+          unknownError()
+        }
+      }).catch(() => {})
     }
   }
 
@@ -207,19 +210,21 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           },
         })
           .then(res => {
-            setImageName(res.data.uploadSingleFile)
-            addNewProjectDispatch(
-              setImageReducer({ image: res.data.uploadSingleFile })
-            )
+            if (res.data) {
+              setImageName(res.data.uploadSingleFile)
+              addNewProjectDispatch(
+                setImageReducer({ image: res.data.uploadSingleFile })
+              )
+            } else {
+              unknownError()
+            }
           })
-          .catch(e => {
-            setAlert({
-              isOpen: true,
-              title: "Error",
-              message: e.errors
-                ? getErrorMessage(e)
-                : "Something went wrong, Couldn't upload the image.",
-            })
+          .catch(() => {
+            if (imageRef.current) {
+              imageRef.current.src = `${(window as any).__SERVER_API__}/${
+                mode === "ADD" ? "temp/" : ""
+              }${imageName || "default-project.jpeg"}`
+            }
           })
       }
     } else {
@@ -235,41 +240,52 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             file: imageFile[0],
             id: data.id,
             prevname: data.image,
+            field: "project",
           },
         })
           .then(res => {
-            const isResError =
-              res.data.updateImage?.match(/\.(jpeg|jpg|webp|png|svg)$/gi) &&
-              res.data.updateImage.includes("ENOENT")
-            setAlert({
-              isOpen: true,
-              title: isResError ? "Error" : "Success",
-              message: isResError
-                ? res.data.updateImage
-                : "Image updated successfully !",
-            })
-            setImageName(res.data.updateImage)
+            if (res.data && res.data.updateImage) {
+              const isResError =
+                res.data.updateImage?.match(/\.(jpeg|jpg|webp|png|svg)$/gi) &&
+                res.data.updateImage.includes("ENOENT")
+              setAlert({
+                isOpen: true,
+                title: isResError ? "Error" : "Success",
+                message: isResError
+                  ? res.data.updateImage
+                  : "Image updated successfully !",
+              })
+              setImageName(res.data.updateImage)
+            } else {
+              unknownError()
+            }
           })
           .catch(e => {
             setAlert({
               isOpen: true,
               title: "Error",
-              message: e.errors
-                ? getErrorMessage(e)
-                : "Something went wrong, Couldn't update the image.",
+              message:
+                e.message ||
+                "Something went wrong, couldn't update image, please try again later.",
             })
+            if (imageRef.current) {
+              imageRef.current.src = `${(window as any).__SERVER_API__}/${
+                imageName || "default-project.jpeg"
+              }`
+            }
           })
       }
     }
   }
 
-  const updateSummary = (v: string) => {
-    if(summary) {
+  const updateSummary = () => {
+    if (!summary) {
       setAlert({
         isOpen: true,
         title: "Error",
-        message: "Summary is required, please provide some value."
+        message: "Summary is required, please provide some value.",
       })
+      return
     }
     if (mode === "ADD") {
       addNewProjectDispatch(setSummaryReducer({ summary }))
@@ -279,24 +295,18 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           summary: summary,
           id: data.id,
         },
-      })
-        .then(res => {
+      }).then(res => {
+        if (res.data && res.data.updateProject) {
           setAlert({
             isOpen: true,
             title: "Success",
             message: "Summary updated successfully !",
           })
           setSummary(res.data.updateProject.summary)
-        })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message: e.errors
-              ? getErrorMessage(e)
-              : "Something went wrong, Couldn't update the Summary.",
-          })
-        })
+        } else {
+          unknownError()
+        }
+      }).catch(() => {})
     }
   }
 
@@ -311,13 +321,30 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   }
 
   const getImageFile = (f: FileList & BlobPart[]) => {
-    const i = new Blob(f, { type: f[0].type })
-    const s = URL.createObjectURL(i)
-    if (imageRef.current) {
-      imageRef.current.src = s
+    if (!f) {
+      if (imageRef.current) {
+        imageRef.current.src = `${(window as any).__SERVER_API__}/${
+          imageName || "default-project.jpeg"
+        }`
+      }
+      return
     }
-    setImageFile(f)
+    try {
+      const i = new Blob(f, { type: f[0].type })
+      const s = URL.createObjectURL(i)
+      if (imageRef.current) {
+        imageRef.current.src = s
+      }
+      setImageFile(f)
+    } catch (e) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Please choose an image if you want to change it.",
+      })
+    }
   }
+
   return (
     <div>
       {isAlertOpen && (
@@ -346,8 +373,8 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 }}
                 ref={imageRef as any}
                 src={`${(window as any).__SERVER_API__}/${
-                  imageName || "default-project.jpeg"
-                }`}
+                  mode === "ADD" ? "temp/" : ""
+                }${imageName || "default-project.jpeg"}`}
                 alt={`${data.name || "Default"} Image`}
               />
             </div>
@@ -415,13 +442,14 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             className="flex-col flex-grow overflow-auto ml-7 border-l-5 border-b-5 md:border-l-10 md:border-b-10 border-palatte-500 relative lg:border-0 lg:ml-0 pt-5 lg:pt-0 lg:mt-5"
           >
             <SmallPipe
+              className="mb-4"
               style={{
                 display: "block",
               }}
               pipeStyle={{ width: 50 }}
               pipes="left"
             >
-              <div className="relative mt-4 sm:mt-0">
+              <div className="relative ">
                 <div className="flex gap-2 items-center">
                   <h2 className="text-sm lg:text-sm-4 font-bold mx-2">
                     Type :{" "}
@@ -438,7 +466,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   onSave={updateType}
                   customInputId="project-type"
                   value={projectType}
-                  getValue={v => setProjectType(v)}
+                  getValue={v =>
+                    setProjectType(v)
+                  }
                 />
               </div>
             </SmallPipe>
@@ -480,9 +510,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${
-                  imageName || "default-project.jpeg"
-                }`}
+                src={`${(window as any).__SERVER_API__}/${imageName}`}
                 alt={`${data.name} Image`}
               />
             </div>
