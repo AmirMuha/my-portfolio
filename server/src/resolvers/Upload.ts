@@ -1,5 +1,5 @@
 import { randomInt } from "crypto";
-import { createWriteStream, unlinkSync } from "fs";
+import { createWriteStream, unlinkSync  } from "fs";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 import path, { join } from "path";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
@@ -17,7 +17,7 @@ export class UploadResolver {
       stream
         .pipe(
           createWriteStream(
-            path.join(__dirname, "../../src/uploads/", filename)
+            path.join(__dirname, "../../src/uploads/temp/", filename)
           )
         )
         .on("error", (e) => {
@@ -35,6 +35,7 @@ export class UploadResolver {
     { mimetype, createReadStream }: FileUpload,
     @Arg("prevname", () => String) prevname: string,
     @Arg("id", () => String) id: string,
+    @Arg("isEdit",() => Boolean,{defaultValue: false,nullable: true}) isEdit: boolean,
     @Arg("field", () => String, { nullable: true }) field: string
   ): Promise<string> {
     if (!id) return "Project id is required for updating the project image.";
@@ -61,7 +62,7 @@ export class UploadResolver {
     if (!foundImageOwner)
       throw new Error(`Couldn't find ImageOwner with id ${id}`);
     try {
-      unlinkSync(join(__dirname, "../uploads/" + prevname));
+      unlinkSync(join(__dirname, `../uploads${isEdit ? "/":"temp/"}` + prevname));
     } catch (e) {}
     const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
     return new Promise((resolve, reject) => {
@@ -69,11 +70,10 @@ export class UploadResolver {
       stream
         .pipe(
           createWriteStream(
-            path.join(__dirname, "../../src/uploads/", filename)
+            path.join(__dirname, `../uploads${isEdit ? "/":"temp/"}`, filename)
           )
         )
         .on("error", (e) => {
-          console.error(e);
           reject(e);
         })
         .on("finish", async () => {
@@ -141,7 +141,7 @@ export class UploadResolver {
         const stream = createReadStream();
         stream.pipe(
           createWriteStream(
-            path.join(__dirname, "../../src/uploads/", filename)
+            path.join(__dirname, "../../src/uploads/temp/", filename)
           )
         );
         filenames.push(filename);
@@ -150,5 +150,14 @@ export class UploadResolver {
       }
     }
     return filenames;
+  }
+  @Mutation(() =>Boolean)
+  async deleteFile(
+    @Arg("filename",() => String) filename: string
+  ): Promise<boolean> {
+    try {
+      unlinkSync(join(__dirname, "../uploads/temp/" + filename));
+    }catch(e) {}
+    return true
   }
 }
