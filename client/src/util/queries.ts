@@ -19,10 +19,7 @@ export const QuerySingleProjectWithRelations = gql`
       questions {
         id
         question
-        answer {
-          id
-          answer
-        }
+        answer
       }
       sketches {
         id
