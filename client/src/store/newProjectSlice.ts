@@ -231,12 +231,12 @@ const newProjectSlice = createSlice({
             }
           } else {
             storeLocally(
-              state,
+              initialState,
               "name",
               action.payload.name,
               action.payload.name
             )
-            return { ...state, name: action.payload.name }
+            return { ...initialState, name: action.payload.name }
           }
         } else {
           storeLocally(state, "name", action.payload.name, action.payload.name)
