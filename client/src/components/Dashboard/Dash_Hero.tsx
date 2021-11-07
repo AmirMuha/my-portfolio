@@ -1,10 +1,14 @@
 import React, { FC, PropsWithChildren, useState } from "react"
-import { convertToBgImage } from "gbimage-bridge"
+import { graphql, navigate, useStaticQuery } from "gatsby"
+
 import BackgroundImage from "gatsby-background-image"
-import { graphql, useStaticQuery } from "gatsby"
-import { getImage } from "gatsby-plugin-image"
-import Input from "../../components/UI/Input"
 import Button from "../../components/UI/Button"
+import Input from "../../components/UI/Input"
+import { convertToBgImage } from "gbimage-bridge"
+import { getImage } from "gatsby-plugin-image"
+import { setStateReducer } from "../../store/newProjectSlice"
+import { useTheDispatch } from "../../store/store"
+
 interface Props {}
 const queryImage = graphql`
   query {
@@ -21,15 +25,20 @@ const queryImage = graphql`
   }
 `
 
-const Dash_Hero: FC<PropsWithChildren<Props>> = props => {
+const Dash_Hero: FC<PropsWithChildren<Props>> = () => {
   const { f1, f2 } = useStaticQuery(queryImage)
   const [newProjectName, setNewProjectName] = useState<string>("")
+  const dispatch = useTheDispatch()
   const image1 = getImage(f1.childImageSharp.gatsbyImageData)
   const image2 = getImage(f2.childImageSharp.gatsbyImageData)
   const bgImage1 = convertToBgImage(image1)
   const bgImage2 = convertToBgImage(image2)
   const getNewProjectName = (v: string) => {
     setNewProjectName(v)
+  }
+  const addProject = () => {
+    dispatch(setStateReducer({ name: newProjectName }))
+    navigate(`/dashboard/add/project/${newProjectName}`)
   }
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -60,7 +69,8 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = props => {
             />
             <Button
               color="100"
-              to={`/dashboard/add/project/${newProjectName}`}
+              onClick={addProject}
+              normal
               style={{ padding: "3.5px 10px" }}
               textColor="500"
             >
