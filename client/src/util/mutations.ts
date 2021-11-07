@@ -1,12 +1,16 @@
 import { gql } from "@apollo/client"
+export const DeleteFileMutation = gql`
+  mutation DeleteFile(
+    $filename: String!
+  ){
+    deleteFile(filename: $filename)
+  }
+`
 export const ConfirmEmailMutation = gql`
   mutation ConfirmEmail($code: Int!, $email: String!) {
     confirmEmail(code: $code, email: $email)
   }
 `
-// ##################################
-// ############### Create Mutations
-// ##################################
 export const LoginMutation = gql`
   mutation Login($email: String!, $password: String!) {
     login(data: { email: $email, password: $password }) {
@@ -64,11 +68,39 @@ export const UploadMultipleFileMutation = gql`
     uploadMultipleFiles(files: $files)
   }
 `
+// ##################################
+// ############### Create Mutations
+// ##################################
 export const CreateStackMutation = gql`
   mutation CreateStack($id: String!, $image: String!) {
     updateAdmin(data: { stack: { push: $image } }, where: { id: $id })
   }
 `
+export const CreateProjectWithNestedRelationsMutation = gql`
+mutation CreateProjectWithRelations(
+  $name: String!
+  $summary: String!
+  $image: String!
+  $github_url: String!
+  $app_url: String!
+  $type: String!
+  $techCategories: [TechCategoryCreateInput_PWNR!]!
+  $questions: [QuestionCreateInput_PWNR!]!
+  $sketches: [SketchCreateInput_PWNR!]!
+) {
+  createProjectWithNestedRelations(data:{
+    name:$name,
+    summary:$summary,
+    type:$type,
+    image:$image,
+    github_url:$github_url,
+    app_url:$app_url,
+    techCategories: $techCategories,
+    questions: $questions,
+    sketches: $sketches
+    })
+}
+ `
 export const CreateProjectMutation = gql`
   mutation CreateProject(
     $for: String
@@ -220,7 +252,7 @@ export const UpdateImageMutation = gql`
     $prevname: String!
     $field: String
   ) {
-    updateImage(file: $file, id: $id, prevname: $prevname, field: $field)
+    updateImage(file: $file, id: $id, prevname: $prevname, field: $field,isEdit: true)
   }
 `
 export const UpdateProjectAppUrlMutation = gql`
