@@ -9,7 +9,8 @@ export class UploadResolver {
   @Mutation(() => String || Error)
   async uploadSingleFile(
     @Arg("file", () => GraphQLUpload)
-    { mimetype, createReadStream }: FileUpload
+    { mimetype, createReadStream }: FileUpload,
+    @Arg("isEdit", {defaultValue: false,nullable: true}) isEdit: boolean
   ): Promise<string | Error> {
     const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
     return new Promise((resolve, reject) => {
@@ -17,7 +18,7 @@ export class UploadResolver {
       stream
         .pipe(
           createWriteStream(
-            path.join(__dirname, "../../src/uploads/temp/", filename)
+            path.join(__dirname, `../../src/uploads/${isEdit ? "":"temp/"}`, filename)
           )
         )
         .on("error", (e) => {
