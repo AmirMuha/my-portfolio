@@ -5,8 +5,9 @@ import React, {
   PropsWithChildren,
   useState,
 } from "react"
-import { Edit } from "../../icons/iconsJSX"
+
 import Button from "../UI/Button"
+import { Edit } from "../../icons/iconsJSX"
 import Editable_Custom from "./Editable/Editable_Custom"
 import Editable_FileInput from "./Editable/Editable_FileInput"
 import Editable_QAndA from "./Editable/Editable_QAndA"
@@ -152,6 +153,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
       )}
       {mode === "MODAL" && isEnable && QAndA && (
         <Editable_QAndA
+          values={value}
           title={title || "Edit Q&A"}
           onSave={v => onSave(v)}
           onClose={() => setIsEnable(prev => !prev)}

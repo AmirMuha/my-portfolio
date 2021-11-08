@@ -1,26 +1,31 @@
 import React, { FC, PropsWithChildren, useState } from "react"
+
 import Button from "../../UI/Button"
 import Input from "../../UI/Input"
-import Modal from "../../UI/Modal"
-import TextArea from "../../UI/TextArea"
 import Markdown from "../../utility/Markdown"
+import Modal from "../../UI/Modal"
+import {
+  QuestionCreateInput_Pwnr
+} from "../../../types/graphql-types"
+import TextArea from "../../UI/TextArea"
 
 interface Props {
   title: string
   onSave: (v: any) => void
   onClose: () => void
+  values: QuestionCreateInput_Pwnr
 }
 
 const Editable_QAndA: FC<PropsWithChildren<Props>> = ({
   title,
   onSave,
   onClose,
+  values
 }) => {
-  // const [newAnswer, setNewAnswer] = useState<string>("")
-  const [newQuestion, setNewQuestion] = useState<string>("")
+  const [newQuestion, setNewQuestion] = useState<string>(values.question || "")
   const [isTextOpen, setIsTextOpen] = useState<boolean>(true)
-
   const [newAnswer, setNewAnswer] = useState<string>(
+    values.answer ||
     "## Enjoy using Markdown :)"
   )
   const getAnswer = (v: string) => {
