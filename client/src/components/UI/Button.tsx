@@ -1,13 +1,15 @@
-import { Link } from "gatsby"
-import CSSRulePlugin from "gsap/dist/CSSRulePlugin"
-import gsap from "gsap/gsap-core"
-import React, { FC, PropsWithChildren, ReactElement, useRef } from "react"
 import {
   Button as ButtonClass,
   Button_Outlined,
   Button_Pulse,
   Button_Underlined,
 } from "./styles/Button.module.css"
+import React, { FC, PropsWithChildren, ReactElement, useRef } from "react"
+
+import CSSRulePlugin from "gsap/dist/CSSRulePlugin"
+import { Link } from "gatsby"
+import gsap from "gsap/gsap-core"
+
 gsap.registerPlugin(CSSRulePlugin)
 interface Props {
   onClick?(): void
@@ -146,7 +148,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
           disabled={disabled}
           type={type}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
-          onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
+          onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
           className={`${buttonClasses} ${className} ${
             color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
           } text-palatte-${textColor}`}
@@ -166,7 +168,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
           style={style}
           target={target}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
-          onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
+          onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
           className={`${buttonClasses} ${className} ${
             color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
           } text-palatte-${textColor}`}
@@ -199,7 +201,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
           to={to}
           style={style}
           onMouseLeave={() => buttonOnMouseLeave(iconAnimation)}
-          onMouseOver={() => buttonOnMouseEnter(iconAnimation)}
+          onMouseEnter={() => buttonOnMouseEnter(iconAnimation)}
           className={`${buttonClasses} ${className} ${
             color !== "transparent" ? `bg-palatte-${color}` : "bg-opacity-0"
           } text-palatte-${textColor}`}
