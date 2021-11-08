@@ -45,8 +45,8 @@ mutation SubmitAdmin(
     resumes
   }
 }
-mutation UploadFile($file: Upload!) {
-  uploadSingleFile(file: $file)
+mutation UploadFile($file: Upload!, $isEdit: Boolean = false) {
+  uploadSingleFile(file: $file, isEdit: $isEdit)
 }
 mutation UploadFiles($files: [Upload!]!) {
   uploadMultipleFiles(files: $files)
