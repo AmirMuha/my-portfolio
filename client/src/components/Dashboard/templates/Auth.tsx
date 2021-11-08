@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from "@apollo/client"
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
+import {
+  ConfirmEmailMutation,
+  LoginMutation,
+  SubmitAdminMutation,
+  UploadMultipleFileMutation,
+  UploadSingleFileMutation,
+} from "../../../util/mutations"
+import { Eye, Reset } from "../../../icons/iconsJSX"
 import React, {
   FC,
   Reducer,
@@ -9,22 +14,18 @@ import React, {
   useRef,
   useState,
 } from "react"
-import Button from "../../../components/UI/Button"
-import Modal from "../../../components/UI/Modal"
-import { Eye, Reset } from "../../../icons/iconsJSX"
-import {
-  ConfirmEmailMutation,
-  LoginMutation,
-  SubmitAdminMutation,
-  UploadMultipleFileMutation,
-  UploadSingleFileMutation,
-} from "../../../util/mutations"
-import { IsThereAdminQuery } from "../../../util/queries"
-import { useAlert } from "../../../util/useAlert"
-import { useAuth } from "../../../util/useAuth"
+import { useMutation, useQuery } from "@apollo/client"
+
 import Alert from "../../UI/Alert"
+import Button from "../../../components/UI/Button"
 import InBoxLoading from "../../UI/InBoxLoading"
 import Input from "../../UI/Input"
+import { IsThereAdminQuery } from "../../../util/queries"
+import Modal from "../../../components/UI/Modal"
+import { RouteComponentProps } from "@reach/router"
+import { navigate } from "gatsby"
+import { useAlert } from "../../../util/useAlert"
+import { useAuth } from "../../../util/useAuth"
 enum Credentials {
   "EMAIL_SUB",
   "PASS_SUB",
@@ -240,7 +241,6 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
         },
       })
         .then(res => {
-          console.log(res.data)
           if (res.data.login.token) {
             navigate("/dashboard/")
           } else {
@@ -296,15 +296,15 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
           },
         })
           .then(res => {
-            console.log(res.data.confirmEmail)
             setAlert({
               isOpen: true,
               title: "Success",
               message:
                 "Your email confirmed successfully. Now login to your account with your credentials.",
             })
-            setIsEnterEmailCodeOpen(true)
-            setIsEmailConfirmOpen(true)
+            setIsEnterEmailCodeOpen(false)
+            setIsEmailConfirmOpen(false)
+            setThereIsAdmin(true)
           })
           .catch(codeError => {
             setAlert({
