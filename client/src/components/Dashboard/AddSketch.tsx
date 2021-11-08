@@ -161,7 +161,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
     }
     if (!hasError) {
       if (mode === "ADD") {
-        mutateImage({ variables: { file: sketch.image } }).then(res => {
+        mutateImage({ variables: { file: sketch.image} }).then(res => {
           if (res.data?.uploadSingleFile) {
             dispatchNewSketch(
               setSketchReducer({
@@ -177,6 +177,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
         mutateImage({
           variables: {
             file: sketch.image,
+            isEdit: true
           },
         }).then(res => {
           if (res.data) {
@@ -211,9 +212,9 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
               } else {
                 unknownError()
               }
-            })
+            }).catch(()=>{})
           }
-        })
+        }).catch(()=>{})
       }
     }
   }
