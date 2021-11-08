@@ -1,3 +1,5 @@
+import { Delete, DropDown } from "../../icons/iconsJSX"
+import Editable, { QAndAEditTypes } from "../Dashboard/Editable"
 import React, {
   FC,
   PropsWithChildren,
@@ -5,25 +7,25 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { Delete, DropDown } from "../../icons/iconsJSX"
-import SmallPipe from "../UI/SmallPipe"
-import gsap from "gsap"
-import Confirm from "../UI/Confirm"
-import Editable, { QAndAEditTypes } from "../Dashboard/Editable"
-import Markdown from "../utility/Markdown"
-import { deleteReducer, setQAndA } from "../../store/newProjectSlice"
-import { useTheDispatch } from "../../store/store"
-import {
-  DeleteQuestionMutation,
-  UpdateQuestionMutation,
-} from "../../util/mutations"
-import { useMutation } from "@apollo/client"
-import { useAlert } from "../../util/useAlert"
 import {
   deleteQuestionReducer,
   updateQuestionReducer,
 } from "../../store/editProject"
+import { deleteReducer, setQAndA } from "../../store/newProjectSlice"
+import {
+  useDeleteQuestionMutation,
+  useUpdateQuestionMutation,
+} from "../../types/graphql-types"
+
 import Alert from "../UI/Alert"
+import Confirm from "../UI/Confirm"
+import Markdown from "../utility/Markdown"
+import SmallPipe from "../UI/SmallPipe"
+import gsap from "gsap"
+import { useAlert } from "../../util/useAlert"
+import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useTheDispatch } from "../../store/store"
+
 interface Props {
   editable?: boolean
   data: GatsbyTypes.Portfolio_Question
@@ -45,8 +47,17 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
   const dropdownRef = useRef<HTMLButtonElement>()
   const [isAnswerOpen, setIsAnswerOpen] = useState<boolean>(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
-  const [mutateUpdate] = useMutation(UpdateQuestionMutation)
-  const [mutateDelete] = useMutation(DeleteQuestionMutation)
+  const [
+    mutateUpdate,
+    { error: updateQuestionError, loading: updateQuestionLoading },
+  ] = useUpdateQuestionMutation()
+  const [
+    mutateDelete,
+    { error: deleteQuestionError, loading: deleteQuestionLoading },
+  ] = useDeleteQuestionMutation()
+  useAlertGraphqlError(updateQuestionError, updateQuestionLoading, setAlert)
+  useAlertGraphqlError(deleteQuestionError, deleteQuestionLoading, setAlert)
+
   const controlDropDown = useCallback(() => {
     if (dropdownRef.current) {
       if (!isAnswerOpen) {
@@ -71,7 +82,16 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
     }
     setIsAnswerOpen(prev => !prev)
   }, [isAnswerOpen])
+
   const updateQAndA = (v: QAndAEditTypes) => {
+    if (v.question || v.answer) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: `${v.answer ? "Answer" : "Question"} is required.`,
+      })
+      return
+    }
     if (mode === "ADD") {
       dispatch(
         setQAndA({ question: v.question, answer: v.answer, id: data.id })
@@ -84,7 +104,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
           answer: v.answer,
         },
       })
-        .then(res => {
+        .then(() => {
           dispatch(
             updateQuestionReducer({
               id: data.id,
@@ -98,17 +118,10 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
             message: "Updated the question successfully.",
           })
         })
-        .catch(e => {
-          setAlert({
-            isOpen: false,
-            title: "Error",
-            message: e.errors
-              ? e.errors[0].message
-              : e.message || "Coulnd't update the question.",
-          })
-        })
+        .catch(() => {})
     }
   }
+
   const deleteQAndA = (v: boolean) => {
     if (v) {
       if (mode === "ADD") {
@@ -119,7 +132,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
             id: data.id,
           },
         })
-          .then(res => {
+          .then(() => {
             setAlert({
               isOpen: true,
               title: "Success",
@@ -131,15 +144,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
               })
             )
           })
-          .catch(e => {
-            setAlert({
-              isOpen: true,
-              title: "Error",
-              message: e.errors
-                ? e.errors[0].message
-                : e.message || "Couldn't delete the question.",
-            })
-          })
+          .catch(() => {})
       }
     }
   }
@@ -181,9 +186,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
             </SmallPipe>
             {isAnswerOpen && (
               <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
-                <Markdown>
-                  {data.answer.answer ? data.answer.answer : data.answer}
-                </Markdown>
+                <Markdown>{data.answer}</Markdown>
               </div>
             )}
           </div>
@@ -196,7 +199,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
                 mode="MODAL"
                 title={`Editing Question With ID ${data.id}`}
                 onSave={v => updateQAndA(v)}
-                value={data.question}
+                value={data}
                 QAndA
               />
               <span
@@ -237,9 +240,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
           </SmallPipe>
           {isAnswerOpen && (
             <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
-              <Markdown>
-                {data.answer.answer ? data.answer.answer : data.answer}
-              </Markdown>
+              <Markdown>{data.answer}</Markdown>
             </div>
           )}
         </div>

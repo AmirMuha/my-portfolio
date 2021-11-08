@@ -2,7 +2,6 @@ import React, { FC, PropsWithChildren, useState } from "react"
 
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
-import { CreateQuestionMutation } from "../../util/mutations"
 import Input from "../UI/Input"
 import Modal from "../UI/Modal"
 import SmallPipe from "../UI/SmallPipe"
@@ -10,7 +9,10 @@ import TextArea from "../UI/TextArea"
 import { addNewQuestionReducer } from "../../store/editProject"
 import { setQAndA } from "../../store/newProjectSlice"
 import { useAlert } from "../../util/useAlert"
-import { useMutation } from "@apollo/client"
+import { useAlertGraphqlError } from '../../util/useAlertGraphqlError'
+import {
+  useCreateQuestionMutation
+} from "../../types/graphql-types"
 import { useTheDispatch } from "../../store/store"
 
 interface Props {
@@ -26,10 +28,12 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
     title: alertTitle,
     setAlert,
   } = useAlert()
-  const [mutateNewQuestion] = useMutation(CreateQuestionMutation)
+  const [mutateNewQuestion, {error: createQuestionError, loading: createQuestionLoading}] =useCreateQuestionMutation()
   const [isBoxOpen, setIsBoxOpen] = useState<boolean>(false)
   const [newQuestion, setNewQuestion] = useState<string>("")
   const [newAnswer, setNewAnswer] = useState<string>("")
+  useAlertGraphqlError(createQuestionError, createQuestionLoading, setAlert)
+
   const closeModal = () => {
     setIsBoxOpen(prev => !prev)
   }
@@ -42,6 +46,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
     setNewQuestion("")
     setNewAnswer("")
   }
+
   const saveQuestion = () => {
     if(!newQuestion || !newAnswer) {
       setAlert({
@@ -57,33 +62,34 @@ const QAndA: FC<PropsWithChildren<Props>> = ({ projectId, mode = "EDIT" }) => {
     } else {
       mutateNewQuestion({
         variables: {
-          projectId: projectId,
+          projectId: projectId!,
           question: newQuestion,
           answer: newAnswer,
         },
       })
         .then(res => {
-          dispatch(
-            addNewQuestionReducer({
-              id: res.data.createQuestion.id,
-              question: res.data.createQuestion.question,
-              answer: res.data.createQuestion.answer.answer,
-              answerId: res.data.createQuestion.answer.id,
+          if(res.data) {
+            dispatch(
+              addNewQuestionReducer({
+                id: res.data.createQuestion.id,
+                question: res.data.createQuestion.question,
+                answer: res.data.createQuestion.answer,
+              })
+            )
+            createSuccessMessage ()
+          } else {
+            setAlert({
+              isOpen:true,
+              title: "Error",
+              message: "Unknow Error: Something went wrong."
             })
-          )
-          createSuccessMessage ()
+          }
         })
-        .catch(e => {
-          setAlert({
-            isOpen: true,
-            message: e.errors
-              ? e.errors[0].message
-              : e.message || "Couldn't create a new Q&A.",
-            title: "Error",
-          })
+        .catch(() => {
         })
     }
   }
+
   return (
     <>
       {isAlertOpen && (
