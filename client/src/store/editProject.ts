@@ -11,6 +11,7 @@ interface ProjectStateTypes {
   sketches: GatsbyTypes.Portfolio_Sketch[]
   type: string
 }
+
 const initialState: ProjectStateTypes = {
   id: "",
   name: "",
@@ -23,6 +24,7 @@ const initialState: ProjectStateTypes = {
   sketches: [],
   type: "",
 }
+
 const EditProjectSlice = createSlice({
   name: "EditProject",
   initialState,
@@ -91,17 +93,13 @@ const EditProjectSlice = createSlice({
           answer: string
           question: string
           id: string
-          answerId: string
         }
       }
     ) => {
       state.questions.push({
         id: action.payload.id,
         question: action.payload.question,
-        answer: {
-          id: action.payload.answerId,
-          answer: action.payload.answer,
-        },
+        answer: action.payload.answer,
       } as any)
     },
     addNewTechCategoryReducer: (
