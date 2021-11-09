@@ -4,7 +4,7 @@ import {
   Stack as StackType,
   useCreateStackMutation,
   useDeleteFileMutation,
-  useUpdateStackMutation,
+  useDeletestackMutation,
   useUploadFileMutation,
 } from "../../types/graphql-types"
 
@@ -22,6 +22,7 @@ interface Props {
   data?: StackType[]
   editable?: boolean
   adminEmail?: string
+  refetch?: () => void
 }
 const Stack: FC<PropsWithChildren<Props>> = ({
   className,
@@ -29,6 +30,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
   adminEmail,
   data,
   editable = false,
+  refetch,
 }) => {
   const [isStackCreateOpen, setStackCreateOpen] = useState<boolean>(false)
   const [
@@ -44,9 +46,9 @@ const Stack: FC<PropsWithChildren<Props>> = ({
     { error: uploadFileError, loading: uploadFileLoading },
   ] = useUploadFileMutation()
   const [
-    mtuateDelete,
-    { error: updateStackError, loading: updateStackLoading },
-  ] = useUpdateStackMutation()
+    mtuateStackDelete,
+    { error: deleteStackError, loading: deleteStackLoading },
+  ] = useDeletestackMutation()
   const {
     isOpen: alertIsOpen,
     title: alertTitle,
@@ -62,7 +64,14 @@ const Stack: FC<PropsWithChildren<Props>> = ({
   useAlertGraphqlError(deleteImageError, deleteImageLoading, setAlert)
   useAlertGraphqlError(createStackError, createStackLoading, setAlert)
   useAlertGraphqlError(uploadFileError, uploadFileLoading, setAlert)
-  useAlertGraphqlError(updateStackError, updateStackLoading, setAlert)
+  useAlertGraphqlError(deleteStackError, deleteStackLoading, setAlert)
+  const unknownError = () => {
+    setAlert({
+      isOpen: true,
+      title: "Error",
+      message: "Unknown Error: Something went wrong, please try again later.",
+    })
+  }
 
   const saveStack = () => {
     if (!newStackImageFile || !newStackTitle) {
@@ -81,7 +90,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
     mutateNewImage({
       variables: {
         file: newStackImageFile,
-        isEdit: false,
+        isEdit: true,
       },
     })
       .then(res => {
@@ -99,6 +108,10 @@ const Stack: FC<PropsWithChildren<Props>> = ({
                 title: "Success",
                 message: "New stack created successfully.",
               })
+              setNewStackTitle("")
+              setNewStackImageFile(undefined)
+              setStackCreateOpen(false)
+              refetch && refetch()
             })
             .catch(() => {
               mutateDeleteImage({
@@ -108,19 +121,39 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               }).catch(() => {})
             })
         } else {
-          setAlert({
-            isOpen: true,
-            title: "Error",
-            message:
-              "Unknown Error: Something went wrong, please try again later.",
-          })
+          unknownError()
         }
       })
       .catch(() => {})
   }
   const deleteStackItem = (d: boolean, id: string) => {
     if (d) {
-      console.log("Deleting the stack item with id %s")
+      mtuateStackDelete({
+        variables: {
+          id,
+        },
+      })
+        .then(res => {
+          if (res.data && res.data.deleteStack) {
+            mutateDeleteImage({
+              variables: {
+                filename: res.data.deleteStack.image,
+              },
+            })
+              .then(() => {
+                setAlert({
+                  isOpen: true,
+                  title: "Success",
+                  message: "Deleted the stack successfully.",
+                })
+              })
+              .catch(() => {})
+          } else {
+            unknownError()
+          }
+          refetch && refetch()
+        })
+        .catch(() => {})
     }
   }
 
@@ -131,7 +164,11 @@ const Stack: FC<PropsWithChildren<Props>> = ({
           header
           title="Create new Stack"
           maxWidth="500px"
-          onClose={() => setStackCreateOpen(false)}
+          onClose={() => {
+            setStackCreateOpen(false)
+            setNewStackTitle("")
+            setNewStackImageFile(undefined)
+          }}
         >
           <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
             <div className="flex-grow">
@@ -175,20 +212,6 @@ const Stack: FC<PropsWithChildren<Props>> = ({
       )}
       {editable ? (
         <div>
-          {data?.length! > 0 && (
-            <div
-              style={{ width: "100vw" }}
-              className="bg-palatte-500 w-full pb-2 pt-3"
-            >
-              <ul className="flex px-3 stack items-center gap-2">
-                {data?.map(s => (
-                  <li title="TypeScript">
-                    <img src={s.image} alt={s.title + "image"} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
           <SmallPipe className="flex w-full items-center mb-5">
             <Button
               className="w-full"
@@ -241,7 +264,8 @@ const Stack: FC<PropsWithChildren<Props>> = ({
         >
           <ul className="flex px-3 stack items-center gap-2">
             {data?.map(s => (
-              <li title="TypeScript">// static image</li>
+              // Static Image
+              <li title="TypeScript"></li>
             ))}
           </ul>
         </div>
