@@ -12,7 +12,10 @@ export class UploadResolver {
     { mimetype, createReadStream }: FileUpload,
     @Arg("isEdit", {defaultValue: false,nullable: true}) isEdit: boolean
   ): Promise<string | Error> {
-    const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+    let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+    if(filename.includes("+")) {
+      filename = filename.replace("+xml", "")
+    }
     return new Promise((resolve, reject) => {
       const stream = createReadStream();
       stream
@@ -65,7 +68,10 @@ export class UploadResolver {
     try {
       unlinkSync(join(__dirname, `../uploads${isEdit ? "/":"temp/"}` + prevname));
     } catch (e) {}
-    const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+    let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+    if(filename.includes("+")) {
+      filename = filename.replace("+xml", "")
+    }
     return new Promise((resolve, reject) => {
       const stream = createReadStream();
       stream
@@ -138,7 +144,10 @@ export class UploadResolver {
     for await (const file of files) {
       try {
         const { mimetype, createReadStream } = await file;
-        const filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+        let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+        if(filename.includes("+")) {
+          filename = filename.replace("+xml", "")
+        }
         const stream = createReadStream();
         stream.pipe(
           createWriteStream(
