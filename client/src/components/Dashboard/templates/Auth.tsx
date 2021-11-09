@@ -26,6 +26,7 @@ import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { useAlert } from "../../../util/useAlert"
 import { useAuth } from "../../../util/useAuth"
+
 enum Credentials {
   "EMAIL_SUB",
   "PASS_SUB",
@@ -212,6 +213,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
       setThereIsAdmin(true)
     }
   })
+
   const getCodeNum = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: ConfirmCodeTypes
@@ -232,6 +234,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
       }
     }
   }
+
   const login = () => {
     if (loginCredentials.email || loginCredentials.password) {
       loginMutate({
@@ -276,6 +279,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
       setIsLoginLoading(false)
     }
   }
+
   const sendCodeAgain = () => {
     login()
   }
@@ -283,9 +287,6 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
   const sendConfirmCode = (e?: React.FormEvent) => {
     if (e) {
       e.preventDefault()
-      console.log(
-        +`${confirmCode_1 + confirmCode_2 + confirmCode_3 + confirmCode_4}`
-      )
       if (confirmCode_1 && confirmCode_2 && confirmCode_3 && confirmCode_4) {
         confirmEmailMutate({
           variables: {
