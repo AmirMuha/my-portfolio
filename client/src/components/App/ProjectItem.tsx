@@ -1,17 +1,19 @@
-import { StaticImage } from "gatsby-plugin-image"
 import React, { FC, PropsWithChildren } from "react"
-import { Edit } from "../../icons/iconsJSX"
+
 import Button from "../UI/Button"
-import SmallPipe from "../UI/SmallPipe"
+import { Edit } from "../../icons/iconsJSX"
 import Markdown from "../utility/Markdown"
+import { Project } from "../../types/graphql-types"
 import { ProjectItem as ProjectItemClass } from "./styles/ProjectItem.module.css"
+import SmallPipe from "../UI/SmallPipe"
+import { StaticImage } from "gatsby-plugin-image"
 import TechItem from "./TechItem"
 
 interface Props {
   type?: "1" | "2"
   editable?: boolean
   buttonText?: string
-  data: GatsbyTypes.Portfolio_Project
+  data: Project
 }
 const ProjectItem: FC<PropsWithChildren<Props>> = ({
   type,

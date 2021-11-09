@@ -1,8 +1,11 @@
 import React, { FC, PropsWithChildren } from "react"
+
+import { Project } from "../../types/graphql-types"
 import ProjectItem from "../App/ProjectItem"
+
 interface Props {
   editable?: boolean
-  data: GatsbyTypes.Portfolio_Project[]
+  data: Project[]
 }
 
 const Dash_Projects: FC<PropsWithChildren<Props>> = ({

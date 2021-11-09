@@ -1,15 +1,19 @@
-import Markdown from "../utility/Markdown"
 import React, { FC, PropsWithChildren, useState } from "react"
-import { createPortal } from "react-dom"
+
 import Button from "../UI/Button"
-import TextArea from "../UI/TextArea"
+import Markdown from "../utility/Markdown"
+import {
+  MessageCreateInput
+} from "../../types/graphql-types"
 import Modal from "../UI/Modal"
+import TextArea from "../UI/TextArea"
+import { createPortal } from "react-dom"
+
 interface Props {
-  data: GatsbyTypes.Portfolio_Message
+  data: MessageCreateInput
 }
 
 const Dash_Message: FC<PropsWithChildren<Props>> = ({ data }) => {
-  console.log(data)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isAnswerBoxOpen, setIsAnswerBoxOpen] = useState<boolean>(false)
   const [isAnswered, setIsAnswered] = useState<boolean>(
@@ -39,6 +43,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data }) => {
   const answer = () => {
     setIsAnswerBoxOpen(true)
   }
+
   return (
     <div
       className="flex gap-0 ml-5 mb-10 messages--item"

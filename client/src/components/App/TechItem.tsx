@@ -16,13 +16,14 @@ import Confirm from "../UI/Confirm"
 import { Delete } from "../../icons/iconsJSX"
 import Editable from "../Dashboard/Editable"
 import SmallPipe from "../UI/SmallPipe"
+import { TechCategory } from "../../types/graphql-types"
 import { TechState } from "../Dashboard/Editable/Editable_TechCategory"
 import { useAlert } from "../../util/useAlert"
 import { useMutation } from "@apollo/client"
 import { useTheDispatch } from "../../store/store"
 
 interface Props {
-  data: GatsbyTypes.Portfolio_TechCategory
+  data: TechCategory
   className?: string
   style?: CSSProperties
   border?: boolean
