@@ -54,11 +54,19 @@ mutation UploadFiles($files: [Upload!]!) {
 # // ##################################
 # // ############### Create Mutations
 # // ##################################
-mutation CreateStack($id: String!, $image: [String!]) {
-  updateAdmin(data: { stack: { push: $image } }, where: { id: $id }) {
+
+mutation CreateStack($image: String!, $title: String!, $email: String!) {
+  createStack(
+    data: {
+      title: $title
+      image: $image
+      admin: { connect: { email: $email } }
+    }
+  ) {
     id
   }
 }
+
 mutation CreateProjectWithRelations(
   $name: String!
   $summary: String!
@@ -184,6 +192,25 @@ mutation CreateQuestion(
 # // // ############### Update Mutations
 # // // ##################################
 
+mutation UpdateStack(
+  $id: String!
+  $image: String!
+  $title: String!
+  ){
+  updateStack(data:{
+    title:{
+      set:$title
+    },
+    image:{
+      set:$image
+    }
+  }, where:{
+    id:$id
+  }){
+    id
+  }
+}
+
 mutation UpdateProjectSummary($id: String!, $summary: String) {
   updateProject(data: { summary: { set: $summary } }, where: { id: $id }) {
     summary
@@ -287,10 +314,7 @@ mutation UpdateTechCategory($name: String!, $techCategoryId: String!) {
 }
 mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
   updateQuestion(
-    data: {
-      question: { set: $question }
-      answer: { set: $answer }
-    }
+    data: { question: { set: $question }, answer: { set: $answer } }
     where: { id: $id }
   ) {
     id
@@ -298,31 +322,39 @@ mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
     answer
   }
 }
-mutation UpdateStack($id: String!, $images: [String!]) {
-  updateAdmin(data: { stack: { set: $images } }, where: { id: $id }){
+# // // ##################################
+# // // ############### Update Mutations
+# // // ##################################
+mutation Deletestack($id: String!) {
+  deleteStack(where: { id: $id }) {
     id
   }
 }
+
 mutation DeleteProject($id: String!) {
   deleteProject(where: { id: $id }) {
     id
   }
 }
+
 mutation DeleteSketch($id: String!) {
   deleteSketch(where: { id: $id }) {
     id
   }
 }
+
 mutation DeleteTechCategory($id: String!) {
   deleteTechCategory(where: { id: $id }) {
     id
   }
 }
+
 mutation DeleteTech($id: String!) {
   deleteTech(where: { id: $id }) {
     id
   }
 }
+
 mutation DeleteQuestion($id: String!) {
   deleteQuestion(where: { id: $id }) {
     id

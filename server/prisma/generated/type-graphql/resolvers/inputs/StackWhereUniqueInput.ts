@@ -6,14 +6,9 @@ import { DecimalJSScalar } from "../../scalars";
 @TypeGraphQL.InputType({
   isAbstract: true
 })
-export class AdminUpdatestacksInput {
-  @TypeGraphQL.Field(_type => [String], {
+export class StackWhereUniqueInput {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  set?: string[] | undefined;
-
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: true
-  })
-  push?: string[] | undefined;
+  id?: string | undefined;
 }

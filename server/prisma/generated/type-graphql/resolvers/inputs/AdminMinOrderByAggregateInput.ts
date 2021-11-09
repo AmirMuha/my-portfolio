@@ -61,11 +61,6 @@ export class AdminMinOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  isPublished?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
   password?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {

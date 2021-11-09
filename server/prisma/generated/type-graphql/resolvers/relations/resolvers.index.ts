@@ -4,5 +4,6 @@ export { MessageRelationsResolver } from "./Message/MessageRelationsResolver";
 export { ProjectRelationsResolver } from "./Project/ProjectRelationsResolver";
 export { QuestionRelationsResolver } from "./Question/QuestionRelationsResolver";
 export { SketchRelationsResolver } from "./Sketch/SketchRelationsResolver";
+export { StackRelationsResolver } from "./Stack/StackRelationsResolver";
 export { TechRelationsResolver } from "./Tech/TechRelationsResolver";
 export { TechCategoryRelationsResolver } from "./TechCategory/TechCategoryRelationsResolver";

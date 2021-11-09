@@ -1,6 +1,7 @@
 query IsThereAdminQuery {
   isThereAnAdmin
 }
+
 query QuerySingleProjectWithRelations($id: String!) {
   project(where: { id: $id }) {
     id
@@ -33,6 +34,7 @@ query QuerySingleProjectWithRelations($id: String!) {
     }
   }
 }
+
 query QueryProjectsWithRelations {
   projects {
     id
@@ -45,7 +47,7 @@ query QueryProjectsWithRelations {
     questions {
       id
       question
-      answer 
+      answer
     }
     sketches {
       id
@@ -65,7 +67,8 @@ query QueryProjectsWithRelations {
     }
   }
 }
-query QueryProjectsWithTechCategories{
+
+query QueryProjectsWithTechCategories {
   projects {
     app_url
     github_url
@@ -84,7 +87,8 @@ query QueryProjectsWithTechCategories{
     }
   }
 }
-query QueryProjectsWithoutRelations{
+
+query QueryProjectsWithoutRelations {
   projects {
     app_url
     github_url
@@ -95,7 +99,8 @@ query QueryProjectsWithoutRelations{
     type
   }
 }
-query QueryMessages{
+
+query QueryMessages {
   messages {
     answer_status
     answeredAt
@@ -105,5 +110,51 @@ query QueryMessages{
     id
     read_status
     subject
+  }
+}
+
+query QueryStacks {
+  stacks {
+    id
+    title
+    image
+  }
+}
+
+query QueryDashboardStuff {
+  me {
+    email
+  }
+  stacks {
+    id
+    title
+    image
+  }
+  messages {
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    id
+    read_status
+    subject
+  }
+  projects {
+    app_url
+    github_url
+    id
+    image
+    name
+    summary
+    type
+    tech_categories {
+      name
+      id
+      techs {
+        name
+        id
+      }
+    }
   }
 }

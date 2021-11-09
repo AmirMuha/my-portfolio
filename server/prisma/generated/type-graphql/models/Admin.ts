@@ -5,6 +5,7 @@ import { DecimalJSScalar } from "../scalars";
 import { About } from "../models/About";
 import { Message } from "../models/Message";
 import { Project } from "../models/Project";
+import { Stack } from "../models/Stack";
 import { AdminCount } from "../resolvers/outputs/AdminCount";
 
 @TypeGraphQL.ObjectType({
@@ -59,11 +60,6 @@ export class Admin {
   @TypeGraphQL.Field(_type => [String], {
     nullable: false
   })
-  stack!: string[];
-
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
-  })
   resumes!: string[];
 
   @TypeGraphQL.Field(_type => Boolean, {
@@ -71,21 +67,13 @@ export class Admin {
   })
   confirmed!: boolean;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: false
-  })
-  isPublished!: boolean;
-
   about?: About[];
 
   messages?: Message[];
 
   projects?: Project[];
 
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
-  })
-  stacks!: string[];
+  stack?: Stack[];
 
   apikey?: string | null;
 

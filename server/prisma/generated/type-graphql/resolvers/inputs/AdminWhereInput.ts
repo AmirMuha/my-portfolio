@@ -7,6 +7,7 @@ import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { MessageListRelationFilter } from "../inputs/MessageListRelationFilter";
 import { ProjectListRelationFilter } from "../inputs/ProjectListRelationFilter";
+import { StackListRelationFilter } from "../inputs/StackListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
@@ -78,22 +79,12 @@ export class AdminWhereInput {
   @TypeGraphQL.Field(_type => StringNullableListFilter, {
     nullable: true
   })
-  stack?: StringNullableListFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
-    nullable: true
-  })
   resumes?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
   })
   confirmed?: BoolFilter | undefined;
-
-  @TypeGraphQL.Field(_type => BoolFilter, {
-    nullable: true
-  })
-  isPublished?: BoolFilter | undefined;
 
   @TypeGraphQL.Field(_type => AboutListRelationFilter, {
     nullable: true
@@ -110,10 +101,10 @@ export class AdminWhereInput {
   })
   projects?: ProjectListRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+  @TypeGraphQL.Field(_type => StackListRelationFilter, {
     nullable: true
   })
-  stacks?: StringNullableListFilter | undefined;
+  stack?: StackListRelationFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

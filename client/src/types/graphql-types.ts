@@ -184,12 +184,9 @@ export type Admin = {
   heroImage: Scalars['String'];
   id: Scalars['String'];
   instagram: Scalars['String'];
-  isPublished: Scalars['Boolean'];
   linkedIn: Scalars['String'];
   lname: Scalars['String'];
   resumes: Array<Scalars['String']>;
-  stack: Array<Scalars['String']>;
-  stacks: Array<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   whatsapp: Scalars['String'];
 };
@@ -199,6 +196,7 @@ export type AdminCount = {
   about: Scalars['Int'];
   messages: Scalars['Int'];
   projects: Scalars['Int'];
+  stack: Scalars['Int'];
 };
 
 export type AdminCreateInput = {
@@ -211,15 +209,13 @@ export type AdminCreateInput = {
   heroImage: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   instagram: Scalars['String'];
-  isPublished?: Maybe<Scalars['Boolean']>;
   linkedIn: Scalars['String'];
   lname: Scalars['String'];
   messages?: Maybe<MessageCreateNestedManyWithoutAdminInput>;
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
-  stack?: Maybe<AdminCreatestackInput>;
-  stacks?: Maybe<AdminCreatestacksInput>;
+  stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
 };
@@ -242,6 +238,12 @@ export type AdminCreateNestedOneWithoutProjectsInput = {
   create?: Maybe<AdminCreateWithoutProjectsInput>;
 };
 
+export type AdminCreateNestedOneWithoutStackInput = {
+  connect?: Maybe<AdminWhereUniqueInput>;
+  connectOrCreate?: Maybe<AdminCreateOrConnectWithoutStackInput>;
+  create?: Maybe<AdminCreateWithoutStackInput>;
+};
+
 export type AdminCreateOrConnectWithoutAboutInput = {
   create: AdminCreateWithoutAboutInput;
   where: AdminWhereUniqueInput;
@@ -257,6 +259,11 @@ export type AdminCreateOrConnectWithoutProjectsInput = {
   where: AdminWhereUniqueInput;
 };
 
+export type AdminCreateOrConnectWithoutStackInput = {
+  create: AdminCreateWithoutStackInput;
+  where: AdminWhereUniqueInput;
+};
+
 export type AdminCreateWithoutAboutInput = {
   confirmed?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -266,15 +273,13 @@ export type AdminCreateWithoutAboutInput = {
   heroImage: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   instagram: Scalars['String'];
-  isPublished?: Maybe<Scalars['Boolean']>;
   linkedIn: Scalars['String'];
   lname: Scalars['String'];
   messages?: Maybe<MessageCreateNestedManyWithoutAdminInput>;
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
-  stack?: Maybe<AdminCreatestackInput>;
-  stacks?: Maybe<AdminCreatestacksInput>;
+  stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
 };
@@ -289,14 +294,12 @@ export type AdminCreateWithoutMessagesInput = {
   heroImage: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   instagram: Scalars['String'];
-  isPublished?: Maybe<Scalars['Boolean']>;
   linkedIn: Scalars['String'];
   lname: Scalars['String'];
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
-  stack?: Maybe<AdminCreatestackInput>;
-  stacks?: Maybe<AdminCreatestacksInput>;
+  stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
 };
@@ -311,27 +314,37 @@ export type AdminCreateWithoutProjectsInput = {
   heroImage: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   instagram: Scalars['String'];
-  isPublished?: Maybe<Scalars['Boolean']>;
   linkedIn: Scalars['String'];
   lname: Scalars['String'];
   messages?: Maybe<MessageCreateNestedManyWithoutAdminInput>;
   password: Scalars['String'];
   resumes?: Maybe<AdminCreateresumesInput>;
-  stack?: Maybe<AdminCreatestackInput>;
-  stacks?: Maybe<AdminCreatestacksInput>;
+  stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  whatsapp: Scalars['String'];
+};
+
+export type AdminCreateWithoutStackInput = {
+  about?: Maybe<AboutCreateNestedManyWithoutAdminInput>;
+  confirmed?: Maybe<Scalars['Boolean']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  email: Scalars['String'];
+  fname: Scalars['String'];
+  github: Scalars['String'];
+  heroImage: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
+  instagram: Scalars['String'];
+  linkedIn: Scalars['String'];
+  lname: Scalars['String'];
+  messages?: Maybe<MessageCreateNestedManyWithoutAdminInput>;
+  password: Scalars['String'];
+  projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
+  resumes?: Maybe<AdminCreateresumesInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
 };
 
 export type AdminCreateresumesInput = {
-  set: Array<Scalars['String']>;
-};
-
-export type AdminCreatestackInput = {
-  set: Array<Scalars['String']>;
-};
-
-export type AdminCreatestacksInput = {
   set: Array<Scalars['String']>;
 };
 
@@ -345,15 +358,13 @@ export type AdminOrderByWithRelationInput = {
   heroImage?: Maybe<SortOrder>;
   id?: Maybe<SortOrder>;
   instagram?: Maybe<SortOrder>;
-  isPublished?: Maybe<SortOrder>;
   linkedIn?: Maybe<SortOrder>;
   lname?: Maybe<SortOrder>;
   messages?: Maybe<MessageOrderByRelationAggregateInput>;
   password?: Maybe<SortOrder>;
   projects?: Maybe<ProjectOrderByRelationAggregateInput>;
   resumes?: Maybe<SortOrder>;
-  stack?: Maybe<SortOrder>;
-  stacks?: Maybe<SortOrder>;
+  stack?: Maybe<StackOrderByRelationAggregateInput>;
   updatedAt?: Maybe<SortOrder>;
   whatsapp?: Maybe<SortOrder>;
 };
@@ -373,15 +384,13 @@ export type AdminUpdateInput = {
   heroImage?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   instagram?: Maybe<StringFieldUpdateOperationsInput>;
-  isPublished?: Maybe<BoolFieldUpdateOperationsInput>;
   linkedIn?: Maybe<StringFieldUpdateOperationsInput>;
   lname?: Maybe<StringFieldUpdateOperationsInput>;
   messages?: Maybe<MessageUpdateManyWithoutAdminInput>;
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
-  stack?: Maybe<AdminUpdatestackInput>;
-  stacks?: Maybe<AdminUpdatestacksInput>;
+  stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
 };
@@ -410,6 +419,14 @@ export type AdminUpdateOneRequiredWithoutProjectsInput = {
   upsert?: Maybe<AdminUpsertWithoutProjectsInput>;
 };
 
+export type AdminUpdateOneRequiredWithoutStackInput = {
+  connect?: Maybe<AdminWhereUniqueInput>;
+  connectOrCreate?: Maybe<AdminCreateOrConnectWithoutStackInput>;
+  create?: Maybe<AdminCreateWithoutStackInput>;
+  update?: Maybe<AdminUpdateWithoutStackInput>;
+  upsert?: Maybe<AdminUpsertWithoutStackInput>;
+};
+
 export type AdminUpdateWithoutAboutInput = {
   confirmed?: Maybe<BoolFieldUpdateOperationsInput>;
   createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
@@ -419,15 +436,13 @@ export type AdminUpdateWithoutAboutInput = {
   heroImage?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   instagram?: Maybe<StringFieldUpdateOperationsInput>;
-  isPublished?: Maybe<BoolFieldUpdateOperationsInput>;
   linkedIn?: Maybe<StringFieldUpdateOperationsInput>;
   lname?: Maybe<StringFieldUpdateOperationsInput>;
   messages?: Maybe<MessageUpdateManyWithoutAdminInput>;
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
-  stack?: Maybe<AdminUpdatestackInput>;
-  stacks?: Maybe<AdminUpdatestacksInput>;
+  stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
 };
@@ -442,14 +457,12 @@ export type AdminUpdateWithoutMessagesInput = {
   heroImage?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   instagram?: Maybe<StringFieldUpdateOperationsInput>;
-  isPublished?: Maybe<BoolFieldUpdateOperationsInput>;
   linkedIn?: Maybe<StringFieldUpdateOperationsInput>;
   lname?: Maybe<StringFieldUpdateOperationsInput>;
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
-  stack?: Maybe<AdminUpdatestackInput>;
-  stacks?: Maybe<AdminUpdatestacksInput>;
+  stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
 };
@@ -464,29 +477,37 @@ export type AdminUpdateWithoutProjectsInput = {
   heroImage?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   instagram?: Maybe<StringFieldUpdateOperationsInput>;
-  isPublished?: Maybe<BoolFieldUpdateOperationsInput>;
   linkedIn?: Maybe<StringFieldUpdateOperationsInput>;
   lname?: Maybe<StringFieldUpdateOperationsInput>;
   messages?: Maybe<MessageUpdateManyWithoutAdminInput>;
   password?: Maybe<StringFieldUpdateOperationsInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
-  stack?: Maybe<AdminUpdatestackInput>;
-  stacks?: Maybe<AdminUpdatestacksInput>;
+  stack?: Maybe<StackUpdateManyWithoutAdminInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
+};
+
+export type AdminUpdateWithoutStackInput = {
+  about?: Maybe<AboutUpdateManyWithoutAdminInput>;
+  confirmed?: Maybe<BoolFieldUpdateOperationsInput>;
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  email?: Maybe<StringFieldUpdateOperationsInput>;
+  fname?: Maybe<StringFieldUpdateOperationsInput>;
+  github?: Maybe<StringFieldUpdateOperationsInput>;
+  heroImage?: Maybe<StringFieldUpdateOperationsInput>;
+  id?: Maybe<StringFieldUpdateOperationsInput>;
+  instagram?: Maybe<StringFieldUpdateOperationsInput>;
+  linkedIn?: Maybe<StringFieldUpdateOperationsInput>;
+  lname?: Maybe<StringFieldUpdateOperationsInput>;
+  messages?: Maybe<MessageUpdateManyWithoutAdminInput>;
+  password?: Maybe<StringFieldUpdateOperationsInput>;
+  projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
+  resumes?: Maybe<AdminUpdateresumesInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
 };
 
 export type AdminUpdateresumesInput = {
-  push?: Maybe<Array<Scalars['String']>>;
-  set?: Maybe<Array<Scalars['String']>>;
-};
-
-export type AdminUpdatestackInput = {
-  push?: Maybe<Array<Scalars['String']>>;
-  set?: Maybe<Array<Scalars['String']>>;
-};
-
-export type AdminUpdatestacksInput = {
   push?: Maybe<Array<Scalars['String']>>;
   set?: Maybe<Array<Scalars['String']>>;
 };
@@ -506,6 +527,11 @@ export type AdminUpsertWithoutProjectsInput = {
   update: AdminUpdateWithoutProjectsInput;
 };
 
+export type AdminUpsertWithoutStackInput = {
+  create: AdminCreateWithoutStackInput;
+  update: AdminUpdateWithoutStackInput;
+};
+
 export type AdminWhereInput = {
   AND?: Maybe<Array<AdminWhereInput>>;
   NOT?: Maybe<Array<AdminWhereInput>>;
@@ -519,15 +545,13 @@ export type AdminWhereInput = {
   heroImage?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   instagram?: Maybe<StringFilter>;
-  isPublished?: Maybe<BoolFilter>;
   linkedIn?: Maybe<StringFilter>;
   lname?: Maybe<StringFilter>;
   messages?: Maybe<MessageListRelationFilter>;
   password?: Maybe<StringFilter>;
   projects?: Maybe<ProjectListRelationFilter>;
   resumes?: Maybe<StringNullableListFilter>;
-  stack?: Maybe<StringNullableListFilter>;
-  stacks?: Maybe<StringNullableListFilter>;
+  stack?: Maybe<StackListRelationFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   whatsapp?: Maybe<StringFilter>;
 };
@@ -804,6 +828,7 @@ export type Mutation = {
   createProjectWithNestedRelations: Scalars['Boolean'];
   createQuestion: Question;
   createSketch: Sketch;
+  createStack: Stack;
   createTech: Tech;
   createTechCategory: TechCategory;
   deleteAbout?: Maybe<About>;
@@ -820,6 +845,7 @@ export type Mutation = {
   deleteProject?: Maybe<Project>;
   deleteQuestion?: Maybe<Question>;
   deleteSketch?: Maybe<Sketch>;
+  deleteStack?: Maybe<Stack>;
   deleteTech?: Maybe<Tech>;
   deleteTechCategory?: Maybe<TechCategory>;
   forgotPassword: Scalars['Boolean'];
@@ -833,6 +859,7 @@ export type Mutation = {
   updateProject?: Maybe<Project>;
   updateQuestion?: Maybe<Question>;
   updateSketch?: Maybe<Sketch>;
+  updateStack?: Maybe<Stack>;
   updateTech?: Maybe<Tech>;
   updateTechCategory?: Maybe<TechCategory>;
   uploadMultipleFiles?: Maybe<Array<Scalars['String']>>;
@@ -920,6 +947,11 @@ export type MutationCreateSketchArgs = {
 };
 
 
+export type MutationCreateStackArgs = {
+  data: StackCreateInput;
+};
+
+
 export type MutationCreateTechArgs = {
   data: TechCreateInput;
 };
@@ -1000,6 +1032,11 @@ export type MutationDeleteSketchArgs = {
 };
 
 
+export type MutationDeleteStackArgs = {
+  where: StackWhereUniqueInput;
+};
+
+
 export type MutationDeleteTechArgs = {
   where: TechWhereUniqueInput;
 };
@@ -1074,6 +1111,12 @@ export type MutationUpdateSketchArgs = {
 };
 
 
+export type MutationUpdateStackArgs = {
+  data: StackUpdateInput;
+  where: StackWhereUniqueInput;
+};
+
+
 export type MutationUpdateTechArgs = {
   data: TechUpdateInput;
   where: TechWhereUniqueInput;
@@ -1093,6 +1136,7 @@ export type MutationUploadMultipleFilesArgs = {
 
 export type MutationUploadSingleFileArgs = {
   file: Scalars['Upload'];
+  isEdit?: Maybe<Scalars['Boolean']>;
 };
 
 export type NestedBoolFilter = {
@@ -1577,6 +1621,7 @@ export type Query = {
   questions: Array<Question>;
   sketch?: Maybe<Sketch>;
   sketches: Array<Sketch>;
+  stacks: Array<Stack>;
   tech?: Maybe<Tech>;
   techCategories: Array<TechCategory>;
   techCategory?: Maybe<TechCategory>;
@@ -1656,6 +1701,16 @@ export type QuerySketchesArgs = {
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<SketchWhereInput>;
+};
+
+
+export type QueryStacksArgs = {
+  cursor?: Maybe<StackWhereUniqueInput>;
+  distinct?: Maybe<Array<StackScalarFieldEnum>>;
+  orderBy?: Maybe<Array<StackOrderByWithRelationInput>>;
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  where?: Maybe<StackWhereInput>;
 };
 
 
@@ -2048,6 +2103,149 @@ export enum SortOrder {
   Asc = 'asc',
   Desc = 'desc'
 }
+
+export type Stack = {
+  __typename?: 'Stack';
+  admin_id: Scalars['String'];
+  id: Scalars['String'];
+  image: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type StackCreateInput = {
+  admin: AdminCreateNestedOneWithoutStackInput;
+  id?: Maybe<Scalars['String']>;
+  image: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type StackCreateManyAdminInput = {
+  id?: Maybe<Scalars['String']>;
+  image: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type StackCreateManyAdminInputEnvelope = {
+  data: Array<StackCreateManyAdminInput>;
+  skipDuplicates?: Maybe<Scalars['Boolean']>;
+};
+
+export type StackCreateNestedManyWithoutAdminInput = {
+  connect?: Maybe<Array<StackWhereUniqueInput>>;
+  connectOrCreate?: Maybe<Array<StackCreateOrConnectWithoutAdminInput>>;
+  create?: Maybe<Array<StackCreateWithoutAdminInput>>;
+  createMany?: Maybe<StackCreateManyAdminInputEnvelope>;
+};
+
+export type StackCreateOrConnectWithoutAdminInput = {
+  create: StackCreateWithoutAdminInput;
+  where: StackWhereUniqueInput;
+};
+
+export type StackCreateWithoutAdminInput = {
+  id?: Maybe<Scalars['String']>;
+  image: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type StackListRelationFilter = {
+  every?: Maybe<StackWhereInput>;
+  none?: Maybe<StackWhereInput>;
+  some?: Maybe<StackWhereInput>;
+};
+
+export type StackOrderByRelationAggregateInput = {
+  _count?: Maybe<SortOrder>;
+};
+
+export type StackOrderByWithRelationInput = {
+  admin?: Maybe<AdminOrderByWithRelationInput>;
+  admin_id?: Maybe<SortOrder>;
+  id?: Maybe<SortOrder>;
+  image?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+};
+
+export enum StackScalarFieldEnum {
+  AdminId = 'admin_id',
+  Id = 'id',
+  Image = 'image',
+  Title = 'title'
+}
+
+export type StackScalarWhereInput = {
+  AND?: Maybe<Array<StackScalarWhereInput>>;
+  NOT?: Maybe<Array<StackScalarWhereInput>>;
+  OR?: Maybe<Array<StackScalarWhereInput>>;
+  admin_id?: Maybe<StringFilter>;
+  id?: Maybe<StringFilter>;
+  image?: Maybe<StringFilter>;
+  title?: Maybe<StringFilter>;
+};
+
+export type StackUpdateInput = {
+  admin?: Maybe<AdminUpdateOneRequiredWithoutStackInput>;
+  id?: Maybe<StringFieldUpdateOperationsInput>;
+  image?: Maybe<StringFieldUpdateOperationsInput>;
+  title?: Maybe<StringFieldUpdateOperationsInput>;
+};
+
+export type StackUpdateManyMutationInput = {
+  id?: Maybe<StringFieldUpdateOperationsInput>;
+  image?: Maybe<StringFieldUpdateOperationsInput>;
+  title?: Maybe<StringFieldUpdateOperationsInput>;
+};
+
+export type StackUpdateManyWithWhereWithoutAdminInput = {
+  data: StackUpdateManyMutationInput;
+  where: StackScalarWhereInput;
+};
+
+export type StackUpdateManyWithoutAdminInput = {
+  connect?: Maybe<Array<StackWhereUniqueInput>>;
+  connectOrCreate?: Maybe<Array<StackCreateOrConnectWithoutAdminInput>>;
+  create?: Maybe<Array<StackCreateWithoutAdminInput>>;
+  createMany?: Maybe<StackCreateManyAdminInputEnvelope>;
+  delete?: Maybe<Array<StackWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<StackScalarWhereInput>>;
+  disconnect?: Maybe<Array<StackWhereUniqueInput>>;
+  set?: Maybe<Array<StackWhereUniqueInput>>;
+  update?: Maybe<Array<StackUpdateWithWhereUniqueWithoutAdminInput>>;
+  updateMany?: Maybe<Array<StackUpdateManyWithWhereWithoutAdminInput>>;
+  upsert?: Maybe<Array<StackUpsertWithWhereUniqueWithoutAdminInput>>;
+};
+
+export type StackUpdateWithWhereUniqueWithoutAdminInput = {
+  data: StackUpdateWithoutAdminInput;
+  where: StackWhereUniqueInput;
+};
+
+export type StackUpdateWithoutAdminInput = {
+  id?: Maybe<StringFieldUpdateOperationsInput>;
+  image?: Maybe<StringFieldUpdateOperationsInput>;
+  title?: Maybe<StringFieldUpdateOperationsInput>;
+};
+
+export type StackUpsertWithWhereUniqueWithoutAdminInput = {
+  create: StackCreateWithoutAdminInput;
+  update: StackUpdateWithoutAdminInput;
+  where: StackWhereUniqueInput;
+};
+
+export type StackWhereInput = {
+  AND?: Maybe<Array<StackWhereInput>>;
+  NOT?: Maybe<Array<StackWhereInput>>;
+  OR?: Maybe<Array<StackWhereInput>>;
+  admin?: Maybe<AdminRelationFilter>;
+  admin_id?: Maybe<StringFilter>;
+  id?: Maybe<StringFilter>;
+  image?: Maybe<StringFilter>;
+  title?: Maybe<StringFilter>;
+};
+
+export type StackWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
 
 export type StringFieldUpdateOperationsInput = {
   set?: Maybe<Scalars['String']>;
@@ -2495,6 +2693,7 @@ export type SubmitAdminMutation = (
 
 export type UploadFileMutationVariables = Exact<{
   file: Scalars['Upload'];
+  isEdit?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -2514,17 +2713,18 @@ export type UploadFilesMutation = (
 );
 
 export type CreateStackMutationVariables = Exact<{
-  id: Scalars['String'];
-  image?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  image: Scalars['String'];
+  title: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
 export type CreateStackMutation = (
   { __typename?: 'Mutation' }
-  & { updateAdmin?: Maybe<(
-    { __typename?: 'Admin' }
-    & Pick<Admin, 'id'>
-  )> }
+  & { createStack: (
+    { __typename?: 'Stack' }
+    & Pick<Stack, 'id'>
+  ) }
 );
 
 export type CreateProjectWithRelationsMutationVariables = Exact<{
@@ -2636,6 +2836,21 @@ export type CreateQuestionMutation = (
     { __typename?: 'Question' }
     & Pick<Question, 'id' | 'question' | 'answer'>
   ) }
+);
+
+export type UpdateStackMutationVariables = Exact<{
+  id: Scalars['String'];
+  image: Scalars['String'];
+  title: Scalars['String'];
+}>;
+
+
+export type UpdateStackMutation = (
+  { __typename?: 'Mutation' }
+  & { updateStack?: Maybe<(
+    { __typename?: 'Stack' }
+    & Pick<Stack, 'id'>
+  )> }
 );
 
 export type UpdateProjectSummaryMutationVariables = Exact<{
@@ -2810,17 +3025,16 @@ export type UpdateQuestionMutation = (
   )> }
 );
 
-export type UpdateStackMutationVariables = Exact<{
+export type DeletestackMutationVariables = Exact<{
   id: Scalars['String'];
-  images?: Maybe<Array<Scalars['String']> | Scalars['String']>;
 }>;
 
 
-export type UpdateStackMutation = (
+export type DeletestackMutation = (
   { __typename?: 'Mutation' }
-  & { updateAdmin?: Maybe<(
-    { __typename?: 'Admin' }
-    & Pick<Admin, 'id'>
+  & { deleteStack?: Maybe<(
+    { __typename?: 'Stack' }
+    & Pick<Stack, 'id'>
   )> }
 );
 
@@ -2987,6 +3201,45 @@ export type QueryMessagesQuery = (
   & { messages: Array<(
     { __typename?: 'Message' }
     & Pick<Message, 'answer_status' | 'answeredAt' | 'body' | 'createdAd' | 'from' | 'id' | 'read_status' | 'subject'>
+  )> }
+);
+
+export type QueryStacksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryStacksQuery = (
+  { __typename?: 'Query' }
+  & { stacks: Array<(
+    { __typename?: 'Stack' }
+    & Pick<Stack, 'id' | 'title' | 'image'>
+  )> }
+);
+
+export type QueryDashboardStuffQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryDashboardStuffQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'Admin' }
+    & Pick<Admin, 'email'>
+  )>, stacks: Array<(
+    { __typename?: 'Stack' }
+    & Pick<Stack, 'id' | 'title' | 'image'>
+  )>, messages: Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'answer_status' | 'answeredAt' | 'body' | 'createdAd' | 'from' | 'id' | 'read_status' | 'subject'>
+  )>, projects: Array<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'app_url' | 'github_url' | 'id' | 'image' | 'name' | 'summary' | 'type'>
+    & { tech_categories: Array<(
+      { __typename?: 'TechCategory' }
+      & Pick<TechCategory, 'name' | 'id'>
+      & { techs: Array<(
+        { __typename?: 'Tech' }
+        & Pick<Tech, 'name' | 'id'>
+      )> }
+    )> }
   )> }
 );
 
@@ -3167,8 +3420,8 @@ export type SubmitAdminMutationHookResult = ReturnType<typeof useSubmitAdminMuta
 export type SubmitAdminMutationResult = Apollo.MutationResult<SubmitAdminMutation>;
 export type SubmitAdminMutationOptions = Apollo.BaseMutationOptions<SubmitAdminMutation, SubmitAdminMutationVariables>;
 export const UploadFileDocument = gql`
-    mutation UploadFile($file: Upload!) {
-  uploadSingleFile(file: $file)
+    mutation UploadFile($file: Upload!, $isEdit: Boolean = false) {
+  uploadSingleFile(file: $file, isEdit: $isEdit)
 }
     `;
 export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, UploadFileMutationVariables>;
@@ -3187,6 +3440,7 @@ export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, U
  * const [uploadFileMutation, { data, loading, error }] = useUploadFileMutation({
  *   variables: {
  *      file: // value for 'file'
+ *      isEdit: // value for 'isEdit'
  *   },
  * });
  */
@@ -3229,8 +3483,10 @@ export type UploadFilesMutationHookResult = ReturnType<typeof useUploadFilesMuta
 export type UploadFilesMutationResult = Apollo.MutationResult<UploadFilesMutation>;
 export type UploadFilesMutationOptions = Apollo.BaseMutationOptions<UploadFilesMutation, UploadFilesMutationVariables>;
 export const CreateStackDocument = gql`
-    mutation CreateStack($id: String!, $image: [String!]) {
-  updateAdmin(data: {stack: {push: $image}}, where: {id: $id}) {
+    mutation CreateStack($image: String!, $title: String!, $email: String!) {
+  createStack(
+    data: {title: $title, image: $image, admin: {connect: {email: $email}}}
+  ) {
     id
   }
 }
@@ -3250,8 +3506,9 @@ export type CreateStackMutationFn = Apollo.MutationFunction<CreateStackMutation,
  * @example
  * const [createStackMutation, { data, loading, error }] = useCreateStackMutation({
  *   variables: {
- *      id: // value for 'id'
  *      image: // value for 'image'
+ *      title: // value for 'title'
+ *      email: // value for 'email'
  *   },
  * });
  */
@@ -3540,6 +3797,44 @@ export function useCreateQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateQuestionMutationHookResult = ReturnType<typeof useCreateQuestionMutation>;
 export type CreateQuestionMutationResult = Apollo.MutationResult<CreateQuestionMutation>;
 export type CreateQuestionMutationOptions = Apollo.BaseMutationOptions<CreateQuestionMutation, CreateQuestionMutationVariables>;
+export const UpdateStackDocument = gql`
+    mutation UpdateStack($id: String!, $image: String!, $title: String!) {
+  updateStack(
+    data: {title: {set: $title}, image: {set: $image}}
+    where: {id: $id}
+  ) {
+    id
+  }
+}
+    `;
+export type UpdateStackMutationFn = Apollo.MutationFunction<UpdateStackMutation, UpdateStackMutationVariables>;
+
+/**
+ * __useUpdateStackMutation__
+ *
+ * To run a mutation, you first call `useUpdateStackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStackMutation, { data, loading, error }] = useUpdateStackMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      image: // value for 'image'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useUpdateStackMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStackMutation, UpdateStackMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateStackMutation, UpdateStackMutationVariables>(UpdateStackDocument, options);
+      }
+export type UpdateStackMutationHookResult = ReturnType<typeof useUpdateStackMutation>;
+export type UpdateStackMutationResult = Apollo.MutationResult<UpdateStackMutation>;
+export type UpdateStackMutationOptions = Apollo.BaseMutationOptions<UpdateStackMutation, UpdateStackMutationVariables>;
 export const UpdateProjectSummaryDocument = gql`
     mutation UpdateProjectSummary($id: String!, $summary: String) {
   updateProject(data: {summary: {set: $summary}}, where: {id: $id}) {
@@ -3985,40 +4280,39 @@ export function useUpdateQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateQuestionMutationHookResult = ReturnType<typeof useUpdateQuestionMutation>;
 export type UpdateQuestionMutationResult = Apollo.MutationResult<UpdateQuestionMutation>;
 export type UpdateQuestionMutationOptions = Apollo.BaseMutationOptions<UpdateQuestionMutation, UpdateQuestionMutationVariables>;
-export const UpdateStackDocument = gql`
-    mutation UpdateStack($id: String!, $images: [String!]) {
-  updateAdmin(data: {stack: {set: $images}}, where: {id: $id}) {
+export const DeletestackDocument = gql`
+    mutation Deletestack($id: String!) {
+  deleteStack(where: {id: $id}) {
     id
   }
 }
     `;
-export type UpdateStackMutationFn = Apollo.MutationFunction<UpdateStackMutation, UpdateStackMutationVariables>;
+export type DeletestackMutationFn = Apollo.MutationFunction<DeletestackMutation, DeletestackMutationVariables>;
 
 /**
- * __useUpdateStackMutation__
+ * __useDeletestackMutation__
  *
- * To run a mutation, you first call `useUpdateStackMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateStackMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeletestackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletestackMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateStackMutation, { data, loading, error }] = useUpdateStackMutation({
+ * const [deletestackMutation, { data, loading, error }] = useDeletestackMutation({
  *   variables: {
  *      id: // value for 'id'
- *      images: // value for 'images'
  *   },
  * });
  */
-export function useUpdateStackMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStackMutation, UpdateStackMutationVariables>) {
+export function useDeletestackMutation(baseOptions?: Apollo.MutationHookOptions<DeletestackMutation, DeletestackMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateStackMutation, UpdateStackMutationVariables>(UpdateStackDocument, options);
+        return Apollo.useMutation<DeletestackMutation, DeletestackMutationVariables>(DeletestackDocument, options);
       }
-export type UpdateStackMutationHookResult = ReturnType<typeof useUpdateStackMutation>;
-export type UpdateStackMutationResult = Apollo.MutationResult<UpdateStackMutation>;
-export type UpdateStackMutationOptions = Apollo.BaseMutationOptions<UpdateStackMutation, UpdateStackMutationVariables>;
+export type DeletestackMutationHookResult = ReturnType<typeof useDeletestackMutation>;
+export type DeletestackMutationResult = Apollo.MutationResult<DeletestackMutation>;
+export type DeletestackMutationOptions = Apollo.BaseMutationOptions<DeletestackMutation, DeletestackMutationVariables>;
 export const DeleteProjectDocument = gql`
     mutation DeleteProject($id: String!) {
   deleteProject(where: {id: $id}) {
@@ -4468,3 +4762,105 @@ export function useQueryMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type QueryMessagesQueryHookResult = ReturnType<typeof useQueryMessagesQuery>;
 export type QueryMessagesLazyQueryHookResult = ReturnType<typeof useQueryMessagesLazyQuery>;
 export type QueryMessagesQueryResult = Apollo.QueryResult<QueryMessagesQuery, QueryMessagesQueryVariables>;
+export const QueryStacksDocument = gql`
+    query QueryStacks {
+  stacks {
+    id
+    title
+    image
+  }
+}
+    `;
+
+/**
+ * __useQueryStacksQuery__
+ *
+ * To run a query within a React component, call `useQueryStacksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryStacksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQueryStacksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQueryStacksQuery(baseOptions?: Apollo.QueryHookOptions<QueryStacksQuery, QueryStacksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<QueryStacksQuery, QueryStacksQueryVariables>(QueryStacksDocument, options);
+      }
+export function useQueryStacksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryStacksQuery, QueryStacksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<QueryStacksQuery, QueryStacksQueryVariables>(QueryStacksDocument, options);
+        }
+export type QueryStacksQueryHookResult = ReturnType<typeof useQueryStacksQuery>;
+export type QueryStacksLazyQueryHookResult = ReturnType<typeof useQueryStacksLazyQuery>;
+export type QueryStacksQueryResult = Apollo.QueryResult<QueryStacksQuery, QueryStacksQueryVariables>;
+export const QueryDashboardStuffDocument = gql`
+    query QueryDashboardStuff {
+  me {
+    email
+  }
+  stacks {
+    id
+    title
+    image
+  }
+  messages {
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    id
+    read_status
+    subject
+  }
+  projects {
+    app_url
+    github_url
+    id
+    image
+    name
+    summary
+    type
+    tech_categories {
+      name
+      id
+      techs {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useQueryDashboardStuffQuery__
+ *
+ * To run a query within a React component, call `useQueryDashboardStuffQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryDashboardStuffQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQueryDashboardStuffQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQueryDashboardStuffQuery(baseOptions?: Apollo.QueryHookOptions<QueryDashboardStuffQuery, QueryDashboardStuffQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<QueryDashboardStuffQuery, QueryDashboardStuffQueryVariables>(QueryDashboardStuffDocument, options);
+      }
+export function useQueryDashboardStuffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryDashboardStuffQuery, QueryDashboardStuffQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<QueryDashboardStuffQuery, QueryDashboardStuffQueryVariables>(QueryDashboardStuffDocument, options);
+        }
+export type QueryDashboardStuffQueryHookResult = ReturnType<typeof useQueryDashboardStuffQuery>;
+export type QueryDashboardStuffLazyQueryHookResult = ReturnType<typeof useQueryDashboardStuffLazyQuery>;
+export type QueryDashboardStuffQueryResult = Apollo.QueryResult<QueryDashboardStuffQuery, QueryDashboardStuffQueryVariables>;

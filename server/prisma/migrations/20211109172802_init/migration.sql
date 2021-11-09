@@ -9,17 +9,24 @@ CREATE TABLE "Admin" (
     "instagram" TEXT NOT NULL,
     "github" TEXT NOT NULL,
     "heroImage" TEXT NOT NULL,
-    "stack" TEXT[],
     "resumes" TEXT[],
     "confirmed" BOOLEAN NOT NULL DEFAULT false,
-    "isPublished" BOOLEAN NOT NULL DEFAULT false,
-    "stacks" TEXT[],
     "apikey" TEXT,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Stack" (
+    "id" UUID NOT NULL,
+    "title" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "admin_id" UUID NOT NULL,
+
+    CONSTRAINT "Stack_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -112,6 +119,9 @@ CREATE UNIQUE INDEX "Admin_id_key" ON "Admin"("id");
 CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Stack_id_key" ON "Stack"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Project_id_key" ON "Project"("id");
 
 -- CreateIndex
@@ -131,6 +141,9 @@ CREATE UNIQUE INDEX "About_id_key" ON "About"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Message_id_key" ON "Message"("id");
+
+-- AddForeignKey
+ALTER TABLE "Stack" ADD CONSTRAINT "Stack_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "Admin"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "Admin"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -57,11 +57,6 @@ export class AdminMaxAggregate {
   })
   confirmed!: boolean | null;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
-  })
-  isPublished!: boolean | null;
-
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })

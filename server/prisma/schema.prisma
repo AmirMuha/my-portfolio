@@ -22,20 +22,26 @@ model Admin {
   instagram   String
   github      String
   heroImage   String
-  stack       String[]
   resumes     String[]
   confirmed   Boolean   @default(false)
-  isPublished Boolean   @default(false)
   about       About[]
   messages    Message[]
   projects    Project[]
-  stacks      String[]
+  stack       Stack[]
   /// @TypeGraphQL.omit(output: true, input: true)
   apikey      String?
   /// @TypeGraphQL.omit(output: true)
   password    String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model Stack {
+  id    String @id @unique @default(uuid()) @db.Uuid
+  title String
+  image String
+  admin Admin @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  admin_id String @db.Uuid
 }
 
 model Project {

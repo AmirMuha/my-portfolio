@@ -6,5 +6,6 @@ export { QueryMode } from "./QueryMode";
 export { QuestionScalarFieldEnum } from "./QuestionScalarFieldEnum";
 export { SketchScalarFieldEnum } from "./SketchScalarFieldEnum";
 export { SortOrder } from "./SortOrder";
+export { StackScalarFieldEnum } from "./StackScalarFieldEnum";
 export { TechCategoryScalarFieldEnum } from "./TechCategoryScalarFieldEnum";
 export { TechScalarFieldEnum } from "./TechScalarFieldEnum";

@@ -3,9 +3,11 @@ import { About } from "../../../models/About";
 import { Admin } from "../../../models/Admin";
 import { Message } from "../../../models/Message";
 import { Project } from "../../../models/Project";
+import { Stack } from "../../../models/Stack";
 import { AdminAboutArgs } from "./args/AdminAboutArgs";
 import { AdminMessagesArgs } from "./args/AdminMessagesArgs";
 import { AdminProjectsArgs } from "./args/AdminProjectsArgs";
+import { AdminStackArgs } from "./args/AdminStackArgs";
 import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Admin)
@@ -41,5 +43,16 @@ export class AdminRelationsResolver {
         id: admin.id,
       },
     }).projects(args);
+  }
+
+  @TypeGraphQL.FieldResolver(_type => [Stack], {
+    nullable: false
+  })
+  async stack(@TypeGraphQL.Root() admin: Admin, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: AdminStackArgs): Promise<Stack[]> {
+    return getPrismaFromContext(ctx).admin.findUnique({
+      where: {
+        id: admin.id,
+      },
+    }).stack(args);
   }
 }

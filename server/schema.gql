@@ -167,12 +167,9 @@ type Admin {
   heroImage: String!
   id: String!
   instagram: String!
-  isPublished: Boolean!
   linkedIn: String!
   lname: String!
   resumes: [String!]!
-  stack: [String!]!
-  stacks: [String!]!
   updatedAt: DateTime!
   whatsapp: String!
 }
@@ -181,6 +178,7 @@ type AdminCount {
   about: Int!
   messages: Int!
   projects: Int!
+  stack: Int!
 }
 
 input AdminCreateInput {
@@ -193,15 +191,13 @@ input AdminCreateInput {
   heroImage: String!
   id: String
   instagram: String!
-  isPublished: Boolean
   linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
-  stack: AdminCreatestackInput
-  stacks: AdminCreatestacksInput
+  stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -224,6 +220,12 @@ input AdminCreateNestedOneWithoutProjectsInput {
   create: AdminCreateWithoutProjectsInput
 }
 
+input AdminCreateNestedOneWithoutStackInput {
+  connect: AdminWhereUniqueInput
+  connectOrCreate: AdminCreateOrConnectWithoutStackInput
+  create: AdminCreateWithoutStackInput
+}
+
 input AdminCreateOrConnectWithoutAboutInput {
   create: AdminCreateWithoutAboutInput!
   where: AdminWhereUniqueInput!
@@ -239,6 +241,11 @@ input AdminCreateOrConnectWithoutProjectsInput {
   where: AdminWhereUniqueInput!
 }
 
+input AdminCreateOrConnectWithoutStackInput {
+  create: AdminCreateWithoutStackInput!
+  where: AdminWhereUniqueInput!
+}
+
 input AdminCreateWithoutAboutInput {
   confirmed: Boolean
   createdAt: DateTime
@@ -248,15 +255,13 @@ input AdminCreateWithoutAboutInput {
   heroImage: String!
   id: String
   instagram: String!
-  isPublished: Boolean
   linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
-  stack: AdminCreatestackInput
-  stacks: AdminCreatestacksInput
+  stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -271,14 +276,12 @@ input AdminCreateWithoutMessagesInput {
   heroImage: String!
   id: String
   instagram: String!
-  isPublished: Boolean
   linkedIn: String!
   lname: String!
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
-  stack: AdminCreatestackInput
-  stacks: AdminCreatestacksInput
+  stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -293,27 +296,37 @@ input AdminCreateWithoutProjectsInput {
   heroImage: String!
   id: String
   instagram: String!
-  isPublished: Boolean
   linkedIn: String!
   lname: String!
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   resumes: AdminCreateresumesInput
-  stack: AdminCreatestackInput
-  stacks: AdminCreatestacksInput
+  stack: StackCreateNestedManyWithoutAdminInput
+  updatedAt: DateTime
+  whatsapp: String!
+}
+
+input AdminCreateWithoutStackInput {
+  about: AboutCreateNestedManyWithoutAdminInput
+  confirmed: Boolean
+  createdAt: DateTime
+  email: String!
+  fname: String!
+  github: String!
+  heroImage: String!
+  id: String
+  instagram: String!
+  linkedIn: String!
+  lname: String!
+  messages: MessageCreateNestedManyWithoutAdminInput
+  password: String!
+  projects: ProjectCreateNestedManyWithoutAdminInput
+  resumes: AdminCreateresumesInput
   updatedAt: DateTime
   whatsapp: String!
 }
 
 input AdminCreateresumesInput {
-  set: [String!]!
-}
-
-input AdminCreatestackInput {
-  set: [String!]!
-}
-
-input AdminCreatestacksInput {
   set: [String!]!
 }
 
@@ -327,15 +340,13 @@ input AdminOrderByWithRelationInput {
   heroImage: SortOrder
   id: SortOrder
   instagram: SortOrder
-  isPublished: SortOrder
   linkedIn: SortOrder
   lname: SortOrder
   messages: MessageOrderByRelationAggregateInput
   password: SortOrder
   projects: ProjectOrderByRelationAggregateInput
   resumes: SortOrder
-  stack: SortOrder
-  stacks: SortOrder
+  stack: StackOrderByRelationAggregateInput
   updatedAt: SortOrder
   whatsapp: SortOrder
 }
@@ -355,15 +366,13 @@ input AdminUpdateInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
-  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
-  stack: AdminUpdatestackInput
-  stacks: AdminUpdatestacksInput
+  stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -392,6 +401,14 @@ input AdminUpdateOneRequiredWithoutProjectsInput {
   upsert: AdminUpsertWithoutProjectsInput
 }
 
+input AdminUpdateOneRequiredWithoutStackInput {
+  connect: AdminWhereUniqueInput
+  connectOrCreate: AdminCreateOrConnectWithoutStackInput
+  create: AdminCreateWithoutStackInput
+  update: AdminUpdateWithoutStackInput
+  upsert: AdminUpsertWithoutStackInput
+}
+
 input AdminUpdateWithoutAboutInput {
   confirmed: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
@@ -401,15 +418,13 @@ input AdminUpdateWithoutAboutInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
-  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
-  stack: AdminUpdatestackInput
-  stacks: AdminUpdatestacksInput
+  stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -424,14 +439,12 @@ input AdminUpdateWithoutMessagesInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
-  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
-  stack: AdminUpdatestackInput
-  stacks: AdminUpdatestacksInput
+  stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -446,29 +459,37 @@ input AdminUpdateWithoutProjectsInput {
   heroImage: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   instagram: StringFieldUpdateOperationsInput
-  isPublished: BoolFieldUpdateOperationsInput
   linkedIn: StringFieldUpdateOperationsInput
   lname: StringFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   resumes: AdminUpdateresumesInput
-  stack: AdminUpdatestackInput
-  stacks: AdminUpdatestacksInput
+  stack: StackUpdateManyWithoutAdminInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  whatsapp: StringFieldUpdateOperationsInput
+}
+
+input AdminUpdateWithoutStackInput {
+  about: AboutUpdateManyWithoutAdminInput
+  confirmed: BoolFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  fname: StringFieldUpdateOperationsInput
+  github: StringFieldUpdateOperationsInput
+  heroImage: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  instagram: StringFieldUpdateOperationsInput
+  linkedIn: StringFieldUpdateOperationsInput
+  lname: StringFieldUpdateOperationsInput
+  messages: MessageUpdateManyWithoutAdminInput
+  password: StringFieldUpdateOperationsInput
+  projects: ProjectUpdateManyWithoutAdminInput
+  resumes: AdminUpdateresumesInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
 
 input AdminUpdateresumesInput {
-  push: [String!]
-  set: [String!]
-}
-
-input AdminUpdatestackInput {
-  push: [String!]
-  set: [String!]
-}
-
-input AdminUpdatestacksInput {
   push: [String!]
   set: [String!]
 }
@@ -488,6 +509,11 @@ input AdminUpsertWithoutProjectsInput {
   update: AdminUpdateWithoutProjectsInput!
 }
 
+input AdminUpsertWithoutStackInput {
+  create: AdminCreateWithoutStackInput!
+  update: AdminUpdateWithoutStackInput!
+}
+
 input AdminWhereInput {
   AND: [AdminWhereInput!]
   NOT: [AdminWhereInput!]
@@ -501,15 +527,13 @@ input AdminWhereInput {
   heroImage: StringFilter
   id: StringFilter
   instagram: StringFilter
-  isPublished: BoolFilter
   linkedIn: StringFilter
   lname: StringFilter
   messages: MessageListRelationFilter
   password: StringFilter
   projects: ProjectListRelationFilter
   resumes: StringNullableListFilter
-  stack: StringNullableListFilter
-  stacks: StringNullableListFilter
+  stack: StackListRelationFilter
   updatedAt: DateTimeFilter
   whatsapp: StringFilter
 }
@@ -523,87 +547,6 @@ type AffectedRowsOutput {
   count: Int!
 }
 
-type Answer {
-  answer: String!
-  id: String!
-  question: Question
-}
-
-input AnswerCreateInput {
-  answer: String!
-  id: String
-  question: QuestionCreateNestedOneWithoutAnswerInput
-}
-
-input AnswerCreateNestedOneWithoutQuestionInput {
-  connect: AnswerWhereUniqueInput
-  connectOrCreate: AnswerCreateOrConnectWithoutQuestionInput
-  create: AnswerCreateWithoutQuestionInput
-}
-
-input AnswerCreateOrConnectWithoutQuestionInput {
-  create: AnswerCreateWithoutQuestionInput!
-  where: AnswerWhereUniqueInput!
-}
-
-input AnswerCreateWithoutQuestionInput {
-  answer: String!
-  id: String
-}
-
-input AnswerOrderByWithRelationInput {
-  answer: SortOrder
-  id: SortOrder
-  question: QuestionOrderByWithRelationInput
-}
-
-input AnswerRelationFilter {
-  is: AnswerWhereInput
-  isNot: AnswerWhereInput
-}
-
-enum AnswerScalarFieldEnum {
-  answer
-  id
-}
-
-input AnswerUpdateInput {
-  answer: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  question: QuestionUpdateOneWithoutAnswerInput
-}
-
-input AnswerUpdateOneRequiredWithoutQuestionInput {
-  connect: AnswerWhereUniqueInput
-  connectOrCreate: AnswerCreateOrConnectWithoutQuestionInput
-  create: AnswerCreateWithoutQuestionInput
-  update: AnswerUpdateWithoutQuestionInput
-  upsert: AnswerUpsertWithoutQuestionInput
-}
-
-input AnswerUpdateWithoutQuestionInput {
-  answer: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-}
-
-input AnswerUpsertWithoutQuestionInput {
-  create: AnswerCreateWithoutQuestionInput!
-  update: AnswerUpdateWithoutQuestionInput!
-}
-
-input AnswerWhereInput {
-  AND: [AnswerWhereInput!]
-  NOT: [AnswerWhereInput!]
-  OR: [AnswerWhereInput!]
-  answer: StringFilter
-  id: StringFilter
-  question: QuestionRelationFilter
-}
-
-input AnswerWhereUniqueInput {
-  id: String
-}
-
 input BoolFieldUpdateOperationsInput {
   set: Boolean
 }
@@ -611,6 +554,18 @@ input BoolFieldUpdateOperationsInput {
 input BoolFilter {
   equals: Boolean
   not: NestedBoolFilter
+}
+
+input CreateProjectInput_PWNR {
+  app_url: String!
+  github_url: String!
+  image: String!
+  name: String!
+  questions: [QuestionCreateInput_PWNR!]!
+  sketches: [SketchCreateInput_PWNR!]!
+  summary: String!
+  techCategories: [TechCategoryCreateInput_PWNR!]!
+  type: String!
 }
 
 """
@@ -846,23 +801,22 @@ type Mutation {
   confirmTokenOrCode(code: Int, email: String, token: String): Boolean!
   createAbout(data: AboutCreateInput!): About!
   createAdmin(data: AdminCreateInput!): Admin
-  createAnswer(data: AnswerCreateInput!): Answer!
   createManyQuestion(data: [QuestionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManySketch(data: [SketchCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTech(data: [TechCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTechCategory(data: [TechCategoryCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createMessage(data: MessageCreateInput!): Message!
   createProject(data: ProjectCreateInput!): Project!
-  createProjectWithNestedRelations: String!
+  createProjectWithNestedRelations(data: CreateProjectInput_PWNR!): Boolean!
   createQuestion(data: QuestionCreateInput!): Question!
   createSketch(data: SketchCreateInput!): Sketch!
+  createStack(data: StackCreateInput!): Stack!
   createTech(data: TechCreateInput!): Tech!
   createTechCategory(data: TechCategoryCreateInput!): TechCategory!
   deleteAbout(where: AboutWhereUniqueInput!): About
   deleteAdmin(where: AdminWhereUniqueInput!): Boolean!
-  deleteAnswer(where: AnswerWhereUniqueInput!): Answer
+  deleteFile(filename: String!): Boolean!
   deleteManyAbout(where: AboutWhereInput): AffectedRowsOutput!
-  deleteManyAnswer(where: AnswerWhereInput): AffectedRowsOutput!
   deleteManyMessage(where: MessageWhereInput): AffectedRowsOutput!
   deleteManyProject(where: ProjectWhereInput): AffectedRowsOutput!
   deleteManyQuestion(where: QuestionWhereInput): AffectedRowsOutput!
@@ -873,6 +827,7 @@ type Mutation {
   deleteProject(where: ProjectWhereUniqueInput!): Project
   deleteQuestion(where: QuestionWhereUniqueInput!): Question
   deleteSketch(where: SketchWhereUniqueInput!): Sketch
+  deleteStack(where: StackWhereUniqueInput!): Stack
   deleteTech(where: TechWhereUniqueInput!): Tech
   deleteTechCategory(where: TechCategoryWhereUniqueInput!): TechCategory
   forgotPassword(email: String!): Boolean!
@@ -881,16 +836,16 @@ type Mutation {
   resetPassword(code: Int, confirmPassword: String!, email: String!, newPassword: String!, token: String): String!
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
-  updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
-  updateImage(field: String, file: Upload!, id: String!, prevname: String!): String
+  updateImage(field: String, file: Upload!, id: String!, isEdit: Boolean = false, prevname: String!): String
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
   updateSketch(data: SketchUpdateInput!, where: SketchWhereUniqueInput!): Sketch
+  updateStack(data: StackUpdateInput!, where: StackWhereUniqueInput!): Stack
   updateTech(data: TechUpdateInput!, where: TechWhereUniqueInput!): Tech
   updateTechCategory(data: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory
   uploadMultipleFiles(files: [Upload!]!): [String!]
-  uploadSingleFile(file: Upload!): String!
+  uploadSingleFile(file: Upload!, isEdit: Boolean = false): String!
 }
 
 input NestedBoolFilter {
@@ -1330,8 +1285,6 @@ input ProjectWhereUniqueInput {
 type Query {
   about(where: AboutWhereUniqueInput!): About
   abouts(cursor: AboutWhereUniqueInput, distinct: [AboutScalarFieldEnum!], orderBy: [AboutOrderByWithRelationInput!], skip: Int, take: Int, where: AboutWhereInput): [About!]!
-  answer(where: AnswerWhereUniqueInput!): Answer
-  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum!], orderBy: [AnswerOrderByWithRelationInput!], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
   getAdmin: Admin!
   getNumOfAdmins: Int
   isThereAnAdmin: Boolean!
@@ -1344,6 +1297,7 @@ type Query {
   questions(cursor: QuestionWhereUniqueInput, distinct: [QuestionScalarFieldEnum!], orderBy: [QuestionOrderByWithRelationInput!], skip: Int, take: Int, where: QuestionWhereInput): [Question!]!
   sketch(where: SketchWhereUniqueInput!): Sketch
   sketches(cursor: SketchWhereUniqueInput, distinct: [SketchScalarFieldEnum!], orderBy: [SketchOrderByWithRelationInput!], skip: Int, take: Int, where: SketchWhereInput): [Sketch!]!
+  stacks(cursor: StackWhereUniqueInput, distinct: [StackScalarFieldEnum!], orderBy: [StackOrderByWithRelationInput!], skip: Int, take: Int, where: StackWhereInput): [Stack!]!
   tech(where: TechWhereUniqueInput!): Tech
   techCategories(cursor: TechCategoryWhereUniqueInput, distinct: [TechCategoryScalarFieldEnum!], orderBy: [TechCategoryOrderByWithRelationInput!], skip: Int, take: Int, where: TechCategoryWhereInput): [TechCategory!]!
   techCategory(where: TechCategoryWhereUniqueInput!): TechCategory
@@ -1356,8 +1310,7 @@ enum QueryMode {
 }
 
 type Question {
-  answer: Answer!
-  answer_id: String!
+  answer: String!
   id: String!
   project: Project!
   project_id: String!
@@ -1365,21 +1318,26 @@ type Question {
 }
 
 input QuestionCreateInput {
-  answer: AnswerCreateNestedOneWithoutQuestionInput!
+  answer: String!
   id: String
   project: ProjectCreateNestedOneWithoutQuestionsInput!
   question: String!
 }
 
+input QuestionCreateInput_PWNR {
+  answer: String!
+  question: String!
+}
+
 input QuestionCreateManyInput {
-  answer_id: String!
+  answer: String!
   id: String
   project_id: String!
   question: String!
 }
 
 input QuestionCreateManyProjectInput {
-  answer_id: String!
+  answer: String!
   id: String
   question: String!
 }
@@ -1396,30 +1354,13 @@ input QuestionCreateNestedManyWithoutProjectInput {
   createMany: QuestionCreateManyProjectInputEnvelope
 }
 
-input QuestionCreateNestedOneWithoutAnswerInput {
-  connect: QuestionWhereUniqueInput
-  connectOrCreate: QuestionCreateOrConnectWithoutAnswerInput
-  create: QuestionCreateWithoutAnswerInput
-}
-
-input QuestionCreateOrConnectWithoutAnswerInput {
-  create: QuestionCreateWithoutAnswerInput!
-  where: QuestionWhereUniqueInput!
-}
-
 input QuestionCreateOrConnectWithoutProjectInput {
   create: QuestionCreateWithoutProjectInput!
   where: QuestionWhereUniqueInput!
 }
 
-input QuestionCreateWithoutAnswerInput {
-  id: String
-  project: ProjectCreateNestedOneWithoutQuestionsInput!
-  question: String!
-}
-
 input QuestionCreateWithoutProjectInput {
-  answer: AnswerCreateNestedOneWithoutQuestionInput!
+  answer: String!
   id: String
   question: String!
 }
@@ -1435,21 +1376,15 @@ input QuestionOrderByRelationAggregateInput {
 }
 
 input QuestionOrderByWithRelationInput {
-  answer: AnswerOrderByWithRelationInput
-  answer_id: SortOrder
+  answer: SortOrder
   id: SortOrder
   project: ProjectOrderByWithRelationInput
   project_id: SortOrder
   question: SortOrder
 }
 
-input QuestionRelationFilter {
-  is: QuestionWhereInput
-  isNot: QuestionWhereInput
-}
-
 enum QuestionScalarFieldEnum {
-  answer_id
+  answer
   id
   project_id
   question
@@ -1459,20 +1394,21 @@ input QuestionScalarWhereInput {
   AND: [QuestionScalarWhereInput!]
   NOT: [QuestionScalarWhereInput!]
   OR: [QuestionScalarWhereInput!]
-  answer_id: StringFilter
+  answer: StringFilter
   id: StringFilter
   project_id: StringFilter
   question: StringFilter
 }
 
 input QuestionUpdateInput {
-  answer: AnswerUpdateOneRequiredWithoutQuestionInput
+  answer: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   project: ProjectUpdateOneRequiredWithoutQuestionsInput
   question: StringFieldUpdateOperationsInput
 }
 
 input QuestionUpdateManyMutationInput {
+  answer: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   question: StringFieldUpdateOperationsInput
 }
@@ -1496,29 +1432,13 @@ input QuestionUpdateManyWithoutProjectInput {
   upsert: [QuestionUpsertWithWhereUniqueWithoutProjectInput!]
 }
 
-input QuestionUpdateOneWithoutAnswerInput {
-  connect: QuestionWhereUniqueInput
-  connectOrCreate: QuestionCreateOrConnectWithoutAnswerInput
-  create: QuestionCreateWithoutAnswerInput
-  delete: Boolean
-  disconnect: Boolean
-  update: QuestionUpdateWithoutAnswerInput
-  upsert: QuestionUpsertWithoutAnswerInput
-}
-
 input QuestionUpdateWithWhereUniqueWithoutProjectInput {
   data: QuestionUpdateWithoutProjectInput!
   where: QuestionWhereUniqueInput!
 }
 
-input QuestionUpdateWithoutAnswerInput {
-  id: StringFieldUpdateOperationsInput
-  project: ProjectUpdateOneRequiredWithoutQuestionsInput
-  question: StringFieldUpdateOperationsInput
-}
-
 input QuestionUpdateWithoutProjectInput {
-  answer: AnswerUpdateOneRequiredWithoutQuestionInput
+  answer: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   question: StringFieldUpdateOperationsInput
 }
@@ -1529,17 +1449,11 @@ input QuestionUpsertWithWhereUniqueWithoutProjectInput {
   where: QuestionWhereUniqueInput!
 }
 
-input QuestionUpsertWithoutAnswerInput {
-  create: QuestionCreateWithoutAnswerInput!
-  update: QuestionUpdateWithoutAnswerInput!
-}
-
 input QuestionWhereInput {
   AND: [QuestionWhereInput!]
   NOT: [QuestionWhereInput!]
   OR: [QuestionWhereInput!]
-  answer: AnswerRelationFilter
-  answer_id: StringFilter
+  answer: StringFilter
   id: StringFilter
   project: ProjectRelationFilter
   project_id: StringFilter
@@ -1547,7 +1461,6 @@ input QuestionWhereInput {
 }
 
 input QuestionWhereUniqueInput {
-  answer_id: String
   id: String
 }
 
@@ -1568,6 +1481,14 @@ input SketchCreateInput {
   id: String
   image: String!
   project: ProjectCreateNestedOneWithoutSketchesInput!
+  summary: String!
+  title: String!
+}
+
+input SketchCreateInput_PWNR {
+  description: String!
+  download_link: String!
+  image: String!
   summary: String!
   title: String!
 }
@@ -1742,6 +1663,148 @@ enum SortOrder {
   desc
 }
 
+type Stack {
+  admin_id: String!
+  id: String!
+  image: String!
+  title: String!
+}
+
+input StackCreateInput {
+  admin: AdminCreateNestedOneWithoutStackInput!
+  id: String
+  image: String!
+  title: String!
+}
+
+input StackCreateManyAdminInput {
+  id: String
+  image: String!
+  title: String!
+}
+
+input StackCreateManyAdminInputEnvelope {
+  data: [StackCreateManyAdminInput!]!
+  skipDuplicates: Boolean
+}
+
+input StackCreateNestedManyWithoutAdminInput {
+  connect: [StackWhereUniqueInput!]
+  connectOrCreate: [StackCreateOrConnectWithoutAdminInput!]
+  create: [StackCreateWithoutAdminInput!]
+  createMany: StackCreateManyAdminInputEnvelope
+}
+
+input StackCreateOrConnectWithoutAdminInput {
+  create: StackCreateWithoutAdminInput!
+  where: StackWhereUniqueInput!
+}
+
+input StackCreateWithoutAdminInput {
+  id: String
+  image: String!
+  title: String!
+}
+
+input StackListRelationFilter {
+  every: StackWhereInput
+  none: StackWhereInput
+  some: StackWhereInput
+}
+
+input StackOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input StackOrderByWithRelationInput {
+  admin: AdminOrderByWithRelationInput
+  admin_id: SortOrder
+  id: SortOrder
+  image: SortOrder
+  title: SortOrder
+}
+
+enum StackScalarFieldEnum {
+  admin_id
+  id
+  image
+  title
+}
+
+input StackScalarWhereInput {
+  AND: [StackScalarWhereInput!]
+  NOT: [StackScalarWhereInput!]
+  OR: [StackScalarWhereInput!]
+  admin_id: StringFilter
+  id: StringFilter
+  image: StringFilter
+  title: StringFilter
+}
+
+input StackUpdateInput {
+  admin: AdminUpdateOneRequiredWithoutStackInput
+  id: StringFieldUpdateOperationsInput
+  image: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+}
+
+input StackUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  image: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+}
+
+input StackUpdateManyWithWhereWithoutAdminInput {
+  data: StackUpdateManyMutationInput!
+  where: StackScalarWhereInput!
+}
+
+input StackUpdateManyWithoutAdminInput {
+  connect: [StackWhereUniqueInput!]
+  connectOrCreate: [StackCreateOrConnectWithoutAdminInput!]
+  create: [StackCreateWithoutAdminInput!]
+  createMany: StackCreateManyAdminInputEnvelope
+  delete: [StackWhereUniqueInput!]
+  deleteMany: [StackScalarWhereInput!]
+  disconnect: [StackWhereUniqueInput!]
+  set: [StackWhereUniqueInput!]
+  update: [StackUpdateWithWhereUniqueWithoutAdminInput!]
+  updateMany: [StackUpdateManyWithWhereWithoutAdminInput!]
+  upsert: [StackUpsertWithWhereUniqueWithoutAdminInput!]
+}
+
+input StackUpdateWithWhereUniqueWithoutAdminInput {
+  data: StackUpdateWithoutAdminInput!
+  where: StackWhereUniqueInput!
+}
+
+input StackUpdateWithoutAdminInput {
+  id: StringFieldUpdateOperationsInput
+  image: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+}
+
+input StackUpsertWithWhereUniqueWithoutAdminInput {
+  create: StackCreateWithoutAdminInput!
+  update: StackUpdateWithoutAdminInput!
+  where: StackWhereUniqueInput!
+}
+
+input StackWhereInput {
+  AND: [StackWhereInput!]
+  NOT: [StackWhereInput!]
+  OR: [StackWhereInput!]
+  admin: AdminRelationFilter
+  admin_id: StringFilter
+  id: StringFilter
+  image: StringFilter
+  title: StringFilter
+}
+
+input StackWhereUniqueInput {
+  id: String
+}
+
 input StringFieldUpdateOperationsInput {
   set: String
 }
@@ -1794,6 +1857,11 @@ input TechCategoryCreateInput {
   name: String!
   project: ProjectCreateNestedOneWithoutTech_categoriesInput!
   techs: TechCreateNestedManyWithoutTech_categoriesInput
+}
+
+input TechCategoryCreateInput_PWNR {
+  name: String!
+  techs: [TechCreateInput_PWNR!]!
 }
 
 input TechCategoryCreateManyInput {
@@ -1971,6 +2039,10 @@ input TechCreateInput {
   id: String
   name: String!
   tech_categories: TechCategoryCreateNestedOneWithoutTechsInput!
+}
+
+input TechCreateInput_PWNR {
+  name: String!
 }
 
 input TechCreateManyInput {

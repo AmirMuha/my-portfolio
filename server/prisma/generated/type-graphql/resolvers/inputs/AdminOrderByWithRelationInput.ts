@@ -5,6 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { AboutOrderByRelationAggregateInput } from "../inputs/AboutOrderByRelationAggregateInput";
 import { MessageOrderByRelationAggregateInput } from "../inputs/MessageOrderByRelationAggregateInput";
 import { ProjectOrderByRelationAggregateInput } from "../inputs/ProjectOrderByRelationAggregateInput";
+import { StackOrderByRelationAggregateInput } from "../inputs/StackOrderByRelationAggregateInput";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType({
@@ -59,22 +60,12 @@ export class AdminOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  stack?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
   resumes?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
   confirmed?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  isPublished?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => AboutOrderByRelationAggregateInput, {
     nullable: true
@@ -91,10 +82,10 @@ export class AdminOrderByWithRelationInput {
   })
   projects?: ProjectOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @TypeGraphQL.Field(_type => StackOrderByRelationAggregateInput, {
     nullable: true
   })
-  stacks?: "asc" | "desc" | undefined;
+  stack?: StackOrderByRelationAggregateInput | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true

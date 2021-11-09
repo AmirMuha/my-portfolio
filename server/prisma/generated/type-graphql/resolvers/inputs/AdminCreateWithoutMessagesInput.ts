@@ -4,9 +4,8 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { AboutCreateNestedManyWithoutAdminInput } from "../inputs/AboutCreateNestedManyWithoutAdminInput";
 import { AdminCreateresumesInput } from "../inputs/AdminCreateresumesInput";
-import { AdminCreatestackInput } from "../inputs/AdminCreatestackInput";
-import { AdminCreatestacksInput } from "../inputs/AdminCreatestacksInput";
 import { ProjectCreateNestedManyWithoutAdminInput } from "../inputs/ProjectCreateNestedManyWithoutAdminInput";
+import { StackCreateNestedManyWithoutAdminInput } from "../inputs/StackCreateNestedManyWithoutAdminInput";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -62,11 +61,6 @@ export class AdminCreateWithoutMessagesInput {
   })
   confirmed?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
-  })
-  isPublished?: boolean | undefined;
-
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
@@ -82,20 +76,10 @@ export class AdminCreateWithoutMessagesInput {
   })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => AdminCreatestackInput, {
-    nullable: true
-  })
-  stack?: AdminCreatestackInput | undefined;
-
   @TypeGraphQL.Field(_type => AdminCreateresumesInput, {
     nullable: true
   })
   resumes?: AdminCreateresumesInput | undefined;
-
-  @TypeGraphQL.Field(_type => AdminCreatestacksInput, {
-    nullable: true
-  })
-  stacks?: AdminCreatestacksInput | undefined;
 
   @TypeGraphQL.Field(_type => AboutCreateNestedManyWithoutAdminInput, {
     nullable: true
@@ -106,4 +90,9 @@ export class AdminCreateWithoutMessagesInput {
     nullable: true
   })
   projects?: ProjectCreateNestedManyWithoutAdminInput | undefined;
+
+  @TypeGraphQL.Field(_type => StackCreateNestedManyWithoutAdminInput, {
+    nullable: true
+  })
+  stack?: StackCreateNestedManyWithoutAdminInput | undefined;
 }

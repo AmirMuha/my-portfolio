@@ -21,4 +21,9 @@ export class AdminCount {
     nullable: false
   })
   projects!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  stack!: number;
 }

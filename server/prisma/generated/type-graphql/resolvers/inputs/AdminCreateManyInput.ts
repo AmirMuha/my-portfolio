@@ -3,8 +3,6 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { AdminCreateManyresumesInput } from "../inputs/AdminCreateManyresumesInput";
-import { AdminCreateManystackInput } from "../inputs/AdminCreateManystackInput";
-import { AdminCreateManystacksInput } from "../inputs/AdminCreateManystacksInput";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -60,11 +58,6 @@ export class AdminCreateManyInput {
   })
   confirmed?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
-  })
-  isPublished?: boolean | undefined;
-
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
@@ -80,18 +73,8 @@ export class AdminCreateManyInput {
   })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => AdminCreateManystackInput, {
-    nullable: true
-  })
-  stack?: AdminCreateManystackInput | undefined;
-
   @TypeGraphQL.Field(_type => AdminCreateManyresumesInput, {
     nullable: true
   })
   resumes?: AdminCreateManyresumesInput | undefined;
-
-  @TypeGraphQL.Field(_type => AdminCreateManystacksInput, {
-    nullable: true
-  })
-  stacks?: AdminCreateManystacksInput | undefined;
 }

@@ -3,13 +3,12 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { AdminUpdateresumesInput } from "../inputs/AdminUpdateresumesInput";
-import { AdminUpdatestackInput } from "../inputs/AdminUpdatestackInput";
-import { AdminUpdatestacksInput } from "../inputs/AdminUpdatestacksInput";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { MessageUpdateManyWithoutAdminInput } from "../inputs/MessageUpdateManyWithoutAdminInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { ProjectUpdateManyWithoutAdminInput } from "../inputs/ProjectUpdateManyWithoutAdminInput";
+import { StackUpdateManyWithoutAdminInput } from "../inputs/StackUpdateManyWithoutAdminInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType({
@@ -66,11 +65,6 @@ export class AdminUpdateWithoutAboutInput {
   })
   confirmed?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  isPublished?: BoolFieldUpdateOperationsInput | undefined;
-
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
@@ -86,20 +80,10 @@ export class AdminUpdateWithoutAboutInput {
   })
   updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => AdminUpdatestackInput, {
-    nullable: true
-  })
-  stack?: AdminUpdatestackInput | undefined;
-
   @TypeGraphQL.Field(_type => AdminUpdateresumesInput, {
     nullable: true
   })
   resumes?: AdminUpdateresumesInput | undefined;
-
-  @TypeGraphQL.Field(_type => AdminUpdatestacksInput, {
-    nullable: true
-  })
-  stacks?: AdminUpdatestacksInput | undefined;
 
   @TypeGraphQL.Field(_type => MessageUpdateManyWithoutAdminInput, {
     nullable: true
@@ -110,4 +94,9 @@ export class AdminUpdateWithoutAboutInput {
     nullable: true
   })
   projects?: ProjectUpdateManyWithoutAdminInput | undefined;
+
+  @TypeGraphQL.Field(_type => StackUpdateManyWithoutAdminInput, {
+    nullable: true
+  })
+  stack?: StackUpdateManyWithoutAdminInput | undefined;
 }

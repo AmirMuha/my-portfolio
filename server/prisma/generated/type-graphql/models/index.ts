@@ -4,5 +4,6 @@ export { Message } from "./Message";
 export { Project } from "./Project";
 export { Question } from "./Question";
 export { Sketch } from "./Sketch";
+export { Stack } from "./Stack";
 export { Tech } from "./Tech";
 export { TechCategory } from "./TechCategory";

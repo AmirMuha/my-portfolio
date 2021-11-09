@@ -9,6 +9,7 @@ import {
   CreateProjectResolver,
   CreateQuestionResolver,
   CreateSketchResolver,
+  CreateStackResolver,
   CreateTechCategoryResolver,
   CreateTechResolver,
   DeleteAboutResolver,
@@ -23,6 +24,7 @@ import {
   DeleteProjectResolver,
   DeleteQuestionResolver,
   DeleteSketchResolver,
+  DeleteStackResolver,
   DeleteTechCategoryResolver,
   DeleteTechResolver,
   FindManyAboutResolver,
@@ -30,6 +32,7 @@ import {
   FindManyProjectResolver,
   FindManyQuestionResolver,
   FindManySketchResolver,
+  FindManyStackResolver,
   FindManyTechCategoryResolver,
   FindManyTechResolver,
   FindUniqueAboutResolver,
@@ -50,6 +53,7 @@ import {
   UpdateProjectResolver,
   UpdateQuestionResolver,
   UpdateSketchResolver,
+  UpdateStackResolver,
   UpdateTechCategoryResolver,
   UpdateTechResolver,
 } from "../../prisma/generated/type-graphql";
@@ -59,6 +63,10 @@ import { AuthResolver } from "../resolvers/Auth";
 import { CreateProjectWithNestedRelationsResolver } from './Project';
 
 export default [
+  CreateStackResolver,
+  FindManyStackResolver,
+  UpdateStackResolver,
+  DeleteStackResolver,
   CreateProjectWithNestedRelationsResolver,
   TechCategoryRelationsResolver,
   AboutRelationsResolver,
