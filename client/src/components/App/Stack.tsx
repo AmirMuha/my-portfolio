@@ -1,57 +1,178 @@
-import {
-  CreateStackMutation,
-  DeleteStackMutation,
-  UploadSingleFileMutation,
-} from "../../util/mutations"
 import Input, { File } from "../UI/Input"
-import { JS, NodeJS, ReactJS, TS, VueJS } from "../../icons/iconsJSX"
 import React, { FC, PropsWithChildren, useState } from "react"
+import {
+  Stack as StackType,
+  useCreateStackMutation,
+  useDeleteFileMutation,
+  useUpdateStackMutation,
+  useUploadFileMutation,
+} from "../../types/graphql-types"
 
+import Alert from "../UI/Alert"
 import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
+import Modal from "../UI/Modal"
 import SmallPipe from "../UI/SmallPipe"
-import { useMutation } from "@apollo/client"
+import { useAlert } from "../../util/useAlert"
+import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
 
 interface Props {
   style?: React.CSSProperties
   className?: string
-  data?: string[]
+  data?: StackType[]
   editable?: boolean
+  adminEmail?: string
 }
 const Stack: FC<PropsWithChildren<Props>> = ({
   className,
   style,
+  adminEmail,
   data,
   editable = false,
 }) => {
-  const [mutateImageUrl] = useMutation(CreateStackMutation)
-  const [mutateNewImage] = useMutation(UploadSingleFileMutation)
-  const [mtuateDelete] = useMutation(DeleteStackMutation)
-  const [newStackImageUrl, setNewStackImageUrl] = useState<string>("")
+  const [isStackCreateOpen, setStackCreateOpen] = useState<boolean>(false)
+  const [
+    mutateDeleteImage,
+    { error: deleteImageError, loading: deleteImageLoading },
+  ] = useDeleteFileMutation()
+  const [
+    mutateNewStack,
+    { error: createStackError, loading: createStackLoading },
+  ] = useCreateStackMutation()
+  const [
+    mutateNewImage,
+    { error: uploadFileError, loading: uploadFileLoading },
+  ] = useUploadFileMutation()
+  const [
+    mtuateDelete,
+    { error: updateStackError, loading: updateStackLoading },
+  ] = useUpdateStackMutation()
+  const {
+    isOpen: alertIsOpen,
+    title: alertTitle,
+    message: alertMessage,
+    setAlert,
+  } = useAlert()
+  const [newStackTitle, setNewStackTitle] = useState<string>("")
   const [newStackImageFile, setNewStackImageFile] = useState<File>()
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState({
     isOpen: false,
-    image: "",
+    id: "",
   })
-  const [adminId, setAdminId] = useState<string>("")
-  const deleteStackItem = (d: boolean, image: string) => {
+  useAlertGraphqlError(deleteImageError, deleteImageLoading, setAlert)
+  useAlertGraphqlError(createStackError, createStackLoading, setAlert)
+  useAlertGraphqlError(uploadFileError, uploadFileLoading, setAlert)
+  useAlertGraphqlError(updateStackError, updateStackLoading, setAlert)
+
+  const saveStack = () => {
+    if (!newStackImageFile || !newStackTitle) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message:
+          !newStackTitle && !newStackImageFile
+            ? "Both image and title are required, please provide some values."
+            : `${
+                !newStackTitle ? "Title" : "Image"
+              } is required, Please choose your image.`,
+      })
+      return
+    }
+    mutateNewImage({
+      variables: {
+        file: newStackImageFile,
+        isEdit: false,
+      },
+    })
+      .then(res => {
+        if (res.data) {
+          mutateNewStack({
+            variables: {
+              email: adminEmail!,
+              title: newStackTitle,
+              image: res.data.uploadSingleFile,
+            },
+          })
+            .then(() => {
+              setAlert({
+                isOpen: true,
+                title: "Success",
+                message: "New stack created successfully.",
+              })
+            })
+            .catch(() => {
+              mutateDeleteImage({
+                variables: {
+                  filename: res.data!.uploadSingleFile,
+                },
+              }).catch(() => {})
+            })
+        } else {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message:
+              "Unknown Error: Something went wrong, please try again later.",
+          })
+        }
+      })
+      .catch(() => {})
+  }
+  const deleteStackItem = (d: boolean, id: string) => {
     if (d) {
       console.log("Deleting the stack item with id %s")
     }
   }
-  const saveStackUrl = () => {
-    mutateImageUrl({
-      variables: {
-        id: adminId,
-        image: newStackImageUrl,
-      },
-    })
-      .then(res => {})
-      .catch(e => {})
-  }
-  const saveImage = () => {}
+
   return (
     <>
+      {isStackCreateOpen && (
+        <Modal
+          header
+          title="Create new Stack"
+          maxWidth="500px"
+          onClose={() => setStackCreateOpen(false)}
+        >
+          <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
+            <div className="flex-grow">
+              <Input
+                label="Title"
+                placeholder="Enter the title"
+                color="200"
+                value={newStackTitle}
+                id="stack-title"
+                textColor="500"
+                name="stack-title"
+                getValue={v => setNewStackTitle(v)}
+              />
+            </div>
+            <div className="flex-grow">
+              <Input
+                label="Image"
+                color="200"
+                value={newStackImageFile?.name}
+                id="new-stack"
+                name="new-stack"
+                type="file"
+                buttonTitle="Choose"
+                getValue={(_, f) => setNewStackImageFile(f[0])}
+              />
+            </div>
+            <Button normal outline onClick={saveStack}>
+              Save
+            </Button>
+          </div>
+        </Modal>
+      )}
+      {alertIsOpen && (
+        <Alert
+          onClose={() => setAlert({ isOpen: false })}
+          message={alertMessage}
+          title={alertTitle}
+          header
+          backdrop
+        />
+      )}
       {editable ? (
         <div>
           {data?.length! > 0 && (
@@ -62,109 +183,56 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               <ul className="flex px-3 stack items-center gap-2">
                 {data?.map(s => (
                   <li title="TypeScript">
-                    <img src={s} alt={s + "image"} />
+                    <img src={s.image} alt={s.title + "image"} />
                   </li>
                 ))}
               </ul>
             </div>
           )}
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-          <SmallPipe className="flex w-full items-center mb-3">
-            <div className="flex-grow">
-              <Input
-                color="200"
-                value={newStackImageUrl}
-                id="new-stack"
-                name="new-stack"
-                type="url"
-                placeholder="Enter The Image Url"
-                getValue={v => setNewStackImageUrl(v)}
-              />
-            </div>
-            <Button onClick={saveStackUrl} normal className="text-sm.2" outline>
-              save
+          <SmallPipe className="flex w-full items-center mb-5">
+            <Button
+              className="w-full"
+              normal
+              outline
+              onClick={() => setStackCreateOpen(true)}
+            >
+              Create New Stack
             </Button>
           </SmallPipe>
-          <SmallPipe className="flex w-full items-center my-3 lg:mt-0">
-            <div className="flex-grow">
-              <Input
-                color="200"
-                value={newStackImageFile}
-                id="new-stack"
-                name="new-stack"
-                type="file"
-                buttonTitle="Choose New Stack Image"
-                getValue={v => setNewStackImageFile(v)}
-              />
+          {data?.length! > 0 && (
+            <div
+              style={{ width: "100vw" }}
+              className="bg-palatte-500 w-full pb-2 pt-3"
+            >
+              <ul className="flex stack px-3 items-center gap-2">
+                {data?.map(s => (
+                  <li title={`Delete ${s.title}`}>
+                    <button
+                      onClick={() =>
+                        setIsConfirmDeleteOpen({ isOpen: true, id: s.id })
+                      }
+                    >
+                      <img
+                        src={`${(window as any).__SERVER_API__}/${s.image}`}
+                        alt={s.title}
+                      />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {isConfirmDeleteOpen.isOpen && (
+                <Confirm
+                  header
+                  title={`Deleting Stack Item`}
+                  text="Are you sure you want to delete NodeJS Stack Item ?"
+                  getValue={v => deleteStackItem(v, isConfirmDeleteOpen.id)}
+                  onClose={() =>
+                    setIsConfirmDeleteOpen({ isOpen: false, id: "" })
+                  }
+                ></Confirm>
+              )}
             </div>
-            <Button onClick={saveImage} normal className="text-sm.2" outline>
-              save
-            </Button>
-          </SmallPipe>
-          </div>
-          <div
-            style={{ width: "100vw" }}
-            className="bg-palatte-500 w-full pb-2 pt-3"
-          >
-            <ul className="flex stack px-3 items-center gap-2">
-              <li title="Delete TypeScript">
-                <button
-                  onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, image: "1" })
-                  }
-                >
-                  {TS}
-                </button>
-              </li>
-              <li title="Delete JavaScript">
-                <button
-                  onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, image: "2" })
-                  }
-                >
-                  {JS}
-                </button>
-              </li>
-              <li title="Delete NodeJS">
-                <button
-                  onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, image: "4" })
-                  }
-                >
-                  {NodeJS}
-                </button>
-              </li>
-              <li title="Delete ReactJS">
-                <button
-                  onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, image: "5" })
-                  }
-                >
-                  {ReactJS}
-                </button>
-              </li>
-              <li title="Delete VueJS">
-                <button
-                  onClick={() =>
-                    setIsConfirmDeleteOpen({ isOpen: true, image: "6" })
-                  }
-                >
-                  {VueJS}
-                </button>
-              </li>
-            </ul>
-            {isConfirmDeleteOpen.isOpen && (
-              <Confirm
-                header
-                title={`Deleting Stack Item`}
-                text="Are you sure you want to delete NodeJS Stack Item ?"
-                getValue={v => deleteStackItem(v, isConfirmDeleteOpen.image)}
-                onClose={() =>
-                  setIsConfirmDeleteOpen({ isOpen: false, image: "" })
-                }
-              ></Confirm>
-            )}
-          </div>
+          )}
         </div>
       ) : (
         <div
@@ -172,11 +240,9 @@ const Stack: FC<PropsWithChildren<Props>> = ({
           className="bg-palatte-500 w-full pb-2 pt-3"
         >
           <ul className="flex px-3 stack items-center gap-2">
-            <li title="TypeScript">{TS}</li>
-            <li title="JavaScript">{JS}</li>
-            <li title="NodeJS">{NodeJS}</li>
-            <li title="ReactJS">{ReactJS}</li>
-            <li title="VueJS">{VueJS}</li>
+            {data?.map(s => (
+              <li title="TypeScript">// static image</li>
+            ))}
           </ul>
         </div>
       )}
