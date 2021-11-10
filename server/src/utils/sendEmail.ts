@@ -1,4 +1,3 @@
-import nodemailer from "nodemailer";
 import {
   EMAIL_HOST,
   EMAIL_PASSWORD,
@@ -7,17 +6,21 @@ import {
   __prod__,
 } from "../constants/envs-and-consts";
 
+import nodemailer from "nodemailer";
+
 export enum EmailTypes {
   CONFIRMATION = "CONFIRMATION",
   FORGOT_PASSWORD = "FORGOT_PASSWORD",
+  NORMAL = "NORMAL"
 }
 interface EmailOptions {
   type: EmailTypes;
   subject: string;
   from: string;
   to: string;
-  token: string;
+  token?: string;
   confirmation_code?: number;
+  message?: string;
 }
 
 export const sendEmail = async ({
@@ -26,6 +29,7 @@ export const sendEmail = async ({
   to,
   token,
   confirmation_code,
+  message,
   from = "test@test.com",
 }: EmailOptions): Promise<string | any> => {
   try {
@@ -61,7 +65,7 @@ export const sendEmail = async ({
       from,
       to,
       subject,
-      html: htmlBody,
+      html: message ? message : htmlBody,
     });
     if (!__prod__) {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
