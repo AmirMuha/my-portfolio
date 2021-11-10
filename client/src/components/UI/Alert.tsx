@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren, useEffect } from "react"
-import { createPortal } from "react-dom"
+
 import { Close } from "../../icons/iconsJSX"
+import { createPortal } from "react-dom"
 interface Props {
   header?: boolean
   message: string
@@ -8,11 +9,13 @@ interface Props {
   autoClose?: number
   onClose: () => void
   backdrop?: boolean
+  cb?: () => void
   position?: "TOP" | "BOTTOM" | "CENTER"
 }
 
 const Alert: FC<PropsWithChildren<Props>> = ({
   title,
+  cb,
   message,
   backdrop = false,
   onClose,
@@ -24,6 +27,7 @@ const Alert: FC<PropsWithChildren<Props>> = ({
     if (autoClose) {
       setTimeout(() => {
         onClose()
+        cb&&cb()
       }, autoClose * 1000)
     }
   }, [])
