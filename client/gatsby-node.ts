@@ -1,4 +1,5 @@
 import { CreatePagesArgs, CreateWebpackConfigArgs } from "gatsby"
+
 import path from "path"
 
 interface ProjectQuery {
@@ -23,6 +24,8 @@ export const createPages = async ({
           id
           name
           type
+          app_url
+          github_url
           summary
           image
           sketches {
@@ -30,6 +33,8 @@ export const createPages = async ({
             title
             description
             summary
+            image
+            download_link
           }
           tech_categories {
             id
@@ -42,10 +47,7 @@ export const createPages = async ({
           questions {
             id
             question
-            answer {
-              id
-              answer
-            }
+            answer
           }
         }
       }
@@ -55,8 +57,7 @@ export const createPages = async ({
     reporter.panicOnBuild("Error while running graphQL query")
     return
   }
-  const ProjectTemplate = path.resolve("./src/templates/Project.tsx")
-  const EditableProject = path.resolve("./src/templates/EditableProject.tsx")
+  const ProjectTemplate = path.resolve("./src/templates/project.tsx")
   const getImageName = (n: string) => {
     const imgExtRegex = /\.(png|jpg|webp|svg|jpeg)$/gi
     if (!imgExtRegex.test(n)) {
@@ -71,15 +72,6 @@ export const createPages = async ({
       context: {
         project: proj,
         image: getImageName(proj.image),
-      },
-    })
-  })
-  results.data?.portfolio.projects.forEach(async proj => {
-    createPage({
-      path: `/dashboard/projects/${proj.id}`,
-      component: EditableProject,
-      context: {
-        project: { id: proj.id },
       },
     })
   })
