@@ -5,7 +5,9 @@ import { DecimalJSScalar } from "../../scalars";
 import { AdminRelationFilter } from "../inputs/AdminRelationFilter";
 import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
+import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -41,6 +43,11 @@ export class MessageWhereInput {
   })
   from?: StringFilter | undefined;
 
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  files?: StringNullableListFilter | undefined;
+
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
@@ -66,10 +73,10 @@ export class MessageWhereInput {
   })
   admin_id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
     nullable: true
   })
-  answeredAt?: DateTimeFilter | undefined;
+  answeredAt?: DateTimeNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true

@@ -102,11 +102,12 @@ CREATE TABLE "Message" (
     "id" UUID NOT NULL,
     "subject" TEXT NOT NULL,
     "from" TEXT NOT NULL,
+    "files" TEXT[],
     "body" TEXT NOT NULL,
     "read_status" BOOLEAN NOT NULL DEFAULT false,
     "answer_status" BOOLEAN NOT NULL DEFAULT false,
     "admin_id" UUID NOT NULL,
-    "answeredAt" TIMESTAMP(3) NOT NULL,
+    "answeredAt" TIMESTAMP(3),
     "createdAd" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")

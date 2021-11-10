@@ -108,11 +108,12 @@ model Message {
   id            String   @id @unique @default(uuid()) @db.Uuid
   subject       String
   from          String
+  files         String[]
   body          String   @db.Text
   read_status   Boolean  @default(false)
   answer_status Boolean  @default(false)
   admin         Admin    @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   admin_id      String   @db.Uuid
-  answeredAt    DateTime @updatedAt
+  answeredAt    DateTime?
   createdAd     DateTime @default(now())
 }

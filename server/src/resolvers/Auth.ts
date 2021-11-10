@@ -219,30 +219,20 @@ export class AuthResolver {
     return foundadmin ? true : false;
   }
   @Query(() => Admin, { nullable: true })
-  async me(@Ctx() { prisma }: MyContext): Promise<{
-    email: string;
-    fname: string;
-    lname: string;
-    resumes: string[];
-    heroImage: string;
-    github: string;
-    instagram: string;
-    linkedIn: string;
-    whatsapp: string;
-  }> {
-    const admin = await prisma.admin.findFirst({
+  async me(@Ctx() { prisma }: MyContext): Promise<Admin> {
+    const admin = prisma.admin.findFirst({
       select: {
         email: true,
-        fname: true,
-        lname: true,
-        resumes: true,
-        heroImage: true,
         github: true,
         instagram: true,
-        linkedIn: true,
         whatsapp: true,
+        linkedIn: true,
+        heroImage: true,
+        resumes: true,
+        lname: true,
+        fname: true,
       },
     });
-    return admin!;
+    return admin as any;
   }
 }

@@ -25,6 +25,11 @@ export class MessageCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
+  files!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
   body!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {

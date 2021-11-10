@@ -23,6 +23,11 @@ export class Message {
   })
   from!: string;
 
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: false
+  })
+  files!: string[];
+
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
@@ -46,9 +51,9 @@ export class Message {
   admin_id!: string;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+    nullable: true
   })
-  answeredAt!: Date;
+  answeredAt?: Date | null;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: false

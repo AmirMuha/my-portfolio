@@ -587,7 +587,6 @@ export type CreateProjectInput_Pwnr = {
   type: Scalars['String'];
 };
 
-
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Maybe<Scalars['DateTime']>;
 };
@@ -600,6 +599,17 @@ export type DateTimeFilter = {
   lt?: Maybe<Scalars['DateTime']>;
   lte?: Maybe<Scalars['DateTime']>;
   not?: Maybe<NestedDateTimeFilter>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+};
+
+export type DateTimeNullableFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeNullableFilter>;
   notIn?: Maybe<Array<Scalars['DateTime']>>;
 };
 
@@ -618,9 +628,10 @@ export type Message = {
   admin: Admin;
   admin_id: Scalars['String'];
   answer_status: Scalars['Boolean'];
-  answeredAt: Scalars['DateTime'];
+  answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd: Scalars['DateTime'];
+  files: Array<Scalars['String']>;
   from: Scalars['String'];
   id: Scalars['String'];
   read_status: Scalars['Boolean'];
@@ -633,6 +644,7 @@ export type MessageCreateInput = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd?: Maybe<Scalars['DateTime']>;
+  files?: Maybe<MessageCreatefilesInput>;
   from: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   read_status?: Maybe<Scalars['Boolean']>;
@@ -644,6 +656,7 @@ export type MessageCreateManyAdminInput = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd?: Maybe<Scalars['DateTime']>;
+  files?: Maybe<MessageCreateManyfilesInput>;
   from: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   read_status?: Maybe<Scalars['Boolean']>;
@@ -653,6 +666,10 @@ export type MessageCreateManyAdminInput = {
 export type MessageCreateManyAdminInputEnvelope = {
   data: Array<MessageCreateManyAdminInput>;
   skipDuplicates?: Maybe<Scalars['Boolean']>;
+};
+
+export type MessageCreateManyfilesInput = {
+  set: Array<Scalars['String']>;
 };
 
 export type MessageCreateNestedManyWithoutAdminInput = {
@@ -672,10 +689,15 @@ export type MessageCreateWithoutAdminInput = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd?: Maybe<Scalars['DateTime']>;
+  files?: Maybe<MessageCreatefilesInput>;
   from: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   read_status?: Maybe<Scalars['Boolean']>;
   subject: Scalars['String'];
+};
+
+export type MessageCreatefilesInput = {
+  set: Array<Scalars['String']>;
 };
 
 export type MessageListRelationFilter = {
@@ -695,6 +717,7 @@ export type MessageOrderByWithRelationInput = {
   answeredAt?: Maybe<SortOrder>;
   body?: Maybe<SortOrder>;
   createdAd?: Maybe<SortOrder>;
+  files?: Maybe<SortOrder>;
   from?: Maybe<SortOrder>;
   id?: Maybe<SortOrder>;
   read_status?: Maybe<SortOrder>;
@@ -707,6 +730,7 @@ export enum MessageScalarFieldEnum {
   AnsweredAt = 'answeredAt',
   Body = 'body',
   CreatedAd = 'createdAd',
+  Files = 'files',
   From = 'from',
   Id = 'id',
   ReadStatus = 'read_status',
@@ -719,9 +743,10 @@ export type MessageScalarWhereInput = {
   OR?: Maybe<Array<MessageScalarWhereInput>>;
   admin_id?: Maybe<StringFilter>;
   answer_status?: Maybe<BoolFilter>;
-  answeredAt?: Maybe<DateTimeFilter>;
+  answeredAt?: Maybe<DateTimeNullableFilter>;
   body?: Maybe<StringFilter>;
   createdAd?: Maybe<DateTimeFilter>;
+  files?: Maybe<StringNullableListFilter>;
   from?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   read_status?: Maybe<BoolFilter>;
@@ -731,9 +756,10 @@ export type MessageScalarWhereInput = {
 export type MessageUpdateInput = {
   admin?: Maybe<AdminUpdateOneRequiredWithoutMessagesInput>;
   answer_status?: Maybe<BoolFieldUpdateOperationsInput>;
-  answeredAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  answeredAt?: Maybe<NullableDateTimeFieldUpdateOperationsInput>;
   body?: Maybe<StringFieldUpdateOperationsInput>;
   createdAd?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  files?: Maybe<MessageUpdatefilesInput>;
   from?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   read_status?: Maybe<BoolFieldUpdateOperationsInput>;
@@ -742,9 +768,10 @@ export type MessageUpdateInput = {
 
 export type MessageUpdateManyMutationInput = {
   answer_status?: Maybe<BoolFieldUpdateOperationsInput>;
-  answeredAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  answeredAt?: Maybe<NullableDateTimeFieldUpdateOperationsInput>;
   body?: Maybe<StringFieldUpdateOperationsInput>;
   createdAd?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  files?: Maybe<MessageUpdatefilesInput>;
   from?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   read_status?: Maybe<BoolFieldUpdateOperationsInput>;
@@ -777,13 +804,19 @@ export type MessageUpdateWithWhereUniqueWithoutAdminInput = {
 
 export type MessageUpdateWithoutAdminInput = {
   answer_status?: Maybe<BoolFieldUpdateOperationsInput>;
-  answeredAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  answeredAt?: Maybe<NullableDateTimeFieldUpdateOperationsInput>;
   body?: Maybe<StringFieldUpdateOperationsInput>;
   createdAd?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  files?: Maybe<MessageUpdatefilesInput>;
   from?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   read_status?: Maybe<BoolFieldUpdateOperationsInput>;
   subject?: Maybe<StringFieldUpdateOperationsInput>;
+};
+
+export type MessageUpdatefilesInput = {
+  push?: Maybe<Array<Scalars['String']>>;
+  set?: Maybe<Array<Scalars['String']>>;
 };
 
 export type MessageUpsertWithWhereUniqueWithoutAdminInput = {
@@ -799,9 +832,10 @@ export type MessageWhereInput = {
   admin?: Maybe<AdminRelationFilter>;
   admin_id?: Maybe<StringFilter>;
   answer_status?: Maybe<BoolFilter>;
-  answeredAt?: Maybe<DateTimeFilter>;
+  answeredAt?: Maybe<DateTimeNullableFilter>;
   body?: Maybe<StringFilter>;
   createdAd?: Maybe<DateTimeFilter>;
+  files?: Maybe<StringNullableListFilter>;
   from?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   read_status?: Maybe<BoolFilter>;
@@ -823,7 +857,7 @@ export type Mutation = {
   createManySketch: AffectedRowsOutput;
   createManyTech: AffectedRowsOutput;
   createManyTechCategory: AffectedRowsOutput;
-  createMessage: Message;
+  createNewMessage?: Maybe<Message>;
   createProject: Project;
   createProjectWithNestedRelations: Scalars['Boolean'];
   createQuestion: Question;
@@ -922,7 +956,8 @@ export type MutationCreateManyTechCategoryArgs = {
 };
 
 
-export type MutationCreateMessageArgs = {
+export type MutationCreateNewMessageArgs = {
+  adminEmail: Scalars['String'];
   data: MessageCreateInput;
 };
 
@@ -1155,6 +1190,17 @@ export type NestedDateTimeFilter = {
   notIn?: Maybe<Array<Scalars['DateTime']>>;
 };
 
+export type NestedDateTimeNullableFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeNullableFilter>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+};
+
 export type NestedStringFilter = {
   contains?: Maybe<Scalars['String']>;
   endsWith?: Maybe<Scalars['String']>;
@@ -1167,6 +1213,10 @@ export type NestedStringFilter = {
   not?: Maybe<NestedStringFilter>;
   notIn?: Maybe<Array<Scalars['String']>>;
   startsWith?: Maybe<Scalars['String']>;
+};
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars['DateTime']>;
 };
 
 export type Project = {
@@ -2274,6 +2324,11 @@ export type StringNullableListFilter = {
   isEmpty?: Maybe<Scalars['Boolean']>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  subscribeMessages: Message;
+};
+
 export type Tech = {
   __typename?: 'Tech';
   id: Scalars['String'];
@@ -2625,16 +2680,12 @@ export type TechWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
-
 export type DeleteFileMutationVariables = Exact<{
   filename: Scalars['String'];
 }>;
 
 
-export type DeleteFileMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'deleteFile'>
-);
+export type DeleteFileMutation = { __typename?: 'Mutation', deleteFile: boolean };
 
 export type ConfirmEmailMutationVariables = Exact<{
   code: Scalars['Int'];
@@ -2642,10 +2693,7 @@ export type ConfirmEmailMutationVariables = Exact<{
 }>;
 
 
-export type ConfirmEmailMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'confirmEmail'>
-);
+export type ConfirmEmailMutation = { __typename?: 'Mutation', confirmEmail?: boolean | null | undefined };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -2653,21 +2701,12 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = (
-  { __typename?: 'Mutation' }
-  & { login?: Maybe<(
-    { __typename?: 'LoginReturnType' }
-    & Pick<LoginReturnType, 'token'>
-  )> }
-);
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginReturnType', token?: string | null | undefined } | null | undefined };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LogoutMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'logout'>
-);
+export type LogoutMutation = { __typename?: 'Mutation', logout?: boolean | null | undefined };
 
 export type SubmitAdminMutationVariables = Exact<{
   email: Scalars['String'];
@@ -2683,13 +2722,7 @@ export type SubmitAdminMutationVariables = Exact<{
 }>;
 
 
-export type SubmitAdminMutation = (
-  { __typename?: 'Mutation' }
-  & { createAdmin?: Maybe<(
-    { __typename?: 'Admin' }
-    & Pick<Admin, 'id' | 'email' | 'fname' | 'lname' | 'resumes'>
-  )> }
-);
+export type SubmitAdminMutation = { __typename?: 'Mutation', createAdmin?: { __typename?: 'Admin', id: string, email: string, fname: string, lname: string, resumes: Array<string> } | null | undefined };
 
 export type UploadFileMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -2697,20 +2730,25 @@ export type UploadFileMutationVariables = Exact<{
 }>;
 
 
-export type UploadFileMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'uploadSingleFile'>
-);
+export type UploadFileMutation = { __typename?: 'Mutation', uploadSingleFile: string };
 
 export type UploadFilesMutationVariables = Exact<{
   files: Array<Scalars['Upload']> | Scalars['Upload'];
 }>;
 
 
-export type UploadFilesMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'uploadMultipleFiles'>
-);
+export type UploadFilesMutation = { __typename?: 'Mutation', uploadMultipleFiles?: Array<string> | null | undefined };
+
+export type CreateMessageMutationVariables = Exact<{
+  body: Scalars['String'];
+  subject: Scalars['String'];
+  from: Scalars['String'];
+  adminEmail: Scalars['String'];
+  files?: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createNewMessage?: { __typename?: 'Message', id: string } | null | undefined };
 
 export type CreateStackMutationVariables = Exact<{
   image: Scalars['String'];
@@ -2719,13 +2757,7 @@ export type CreateStackMutationVariables = Exact<{
 }>;
 
 
-export type CreateStackMutation = (
-  { __typename?: 'Mutation' }
-  & { createStack: (
-    { __typename?: 'Stack' }
-    & Pick<Stack, 'id'>
-  ) }
-);
+export type CreateStackMutation = { __typename?: 'Mutation', createStack: { __typename?: 'Stack', id: string } };
 
 export type CreateProjectWithRelationsMutationVariables = Exact<{
   name: Scalars['String'];
@@ -2740,10 +2772,7 @@ export type CreateProjectWithRelationsMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectWithRelationsMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createProjectWithNestedRelations'>
-);
+export type CreateProjectWithRelationsMutation = { __typename?: 'Mutation', createProjectWithNestedRelations: boolean };
 
 export type CreateProjectMutationVariables = Exact<{
   for?: Maybe<Scalars['String']>;
@@ -2756,26 +2785,14 @@ export type CreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectMutation = (
-  { __typename?: 'Mutation' }
-  & { createProject: (
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'name' | 'image' | 'type' | 'github_url' | 'app_url' | 'summary'>
-  ) }
-);
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, image: string, type: string, github_url: string, app_url: string, summary: string } };
 
 export type CreateManySketchesMutationVariables = Exact<{
   data: Array<SketchCreateManyInput> | SketchCreateManyInput;
 }>;
 
 
-export type CreateManySketchesMutation = (
-  { __typename?: 'Mutation' }
-  & { createManySketch: (
-    { __typename?: 'AffectedRowsOutput' }
-    & Pick<AffectedRowsOutput, 'count'>
-  ) }
-);
+export type CreateManySketchesMutation = { __typename?: 'Mutation', createManySketch: { __typename?: 'AffectedRowsOutput', count: number } };
 
 export type CreateSketchMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -2787,13 +2804,7 @@ export type CreateSketchMutationVariables = Exact<{
 }>;
 
 
-export type CreateSketchMutation = (
-  { __typename?: 'Mutation' }
-  & { createSketch: (
-    { __typename?: 'Sketch' }
-    & Pick<Sketch, 'id' | 'title' | 'summary' | 'description' | 'download_link' | 'image' | 'project_id'>
-  ) }
-);
+export type CreateSketchMutation = { __typename?: 'Mutation', createSketch: { __typename?: 'Sketch', id: string, title: string, summary: string, description: string, download_link: string, image: string, project_id: string } };
 
 export type CreateTechCategoryMutationVariables = Exact<{
   name: Scalars['String'];
@@ -2801,13 +2812,7 @@ export type CreateTechCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateTechCategoryMutation = (
-  { __typename?: 'Mutation' }
-  & { createTechCategory: (
-    { __typename?: 'TechCategory' }
-    & Pick<TechCategory, 'id' | 'name'>
-  ) }
-);
+export type CreateTechCategoryMutation = { __typename?: 'Mutation', createTechCategory: { __typename?: 'TechCategory', id: string, name: string } };
 
 export type CreateTechMutationVariables = Exact<{
   name: Scalars['String'];
@@ -2815,13 +2820,7 @@ export type CreateTechMutationVariables = Exact<{
 }>;
 
 
-export type CreateTechMutation = (
-  { __typename?: 'Mutation' }
-  & { createTech: (
-    { __typename?: 'Tech' }
-    & Pick<Tech, 'id' | 'name'>
-  ) }
-);
+export type CreateTechMutation = { __typename?: 'Mutation', createTech: { __typename?: 'Tech', id: string, name: string } };
 
 export type CreateQuestionMutationVariables = Exact<{
   question: Scalars['String'];
@@ -2830,13 +2829,22 @@ export type CreateQuestionMutationVariables = Exact<{
 }>;
 
 
-export type CreateQuestionMutation = (
-  { __typename?: 'Mutation' }
-  & { createQuestion: (
-    { __typename?: 'Question' }
-    & Pick<Question, 'id' | 'question' | 'answer'>
-  ) }
-);
+export type CreateQuestionMutation = { __typename?: 'Mutation', createQuestion: { __typename?: 'Question', id: string, question: string, answer: string } };
+
+export type UpdateMessageReadStatusMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type UpdateMessageReadStatusMutation = { __typename?: 'Mutation', updateMessage?: { __typename?: 'Message', id: string } | null | undefined };
+
+export type UpdateMessageAnswerStatusMutationVariables = Exact<{
+  id: Scalars['String'];
+  date: Scalars['DateTime'];
+}>;
+
+
+export type UpdateMessageAnswerStatusMutation = { __typename?: 'Mutation', updateMessage?: { __typename?: 'Message', id: string } | null | undefined };
 
 export type UpdateStackMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2845,13 +2853,7 @@ export type UpdateStackMutationVariables = Exact<{
 }>;
 
 
-export type UpdateStackMutation = (
-  { __typename?: 'Mutation' }
-  & { updateStack?: Maybe<(
-    { __typename?: 'Stack' }
-    & Pick<Stack, 'id'>
-  )> }
-);
+export type UpdateStackMutation = { __typename?: 'Mutation', updateStack?: { __typename?: 'Stack', id: string } | null | undefined };
 
 export type UpdateProjectSummaryMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2859,13 +2861,7 @@ export type UpdateProjectSummaryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectSummaryMutation = (
-  { __typename?: 'Mutation' }
-  & { updateProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'summary'>
-  )> }
-);
+export type UpdateProjectSummaryMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', summary: string } | null | undefined };
 
 export type UpdateProjectTypeMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2873,13 +2869,7 @@ export type UpdateProjectTypeMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectTypeMutation = (
-  { __typename?: 'Mutation' }
-  & { updateProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'type'>
-  )> }
-);
+export type UpdateProjectTypeMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', type: string } | null | undefined };
 
 export type UpdateImageMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -2889,10 +2879,7 @@ export type UpdateImageMutationVariables = Exact<{
 }>;
 
 
-export type UpdateImageMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'updateImage'>
-);
+export type UpdateImageMutation = { __typename?: 'Mutation', updateImage?: string | null | undefined };
 
 export type UpdateProjectAppUrlMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2900,13 +2887,7 @@ export type UpdateProjectAppUrlMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectAppUrlMutation = (
-  { __typename?: 'Mutation' }
-  & { updateProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'app_url'>
-  )> }
-);
+export type UpdateProjectAppUrlMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', app_url: string } | null | undefined };
 
 export type UpdateProjectGitHubUrlMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2914,13 +2895,7 @@ export type UpdateProjectGitHubUrlMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectGitHubUrlMutation = (
-  { __typename?: 'Mutation' }
-  & { updateProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'github_url'>
-  )> }
-);
+export type UpdateProjectGitHubUrlMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', github_url: string } | null | undefined };
 
 export type UpdateProjectNameMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2928,13 +2903,7 @@ export type UpdateProjectNameMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectNameMutation = (
-  { __typename?: 'Mutation' }
-  & { updateProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'name'>
-  )> }
-);
+export type UpdateProjectNameMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', name: string } | null | undefined };
 
 export type UpdateSketchDescriptionMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2942,13 +2911,7 @@ export type UpdateSketchDescriptionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSketchDescriptionMutation = (
-  { __typename?: 'Mutation' }
-  & { updateSketch?: Maybe<(
-    { __typename?: 'Sketch' }
-    & Pick<Sketch, 'id' | 'title' | 'description' | 'summary' | 'image' | 'download_link'>
-  )> }
-);
+export type UpdateSketchDescriptionMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
 
 export type UpdateSketchImageMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2956,13 +2919,7 @@ export type UpdateSketchImageMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSketchImageMutation = (
-  { __typename?: 'Mutation' }
-  & { updateSketch?: Maybe<(
-    { __typename?: 'Sketch' }
-    & Pick<Sketch, 'id' | 'title' | 'description' | 'summary' | 'image' | 'download_link'>
-  )> }
-);
+export type UpdateSketchImageMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
 
 export type UpdateSketchDownloadLinkMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2970,13 +2927,7 @@ export type UpdateSketchDownloadLinkMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSketchDownloadLinkMutation = (
-  { __typename?: 'Mutation' }
-  & { updateSketch?: Maybe<(
-    { __typename?: 'Sketch' }
-    & Pick<Sketch, 'id' | 'title' | 'description' | 'summary' | 'image' | 'download_link'>
-  )> }
-);
+export type UpdateSketchDownloadLinkMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
 
 export type UpdateSketchSummaryMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2984,13 +2935,7 @@ export type UpdateSketchSummaryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSketchSummaryMutation = (
-  { __typename?: 'Mutation' }
-  & { updateSketch?: Maybe<(
-    { __typename?: 'Sketch' }
-    & Pick<Sketch, 'id' | 'title' | 'description' | 'summary' | 'image' | 'download_link'>
-  )> }
-);
+export type UpdateSketchSummaryMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
 
 export type UpdateTechCategoryMutationVariables = Exact<{
   name: Scalars['String'];
@@ -2998,17 +2943,7 @@ export type UpdateTechCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTechCategoryMutation = (
-  { __typename?: 'Mutation' }
-  & { updateTechCategory?: Maybe<(
-    { __typename?: 'TechCategory' }
-    & Pick<TechCategory, 'id' | 'name'>
-    & { techs: Array<(
-      { __typename?: 'Tech' }
-      & Pick<Tech, 'id' | 'name'>
-    )> }
-  )> }
-);
+export type UpdateTechCategoryMutation = { __typename?: 'Mutation', updateTechCategory?: { __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> } | null | undefined };
 
 export type UpdateQuestionMutationVariables = Exact<{
   id: Scalars['String'];
@@ -3017,231 +2952,103 @@ export type UpdateQuestionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateQuestionMutation = (
-  { __typename?: 'Mutation' }
-  & { updateQuestion?: Maybe<(
-    { __typename?: 'Question' }
-    & Pick<Question, 'id' | 'question' | 'answer'>
-  )> }
-);
+export type UpdateQuestionMutation = { __typename?: 'Mutation', updateQuestion?: { __typename?: 'Question', id: string, question: string, answer: string } | null | undefined };
+
+export type DeleteMessageMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteMessageMutation = { __typename?: 'Mutation', deleteMessage?: { __typename?: 'Message', id: string } | null | undefined };
 
 export type DeletestackMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeletestackMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteStack?: Maybe<(
-    { __typename?: 'Stack' }
-    & Pick<Stack, 'id'>
-  )> }
-);
+export type DeletestackMutation = { __typename?: 'Mutation', deleteStack?: { __typename?: 'Stack', id: string, image: string, title: string } | null | undefined };
 
 export type DeleteProjectMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeleteProjectMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id'>
-  )> }
-);
+export type DeleteProjectMutation = { __typename?: 'Mutation', deleteProject?: { __typename?: 'Project', id: string } | null | undefined };
 
 export type DeleteSketchMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeleteSketchMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteSketch?: Maybe<(
-    { __typename?: 'Sketch' }
-    & Pick<Sketch, 'id'>
-  )> }
-);
+export type DeleteSketchMutation = { __typename?: 'Mutation', deleteSketch?: { __typename?: 'Sketch', id: string } | null | undefined };
 
 export type DeleteTechCategoryMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeleteTechCategoryMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteTechCategory?: Maybe<(
-    { __typename?: 'TechCategory' }
-    & Pick<TechCategory, 'id'>
-  )> }
-);
+export type DeleteTechCategoryMutation = { __typename?: 'Mutation', deleteTechCategory?: { __typename?: 'TechCategory', id: string } | null | undefined };
 
 export type DeleteTechMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeleteTechMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteTech?: Maybe<(
-    { __typename?: 'Tech' }
-    & Pick<Tech, 'id'>
-  )> }
-);
+export type DeleteTechMutation = { __typename?: 'Mutation', deleteTech?: { __typename?: 'Tech', id: string } | null | undefined };
 
 export type DeleteQuestionMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeleteQuestionMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteQuestion?: Maybe<(
-    { __typename?: 'Question' }
-    & Pick<Question, 'id'>
-  )> }
-);
+export type DeleteQuestionMutation = { __typename?: 'Mutation', deleteQuestion?: { __typename?: 'Question', id: string } | null | undefined };
+
+export type SubscribeMessagesSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SubscribeMessagesSubscription = { __typename?: 'Subscription', subscribeMessages: { __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, subject: string } };
+
+export type QueryMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryMessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, subject: string }> };
 
 export type IsThereAdminQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IsThereAdminQueryQuery = (
-  { __typename?: 'Query' }
-  & Pick<Query, 'isThereAnAdmin'>
-);
+export type IsThereAdminQueryQuery = { __typename?: 'Query', isThereAnAdmin: boolean };
 
 export type QuerySingleProjectWithRelationsQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type QuerySingleProjectWithRelationsQuery = (
-  { __typename?: 'Query' }
-  & { project?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'name' | 'app_url' | 'github_url' | 'image' | 'type' | 'summary'>
-    & { questions: Array<(
-      { __typename?: 'Question' }
-      & Pick<Question, 'id' | 'question' | 'answer'>
-    )>, sketches: Array<(
-      { __typename?: 'Sketch' }
-      & Pick<Sketch, 'id' | 'title' | 'description' | 'summary' | 'download_link' | 'image'>
-    )>, tech_categories: Array<(
-      { __typename?: 'TechCategory' }
-      & Pick<TechCategory, 'id' | 'name'>
-      & { techs: Array<(
-        { __typename?: 'Tech' }
-        & Pick<Tech, 'id' | 'name'>
-      )> }
-    )> }
-  )> }
-);
+export type QuerySingleProjectWithRelationsQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, app_url: string, github_url: string, image: string, type: string, summary: string, questions: Array<{ __typename?: 'Question', id: string, question: string, answer: string }>, sketches: Array<{ __typename?: 'Sketch', id: string, title: string, description: string, summary: string, download_link: string, image: string }>, tech_categories: Array<{ __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> }> } | null | undefined };
 
 export type QueryProjectsWithRelationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryProjectsWithRelationsQuery = (
-  { __typename?: 'Query' }
-  & { projects: Array<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'name' | 'app_url' | 'github_url' | 'image' | 'type' | 'summary'>
-    & { questions: Array<(
-      { __typename?: 'Question' }
-      & Pick<Question, 'id' | 'question' | 'answer'>
-    )>, sketches: Array<(
-      { __typename?: 'Sketch' }
-      & Pick<Sketch, 'id' | 'title' | 'description' | 'summary' | 'download_link' | 'image'>
-    )>, tech_categories: Array<(
-      { __typename?: 'TechCategory' }
-      & Pick<TechCategory, 'id' | 'name'>
-      & { techs: Array<(
-        { __typename?: 'Tech' }
-        & Pick<Tech, 'id' | 'name'>
-      )> }
-    )> }
-  )> }
-);
+export type QueryProjectsWithRelationsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, app_url: string, github_url: string, image: string, type: string, summary: string, questions: Array<{ __typename?: 'Question', id: string, question: string, answer: string }>, sketches: Array<{ __typename?: 'Sketch', id: string, title: string, description: string, summary: string, download_link: string, image: string }>, tech_categories: Array<{ __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> }> }> };
 
 export type QueryProjectsWithTechCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryProjectsWithTechCategoriesQuery = (
-  { __typename?: 'Query' }
-  & { projects: Array<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'app_url' | 'github_url' | 'id' | 'image' | 'name' | 'summary' | 'type'>
-    & { tech_categories: Array<(
-      { __typename?: 'TechCategory' }
-      & Pick<TechCategory, 'name' | 'id'>
-      & { techs: Array<(
-        { __typename?: 'Tech' }
-        & Pick<Tech, 'name' | 'id'>
-      )> }
-    )> }
-  )> }
-);
+export type QueryProjectsWithTechCategoriesQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string, tech_categories: Array<{ __typename?: 'TechCategory', name: string, id: string, techs: Array<{ __typename?: 'Tech', name: string, id: string }> }> }> };
 
 export type QueryProjectsWithoutRelationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryProjectsWithoutRelationsQuery = (
-  { __typename?: 'Query' }
-  & { projects: Array<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'app_url' | 'github_url' | 'id' | 'image' | 'name' | 'summary' | 'type'>
-  )> }
-);
-
-export type QueryMessagesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type QueryMessagesQuery = (
-  { __typename?: 'Query' }
-  & { messages: Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'answer_status' | 'answeredAt' | 'body' | 'createdAd' | 'from' | 'id' | 'read_status' | 'subject'>
-  )> }
-);
+export type QueryProjectsWithoutRelationsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string }> };
 
 export type QueryStacksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryStacksQuery = (
-  { __typename?: 'Query' }
-  & { stacks: Array<(
-    { __typename?: 'Stack' }
-    & Pick<Stack, 'id' | 'title' | 'image'>
-  )> }
-);
+export type QueryStacksQuery = { __typename?: 'Query', stacks: Array<{ __typename?: 'Stack', id: string, title: string, image: string }> };
 
 export type QueryDashboardStuffQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryDashboardStuffQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'Admin' }
-    & Pick<Admin, 'email'>
-  )>, stacks: Array<(
-    { __typename?: 'Stack' }
-    & Pick<Stack, 'id' | 'title' | 'image'>
-  )>, messages: Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'answer_status' | 'answeredAt' | 'body' | 'createdAd' | 'from' | 'id' | 'read_status' | 'subject'>
-  )>, projects: Array<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'app_url' | 'github_url' | 'id' | 'image' | 'name' | 'summary' | 'type'>
-    & { tech_categories: Array<(
-      { __typename?: 'TechCategory' }
-      & Pick<TechCategory, 'name' | 'id'>
-      & { techs: Array<(
-        { __typename?: 'Tech' }
-        & Pick<Tech, 'name' | 'id'>
-      )> }
-    )> }
-  )> }
-);
+export type QueryDashboardStuffQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string } | null | undefined, stacks: Array<{ __typename?: 'Stack', id: string, title: string, image: string }>, messages: Array<{ __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, subject: string }>, projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string, tech_categories: Array<{ __typename?: 'TechCategory', name: string, id: string, techs: Array<{ __typename?: 'Tech', name: string, id: string }> }> }> };
 
 
 export const DeleteFileDocument = gql`
@@ -3482,6 +3289,46 @@ export function useUploadFilesMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UploadFilesMutationHookResult = ReturnType<typeof useUploadFilesMutation>;
 export type UploadFilesMutationResult = Apollo.MutationResult<UploadFilesMutation>;
 export type UploadFilesMutationOptions = Apollo.BaseMutationOptions<UploadFilesMutation, UploadFilesMutationVariables>;
+export const CreateMessageDocument = gql`
+    mutation CreateMessage($body: String!, $subject: String!, $from: String!, $adminEmail: String!, $files: [String!]! = []) {
+  createNewMessage(
+    adminEmail: $adminEmail
+    data: {subject: $subject, from: $from, body: $body, files: {set: $files}, admin: {connect: {email: ""}}}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *      subject: // value for 'subject'
+ *      from: // value for 'from'
+ *      adminEmail: // value for 'adminEmail'
+ *      files: // value for 'files'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const CreateStackDocument = gql`
     mutation CreateStack($image: String!, $title: String!, $email: String!) {
   createStack(
@@ -3797,6 +3644,76 @@ export function useCreateQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateQuestionMutationHookResult = ReturnType<typeof useCreateQuestionMutation>;
 export type CreateQuestionMutationResult = Apollo.MutationResult<CreateQuestionMutation>;
 export type CreateQuestionMutationOptions = Apollo.BaseMutationOptions<CreateQuestionMutation, CreateQuestionMutationVariables>;
+export const UpdateMessageReadStatusDocument = gql`
+    mutation UpdateMessageReadStatus($id: String!) {
+  updateMessage(data: {read_status: {set: true}}, where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type UpdateMessageReadStatusMutationFn = Apollo.MutationFunction<UpdateMessageReadStatusMutation, UpdateMessageReadStatusMutationVariables>;
+
+/**
+ * __useUpdateMessageReadStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateMessageReadStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMessageReadStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMessageReadStatusMutation, { data, loading, error }] = useUpdateMessageReadStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateMessageReadStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMessageReadStatusMutation, UpdateMessageReadStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMessageReadStatusMutation, UpdateMessageReadStatusMutationVariables>(UpdateMessageReadStatusDocument, options);
+      }
+export type UpdateMessageReadStatusMutationHookResult = ReturnType<typeof useUpdateMessageReadStatusMutation>;
+export type UpdateMessageReadStatusMutationResult = Apollo.MutationResult<UpdateMessageReadStatusMutation>;
+export type UpdateMessageReadStatusMutationOptions = Apollo.BaseMutationOptions<UpdateMessageReadStatusMutation, UpdateMessageReadStatusMutationVariables>;
+export const UpdateMessageAnswerStatusDocument = gql`
+    mutation UpdateMessageAnswerStatus($id: String!, $date: DateTime!) {
+  updateMessage(
+    data: {answer_status: {set: true}, answeredAt: {set: $date}}
+    where: {id: $id}
+  ) {
+    id
+  }
+}
+    `;
+export type UpdateMessageAnswerStatusMutationFn = Apollo.MutationFunction<UpdateMessageAnswerStatusMutation, UpdateMessageAnswerStatusMutationVariables>;
+
+/**
+ * __useUpdateMessageAnswerStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateMessageAnswerStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMessageAnswerStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMessageAnswerStatusMutation, { data, loading, error }] = useUpdateMessageAnswerStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useUpdateMessageAnswerStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMessageAnswerStatusMutation, UpdateMessageAnswerStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMessageAnswerStatusMutation, UpdateMessageAnswerStatusMutationVariables>(UpdateMessageAnswerStatusDocument, options);
+      }
+export type UpdateMessageAnswerStatusMutationHookResult = ReturnType<typeof useUpdateMessageAnswerStatusMutation>;
+export type UpdateMessageAnswerStatusMutationResult = Apollo.MutationResult<UpdateMessageAnswerStatusMutation>;
+export type UpdateMessageAnswerStatusMutationOptions = Apollo.BaseMutationOptions<UpdateMessageAnswerStatusMutation, UpdateMessageAnswerStatusMutationVariables>;
 export const UpdateStackDocument = gql`
     mutation UpdateStack($id: String!, $image: String!, $title: String!) {
   updateStack(
@@ -4280,10 +4197,45 @@ export function useUpdateQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateQuestionMutationHookResult = ReturnType<typeof useUpdateQuestionMutation>;
 export type UpdateQuestionMutationResult = Apollo.MutationResult<UpdateQuestionMutation>;
 export type UpdateQuestionMutationOptions = Apollo.BaseMutationOptions<UpdateQuestionMutation, UpdateQuestionMutationVariables>;
+export const DeleteMessageDocument = gql`
+    mutation DeleteMessage($id: String!) {
+  deleteMessage(where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type DeleteMessageMutationFn = Apollo.MutationFunction<DeleteMessageMutation, DeleteMessageMutationVariables>;
+
+/**
+ * __useDeleteMessageMutation__
+ *
+ * To run a mutation, you first call `useDeleteMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMessageMutation, { data, loading, error }] = useDeleteMessageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteMessageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMessageMutation, DeleteMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMessageMutation, DeleteMessageMutationVariables>(DeleteMessageDocument, options);
+      }
+export type DeleteMessageMutationHookResult = ReturnType<typeof useDeleteMessageMutation>;
+export type DeleteMessageMutationResult = Apollo.MutationResult<DeleteMessageMutation>;
+export type DeleteMessageMutationOptions = Apollo.BaseMutationOptions<DeleteMessageMutation, DeleteMessageMutationVariables>;
 export const DeletestackDocument = gql`
     mutation Deletestack($id: String!) {
   deleteStack(where: {id: $id}) {
     id
+    image
+    title
   }
 }
     `;
@@ -4478,6 +4430,83 @@ export function useDeleteQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteQuestionMutationHookResult = ReturnType<typeof useDeleteQuestionMutation>;
 export type DeleteQuestionMutationResult = Apollo.MutationResult<DeleteQuestionMutation>;
 export type DeleteQuestionMutationOptions = Apollo.BaseMutationOptions<DeleteQuestionMutation, DeleteQuestionMutationVariables>;
+export const SubscribeMessagesDocument = gql`
+    subscription SubscribeMessages {
+  subscribeMessages {
+    id
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    read_status
+    subject
+  }
+}
+    `;
+
+/**
+ * __useSubscribeMessagesSubscription__
+ *
+ * To run a query within a React component, call `useSubscribeMessagesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeMessagesSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSubscribeMessagesSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSubscribeMessagesSubscription(baseOptions?: Apollo.SubscriptionHookOptions<SubscribeMessagesSubscription, SubscribeMessagesSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<SubscribeMessagesSubscription, SubscribeMessagesSubscriptionVariables>(SubscribeMessagesDocument, options);
+      }
+export type SubscribeMessagesSubscriptionHookResult = ReturnType<typeof useSubscribeMessagesSubscription>;
+export type SubscribeMessagesSubscriptionResult = Apollo.SubscriptionResult<SubscribeMessagesSubscription>;
+export const QueryMessagesDocument = gql`
+    query QueryMessages {
+  messages {
+    id
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    read_status
+    subject
+  }
+}
+    `;
+
+/**
+ * __useQueryMessagesQuery__
+ *
+ * To run a query within a React component, call `useQueryMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQueryMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQueryMessagesQuery(baseOptions?: Apollo.QueryHookOptions<QueryMessagesQuery, QueryMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<QueryMessagesQuery, QueryMessagesQueryVariables>(QueryMessagesDocument, options);
+      }
+export function useQueryMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryMessagesQuery, QueryMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<QueryMessagesQuery, QueryMessagesQueryVariables>(QueryMessagesDocument, options);
+        }
+export type QueryMessagesQueryHookResult = ReturnType<typeof useQueryMessagesQuery>;
+export type QueryMessagesLazyQueryHookResult = ReturnType<typeof useQueryMessagesLazyQuery>;
+export type QueryMessagesQueryResult = Apollo.QueryResult<QueryMessagesQuery, QueryMessagesQueryVariables>;
 export const IsThereAdminQueryDocument = gql`
     query IsThereAdminQuery {
   isThereAnAdmin
@@ -4721,47 +4750,6 @@ export function useQueryProjectsWithoutRelationsLazyQuery(baseOptions?: Apollo.L
 export type QueryProjectsWithoutRelationsQueryHookResult = ReturnType<typeof useQueryProjectsWithoutRelationsQuery>;
 export type QueryProjectsWithoutRelationsLazyQueryHookResult = ReturnType<typeof useQueryProjectsWithoutRelationsLazyQuery>;
 export type QueryProjectsWithoutRelationsQueryResult = Apollo.QueryResult<QueryProjectsWithoutRelationsQuery, QueryProjectsWithoutRelationsQueryVariables>;
-export const QueryMessagesDocument = gql`
-    query QueryMessages {
-  messages {
-    answer_status
-    answeredAt
-    body
-    createdAd
-    from
-    id
-    read_status
-    subject
-  }
-}
-    `;
-
-/**
- * __useQueryMessagesQuery__
- *
- * To run a query within a React component, call `useQueryMessagesQuery` and pass it any options that fit your needs.
- * When your component renders, `useQueryMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useQueryMessagesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useQueryMessagesQuery(baseOptions?: Apollo.QueryHookOptions<QueryMessagesQuery, QueryMessagesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<QueryMessagesQuery, QueryMessagesQueryVariables>(QueryMessagesDocument, options);
-      }
-export function useQueryMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryMessagesQuery, QueryMessagesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<QueryMessagesQuery, QueryMessagesQueryVariables>(QueryMessagesDocument, options);
-        }
-export type QueryMessagesQueryHookResult = ReturnType<typeof useQueryMessagesQuery>;
-export type QueryMessagesLazyQueryHookResult = ReturnType<typeof useQueryMessagesLazyQuery>;
-export type QueryMessagesQueryResult = Apollo.QueryResult<QueryMessagesQuery, QueryMessagesQueryVariables>;
 export const QueryStacksDocument = gql`
     query QueryStacks {
   stacks {
@@ -4809,12 +4797,12 @@ export const QueryDashboardStuffDocument = gql`
     image
   }
   messages {
+    id
     answer_status
     answeredAt
     body
     createdAd
     from
-    id
     read_status
     subject
   }

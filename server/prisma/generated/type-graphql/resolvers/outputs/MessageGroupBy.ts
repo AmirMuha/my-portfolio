@@ -25,6 +25,11 @@ export class MessageGroupBy {
   })
   from!: string;
 
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  files!: string[] | null;
+
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
@@ -46,9 +51,9 @@ export class MessageGroupBy {
   admin_id!: string;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+    nullable: true
   })
-  answeredAt!: Date;
+  answeredAt!: Date | null;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: false

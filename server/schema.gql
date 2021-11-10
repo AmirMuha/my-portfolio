@@ -588,6 +588,17 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
 input LoginInputType {
   email: String!
   password: String!
@@ -601,9 +612,10 @@ type Message {
   admin: Admin!
   admin_id: String!
   answer_status: Boolean!
-  answeredAt: DateTime!
+  answeredAt: DateTime
   body: String!
   createdAd: DateTime!
+  files: [String!]!
   from: String!
   id: String!
   read_status: Boolean!
@@ -616,6 +628,7 @@ input MessageCreateInput {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime
+  files: MessageCreatefilesInput
   from: String!
   id: String
   read_status: Boolean
@@ -627,6 +640,7 @@ input MessageCreateManyAdminInput {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime
+  files: MessageCreateManyfilesInput
   from: String!
   id: String
   read_status: Boolean
@@ -636,6 +650,10 @@ input MessageCreateManyAdminInput {
 input MessageCreateManyAdminInputEnvelope {
   data: [MessageCreateManyAdminInput!]!
   skipDuplicates: Boolean
+}
+
+input MessageCreateManyfilesInput {
+  set: [String!]!
 }
 
 input MessageCreateNestedManyWithoutAdminInput {
@@ -655,10 +673,15 @@ input MessageCreateWithoutAdminInput {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime
+  files: MessageCreatefilesInput
   from: String!
   id: String
   read_status: Boolean
   subject: String!
+}
+
+input MessageCreatefilesInput {
+  set: [String!]!
 }
 
 input MessageListRelationFilter {
@@ -678,6 +701,7 @@ input MessageOrderByWithRelationInput {
   answeredAt: SortOrder
   body: SortOrder
   createdAd: SortOrder
+  files: SortOrder
   from: SortOrder
   id: SortOrder
   read_status: SortOrder
@@ -690,6 +714,7 @@ enum MessageScalarFieldEnum {
   answeredAt
   body
   createdAd
+  files
   from
   id
   read_status
@@ -702,9 +727,10 @@ input MessageScalarWhereInput {
   OR: [MessageScalarWhereInput!]
   admin_id: StringFilter
   answer_status: BoolFilter
-  answeredAt: DateTimeFilter
+  answeredAt: DateTimeNullableFilter
   body: StringFilter
   createdAd: DateTimeFilter
+  files: StringNullableListFilter
   from: StringFilter
   id: StringFilter
   read_status: BoolFilter
@@ -714,9 +740,10 @@ input MessageScalarWhereInput {
 input MessageUpdateInput {
   admin: AdminUpdateOneRequiredWithoutMessagesInput
   answer_status: BoolFieldUpdateOperationsInput
-  answeredAt: DateTimeFieldUpdateOperationsInput
+  answeredAt: NullableDateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
+  files: MessageUpdatefilesInput
   from: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   read_status: BoolFieldUpdateOperationsInput
@@ -725,9 +752,10 @@ input MessageUpdateInput {
 
 input MessageUpdateManyMutationInput {
   answer_status: BoolFieldUpdateOperationsInput
-  answeredAt: DateTimeFieldUpdateOperationsInput
+  answeredAt: NullableDateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
+  files: MessageUpdatefilesInput
   from: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   read_status: BoolFieldUpdateOperationsInput
@@ -760,13 +788,19 @@ input MessageUpdateWithWhereUniqueWithoutAdminInput {
 
 input MessageUpdateWithoutAdminInput {
   answer_status: BoolFieldUpdateOperationsInput
-  answeredAt: DateTimeFieldUpdateOperationsInput
+  answeredAt: NullableDateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
+  files: MessageUpdatefilesInput
   from: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   read_status: BoolFieldUpdateOperationsInput
   subject: StringFieldUpdateOperationsInput
+}
+
+input MessageUpdatefilesInput {
+  push: [String!]
+  set: [String!]
 }
 
 input MessageUpsertWithWhereUniqueWithoutAdminInput {
@@ -782,9 +816,10 @@ input MessageWhereInput {
   admin: AdminRelationFilter
   admin_id: StringFilter
   answer_status: BoolFilter
-  answeredAt: DateTimeFilter
+  answeredAt: DateTimeNullableFilter
   body: StringFilter
   createdAd: DateTimeFilter
+  files: StringNullableListFilter
   from: StringFilter
   id: StringFilter
   read_status: BoolFilter
@@ -805,7 +840,7 @@ type Mutation {
   createManySketch(data: [SketchCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTech(data: [TechCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyTechCategory(data: [TechCategoryCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createMessage(data: MessageCreateInput!): Message!
+  createNewMessage(adminEmail: String!, data: MessageCreateInput!): Message
   createProject(data: ProjectCreateInput!): Project!
   createProjectWithNestedRelations(data: CreateProjectInput_PWNR!): Boolean!
   createQuestion(data: QuestionCreateInput!): Question!
@@ -864,6 +899,17 @@ input NestedDateTimeFilter {
   notIn: [DateTime!]
 }
 
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -876,6 +922,10 @@ input NestedStringFilter {
   not: NestedStringFilter
   notIn: [String!]
   startsWith: String
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
 }
 
 type Project {
@@ -1830,6 +1880,10 @@ input StringNullableListFilter {
   hasEvery: [String!]
   hasSome: [String!]
   isEmpty: Boolean
+}
+
+type Subscription {
+  subscribeMessages: Message!
 }
 
 type Tech {

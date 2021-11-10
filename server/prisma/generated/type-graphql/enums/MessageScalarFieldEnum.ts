@@ -4,6 +4,7 @@ export enum MessageScalarFieldEnum {
   id = "id",
   subject = "subject",
   from = "from",
+  files = "files",
   body = "body",
   read_status = "read_status",
   answer_status = "answer_status",

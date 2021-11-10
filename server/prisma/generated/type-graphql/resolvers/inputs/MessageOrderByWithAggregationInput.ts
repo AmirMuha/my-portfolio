@@ -29,6 +29,11 @@ export class MessageOrderByWithAggregationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
+  files?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
   body?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {

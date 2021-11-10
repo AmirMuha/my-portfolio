@@ -42,6 +42,10 @@
     "@babel/core": "^7.15.8",
     "@babel/eslint-parser": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
+    "@graphql-codegen/cli": "^2.2.2",
+    "@graphql-codegen/typescript": "^2.3.1",
+    "@graphql-codegen/typescript-operations": "^2.2.0",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.1",
     "@types/apollo-upload-client": "^14.1.0",
     "@types/markdown-to-jsx": "^7.0.1",
     "@types/react": "^17.0.24",
@@ -74,7 +78,8 @@
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "refresh": "curl -X POST http://localhost:8000/__refresh"
+    "refresh": "curl -X POST http://localhost:8000/__refresh",
+    "generate": "graphql-codegen"
   },
   "repository": {
     "type": "git",

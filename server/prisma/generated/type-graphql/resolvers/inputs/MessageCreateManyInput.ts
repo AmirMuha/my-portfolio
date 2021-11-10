@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { MessageCreateManyfilesInput } from "../inputs/MessageCreateManyfilesInput";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -51,4 +52,9 @@ export class MessageCreateManyInput {
     nullable: true
   })
   createdAd?: Date | undefined;
+
+  @TypeGraphQL.Field(_type => MessageCreateManyfilesInput, {
+    nullable: true
+  })
+  files?: MessageCreateManyfilesInput | undefined;
 }
