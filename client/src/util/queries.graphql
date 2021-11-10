@@ -1,3 +1,29 @@
+subscription SubscribeMessages {
+  subscribeMessages {
+    id
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    read_status
+    subject
+  }
+}
+
+query QueryMessages {
+  messages {
+    id
+    answer_status
+    answeredAt
+    body
+    createdAd
+    from
+    read_status
+    subject
+  }
+}
+
 query IsThereAdminQuery {
   isThereAnAdmin
 }
@@ -100,19 +126,6 @@ query QueryProjectsWithoutRelations {
   }
 }
 
-query QueryMessages {
-  messages {
-    answer_status
-    answeredAt
-    body
-    createdAd
-    from
-    id
-    read_status
-    subject
-  }
-}
-
 query QueryStacks {
   stacks {
     id
@@ -130,13 +143,13 @@ query QueryDashboardStuff {
     title
     image
   }
-  messages {
+  messages  {
+    id
     answer_status
     answeredAt
     body
     createdAd
     from
-    id
     read_status
     subject
   }

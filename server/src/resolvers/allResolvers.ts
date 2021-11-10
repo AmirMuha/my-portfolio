@@ -5,7 +5,6 @@ import {
   CreateManySketchResolver,
   CreateManyTechCategoryResolver,
   CreateManyTechResolver,
-  CreateMessageResolver,
   CreateProjectResolver,
   CreateQuestionResolver,
   CreateSketchResolver,
@@ -60,9 +59,13 @@ import {
 
 import { AdminCrudResolver } from "../resolvers/User";
 import { AuthResolver } from "../resolvers/Auth";
-import { CreateProjectWithNestedRelationsResolver } from './Project';
+import { CreateProjectWithNestedRelationsResolver } from "./Project";
+import { MessageResolver } from "../resolvers/Message";
+import { MessageSubResolver } from "../resolvers/subscriptions/messageSubResolver";
 
 export default [
+  MessageResolver,
+  MessageSubResolver,
   CreateStackResolver,
   FindManyStackResolver,
   UpdateStackResolver,
@@ -92,7 +95,6 @@ export default [
   CreateQuestionResolver,
   CreateTechCategoryResolver,
   CreateSketchResolver,
-  CreateMessageResolver,
   FindManyTechResolver,
   FindManyProjectResolver,
   FindManyQuestionResolver,

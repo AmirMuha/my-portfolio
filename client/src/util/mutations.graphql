@@ -9,9 +9,11 @@ mutation Login($email: String!, $password: String!) {
     token
   }
 }
+
 mutation Logout {
   logout
 }
+
 mutation SubmitAdmin(
   $email: String!
   $password: String!
@@ -54,6 +56,32 @@ mutation UploadFiles($files: [Upload!]!) {
 # // ##################################
 # // ############### Create Mutations
 # // ##################################
+
+
+mutation CreateMessage(
+  $body: String!
+  $subject: String!
+  $from: String!
+  $adminEmail: String!
+  $files: [String!]! = []
+  ) {
+  createNewMessage(
+    adminEmail: $adminEmail,
+    data: {
+      subject: $subject
+      from: $from
+      body: $body
+      files: {set: $files}
+      admin: {
+        connect: {
+          email: ""
+        }
+      }
+    }
+  ) {
+    id
+  }
+}
 
 mutation CreateStack($image: String!, $title: String!, $email: String!) {
   createStack(
@@ -192,6 +220,38 @@ mutation CreateQuestion(
 # // // ############### Update Mutations
 # // // ##################################
 
+mutation UpdateMessageReadStatus($id: String!){
+  updateMessage(
+    data:{
+      read_status:{
+        set: true
+      }
+    },
+    where:{
+      id: $id
+    }
+  ){
+    id
+  }
+}
+mutation UpdateMessageAnswerStatus($id: String!,$date: DateTime!){
+  updateMessage(
+    data:{
+      answer_status:{
+        set: true
+      },
+      answeredAt: {
+        set: $date
+      }
+    },
+    where:{
+      id: $id
+    }
+  ){
+    id
+  }
+}
+
 mutation UpdateStack(
   $id: String!
   $image: String!
@@ -325,9 +385,20 @@ mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
 # // // ##################################
 # // // ############### Update Mutations
 # // // ##################################
+
+mutation DeleteMessage($id: String!) {
+  deleteMessage (
+    where:{
+      id:$id
+    }
+  ){
+    id
+  }
+}
+
 mutation Deletestack($id: String!) {
   deleteStack(where: { id: $id }) {
-    id
+    id image title
   }
 }
 

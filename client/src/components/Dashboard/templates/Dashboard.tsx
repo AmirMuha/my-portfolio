@@ -1,4 +1,8 @@
-import React, { FC, useEffect } from "react"
+import React, { FC, useEffect, useState } from "react"
+import {
+  useQueryDashboardStuffQuery,
+  useSubscribeMessagesSubscription,
+} from "../../../types/graphql-types"
 
 import Dash_Hero from "../Dash_Hero"
 import Dash_Layout from "../Dash_Layout"
@@ -9,14 +13,26 @@ import { SEO } from "../../SEO"
 import Stack from "../../App/Stack"
 import TheSection from "../../App/TheSection"
 import UnsavedProjects from "../UnsavedProjects"
-import { useQueryDashboardStuffQuery } from "../../../types/graphql-types"
 
 const Dashboard: FC = () => {
   const { data, loading, error, refetch } = useQueryDashboardStuffQuery()
+  const { data: newMessage } = useSubscribeMessagesSubscription()
+  const [messages, setMessages] = useState<any[]>([])
   useEffect(() => {
     refetch()
   }, [])
-  console.log(data)
+  useEffect(() => {
+    if(data && data.messages) {
+      setMessages(data.messages)
+    }
+  },[data?.messages])
+  useEffect(() => {
+    if(newMessage) {
+      setMessages(prev => {
+        return [...prev, newMessage.subscribeMessages]
+      })
+    }
+  }, [newMessage])
 
   if (loading) {
     return <Loading />
@@ -42,21 +58,21 @@ const Dashboard: FC = () => {
             <TheSection name="Stack" id="stack">
               <Stack
                 editable
+                refetch={refetch}
                 adminEmail={data?.me?.email}
                 data={data?.stacks as any}
               />
             </TheSection>
-            {data?.messages.length! > 0 && (
+            {messages && messages.length > 0 && (
               <TheSection
                 name="Messages"
                 style={{ paddingBottom: 25 }}
                 id="messages"
               >
                 <div className="messages--container">
-                  {data?.messages?.length! > 0 &&
-                    data?.messages?.map(m => (
-                      <Dash_Message key={m.id} data={m as any} />
-                    ))}
+                  {messages.map(m => (
+                    <Dash_Message refetch={refetch} key={m.id} data={m as any} />
+                  ))}
                 </div>
               </TheSection>
             )}

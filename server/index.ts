@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import "./src/utils/configuringEnvironmentVariables"
+import "./src/utils/configuringEnvironmentVariables";
 
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
-  ApolloServerPluginLandingPageProductionDefault
+  ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
 // import { TechCategoryResolver } from "./prisma/generated/type-graphql";
 import {
@@ -11,12 +11,14 @@ import {
   PORT,
   SESSION_MAX_AGE,
   SESSION_SECRET,
-  __prod__
+  __prod__,
 } from "./src/constants/envs-and-consts";
+import { execute, subscribe } from "graphql";
 
 import { ApolloServer } from "apollo-server-express";
 import Express from "express";
 import { MyContext } from "./src/types/MyContext";
+import { SubscriptionServer } from "subscriptions-transport-ws";
 import { UploadResolver } from "./src/resolvers/Upload";
 import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
 import { black } from "./src/chalk";
@@ -24,6 +26,7 @@ import { buildSchemaSync } from "type-graphql";
 import cors from "cors";
 import { graphqlUploadExpress } from "graphql-upload";
 import helmet from "helmet";
+import http from "http";
 import morgan from "morgan";
 import path from "path";
 import prisma from "./src/prisma-client";
@@ -37,6 +40,7 @@ const app = Express();
 const RedisStore = redisStore(session);
 
 const main = async () => {
+  const httpServer = http.createServer(app);
   app.use(
     cors({
       credentials: true,
@@ -75,8 +79,28 @@ const main = async () => {
             footer: false,
           })
         : ApolloServerPluginLandingPageGraphQLPlayground(),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
     ],
   });
+  const subscriptionServer = SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+    },
+    {
+      server: httpServer,
+      path: server.graphqlPath,
+    }
+  );
   app.use(graphqlUploadExpress({}));
   await server.start();
 
@@ -96,7 +120,7 @@ const main = async () => {
     }
     res.end();
   });
-  app.listen({ port: PORT }, () => {
+  httpServer.listen({ port: PORT }, () => {
     console.log(black(` Server is running on http://${HOST}:${PORT} `));
   });
 };

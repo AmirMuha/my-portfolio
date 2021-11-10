@@ -6,6 +6,7 @@ import {
 import { ConnectToAdmin } from "../ConnectToAdmin";
 import { UseMiddleware } from "type-graphql";
 import { isLoggedIn } from "../isLoggedIn";
+
 // import { Update } from "../Update";
 
 // ##############################################
@@ -39,7 +40,7 @@ const resolversEnhanceMap: ResolversEnhanceMap = {
   },
   Message: {
     updateMessage: [UseMiddleware(isLoggedIn)],
-    createMessage: [UseMiddleware(isLoggedIn, ConnectToAdmin)],
+    createMessage: [UseMiddleware()],
     deleteMessage: [UseMiddleware(isLoggedIn)],
     deleteManyMessage: [UseMiddleware(isLoggedIn)],
   },
