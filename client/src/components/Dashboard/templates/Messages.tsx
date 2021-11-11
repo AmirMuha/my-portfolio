@@ -1,10 +1,22 @@
-import React, { FC, useReducer, useState } from "react"
-import TheSection from "../../App/TheSection"
-import { SEO } from "../../SEO"
+import React, { FC, useEffect, useReducer, useState } from "react"
+import {
+  useAdminEmailQuery,
+  useQueryMessagesQuery,
+  useSubscribeMessagesSubscription
+} from "../../../types/graphql-types"
+
+import Alert from "../../UI/Alert"
 import Button from "../../UI/Button"
-import Input from "../../UI/Input"
 import Dash_Layout from "../Dash_Layout"
 import Dash_Message from "../Dash_Message"
+import Input from "../../UI/Input"
+import Loading from "../../UI/Loading"
+import { SEO } from "../../SEO"
+import TheSection from "../../App/TheSection"
+import { useAlert } from "../../../util/useAlert"
+import {
+  useAlertGraphqlError,
+} from "../../../util/useAlertGraphqlError"
 
 const filterInitialState: FilterInitialState = {
   answered: false,
@@ -22,6 +34,7 @@ type FilterReducerFnType = (
   state: FilterInitialState,
   action: { type: FilterActions; value: boolean }
 ) => FilterInitialState
+
 const filterReducer: FilterReducerFnType = (state, action) => {
   switch (action.type) {
     case "SET_ANSWERED":
@@ -69,14 +82,55 @@ const filterReducer: FilterReducerFnType = (state, action) => {
       return {} as any
   }
 }
+
 const Messages: FC = () => {
   const [filter, dispatchFilter] = useReducer(filterReducer, filterInitialState)
+  const { data: adminEmail } = useAdminEmailQuery()
+  const { data, loading, refetch } = useQueryMessagesQuery()
+  const {
+    isOpen: isAlertOpen,
+    title: alertTitle,
+    message: alertMessage,
+    setAlert,
+  } = useAlert()
+  const { data: newMessage } = useSubscribeMessagesSubscription()
+
+  const [messages, setMessages] = useState<any[]>([])
   const [searchValue, setSearchValue] = useState<string>("")
   const getSearchValue = (v: string) => {
     setSearchValue(v)
   }
+  console.log(newMessage)
+  useEffect(() => {
+    if (data && data.messages) {
+      setMessages(data.messages)
+    }
+  }, [data])
+  useEffect(() => {
+    if (newMessage) {
+      setMessages(prev => {
+        return [...prev, newMessage.subscribeMessages]
+      })
+    }
+  }, [newMessage])
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <>
+      {isAlertOpen && (
+        <Alert
+          backdrop
+          cb={() => {
+            refetch()
+          }}
+          title={alertTitle}
+          message={alertMessage}
+          onClose={() => setAlert({ isOpen: false })}
+          header
+        />
+      )}
       <SEO title="Adding New Messages To Stack" />
       <Dash_Layout>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -157,12 +211,15 @@ const Messages: FC = () => {
           style={{ paddingBottom: 25 }}
         >
           <div className="messages--container">
-            <Dash_Message data={{} as any} />
-            <Dash_Message data={{} as any} />
-            <Dash_Message data={{} as any} />
-            <Dash_Message data={{} as any} />
-            <Dash_Message data={{} as any} />
-            <Dash_Message data={{} as any} />
+            {messages.length! > 0 &&
+              messages.map(m => (
+                <Dash_Message
+                  adminEmail={adminEmail?.me?.email!}
+                  key={m.id}
+                  refetch={refetch}
+                  data={m as any}
+                />
+              ))}
           </div>
         </TheSection>
       </Dash_Layout>
