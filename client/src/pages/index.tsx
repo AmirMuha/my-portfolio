@@ -1,13 +1,15 @@
-import { graphql, PageProps } from "gatsby"
+import { PageProps, graphql } from "gatsby"
 import React, { FC } from "react"
+
 import ContactMe from "../components/App/ContactMe"
 import InPageMenu from "../components/App/InPageMenu"
+import Layout from "../components/Layout"
 import Projects from "../components/App/Projects"
+import { SEO } from "../components/SEO"
 import Stack from "../components/App/Stack"
 import TheHero from "../components/App/TheHero"
 import TheSection from "../components/App/TheSection"
-import Layout from "../components/Layout"
-import { SEO } from "../components/SEO"
+
 interface Props extends PageProps {
   data: {
     portfolio: {
@@ -17,7 +19,6 @@ interface Props extends PageProps {
   }
 }
 const Home: FC<Props> = ({ data }) => {
-  console.log(data)
   return (
     <>
       <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />
@@ -42,7 +43,7 @@ const Home: FC<Props> = ({ data }) => {
           style={{ paddingBottom: 25 }}
           name="Contact Me"
         >
-          <ContactMe id="footer" />
+          <ContactMe adminEmail={data?.portfolio.me.email} id="footer" />
         </TheSection>
         <TheSection
           style={{ marginBottom: 50, paddingBottom: 25 }}

@@ -58,6 +58,7 @@ import {
 } from "../../prisma/generated/type-graphql";
 
 import { AdminCrudResolver } from "../resolvers/User";
+import { AnswerMessageResolver } from "../resolvers/AnswerMessage";
 import { AuthResolver } from "../resolvers/Auth";
 import { CreateProjectWithNestedRelationsResolver } from "./Project";
 import { MessageResolver } from "../resolvers/Message";
@@ -65,6 +66,7 @@ import { MessageSubResolver } from "../resolvers/subscriptions/messageSubResolve
 
 export default [
   MessageResolver,
+  AnswerMessageResolver,
   MessageSubResolver,
   CreateStackResolver,
   FindManyStackResolver,

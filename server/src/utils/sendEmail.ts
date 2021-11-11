@@ -6,12 +6,13 @@ import {
   __prod__,
 } from "../constants/envs-and-consts";
 
+import md from "markdown-it";
 import nodemailer from "nodemailer";
 
 export enum EmailTypes {
   CONFIRMATION = "CONFIRMATION",
   FORGOT_PASSWORD = "FORGOT_PASSWORD",
-  NORMAL = "NORMAL"
+  NORMAL = "NORMAL",
 }
 interface EmailOptions {
   type: EmailTypes;
@@ -61,11 +62,19 @@ export const sendEmail = async ({
         </p>
       `;
     }
+    if (type === EmailTypes.NORMAL) {
+      htmlBody = md({
+        html: true,
+        breaks: true,
+        linkify: true,
+        typographer: true
+      }).render(message!);
+    }
     const info = await transporter.sendMail({
       from,
       to,
       subject,
-      html: message ? message : htmlBody,
+      html: htmlBody,
     });
     if (!__prod__) {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));

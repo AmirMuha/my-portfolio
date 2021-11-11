@@ -15,7 +15,7 @@ import TheSection from "../../App/TheSection"
 import UnsavedProjects from "../UnsavedProjects"
 
 const Dashboard: FC = () => {
-  const { data, loading, error, refetch } = useQueryDashboardStuffQuery()
+  const { data, loading, refetch } = useQueryDashboardStuffQuery()
   const { data: newMessage } = useSubscribeMessagesSubscription()
   const [messages, setMessages] = useState<any[]>([])
   useEffect(() => {
@@ -71,7 +71,9 @@ const Dashboard: FC = () => {
               >
                 <div className="messages--container">
                   {messages.map(m => (
-                    <Dash_Message refetch={refetch} key={m.id} data={m as any} />
+                    <Dash_Message
+                    adminEmail={data?.me?.email!}
+                     refetch={refetch} key={m.id} data={m as any} />
                   ))}
                 </div>
               </TheSection>

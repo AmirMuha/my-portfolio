@@ -6,8 +6,15 @@ subscription SubscribeMessages {
     body
     createdAd
     from
+    files
     read_status
     subject
+  }
+}
+
+query adminEmail {
+  me {
+    email
   }
 }
 
@@ -151,6 +158,7 @@ query QueryDashboardStuff {
     createdAd
     from
     read_status
+    files
     subject
   }
   projects {

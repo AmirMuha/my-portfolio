@@ -566,6 +566,14 @@ export type AffectedRowsOutput = {
   count: Scalars['Int'];
 };
 
+export type AnswerMessageInput = {
+  from: Scalars['String'];
+  message: Scalars['String'];
+  messageId: Scalars['String'];
+  subject: Scalars['String'];
+  to: Scalars['String'];
+};
+
 export type BoolFieldUpdateOperationsInput = {
   set?: Maybe<Scalars['Boolean']>;
 };
@@ -848,6 +856,7 @@ export type MessageWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  answerMessage: Scalars['Boolean'];
   confirmAdminDelete: Scalars['Boolean'];
   confirmEmail?: Maybe<Scalars['Boolean']>;
   confirmTokenOrCode: Scalars['Boolean'];
@@ -898,6 +907,11 @@ export type Mutation = {
   updateTechCategory?: Maybe<TechCategory>;
   uploadMultipleFiles?: Maybe<Array<Scalars['String']>>;
   uploadSingleFile: Scalars['String'];
+};
+
+
+export type MutationAnswerMessageArgs = {
+  data: AnswerMessageInput;
 };
 
 
@@ -2680,6 +2694,17 @@ export type TechWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type AnswerMessageMutationVariables = Exact<{
+  from: Scalars['String'];
+  message: Scalars['String'];
+  subject: Scalars['String'];
+  to: Scalars['String'];
+  messageId: Scalars['String'];
+}>;
+
+
+export type AnswerMessageMutation = { __typename?: 'Mutation', answerMessage: boolean };
+
 export type DeleteFileMutationVariables = Exact<{
   filename: Scalars['String'];
 }>;
@@ -3006,7 +3031,12 @@ export type DeleteQuestionMutation = { __typename?: 'Mutation', deleteQuestion?:
 export type SubscribeMessagesSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SubscribeMessagesSubscription = { __typename?: 'Subscription', subscribeMessages: { __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, subject: string } };
+export type SubscribeMessagesSubscription = { __typename?: 'Subscription', subscribeMessages: { __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, files: Array<string>, read_status: boolean, subject: string } };
+
+export type AdminEmailQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminEmailQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string } | null | undefined };
 
 export type QueryMessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3048,9 +3078,46 @@ export type QueryStacksQuery = { __typename?: 'Query', stacks: Array<{ __typenam
 export type QueryDashboardStuffQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryDashboardStuffQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string } | null | undefined, stacks: Array<{ __typename?: 'Stack', id: string, title: string, image: string }>, messages: Array<{ __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, subject: string }>, projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string, tech_categories: Array<{ __typename?: 'TechCategory', name: string, id: string, techs: Array<{ __typename?: 'Tech', name: string, id: string }> }> }> };
+export type QueryDashboardStuffQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string } | null | undefined, stacks: Array<{ __typename?: 'Stack', id: string, title: string, image: string }>, messages: Array<{ __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, files: Array<string>, subject: string }>, projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string, tech_categories: Array<{ __typename?: 'TechCategory', name: string, id: string, techs: Array<{ __typename?: 'Tech', name: string, id: string }> }> }> };
 
 
+export const AnswerMessageDocument = gql`
+    mutation AnswerMessage($from: String!, $message: String!, $subject: String!, $to: String!, $messageId: String!) {
+  answerMessage(
+    data: {from: $from, message: $message, to: $to, subject: $subject, messageId: $messageId}
+  )
+}
+    `;
+export type AnswerMessageMutationFn = Apollo.MutationFunction<AnswerMessageMutation, AnswerMessageMutationVariables>;
+
+/**
+ * __useAnswerMessageMutation__
+ *
+ * To run a mutation, you first call `useAnswerMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAnswerMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [answerMessageMutation, { data, loading, error }] = useAnswerMessageMutation({
+ *   variables: {
+ *      from: // value for 'from'
+ *      message: // value for 'message'
+ *      subject: // value for 'subject'
+ *      to: // value for 'to'
+ *      messageId: // value for 'messageId'
+ *   },
+ * });
+ */
+export function useAnswerMessageMutation(baseOptions?: Apollo.MutationHookOptions<AnswerMessageMutation, AnswerMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AnswerMessageMutation, AnswerMessageMutationVariables>(AnswerMessageDocument, options);
+      }
+export type AnswerMessageMutationHookResult = ReturnType<typeof useAnswerMessageMutation>;
+export type AnswerMessageMutationResult = Apollo.MutationResult<AnswerMessageMutation>;
+export type AnswerMessageMutationOptions = Apollo.BaseMutationOptions<AnswerMessageMutation, AnswerMessageMutationVariables>;
 export const DeleteFileDocument = gql`
     mutation DeleteFile($filename: String!) {
   deleteFile(filename: $filename)
@@ -4439,6 +4506,7 @@ export const SubscribeMessagesDocument = gql`
     body
     createdAd
     from
+    files
     read_status
     subject
   }
@@ -4466,6 +4534,40 @@ export function useSubscribeMessagesSubscription(baseOptions?: Apollo.Subscripti
       }
 export type SubscribeMessagesSubscriptionHookResult = ReturnType<typeof useSubscribeMessagesSubscription>;
 export type SubscribeMessagesSubscriptionResult = Apollo.SubscriptionResult<SubscribeMessagesSubscription>;
+export const AdminEmailDocument = gql`
+    query adminEmail {
+  me {
+    email
+  }
+}
+    `;
+
+/**
+ * __useAdminEmailQuery__
+ *
+ * To run a query within a React component, call `useAdminEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminEmailQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminEmailQuery(baseOptions?: Apollo.QueryHookOptions<AdminEmailQuery, AdminEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminEmailQuery, AdminEmailQueryVariables>(AdminEmailDocument, options);
+      }
+export function useAdminEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminEmailQuery, AdminEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminEmailQuery, AdminEmailQueryVariables>(AdminEmailDocument, options);
+        }
+export type AdminEmailQueryHookResult = ReturnType<typeof useAdminEmailQuery>;
+export type AdminEmailLazyQueryHookResult = ReturnType<typeof useAdminEmailLazyQuery>;
+export type AdminEmailQueryResult = Apollo.QueryResult<AdminEmailQuery, AdminEmailQueryVariables>;
 export const QueryMessagesDocument = gql`
     query QueryMessages {
   messages {
@@ -4804,6 +4906,7 @@ export const QueryDashboardStuffDocument = gql`
     createdAd
     from
     read_status
+    files
     subject
   }
   projects {

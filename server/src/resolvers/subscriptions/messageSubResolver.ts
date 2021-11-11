@@ -1,6 +1,6 @@
-import { Resolver, Subscription, Root } from "type-graphql";
-
+import { Resolver, Root, Subscription } from "type-graphql";
 import { Message } from "../../../prisma/generated/type-graphql";
+
 
 @Resolver()
 export class MessageSubResolver {
@@ -8,9 +8,8 @@ export class MessageSubResolver {
     topics: "NOTIFICATION",
   })
   async subscribeMessages(
-    @Root() {message}: {message: Message}
+    @Root() payload: {message: Message}
   ): Promise<Message> {
-    console.log(message)
-    return message
+    return payload.message
   }
 }

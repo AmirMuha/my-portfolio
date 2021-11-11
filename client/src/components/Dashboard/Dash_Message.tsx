@@ -1,9 +1,15 @@
-import React, { FC, PropsWithChildren, useState } from "react"
+import React, { FC, PropsWithChildren, useEffect, useState } from "react"
+import {
+  useAnswerMessageMutation,
+  useDeleteMessageMutation,
+} from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
 import { Delete } from "../../icons/iconsJSX"
+import InBoxLoading from "../UI/InBoxLoading"
+import Input from "../UI/Input"
 import Markdown from "../utility/Markdown"
 import { MessageCreateInput } from "../../types/graphql-types"
 import Modal from "../UI/Modal"
@@ -11,17 +17,29 @@ import TextArea from "../UI/TextArea"
 import { createPortal } from "react-dom"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
-import { useDeleteMessageMutation } from "../../types/graphql-types"
 
 interface Props {
   data: MessageCreateInput
   refetch: () => void
+  adminEmail: string
 }
 
-const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
+const Dash_Message: FC<PropsWithChildren<Props>> = ({
+  adminEmail,
+  data,
+  refetch,
+}) => {
+  const [
+    mutateAnswer,
+    { error: answerMessageError, loading: answerMessageLoading },
+  ] = useAnswerMessageMutation()
   const [
     mutateMessageDelete,
-    {data: deleteMessageData, error: deleteMessageError, loading: deleteMessageLoading },
+    {
+      data: deleteMessageData,
+      error: deleteMessageError,
+      loading: deleteMessageLoading,
+    },
   ] = useDeleteMessageMutation()
   const {
     isOpen: isAlertOpen,
@@ -32,6 +50,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
   const [isConfirmBoxOpen, setIsConfirmBoxOpen] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isAnswerBoxOpen, setIsAnswerBoxOpen] = useState<boolean>(false)
+  const [theSubject, setTheSubject] = useState<string>("")
   const [isAnswered, setIsAnswered] = useState<boolean>(
     data.answer_status || false
   )
@@ -40,9 +59,39 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
     data.body || "## Enjoy using Markdown :)"
   )
   useAlertGraphqlError(deleteMessageError, deleteMessageLoading, setAlert)
+  useAlertGraphqlError(answerMessageError, answerMessageLoading, setAlert)
+
+  useEffect(() => {
+    if (data && data.answer_status) {
+      setIsAnswered(data.answer_status)
+    }
+  }, [data])
+
   const sendAnswer = () => {
+    mutateAnswer({
+      variables: {
+        from: adminEmail,
+        to: data.from,
+        message: theAnswer,
+        subject: theSubject,
+        messageId: data.id!,
+      },
+    })
+      .then(() => {
+        setAlert({
+          isOpen: true,
+          title: "Success",
+          message: "Answer successfully sent.",
+        })
+        setTheAnswer("")
+        setTheSubject("")
+        setIsAnswerBoxOpen(false)
+        setIsOpen(false)
+      })
+      .catch(() => {})
     setIsAnswered(true)
   }
+
   const getAnswer = (v: string) => {
     setTheAnswer(v)
   }
@@ -94,7 +143,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
         <Alert
           backdrop
           cb={() => {
-            if(deleteMessageData) {
+            if (deleteMessageData) {
               refetch()
             }
           }}
@@ -161,8 +210,8 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
                   <div className="grid grid-cols-1 md:divide-x divide-palatte-500 divide-y md:divide-y-0 md:grid-cols-2">
                     <div className="self-start px-5 py-3">
                       <div className="ml-2 flex justify-between items-center">
-                        <div>
-                          <span className="font-bold text-sm">Subject</span>
+                        <div className="flex items-center">
+                          <span className="font-bold text-sm ">Subject</span>
                           <span className="ml-2 text-palatte-400 text-xs">
                             {data.subject}
                           </span>
@@ -198,6 +247,21 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
                           {`${!isAnswered ? "not answered!" : "answered"}`}
                         </span>
                       </div>
+                      {isAnswered && (
+                        <div className="ml-2 flex items-center">
+                          <span className="font-bold text-sm">Answered At</span>
+                          <span className="ml-2 text-palatte-400 text-xs">
+                            {new Date(data.answeredAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <div
                       style={{ maxHeight: "80vh" }}
@@ -236,76 +300,101 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({ data, refetch }) => {
                 </Modal>
                 {isAnswerBoxOpen && (
                   <Modal header title="Answer" onClose={closeAnswerBox}>
-                    <div className="flex sticky top-0 items-center gap-0">
-                      <Button
-                        normal
-                        outline
-                        onClick={() => setIsTextOpen(true)}
-                        color={isTextOpen ? "500" : "100"}
-                        style={{ borderBottom: 0 }}
-                        borderColor="500"
-                        textColor={isTextOpen ? "100" : "500"}
-                        className="flex-1 text-center"
-                      >
-                        Text
-                      </Button>
-                      <Button
-                        normal
-                        outline
-                        style={{ borderBottom: 0 }}
-                        onClick={() => setIsTextOpen(false)}
-                        color={isTextOpen ? "100" : "500"}
-                        borderColor="500"
-                        textColor={isTextOpen ? "500" : "100"}
-                        className="flex-1 text-center"
-                      >
-                        Preview
-                      </Button>
-                    </div>
-                    {isTextOpen ? (
-                      <TextArea
-                        id="answer"
-                        name="answer"
-                        outline
-                        rows={5}
-                        borderColor="500"
-                        getValue={getAnswer}
-                        value={theAnswer}
-                      />
-                    ) : (
-                      <div
-                        style={{ minHeight: 150 }}
-                        className="px-5 mb-3 py-3 border-palatte-500 border"
-                      >
-                        <Markdown>{theAnswer}</Markdown>
-                      </div>
-                    )}
-                    <div className="pb-3">
-                      <div className="flex items-center gap-2 justify-end">
-                        <Button
-                          normal
-                          outline
-                          onClick={sendAnswer}
-                          color="500"
-                          borderColor="500"
-                          textColor="100"
-                          className="text-center"
-                        >
-                          Send
-                        </Button>
-                        <Button
-                          normal
-                          outline
-                          onClick={() => setIsAnswerBoxOpen(false)}
-                          color="100"
-                          borderColor="500"
+                    {answerMessageLoading && <InBoxLoading />}
+                    <form
+                      onSubmit={e => {
+                        e.preventDefault()
+                        sendAnswer()
+                      }}
+                    >
+                      <div className="mb-3">
+                        <Input
+                          label="Subject"
+                          color="200"
                           textColor="500"
-                          className="text-center"
+                          getValue={v => setTheSubject(v)}
+                          value={theSubject}
+                          required
+                          placeholder="Enter the subject of your email"
+                          id="subject"
+                          name="subject"
+                        />
+                      </div>
+                      <span>Message</span>
+                      <div className="flex sticky top-0 items-center gap-0">
+                        <Button
+                          normal
+                          outline
+                          type="button"
+                          onClick={() => setIsTextOpen(true)}
+                          color={isTextOpen ? "500" : "100"}
+                          style={{ borderBottom: 0 }}
+                          borderColor="500"
+                          textColor={isTextOpen ? "100" : "500"}
+                          className="flex-1 text-center"
                         >
-                          Close
+                          Text
+                        </Button>
+                        <Button
+                          normal
+                          outline
+                          type="button"
+                          style={{ borderBottom: 0 }}
+                          onClick={() => setIsTextOpen(false)}
+                          color={isTextOpen ? "100" : "500"}
+                          borderColor="500"
+                          textColor={isTextOpen ? "500" : "100"}
+                          className="flex-1 text-center"
+                        >
+                          Preview
                         </Button>
                       </div>
-                    </div>
+                      {isTextOpen ? (
+                        <TextArea
+                          id="answer"
+                          name="answer"
+                          outline
+                          rows={5}
+                          required
+                          borderColor="500"
+                          getValue={getAnswer}
+                          value={theAnswer}
+                        />
+                      ) : (
+                        <div
+                          style={{ minHeight: 150 }}
+                          className="px-5 mb-3 py-3 border-palatte-500 border"
+                        >
+                          <Markdown>{theAnswer}</Markdown>
+                        </div>
+                      )}
+                      <div className="pb-3">
+                        <div className="flex items-center gap-2 justify-end">
+                          <Button
+                            normal
+                            outline
+                            type="submit"
+                            color="500"
+                            borderColor="500"
+                            textColor="100"
+                            className="text-center"
+                          >
+                            Send
+                          </Button>
+                          <Button
+                            normal
+                            outline
+                            onClick={() => setIsAnswerBoxOpen(false)}
+                            color="100"
+                            borderColor="500"
+                            textColor="500"
+                            className="text-center"
+                          >
+                            Close
+                          </Button>
+                        </div>
+                      </div>
+                    </form>
                   </Modal>
                 )}
               </div>,

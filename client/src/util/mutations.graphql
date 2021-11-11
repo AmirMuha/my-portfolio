@@ -1,3 +1,14 @@
+mutation AnswerMessage(
+  $from: String!
+  $message: String!
+  $subject: String!
+  $to: String!
+  $messageId: String!
+) {
+  answerMessage(
+    data: { from: $from, message: $message, to: $to, subject: $subject, messageId: $messageId }
+  )
+}
 mutation DeleteFile($filename: String!) {
   deleteFile(filename: $filename)
 }
@@ -57,26 +68,21 @@ mutation UploadFiles($files: [Upload!]!) {
 # // ############### Create Mutations
 # // ##################################
 
-
 mutation CreateMessage(
   $body: String!
   $subject: String!
   $from: String!
   $adminEmail: String!
   $files: [String!]! = []
-  ) {
+) {
   createNewMessage(
-    adminEmail: $adminEmail,
+    adminEmail: $adminEmail
     data: {
       subject: $subject
       from: $from
       body: $body
-      files: {set: $files}
-      admin: {
-        connect: {
-          email: ""
-        }
-      }
+      files: { set: $files }
+      admin: { connect: { email: "" } }
     }
   ) {
     id
@@ -220,53 +226,25 @@ mutation CreateQuestion(
 # // // ############### Update Mutations
 # // // ##################################
 
-mutation UpdateMessageReadStatus($id: String!){
-  updateMessage(
-    data:{
-      read_status:{
-        set: true
-      }
-    },
-    where:{
-      id: $id
-    }
-  ){
+mutation UpdateMessageReadStatus($id: String!) {
+  updateMessage(data: { read_status: { set: true } }, where: { id: $id }) {
     id
   }
 }
-mutation UpdateMessageAnswerStatus($id: String!,$date: DateTime!){
+mutation UpdateMessageAnswerStatus($id: String!, $date: DateTime!) {
   updateMessage(
-    data:{
-      answer_status:{
-        set: true
-      },
-      answeredAt: {
-        set: $date
-      }
-    },
-    where:{
-      id: $id
-    }
-  ){
+    data: { answer_status: { set: true }, answeredAt: { set: $date } }
+    where: { id: $id }
+  ) {
     id
   }
 }
 
-mutation UpdateStack(
-  $id: String!
-  $image: String!
-  $title: String!
-  ){
-  updateStack(data:{
-    title:{
-      set:$title
-    },
-    image:{
-      set:$image
-    }
-  }, where:{
-    id:$id
-  }){
+mutation UpdateStack($id: String!, $image: String!, $title: String!) {
+  updateStack(
+    data: { title: { set: $title }, image: { set: $image } }
+    where: { id: $id }
+  ) {
     id
   }
 }
@@ -387,18 +365,16 @@ mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
 # // // ##################################
 
 mutation DeleteMessage($id: String!) {
-  deleteMessage (
-    where:{
-      id:$id
-    }
-  ){
+  deleteMessage(where: { id: $id }) {
     id
   }
 }
 
 mutation Deletestack($id: String!) {
   deleteStack(where: { id: $id }) {
-    id image title
+    id
+    image
+    title
   }
 }
 
