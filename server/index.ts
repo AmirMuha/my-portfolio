@@ -24,6 +24,7 @@ import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddl
 import { black } from "./src/chalk";
 import { buildSchemaSync } from "type-graphql";
 import cors from "cors";
+import downloadRoute from "./src/routes/download"
 import { graphqlUploadExpress } from "graphql-upload";
 import helmet from "helmet";
 import http from "http";
@@ -65,6 +66,7 @@ const main = async () => {
     })
   );
   app.use(Express.static(path.join(__dirname, "./src/uploads/")));
+  app.use("/download/", downloadRoute)
   applyMiddlewares();
   const schema = buildSchemaSync({
     resolvers: [...resolvers, UploadResolver] as any,
