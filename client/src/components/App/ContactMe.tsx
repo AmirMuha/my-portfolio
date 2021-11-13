@@ -2,7 +2,7 @@ import Input, { File } from "../UI/Input"
 import React, { FC, PropsWithChildren, useCallback, useState } from "react"
 import {
   useCreateMessageMutation,
-  useUploadFilesMutation
+  useUploadFilesToZipMutation
 } from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
@@ -36,7 +36,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
   const [
     mutateUploadFiles,
     { error: uploadFilesError, loading: uploadFilesLoading },
-  ] = useUploadFilesMutation()
+  ] = useUploadFilesToZipMutation()
   const [
     mutateNewMessage,
     { error: createMessageError, loading: createMessageLoading },
@@ -64,23 +64,17 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
         })
         return
       }
-      console.log({
-        email,
-        message,
-        subject,
-        files,
-      })
       if (files) {
         mutateUploadFiles({
           variables: {
             files,
           },
         }).then(res => {
-          if (res.data && res.data.uploadMultipleFiles) {
+          if (res.data && res.data.uploadFilesToZip) {
             mutateNewMessage({
               variables: {
                 adminEmail: adminEmail,
-                files: res.data.uploadMultipleFiles,
+                files: res.data.uploadFilesToZip,
                 body: message,
                 subject: subject,
                 from: email,
@@ -93,6 +87,11 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
                   message:
                     "Message sent successfully. I'll catch up as soon as I read the email.",
                 })
+                setMessage("")
+                setSubject("")
+                setEmail("")
+                setFiles(undefined)
+                setFileName("")
               })
               .catch(() => {})
           } else {
