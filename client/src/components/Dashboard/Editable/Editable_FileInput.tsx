@@ -1,5 +1,6 @@
-import React, { CSSProperties, FC, PropsWithChildren, useRef } from "react"
 import { Close, Done, Edit } from "../../../icons/iconsJSX"
+import React, { CSSProperties, FC, PropsWithChildren, useRef } from "react"
+
 import Button from "../../UI/Button"
 
 interface Props {
@@ -18,10 +19,12 @@ interface Props {
   getValue: (v?: any) => void
   onClose: () => void
   onOpen: () => void
+  multiple: boolean
 }
 
 const Editable_FileInput: FC<PropsWithChildren<Props>> = ({
   buttonClassName,
+  multiple,
   positionPlace,
   buttonStyle,
   saveAndCloseContainerStyle,
@@ -48,7 +51,7 @@ const Editable_FileInput: FC<PropsWithChildren<Props>> = ({
         }}
         hidden
         accept={acceptableFileTypes}
-        multiple={false}
+        multiple={multiple}
         className={`hidden`}
       />
       {isEnable ? (

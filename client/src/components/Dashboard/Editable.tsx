@@ -50,9 +50,11 @@ interface Props {
   getTechCategoryValue?: (v: any) => void
   onDeleteTech?: (id: string) => void
   type?: "ADD" | "EDIT"
+  multiple?: boolean
 }
 const Editable: FC<PropsWithChildren<Props>> = ({
   custom = false,
+  multiple = false,
   type = "EDIT",
   mode = "IN_POSITION",
   file = false,
@@ -118,6 +120,7 @@ const Editable: FC<PropsWithChildren<Props>> = ({
               style={style}
               isEnable={isEnable}
               position={position}
+              multiple={multiple}
               buttonClassName={buttonClassName}
               buttonStyle={buttonStyle}
               saveAndCloseContainerStyle={saveAndCloseContainerStyle}

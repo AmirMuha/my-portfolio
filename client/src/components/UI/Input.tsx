@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useRef,
 } from "react"
+
 import Button from "./Button"
 
 export interface File {
@@ -110,6 +111,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
           <input
             multiple={multiple}
             hidden
+            accept={pattern}
             name={name}
             required={required}
             onChange={e =>
