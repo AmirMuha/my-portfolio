@@ -49,6 +49,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
     mtuateStackDelete,
     { error: deleteStackError, loading: deleteStackLoading },
   ] = useDeletestackMutation()
+
   const {
     isOpen: alertIsOpen,
     title: alertTitle,
@@ -117,6 +118,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
               mutateDeleteImage({
                 variables: {
                   filename: res.data!.uploadSingleFile,
+                  isTemp: false
                 },
               }).catch(() => {})
             })
@@ -138,6 +140,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
             mutateDeleteImage({
               variables: {
                 filename: res.data.deleteStack.image,
+                isTemp: false
               },
             })
               .then(() => {

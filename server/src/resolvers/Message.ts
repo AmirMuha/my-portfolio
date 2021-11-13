@@ -36,7 +36,7 @@ export class MessageResolver {
       data: {
         from: data.from,
         body: data.body,
-        files: data.files || [],
+        files: data.files,
         subject: data.subject,
         answeredAt: null,
         admin: {
@@ -52,7 +52,7 @@ export class MessageResolver {
           id: message.id,
           from: message.from,
           body: message.body,
-          files: message.files || [],
+          files: message.files,
           subject: message.subject,
           answer_status: message.answer_status,
           read_status: message.read_status,

@@ -100,7 +100,6 @@ const Messages: FC = () => {
   const getSearchValue = (v: string) => {
     setSearchValue(v)
   }
-  console.log(newMessage)
   useEffect(() => {
     if (data && data.messages) {
       setMessages(data.messages)

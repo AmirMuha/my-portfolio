@@ -19,7 +19,7 @@ const Dashboard: FC = () => {
   const { data: newMessage } = useSubscribeMessagesSubscription()
   const [messages, setMessages] = useState<any[]>([])
   useEffect(() => {
-    refetch()
+    refetch().catch(() => {})
   }, [])
   useEffect(() => {
     if(data && data.messages) {

@@ -1,4 +1,4 @@
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client"
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client"
 import { useEffect, useState } from "react"
 const isBrowswer = !!window
 const AUTH = "authorization"
