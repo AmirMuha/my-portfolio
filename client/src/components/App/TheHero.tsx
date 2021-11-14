@@ -1,13 +1,14 @@
 import React, { FC, PropsWithChildren } from "react"
+
+import Button from "../UI/Button"
 import { GitHub } from "../../icons/iconsJSX"
+import InPageMenu from "./InPageMenu"
+import SmallPipe from "../UI/SmallPipe"
 import hero from "../../images/Hero.svg"
 import insta from "../../images/Instagram.png"
 import linkedin from "../../images/LinkedIn.png"
 import skype from "../../images/Skype.png"
 import whatsapp from "../../images/WhatsApp.png"
-import Button from "../UI/Button"
-import SmallPipe from "../UI/SmallPipe"
-import InPageMenu from "./InPageMenu"
 
 interface Props {
   data: GatsbyTypes.Portfolio_Admin
@@ -93,7 +94,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
             >
               <img
                 className="mx-auto"
-                width={24}
+                width={26}
                 src={whatsapp}
                 alt="WhatsApp Icon"
               />
@@ -114,7 +115,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
             >
               <img
                 className="mx-auto"
-                width={24}
+                width={26}
                 src={skype}
                 alt="Skype Icon"
               />
@@ -135,7 +136,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
             >
               <img
                 className="mx-auto"
-                width={24}
+                width={26}
                 src={insta}
                 alt="Instagram Icon"
               />
@@ -156,7 +157,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
             >
               <img
                 className="mx-auto"
-                width={24}
+                width={26}
                 src={linkedin}
                 alt="LinkedIn Icon"
               />

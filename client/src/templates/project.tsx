@@ -64,7 +64,7 @@ const Project: FC<Props> = ({ pageContext: { project }, data }) => {
                       key={t.id}
                       border={false}
                       style={{ marginLeft: 0 }}
-                      data={t}
+                      data={t as any}
                     />
                   ))}
                 </TheSection>

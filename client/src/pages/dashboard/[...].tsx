@@ -1,11 +1,13 @@
 import React, { FC } from "react"
-import { PageProps } from "gatsby"
-import { Router } from "@reach/router"
-import Messages from "../../components/Dashboard/templates/Messages"
-import PrivateRoute from "../../components/PrivateRoute"
-import AboutMe from "../about-me"
-import Dashboard from "../../components/Dashboard/templates/Dashboard"
+
+import AboutMe from "../../components/Dashboard/templates/AboutMe"
 import Auth from "../../components/Dashboard/templates/Auth"
+import Dashboard from "../../components/Dashboard/templates/Dashboard"
+import Messages from "../../components/Dashboard/templates/Messages"
+import { PageProps } from "gatsby"
+import PrivateRoute from "../../components/PrivateRoute"
+import { Router } from "@reach/router"
+
 const DashboardHomePage: FC<PageProps> = ({ children, data, params }) => {
   return (
     <Router>
