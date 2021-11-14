@@ -6,7 +6,6 @@ import Markdown from "../utility/Markdown"
 import { Project } from "../../types/graphql-types"
 import { ProjectItem as ProjectItemClass } from "./styles/ProjectItem.module.css"
 import SmallPipe from "../UI/SmallPipe"
-import { StaticImage } from "gatsby-plugin-image"
 import TechItem from "./TechItem"
 
 interface Props {
@@ -21,9 +20,6 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
   buttonText,
   editable = false,
 }) => {
-  // const [imageEditMode, setImageEditMode] = useState<boolean>(false)
-  // const [aboutProjectEditMode, setAboutProjectEditMode] = useState<boolean>(false)
-  // const [techsEditMode, setTechsEditMode] = useState<boolean>(false)
   return (
     <>
       <div className="ProjectItems">
@@ -33,10 +29,10 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
               style={{ minHeight: 200, maxHeight: 300 }}
               className="border-palatte-500 overflow-hidden border-5 md:border-10 relative"
             >
-              <StaticImage
-                src="../../images/Tablet.png"
-                alt={`${data.image} Image`}
-              />
+                <img
+                  src={`${(window as any).__SERVER_API__}/${data.image}`}
+                  alt={`${data.name} Image`}
+                />
               <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
               {editable && (
                 <Button
@@ -124,11 +120,17 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
         ) : (
           <div className={`flex-col gap-0 items-start mb-5 pt-5`}>
             <div className="flex pl-5">
-              <div className="ProjectImage_Border relative">
-                <StaticImage
-                  src="../../images/image-1.png"
-                  alt={`${data.name} Image`}
-                />
+              <div style={{
+                objectFit: "cover",
+                objectPosition: "center",
+                width: 150,
+                height: 100,
+                overflow: "hidden"
+              }} className="ProjectImage_Border max-w-20 relative">
+                  <img
+                    src={`${(window as any).__SERVER_API__}/${data.image}`}
+                    alt={`${data.name} Image`}
+                  />
                 <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
               </div>
               <div className="pl-3 text-sm">
