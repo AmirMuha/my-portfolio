@@ -1,141 +1,188 @@
-import React, { FC, useReducer } from "react"
-import { Reducer } from "redux"
-import InPageMenu from "../../App/InPageMenu"
-import TheSection from "../../App/TheSection"
-import { SEO } from "../../SEO"
-import Dash_Layout from "../Dash_Layout"
-import Editable from "../Editable"
+import React, { FC, useEffect, useState } from "react"
+import {
+  useAboutsQuery,
+  useAdminEmailQuery,
+  useCreateAboutMutation
+} from "../../../types/graphql-types"
 
-const sampleText = `
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
-expedita quia modi quasi eveniet dolorum esse temporibus? Alias
-quibusdam rem dolorem explicabo consequatur eaque autem a aperiam
-molestias corrupti, possimus sed unde, debitis eum impedit porro
-aliquam culpa nulla, odio voluptas ea. Iusto deserunt iste illo
-tempora quis, quaerat id ducimus magni vitae necessitatibus aliquid
-tempore fuga architecto porro ad esse corporis, consequatur cum!
-Ratione expedita dolor porro excepturi? Pariatur facilis similique
-tempore quia laborum mollitia odio, quae modi ipsum sed voluptates
-sunt exercitationem cupiditate tempora dolorum debitis vel rerum
-quibusdam earum, totam, consequuntur commodi hic aliquid. Cumque
-reprehenderit atque commodi facilis dolorum, laborum beatae ea amet
-ad possimus, perspiciatis provident, minima deserunt ex numquam
-aspernatur cum! Error, aspernatur nam!
-`
-interface AboutMe {
-  id: string
-  name: string
-  body: string
-}
-interface AboutMeState {
-  abouts: AboutMe[]
-}
-interface AboutMeAction {
-  type: "EDIT" | "ADD"
-  value: {
-    name: string
-    body: string
-    id: string
-  }
-}
-const aboutInitialState: AboutMeState = {
-  abouts: [
-    {
-      id: "1",
-      name: "About Me",
-      body: sampleText,
-    },
-    {
-      id: "2",
-      name: "More About What I Do",
-      body: sampleText,
-    },
-  ],
-}
-const aboutRedcuer: Reducer<AboutMeState, AboutMeAction> = (state, action) => {
-  switch (action.type) {
-    case "EDIT":
-      let newState: AboutMe[] = []
-      if (state) {
-        newState = state.abouts.map(({ body, name, id }) => {
-          if (action.value.id === id) {
-            return {
-              id,
-              name: action.value.name,
-              body: action.value.body,
-            }
-          } else {
-            return {
-              name,
-              body,
-              id,
-            }
-          }
-        })
-      }
-      return {
-        abouts: newState,
-      }
-    default:
-      return (
-        state || {
-          abouts: [],
-        }
-      )
-  }
-}
+import Alert from "../../UI/Alert"
+import Button from "../../UI/Button"
+import Dash_About from "../../Dashboard/Dash_About"
+import Dash_Layout from "../Dash_Layout"
+import Input from "../../UI/Input"
+import Loading from "../../UI/Loading"
+import Markdown from "../../utility/Markdown"
+import Modal from "../../UI/Modal"
+import { SEO } from "../../SEO"
+import TextArea from "../../UI/TextArea"
+import { useAlert } from "../../../util/useAlert"
+import { useAlertGraphqlError } from "../../../util/useAlertGraphqlError"
+
 const EditAboutMe: FC = () => {
-  const [abouts, dispatch] = useReducer(aboutRedcuer, aboutInitialState)
-  const save = (v: string) => {
-    console.log(`Saving the aboutMe`, v)
+  const {
+    isOpen: isAlertOpen,
+    title: alertTitle,
+    message: alertMessage,
+    setAlert,
+  } = useAlert()
+  const [isCreateAboutBoxOpen, setIsCreateAboutBoxOpen] =
+    useState<boolean>(false)
+  const [abouts, setAbouts] = useState<any[]>([])
+  const [aboutTitle, setAboutTitle] = useState<string>("")
+  const [aboutBody, setAboutBody] = useState<string>("")
+  const [isBodyPreviewBoxOpen, setIsBodyPreviewBoxOpen] =
+    useState<boolean>(false)
+
+  const { data, loading, error, refetch } = useAboutsQuery()
+  const { data: admin } = useAdminEmailQuery()
+  const [
+    mutateNewAbout,
+    { error: createAboutError, loading: createAboutLoading },
+  ] = useCreateAboutMutation()
+
+  useEffect(() => {
+    if (data?.abouts && data?.abouts?.length > 0) {
+      setAbouts(data.abouts)
+    }
+  }, [data])
+  useAlertGraphqlError(createAboutError, createAboutLoading, setAlert)
+
+  const createAbout = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!aboutTitle && !aboutBody && admin?.me?.email) {
+      setAlert({
+        isOpen: true,
+        message: `${
+          aboutTitle ? "Title" : "Body"
+        } field are required, please provide some value.`,
+        title: "Error",
+      })
+      return
+    }
+    mutateNewAbout({
+      variables: {
+        adminEmail: admin?.me?.email!,
+        body: aboutBody,
+        title: aboutTitle,
+      },
+    })
+      .then(res => {
+        setAlert({
+          isOpen: true,
+          title: "Success",
+          message: "Created about successfully.",
+        })
+        setAbouts(prev => {
+          return [...prev, res.data?.createAbout]
+        })
+        setIsCreateAboutBoxOpen(false)
+        setAboutBody("")
+        setAboutTitle("")
+      })
+      .catch(() => {})
   }
+  if (loading && !error) {
+    return <Loading />
+  }
+
   return (
     <>
+      {isAlertOpen && (
+        <Alert
+          backdrop
+          header
+          title={alertTitle}
+          message={alertMessage}
+          onClose={() => setAlert({ isOpen: false })}
+          cb={() => refetch()}
+        />
+      )}
       <SEO title="Adding New AboutMe To Stack" />
       <Dash_Layout>
-        <TheSection
-          name="What Now ?"
-          style={{ paddingBottom: 25 }}
-          id="what-now"
-        >
-          <InPageMenu pipes="left" />
-        </TheSection>
-        {abouts.abouts.map(({ name, body, id }) => (
-          <TheSection
-            titleEditable
-            titleValue={name}
-            getTitleValue={v =>
-              dispatch({ type: "EDIT", value: { id, body, name: v } })
-            }
-            key={id}
-            id={id}
-            name={name}
-          >
-            <div className="px-5 pb-8">
-              <Editable
-                textarea
-                textareaRows={20}
-                value={body}
-                getValue={v =>
-                  dispatch({
-                    type: "EDIT",
-                    value: {
-                      id,
-                      name,
-                      body: v,
-                    },
-                  })
-                }
-                onSave={v => save(v)}
-                mode="IN_POSITION"
-                position="tr"
-                positionPlace="inside"
-              />
-            </div>
-          </TheSection>
+        {abouts.map(({ title, body, id }) => (
+          <Dash_About key={id} refetch={refetch} data={{id, title, body}} />
         ))}
-        <div className="mb-10"></div>
+        <div className="my-10 w-full">
+          <Button
+            normal
+            outline
+            className="w-full"
+            onClick={() => setIsCreateAboutBoxOpen(true)}
+          >
+            Add A New Block
+          </Button>
+        </div>
       </Dash_Layout>
+      {isCreateAboutBoxOpen && (
+        <Modal
+          header
+          title="Create A New About Block"
+          maxWidth="800px"
+          onClose={() => setIsCreateAboutBoxOpen(false)}
+        >
+          <div>
+            <form onSubmit={createAbout}>
+              <Input
+                id="about-title"
+                name="about-title"
+                label="Title"
+                color="200"
+                textColor="500"
+                placeholder="Enter the title"
+                getValue={v => setAboutTitle(v)}
+                value={aboutTitle}
+                required
+              />
+              <div className="relative">
+                {isBodyPreviewBoxOpen ? (
+                  <div className="text-palatte-500">
+                    <h3 className="">Body</h3>
+                    <div className="w-full border-palatte-200 bg-palatte-200 text-palatte-500 px-3 py-2">
+                      <Markdown>
+                        {aboutBody || "Start writing the body."}
+                      </Markdown>
+                    </div>
+                  </div>
+                ) : (
+                  <TextArea
+                    id="new-description"
+                    name="new-description"
+                    color="200"
+                    textColor="500"
+                    rows={10}
+                    label="Description"
+                    getValue={v => setAboutBody(v)}
+                    value={aboutBody}
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={() => setIsBodyPreviewBoxOpen(prev => !prev)}
+                  className="border border-palatte-500 bg-palatte-500 text-palatte-100 text-tiny px-3 py-1 absolute right-1 top-8"
+                >
+                  {isBodyPreviewBoxOpen ? "Raw Text" : "preview"}
+                </button>
+              </div>
+              <div className="flex gap-2 items-center justify-end">
+                <Button
+                  type="button"
+                  onClick={() => setIsCreateAboutBoxOpen(false)}
+                  color="100"
+                  textColor="500"
+                  borderColor="500"
+                  outline
+                  normal
+                >
+                  Close
+                </Button>
+                <Button type="submit" outline normal>
+                  Save
+                </Button>
+              </div>
+            </form>
+          </div>
+        </Modal>
+      )}
     </>
   )
 }
