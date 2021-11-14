@@ -1,13 +1,14 @@
+import { Delete, Download } from "../../icons/iconsJSX"
 import React, { FC, PropsWithChildren, useEffect, useState } from "react"
 import {
   useAnswerMessageMutation,
+  useDeleteFileMutation,
   useDeleteMessageMutation,
 } from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
 import Confirm from "../UI/Confirm"
-import { Delete } from "../../icons/iconsJSX"
 import InBoxLoading from "../UI/InBoxLoading"
 import Input from "../UI/Input"
 import Markdown from "../utility/Markdown"
@@ -29,6 +30,10 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
   data,
   refetch,
 }) => {
+  const [
+    mutateDeleteFile,
+    { error: deleteFileError, loading: deleteFileLoading },
+  ] = useDeleteFileMutation()
   const [
     mutateAnswer,
     { error: answerMessageError, loading: answerMessageLoading },
@@ -59,6 +64,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
     data.body || "## Enjoy using Markdown :)"
   )
   useAlertGraphqlError(deleteMessageError, deleteMessageLoading, setAlert)
+  useAlertGraphqlError(deleteFileError, deleteFileLoading, setAlert)
   useAlertGraphqlError(answerMessageError, answerMessageLoading, setAlert)
 
   useEffect(() => {
@@ -68,6 +74,16 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
   }, [data])
 
   const sendAnswer = () => {
+    if (!theAnswer || !theSubject) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: `${
+          !theAnswer ? "Message" : "Subject"
+        } field is required, please try again later.`,
+      })
+      return
+    }
     mutateAnswer({
       variables: {
         from: adminEmail,
@@ -118,12 +134,23 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
           },
         })
           .then(() => {
-            setIsOpen(false)
-            setAlert({
-              isOpen: true,
-              title: "Success",
-              message: "Deleted the message successfully.",
-            })
+            if (data?.files) {
+              mutateDeleteFile({
+                variables: {
+                  filename: data.files,
+                  isTemp: false,
+                },
+              })
+                .then(() => {
+                  setIsOpen(false)
+                  setAlert({
+                    isOpen: true,
+                    title: "Success",
+                    message: "Deleted the message successfully.",
+                  })
+                })
+                .catch(() => {})
+            }
           })
           .catch(() => {})
       } else {
@@ -260,6 +287,20 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
                               }
                             )}
                           </span>
+                        </div>
+                      )}
+                      {data.files && (
+                        <div className="w-full px-2 mt-1">
+                          <Button
+                            toUrl={`${
+                              (window as any).__SERVER_API__
+                            }/download/${data.files}`}
+                            icon={Download}
+                            iconAnimation="TtB"
+                            outline
+                          >
+                            Download Files
+                          </Button>
                         </div>
                       )}
                     </div>
