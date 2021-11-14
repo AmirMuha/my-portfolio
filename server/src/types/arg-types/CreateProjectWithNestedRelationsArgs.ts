@@ -45,7 +45,7 @@ class SketchCreateInput_PWNR {
   @Field(() => String)
   @IsNotEmpty()
   @IsUrl()
-  download_link: string
+  downloadables: string
 }
 
 @InputType()

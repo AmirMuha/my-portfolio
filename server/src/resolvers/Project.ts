@@ -43,7 +43,7 @@ export class CreateProjectWithNestedRelationsResolver {
             description: sk.description,
             summary: sk.summary,
             image: sk.image,
-            download_link: sk.download_link,
+            downloadables: sk.downloadables,
             project_id: project.id,
           },
         });

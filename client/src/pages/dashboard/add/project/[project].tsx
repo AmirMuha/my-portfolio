@@ -2,12 +2,13 @@ import { PageProps, navigate } from "gatsby"
 import React, { FC, useEffect, useState } from "react"
 import {
   deleteUnsavedProjectReducer,
-  fetchUnsavedProjectsReducer
+  fetchUnsavedProjectsReducer,
 } from "../../../../store/unsavedProjectsSclice"
 import {
   editNameReducer,
-  setStateReducer
+  setStateReducer,
 } from "../../../../store/newProjectSlice"
+import { useCreateProjectWithRelationsMutation, useMoveFilesFromTempMutation } from "../../../../types/graphql-types"
 import { useTheDispatch, useTheSelector } from "../../../../store/store"
 
 import AboutTheProject from "../../../../components/App/AboutTheProject"
@@ -26,8 +27,8 @@ import TheSection from "../../../../components/App/TheSection"
 import UnsavedProjects from "../../../../components/Dashboard/UnsavedProjects"
 import { createPortal } from "react-dom"
 import { useAlert } from "../../../../util/useAlert"
-import { useAlertGraphqlError } from '../../../../util/useAlertGraphqlError'
-import { useCreateProjectWithRelationsMutation } from "../../../../types/graphql-types"
+import { useAlertGraphqlError } from "../../../../util/useAlertGraphqlError"
+import { useAuth } from "../../../../util/useAuth"
 
 const project: FC<PageProps> = ({ params }) => {
   const {
@@ -36,14 +37,21 @@ const project: FC<PageProps> = ({ params }) => {
     title: alertTitle,
     setAlert,
   } = useAlert()
+  const { data: isLoggedIn, error: loginCheckError } = useAuth()
+  if (!isLoggedIn && loginCheckError) {
+    navigate("/dashboard/auth/")
+    return null
+  }
   const projectNameParam = params.project
   const dispatch = useTheDispatch()
   const data = useTheSelector(state => state.newProject)
   const [newProjectName, setNewProjectName] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [mutateNewProject,{error,loading}] = useCreateProjectWithRelationsMutation()
-
+  const [mutateFilesChangePath, {error: moveFilesError,loading: moveFilesLoading}] = useMoveFilesFromTempMutation()
+  const [mutateNewProject, { error, loading }] =
+    useCreateProjectWithRelationsMutation()
   useAlertGraphqlError(error, loading, setAlert, () => setIsLoading(false))
+  useAlertGraphqlError(moveFilesError, moveFilesLoading, setAlert, () => setIsLoading(false))
   useEffect(() => {
     setNewProjectName(projectNameParam)
     dispatch(setStateReducer({ name: projectNameParam }))
@@ -73,7 +81,7 @@ const project: FC<PageProps> = ({ params }) => {
           summary: data.summary,
           image: data.image,
           type: data.type,
-          questions: data.questions.map(q =>({
+          questions: data.questions.map(q => ({
             question: q.question,
             answer: q.answer,
           })),
@@ -81,7 +89,7 @@ const project: FC<PageProps> = ({ params }) => {
             title: s.title,
             summary: s.summary,
             description: s.description,
-            download_link: s.download_link,
+            downloadables: s.downloadables,
             image: s.image,
           })),
           techCategories: data.tech_categories.map(tc => ({
@@ -91,13 +99,24 @@ const project: FC<PageProps> = ({ params }) => {
         } as any,
       })
         .then(() => {
-          dispatch(
-            deleteUnsavedProjectReducer({
-              name: data.name,
-            })
-          )
-          navigate("/dashboard")
-        }).catch(() => {})
+          mutateFilesChangePath({
+            variables: {
+              filenames: [
+                data.image,
+                ...data.sketches.map(s => s.image),
+                ...data.sketches.map(s => s.downloadables),
+              ],
+            },
+          }).then(() => {
+            dispatch(
+              deleteUnsavedProjectReducer({
+                name: data.name,
+              })
+            )
+            navigate("/dashboard")
+          }).catch(() => {})
+        })
+        .catch(() => {})
     }
   }
 
@@ -166,7 +185,7 @@ const project: FC<PageProps> = ({ params }) => {
                   key={t?.id ? t.id : i}
                   border={false}
                   style={{ marginLeft: 0 }}
-                  data={t}
+                  data={t as any}
                 />
               ))}
           </TheSection>

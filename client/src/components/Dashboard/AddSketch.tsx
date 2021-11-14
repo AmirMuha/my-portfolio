@@ -8,16 +8,18 @@ import React, {
 } from "react"
 import {
   useCreateSketchMutation,
-  useUploadFileMutation,
+  useUploadAndSketchImageDownloadablesMutation,
 } from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
 import Button from "../UI/Button"
+import InBoxLoading from "../UI/InBoxLoading"
 import Markdown from "../utility/Markdown"
 import Modal from "../UI/Modal"
 import SmallPipe from "../UI/SmallPipe"
 import TextArea from "../UI/TextArea"
 import { addNewSketchReducer } from "../../store/editProject"
+import { createPortal } from "react-dom"
 import { setSketchReducer } from "../../store/newProjectSlice"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
@@ -26,7 +28,8 @@ import { useTheDispatch } from "../../store/store"
 interface ReducerState {
   description: string
   summary: string
-  download_link: string
+  downloadables: File | null
+  downloadables_name: string
   image: File | null
   imageName: string
   title: string
@@ -38,13 +41,14 @@ interface ReducerAction {
     | "DESCRIPTION"
     | "SUMMARY"
     | "IMAGE"
-    | "DOWNLOAD_LINK"
+    | "DOWNLOADABLES"
   value: any
 }
 const initialState: ReducerState = {
   description: "",
   summary: "",
-  download_link: "",
+  downloadables_name: "",
+  downloadables: null,
   title: "",
   image: null,
   imageName: "",
@@ -80,10 +84,11 @@ const reducer: Reducer<ReducerState, ReducerAction> = (
         image: value[0] || null,
         imageName: value[0]?.name || "",
       }
-    case "DOWNLOAD_LINK":
+    case "DOWNLOADABLES":
       return {
         ...state,
-        download_link: value || "",
+        downloadables: value || null,
+        downloadables_name: value[0]?.name || "",
       }
     default:
       return state
@@ -98,9 +103,12 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
   projectId,
   mode = "EDIT",
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const dispatchNewSketch = useTheDispatch()
-  const [mutateImage, { error: uploadFileError, loading: uploadFileLoading }] =
-    useUploadFileMutation()
+  const [
+    mutateFiles,
+    { error: uploadFilesError, loading: uploadFilesLoading },
+  ] = useUploadAndSketchImageDownloadablesMutation()
   const [
     mutateNewSketch,
     { error: createSketchError, loading: createSketchLoading },
@@ -117,8 +125,8 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
   const [isDescriptionPreviewBoxOpen, setIsDescriptionPreviewBoxOpen] =
     useState<boolean>(false)
   const [sketch, dispatch] = useReducer(reducer, initialState)
-  useAlertGraphqlError(uploadFileError, uploadFileLoading, setAlert)
   useAlertGraphqlError(createSketchError, createSketchLoading, setAlert)
+  useAlertGraphqlError(uploadFilesError, uploadFilesLoading, setAlert)
   const unknownError = () => {
     setAlert({
       isOpen: true,
@@ -130,6 +138,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
   const save = (e: React.FormEvent) => {
     e.preventDefault()
     let hasError = false
+    setIsLoading(true)
     for (const s in sketch) {
       if (!sketch[s]) {
         hasError = true
@@ -159,68 +168,91 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
         hasError = true
       }
     }
+
     if (!hasError) {
       if (mode === "ADD") {
-        mutateImage({ variables: { file: sketch.image} }).then(res => {
-          if (res.data?.uploadSingleFile) {
-            dispatchNewSketch(
-              setSketchReducer({
-                ...sketch,
-                image: res.data.uploadSingleFile,
-              })
-            )
-            setIsOpen(false)
-            dispatch({type: "RESET",value:""})
-          }
-        })
-      } else {
-        mutateImage({
+        mutateFiles({
           variables: {
-            file: sketch.image,
-            isEdit: true
+            image: sketch.image,
+            downloadables: sketch.downloadables,
+            isEdit: false,
           },
-        }).then(res => {
-          if (res.data) {
-            mutateNewSketch({
-              variables: {
-                projectId: projectId!,
-                summary: sketch.summary,
-                description: sketch.description,
-                download_link: sketch.download_link,
-                image: res.data.uploadSingleFile,
-                title: sketch.title,
-              },
-            }).then(resp => {
-              if (resp.data) {
-                setAlert({
-                  isOpen: true,
-                  title: "Success",
-                  message: "Added a new sketch successfully.",
+        })
+          .then(res => {
+            if (res?.data?.uploadSingleFile && res?.data?.uploadFilesToZip) {
+              dispatchNewSketch(
+                setSketchReducer({
+                  ...sketch,
+                  image: res.data.uploadSingleFile,
+                  downloadables: res.data.uploadFilesToZip,
                 })
-                dispatchNewSketch(
-                  addNewSketchReducer({
-                    id: resp.data.createSketch.id,
-                    description: resp.data.createSketch.description,
-                    summary: resp.data.createSketch.summary,
-                    title: resp.data.createSketch.title,
-                    image: resp.data.createSketch.image,
-                    download_link: resp.data.createSketch.download_link,
-                  })
-                )
-                setIsOpen(false)
-                dispatch({type: "RESET",value:""})
-              } else {
-                unknownError()
-              }
-            }).catch(()=>{})
-          }
-        }).catch(()=>{})
+              )
+              setIsOpen(false)
+              dispatch({ type: "RESET", value: "" })
+            }
+          })
+          .catch(() => {})
+      } else {
+        mutateFiles({
+          variables: {
+            image: sketch.image,
+            downloadables: sketch.downloadables,
+            isEdit: true,
+          },
+        })
+          .then(res => {
+            if (res.data) {
+              mutateNewSketch({
+                variables: {
+                  projectId: projectId!,
+                  summary: sketch.summary,
+                  description: sketch.description,
+                  downloadables: res.data.uploadFilesToZip,
+                  image: res.data.uploadSingleFile,
+                  title: sketch.title,
+                },
+              })
+                .then(resp => {
+                  if (resp.data) {
+                    setAlert({
+                      isOpen: true,
+                      title: "Success",
+                      message: "Added a new sketch successfully.",
+                    })
+                    dispatchNewSketch(
+                      addNewSketchReducer({
+                        id: resp.data.createSketch.id,
+                        description: resp.data.createSketch.description,
+                        summary: resp.data.createSketch.summary,
+                        title: resp.data.createSketch.title,
+                        image: resp.data.createSketch.image,
+                        downloadables: resp.data.createSketch.downloadables,
+                      })
+                    )
+                    setIsOpen(false)
+                    dispatch({ type: "RESET", value: "" })
+                  } else {
+                    unknownError()
+                  }
+                })
+                .catch(() => {})
+            }
+          })
+          .catch(() => {})
       }
     }
+    setIsLoading(false)
   }
 
   return (
     <>
+      {isLoading &&
+        createPortal(
+          <div className="fixed w-full h-full top-0 left-0">
+            <InBoxLoading text="Loading" />
+          </div>,
+          document.body
+        )}
       {isAlertOpen && (
         <Alert
           header
@@ -325,19 +357,23 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                   </button>
                 </div>
                 <Input
-                  label="Download Link"
-                  id="download-link"
-                  name="download-link"
-                  placeholder="Enter The Download Link"
-                  textColor="500"
-                  color="200"
-                  value={sketch.download_link}
-                  getValue={v => dispatch({ type: "DOWNLOAD_LINK", value: v })}
+                  type="file"
+                  label="Downloadables"
+                  buttonTitle="Choose Downloadables"
+                  id="downloadables"
+                  name="downloadables"
+                  pattern=".pdf, .ppt"
+                  multiple
+                  value={sketch.downloadables_name}
+                  getValue={(_, f) =>
+                    dispatch({ type: "DOWNLOADABLES", value: f })
+                  }
                 />
                 <Input
                   type="file"
                   label="Image"
                   buttonTitle="Choose Image"
+                  pattern="image/*"
                   id="new-image"
                   name="new-image"
                   value={sketch.imageName}
@@ -347,7 +383,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
               <div className="flex items-center gap-2 justify-end">
                 <Button
                   onClick={() => {
-                    dispatch({type: "RESET",value:""})
+                    dispatch({ type: "RESET", value: "" })
                     setIsOpen(false)
                   }}
                   normal

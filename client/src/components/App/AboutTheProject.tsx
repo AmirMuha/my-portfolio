@@ -204,16 +204,19 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     }
     if (mode === "ADD") {
       if (imageFile) {
-        mutateImage({
-          variables: {
-            file: imageFile[0],
-          },
-        })
-          .then(res => {
-            if (res.data) {
-              setImageName(res.data.uploadSingleFile)
+        if(data.image && data.image.includes("file")) {
+          mutateProjectImageUpdate({
+            variables: {
+              prevname: data.image,
+              file: imageFile[0],
+              isEdit: false
+            }
+          })
+          .then((res) => {
+            if (res.data?.updateImage) {
+              setImageName(res.data.updateImage)
               addNewProjectDispatch(
-                setImageReducer({ image: res.data.uploadSingleFile })
+                setImageReducer({ image: res.data.updateImage })
               )
             } else {
               unknownError()
@@ -226,6 +229,30 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               }${imageName || "default-project.jpeg"}`
             }
           })
+        } else {
+          mutateImage({
+            variables: {
+              file: imageFile[0],
+            },
+          })
+            .then(res => {
+              if (res.data) {
+                setImageName(res.data.uploadSingleFile)
+                addNewProjectDispatch(
+                  setImageReducer({ image: res.data.uploadSingleFile })
+                )
+              } else {
+                unknownError()
+              }
+            })
+            .catch(() => {
+              if (imageRef.current) {
+                imageRef.current.src = `${(window as any).__SERVER_API__}/${
+                  mode === "ADD" ? "temp/" : ""
+                }${imageName || "default-project.jpeg"}`
+              }
+            })
+        }
       }
     } else {
       if (!imageFile) {
@@ -238,9 +265,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
         mutateProjectImageUpdate({
           variables: {
             file: imageFile[0],
-            id: data.id,
             prevname: data.image,
-            field: "project",
           },
         })
           .then(res => {

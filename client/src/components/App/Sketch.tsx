@@ -3,22 +3,22 @@ import React, {
   PropsWithChildren,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react"
 import { deleteReducer, setSketchReducer } from "../../store/newProjectSlice"
 import {
   deleteSketchReducer,
-  updateDownloadLinkReducer,
   updateSketchDescriptionRedcuer,
   updateSketchImageReducer,
-  updateSketchSummaryReducer
+  updateSketchSummaryReducer,
 } from "../../store/editProject"
 import {
+  useDeleteFilesMutation,
   useDeleteSketchMutation,
   useUpdateImageMutation,
   useUpdateSketchDescriptionMutation,
-  useUpdateSketchDownloadLinkMutation,
-  useUpdateSketchSummaryMutation
+  useUpdateSketchSummaryMutation,
+  useUpdateZipFileMutation,
 } from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
@@ -44,6 +44,14 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
   editable = false,
 }) => {
   const [
+    mutateDeleteFiles,
+    { error: deleteFilesError, loading: deleteFilesLoading },
+  ] = useDeleteFilesMutation()
+  const [
+    mutateUpdateZipFile,
+    { error: updateZipFileError, loading: updateZipFileLoading },
+  ] = useUpdateZipFileMutation()
+  const [
     mutateSummary,
     { error: updateSketchSummaryError, loading: updateSketchSummaryLoading },
   ] = useUpdateSketchSummaryMutation()
@@ -59,13 +67,6 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     },
   ] = useUpdateSketchDescriptionMutation()
   const [
-    mutateDownloadLink,
-    {
-      error: updateSketchDownloadLinkError,
-      loading: updateSketchDownloadLinkLoading,
-    },
-  ] = useUpdateSketchDownloadLinkMutation()
-  const [
     mutateSketchDelete,
     { error: deleteSketchError, loading: deleteSketchLoading },
   ] = useDeleteSketchMutation()
@@ -76,11 +77,13 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     setAlert,
     title: alertTitle,
   } = useAlert()
+  useAlertGraphqlError(updateZipFileError, updateZipFileLoading, setAlert)
   useAlertGraphqlError(
     updateSketchSummaryError,
     updateSketchSummaryLoading,
     setAlert
   )
+  useAlertGraphqlError(deleteFilesError, deleteFilesLoading, setAlert)
   useAlertGraphqlError(
     updateSketchDescriptionError,
     updateSketchDescriptionLoading,
@@ -91,16 +94,11 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     updateSketchImageLoading,
     setAlert
   )
-  useAlertGraphqlError(
-    updateSketchDownloadLinkError,
-    updateSketchDownloadLinkLoading,
-    setAlert
-  )
   useAlertGraphqlError(deleteSketchError, deleteSketchLoading, setAlert)
   const [isConfirmOpen, setConfirmBox] = useState(false)
   const imageRef = useRef<HTMLImageElement>()
   const [summary, setSummary] = useState<string>(data.summary)
-  const [downloadLink, setDownloadLink] = useState<string>(data.download_link)
+  const [downloadables, setDownloadales] = useState<any>(null)
   const [description, setDescription] = useState<string>(data.description)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [imageFile, setImage] = useState<any>(null)
@@ -112,8 +110,8 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
   const unknownError = () => {
     setAlert({
       isOpen: true,
-       title: "Error",
-       message: "Unknown Error: Something went wrong."
+      title: "Error",
+      message: "Unknown Error: Something went wrong.",
     })
   }
   const updateFn = (field: keyof GatsbyTypes.Portfolio_Sketch, val: string) => {
@@ -134,38 +132,37 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
       })
     }
   }
-  const updateDownloadLink = (v: string) => {
+
+  const updateDownloadables = (v: string) => {
     if (mode === "ADD") {
-      updateFn("download_link", v)
-    } else {
-      mutateDownloadLink({
+      mutateUpdateZipFile({
         variables: {
-          id: data.id,
-          download_link: v,
+          files: downloadables,
+          prevname: data.downloadables,
+          isTemp: true,
+        }
+      }).catch(() => {})
+    } else {
+      mutateUpdateZipFile({
+        variables: {
+          files: downloadables,
+          prevname: data.downloadables,
+          isTemp: false,
         },
       })
-        .then(res => {
-          if(res.data && res.data.updateSketch) {
-            setAlert({
-              isOpen: true,
-              message: "Updated downloadLink successfully.",
-              title: "Success",
-            })
-            dispatch(
-              updateDownloadLinkReducer({
-                id: data.id,
-                download_link: res.data.updateSketch.download_link,
-              })
-            )
-          } else {
-            unknownError()
-          }
+        .then(() => {
+          setAlert({
+            isOpen: true,
+            message: "Updated downloadables successfully.",
+            title: "Success",
+          })
         })
+        .catch(() => {})
     }
   }
 
   const updateSketchDescription = (v: string) => {
-    if(v || v.length > 500) {
+    if (v || v.length > 500) {
       if (mode === "ADD") {
         updateFn("description", v)
       } else {
@@ -174,36 +171,35 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             id: data.id,
             description: v,
           },
-        })
-          .then(res => {
-            if(res.data && res.data.updateSketch) {
-              setAlert({
-                isOpen: true,
-                message: "Updated sketch description successfully.",
-                title: "Success",
+        }).then(res => {
+          if (res.data && res.data.updateSketch) {
+            setAlert({
+              isOpen: true,
+              message: "Updated sketch description successfully.",
+              title: "Success",
+            })
+            dispatch(
+              updateSketchDescriptionRedcuer({
+                id: data.id,
+                description: res.data.updateSketch.description,
               })
-              dispatch(
-                updateSketchDescriptionRedcuer({
-                  id: data.id,
-                  description: res.data.updateSketch.description,
-                })
-              )
-            } else {
-              unknownError()
-            }
-          })
-        }
+            )
+          } else {
+            unknownError()
+          }
+        })
+      }
     } else {
       setAlert({
         isOpen: true,
         title: "Error",
-        message: "Description must be at least 500 charactors long."
+        message: "Description must be at least 500 charactors long.",
       })
     }
   }
 
   const updateSketchSummary = (v: string) => {
-    if(v && v.length >50 && v.length < 150) {
+    if (v && v.length > 50 && v.length < 150) {
       if (mode === "ADD") {
         updateFn("summary", v)
       } else {
@@ -212,92 +208,113 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             id: data.id,
             summary: v,
           },
-        })
-          .then(res => {
-            if(res.data && res.data.updateSketch) {
-              setAlert({
-                isOpen: true,
-                title: "Success",
-                message: "Updated sketch summary successfully.",
-              })
-              dispatch(
-                updateSketchSummaryReducer({
-                  id: data.id,
-                  summary: res.data.updateSketch.summary,
-                })
-              )
-            } else {
-              unknownError()
-            }
-          })
-      }
-    } else {
-      setAlert({
-        isOpen: true,
-        title: "Error",
-        message: "Summary must be at least 50 and at most 150 charactors long."
-      })
-    }
-  }
-
-  const updateImage = () => {
-    if (mode === "ADD") {
-    } else {
-      mutateImageUpdate({
-        variables: {
-          id: data.id,
-          prevname: data.image,
-          file: imageFile[0],
-          field: "sketch",
-        },
-      })
-        .then(res => {
-          if(res.data && res.data.updateImage) {
+        }).then(res => {
+          if (res.data && res.data.updateSketch) {
             setAlert({
               isOpen: true,
               title: "Success",
-              message: "Updated sketch image successfully.",
+              message: "Updated sketch summary successfully.",
             })
             dispatch(
-              updateSketchImageReducer({
+              updateSketchSummaryReducer({
                 id: data.id,
-                image: res.data.updateImage,
+                summary: res.data.updateSketch.summary,
               })
             )
           } else {
             unknownError()
           }
         })
+      }
+    } else {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Summary must be at least 50 and at most 150 charactors long.",
+      })
+    }
+  }
+
+  const updateImage = () => {
+    if (mode === "ADD") {
+      mutateImageUpdate({
+        variables: {
+          prevname: data.image,
+          file: imageFile[0],
+          isEdit: false
+        }
+      }).catch(()=> {})
+    } else {
+      mutateImageUpdate({
+        variables: {
+          prevname: data.image,
+          file: imageFile[0],
+        },
+      }).then(res => {
+        if (res.data && res.data.updateImage) {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "Updated sketch image successfully.",
+          })
+          dispatch(
+            updateSketchImageReducer({
+              id: data.id,
+              image: res.data.updateImage,
+            })
+          )
+        } else {
+          unknownError()
+        }
+      })
     }
   }
 
   const deleteSketch = (v: boolean) => {
     if (v) {
       if (mode === "ADD") {
-        dispatch(deleteReducer({ id: data.id, field: "sketches" }))
+        mutateDeleteFiles({
+          variables: {
+            filenames: [data.image, data.downloadables],
+            isTemp: true,
+          },
+        })
+          .then(() => {
+            dispatch(deleteReducer({ id: data.id, field: "sketches" }))
+          })
+          .catch(() => {})
       } else {
         mutateSketchDelete({
           variables: {
             id: data.id,
           },
         }).then(() => {
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "Deleted sketch successfully",
+          mutateDeleteFiles({
+            variables: {
+              filenames: [data.image, data.downloadables],
+              isTemp: false,
+            },
           })
-          dispatch(
-            deleteSketchReducer({
-              id: data.id,
+            .then(() => {
+              setAlert({
+                isOpen: true,
+                title: "Success",
+                message: "Deleted sketch successfully",
+              })
+              dispatch(
+                deleteSketchReducer({
+                  id: data.id,
+                })
+              )
             })
-          )
+            .catch(() => {})
         })
       }
     }
   }
 
-  const getDownloadLink = (v: string) => {
-    setDownloadLink(v)
+  const getDownloadables = (f: File) => {
+    setDownloadales(f)
   }
   const getDescriptionValue = (v: string) => {
     setDescription(v)
@@ -369,8 +386,8 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               </span>
               <div className="flex items-center justify-between">
                 <Button
-                  toUrl={`${(window as any).__SERVER_API__}/${
-                    data.download_link
+                  toUrl={`${(window as any).__SERVER_API__}/download/${
+                    data.downloadables
                   }`}
                   outline
                   target="_blank"
@@ -382,14 +399,13 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
                 >
                   Download
                   <Editable
-                    customInputId={`download-${data.id}`}
-                    title="Download URL"
-                    mode="MODAL"
-                    custom
-                    inputType="url"
-                    onSave={updateDownloadLink}
-                    getValue={getDownloadLink}
-                    value={downloadLink}
+                    mode="IN_POSITION"
+                    file
+                    multiple
+                    acceptableFileTypes=".pdf, .ppt"
+                    onSave={updateDownloadables}
+                    getValue={getDownloadables}
+                    value=""
                   />
                 </Button>
               </div>
@@ -459,7 +475,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             <div className="relative">
               <div className="overflow-hidden">
                 <img
-                  src={`${(window as any).__SERVER_API__}/temp/${data.image}`}
+                  src={`${(window as any).__SERVER_API__}/${data.image}`}
                   alt={data.title}
                   ref={imageRef as any}
                   style={{
@@ -473,9 +489,10 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               <div className="p-1.5 absolute border-5 md:border-10 border-palatte-500 bg-palatte-200 bg-opacity-50 top-0 left-0 right-0 bottom-0">
                 <div className="flex items-center justify-between">
                   <Button
-                    toUrl={data.download_link}
+                    toUrl={`${(window as any).__SERVER_API__}/download/${
+                      data.downloadables
+                    }`}
                     outline
-                    target="_blank"
                     borderColor="100"
                     textColor="100"
                     color="500"

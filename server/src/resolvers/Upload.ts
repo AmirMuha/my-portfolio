@@ -1,136 +1,232 @@
 import { randomInt } from "crypto";
-import { createWriteStream, unlinkSync  } from "fs";
+import sharp from "sharp";
+import { unlink, rename, createWriteStream, unlinkSync } from "fs";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 import path, { join } from "path";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import archiver from "archiver";
 import { MyContext } from "../types/MyContext";
+
 @Resolver()
 export class UploadResolver {
+  @Mutation(() => String || Error)
+  async uploadFilesToZip(
+    @Arg("files", () => [GraphQLUpload])
+    files: FileUpload[],
+    @Arg("isEdit", () => Boolean) isEdit: boolean = true
+  ): Promise<string | Error> {
+    const zipName = `zip-${randomInt(100000)}.zip`;
+    const promises: Promise<boolean>[] = [];
+    const wStream = createWriteStream(
+      path.join(__dirname, `../uploads${isEdit ? "/" : "/temp/"}`, zipName)
+    );
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    archive.pipe(wStream);
+    for (const file of files) {
+      const { createReadStream, mimetype } = await file;
+      const stream = createReadStream();
+      const promise = new Promise<boolean>((resolve, reject) => {
+        let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+        if (filename.includes("+")) {
+          filename = filename.replace("+xml", "");
+        }
+        archive.append(stream, { name: filename });
+        wStream.on("error", (e: any) => {
+          console.error(e.message);
+          reject(false);
+          throw new Error(e.message);
+        });
+        archive.on("finish", () => {
+          resolve(true);
+        });
+        archive.on("error", (e: any) => {
+          console.error(e.message);
+          reject(false);
+        });
+      });
+      promises.push(promise);
+    }
+    archive.finalize();
+    return Promise.all(promises)
+      .then(() => {
+        return zipName;
+      })
+      .catch((e) => {
+        console.error(e);
+        throw new Error("Something went wrong, couldn't upload all files.");
+      });
+  }
+
+  @Mutation(() => String || Error)
+  async updateZipFile(
+    @Ctx() { prisma }: MyContext,
+    @Arg("prevname", () => String) prevname: string,
+    @Arg("isTemp", () => Boolean) isTemp: boolean,
+    @Arg("files", () => [GraphQLUpload]) files: FileUpload[]
+  ): Promise<String | undefined> {
+    try {
+      unlinkSync(
+        path.join(__dirname, `../uploads/${isTemp ? "temp/" : ""}`, prevname)
+      );
+    } catch (e) {
+      throw new Error("Something went wrong, Couldn't create new zip file.");
+    }
+    const promises: Promise<boolean | string>[] = [];
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    const wStream = createWriteStream(
+      path.join(__dirname, `../uploads/${isTemp ? "temp/" : ""}`, prevname)
+    );
+    wStream.on("error", (e: any) => {
+      throw new Error(
+        e.message || "Something went wrong with creating new .zip file."
+      );
+    });
+    archive.pipe(wStream);
+    for(const file of files) {
+      const { createReadStream, mimetype } = await file;
+      const stream = createReadStream();
+      let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
+      if (filename.includes("+")) {
+        filename = filename.replace("+xml", "");
+      }
+      const promise = new Promise<string | boolean>((resolve, reject) => {
+        archive.append(stream, { name: filename });
+        archive.on("finish", () => {
+          resolve(filename);
+        });
+        archive.on("error", () => {
+          reject(false);
+        });
+      });
+      promises.push(promise);
+    }
+    archive.finalize();
+    return Promise.all(promises)
+      .then(() => {
+        return prevname;
+      })
+      .catch(() => {
+        throw new Error("Something went wrong, couldn't update the .zip file.");
+      });
+  }
+
+  @Mutation(() => Boolean)
+  async moveFilesFromTemp(
+    @Arg("filenames", () => [String]) filenames: string[]
+  ): Promise<boolean> {
+    for (const file of filenames) {
+      rename(
+        path.join(__dirname, "../uploads/temp/", file),
+        path.join(__dirname, "../uploads/", file),
+        (e) => {
+          if (e) {
+            throw new Error(
+              "Something went wrong, Couldn't update the file path."
+            );
+          }
+        }
+      );
+    }
+    return true;
+  }
+
   @Mutation(() => String || Error)
   async uploadSingleFile(
     @Arg("file", () => GraphQLUpload)
     { mimetype, createReadStream }: FileUpload,
-    @Arg("isEdit", {defaultValue: false,nullable: true}) isEdit: boolean
+    @Arg("isEdit", { defaultValue: false, nullable: true }) isEdit: boolean
   ): Promise<string | Error> {
-    let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
-    if(filename.includes("+")) {
-      filename = filename.replace("+xml", "")
-    }
+    let filename = `file-${randomInt(100000)}.webp`;
     return new Promise((resolve, reject) => {
       const stream = createReadStream();
-      stream
-        .pipe(
-          createWriteStream(
-            path.join(__dirname, `../../src/uploads/${isEdit ? "":"temp/"}`, filename)
+      if (mimetype.split("/")[0] === "image") {
+        stream
+          .pipe(
+            sharp()
+              .webp({
+                quality: 50,
+              })
+              .on("error", (e: any) => {
+                throw new Error(
+                  e.message || "Couldn't prccess the uploaded image."
+                );
+              })
           )
-        )
-        .on("error", (e) => {
-          console.error(e);
-          reject(e);
-        })
-        .on("finish", () => resolve(filename));
+          .pipe(
+            createWriteStream(
+              path.join(
+                __dirname,
+                `../../src/uploads/${isEdit ? "" : "temp/"}`,
+                filename
+              )
+            )
+          )
+          .on("error", (e: any) => {
+            console.error(e);
+            reject(e);
+          })
+          .on("finish", () => resolve(filename));
+      } else {
+        stream
+          .pipe(
+            createWriteStream(
+              path.join(
+                __dirname,
+                `../../src/uploads/${isEdit ? "" : "temp/"}`,
+                filename
+              )
+            )
+          )
+          .on("error", (e: any) => {
+            console.error(e);
+            reject(e);
+          })
+          .on("finish", () => resolve(filename));
+      }
     });
   }
 
   @Mutation(() => String, { nullable: true })
   async updateImage(
-    @Ctx() { prisma }: MyContext,
     @Arg("file", () => GraphQLUpload)
-    { mimetype, createReadStream }: FileUpload,
+    { createReadStream }: FileUpload,
     @Arg("prevname", () => String) prevname: string,
-    @Arg("id", () => String) id: string,
-    @Arg("isEdit",() => Boolean,{defaultValue: false,nullable: true}) isEdit: boolean,
-    @Arg("field", () => String, { nullable: true }) field: string
+    @Arg("isEdit", () => Boolean, { defaultValue: false, nullable: true })
+    isEdit: boolean
   ): Promise<string> {
-    if (!id) return "Project id is required for updating the project image.";
-    if (!prevname)
-      return "Image previous name is required for updating the project image.";
-    let foundImageOwner: any = null;
-    if (field === "project") {
-      const project = await prisma.project.findUnique({
-        where: {
-          id,
-        },
-      });
-      foundImageOwner = project;
-    } else if (field === "sketch") {
-      const sketch = await prisma.sketch.findUnique({
-        where: {
-          id,
-        },
-      });
-      foundImageOwner = sketch;
-    } else if (field === "hero") {
-      foundImageOwner = true;
-    }
-    if (!foundImageOwner)
-      throw new Error(`Couldn't find ImageOwner with id ${id}`);
     try {
-      unlinkSync(join(__dirname, `../uploads${isEdit ? "/":"temp/"}` + prevname));
+      unlinkSync(
+        join(__dirname, `../uploads/${isEdit ? "" : "temp/"}` + prevname)
+      );
     } catch (e) {}
-    let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
-    if(filename.includes("+")) {
-      filename = filename.replace("+xml", "")
-    }
     return new Promise((resolve, reject) => {
       const stream = createReadStream();
       stream
         .pipe(
+          sharp()
+            .webp({
+              quality: 50,
+            })
+            .on("error", (e: any) => {
+              throw new Error(
+                e.message || "Couldn't prccess the uploaded image."
+              );
+            })
+        )
+        .pipe(
           createWriteStream(
-            path.join(__dirname, `../uploads${isEdit ? "/":"temp/"}`, filename)
+            path.join(
+              __dirname,
+              `../uploads/${isEdit ? "" : "temp/"}`,
+              prevname
+            )
           )
         )
-        .on("error", (e) => {
+        .on("error", (e: any) => {
           reject(e);
         })
         .on("finish", async () => {
-          if (field === "project") {
-            await prisma.project
-              .update({
-                where: {
-                  id,
-                },
-                data: {
-                  image: {
-                    set: filename,
-                  },
-                },
-              })
-              .then(() => {
-                resolve(filename);
-              })
-              .catch(console.error);
-          } else if (field === "sketch") {
-            await prisma.sketch
-              .update({
-                where: {
-                  id,
-                },
-                data: {
-                  image: {
-                    set: filename,
-                  },
-                },
-              })
-              .then(() => {
-                resolve(filename);
-              })
-              .catch(console.error);
-          } else if (field === "hero") {
-            await prisma.admin
-              .update({
-                data: {
-                  heroImage: filename,
-                },
-                where: {
-                  id: id,
-                },
-              })
-              .then(() => {
-                resolve(filename);
-              })
-              .catch(console.error);
-          }
+          resolve(prevname);
         });
     });
   }
@@ -138,20 +234,21 @@ export class UploadResolver {
   @Mutation(() => [String], { nullable: true })
   async uploadMultipleFiles(
     @Arg("files", () => [GraphQLUpload])
-    files: FileUpload[]
+    files: FileUpload[],
+    @Arg("isTemp" ,() => Boolean) isTemp: boolean = true
   ): Promise<string[]> {
     const filenames: string[] = [];
     for await (const file of files) {
       try {
         const { mimetype, createReadStream } = await file;
         let filename = `file-${randomInt(100000)}.${mimetype.split("/")[1]}`;
-        if(filename.includes("+")) {
-          filename = filename.replace("+xml", "")
+        if (filename.includes("+")) {
+          filename = filename.replace("+xml", "");
         }
         const stream = createReadStream();
         stream.pipe(
           createWriteStream(
-            path.join(__dirname, "../../src/uploads/temp/", filename)
+            path.join(__dirname, `../../src/uploads/${isTemp ? "temp/": ""}`, filename)
           )
         );
         filenames.push(filename);
@@ -161,13 +258,44 @@ export class UploadResolver {
     }
     return filenames;
   }
-  @Mutation(() =>Boolean)
+  @Mutation(() => Boolean)
   async deleteFile(
-    @Arg("filename",() => String) filename: string
+    @Arg("filename", () => String) filename: string,
+    @Arg("isTemp", () => Boolean) isTemp: boolean
   ): Promise<boolean> {
     try {
-      unlinkSync(join(__dirname, "../uploads/temp/" + filename));
-    }catch(e) {}
-    return true
+      unlinkSync(
+        join(__dirname, `../uploads/${isTemp ? "temp/" : ""}` + filename)
+      );
+    } catch (e) {
+      throw new Error(
+        e.message || "Something went wrong, couldn't delete the file."
+      );
+    }
+    return true;
+  }
+  @Mutation(() => Boolean)
+  async deleteFiles(
+    @Arg("filenames", () => [String]) filenames: string[],
+    @Arg("isTemp", () => Boolean) isTemp: boolean
+  ): Promise<boolean> {
+    for await (const filename of filenames) {
+      if (filename) {
+        unlink(
+          path.join(
+            __dirname,
+            `../uploads/${isTemp ? "temp/" : ""}` + filename
+          ),
+          (e) => {
+            if (e) {
+              throw new Error(
+                e.message || "Something went wrong, couldn't delete the file."
+              );
+            }
+          }
+        );
+      }
+    }
+    return true;
   }
 }

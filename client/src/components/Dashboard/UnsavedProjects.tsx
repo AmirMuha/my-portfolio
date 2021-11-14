@@ -1,34 +1,43 @@
 import React, { FC, memo, useEffect } from "react"
-import { deleteUnsavedProjectReducer, fetchUnsavedProjectsReducer } from "../../store/unsavedProjectsSclice"
+import {
+  deleteUnsavedProjectReducer,
+  fetchUnsavedProjectsReducer,
+} from "../../store/unsavedProjectsSclice"
 import { useTheDispatch, useTheSelector } from "../../store/store"
 
 import Alert from "../UI/Alert"
 import { Delete } from "../../icons/iconsJSX"
-import { DeleteFileMutation } from "../../util/mutations"
 import { Link } from "gatsby"
 import TheSection from "../App/TheSection"
 import { useAlert } from "../../util/useAlert"
-import { useMutation } from "@apollo/client"
+import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useDeleteFilesMutation } from "../../types/graphql-types"
 
 interface Props {
   param?: string
   isNameChanged?: boolean
 }
 
-const UnsavedProjects: FC<Props> = ({ param,isNameChanged  }) => {
+const UnsavedProjects: FC<Props> = ({ param, isNameChanged }) => {
   const dispatch = useTheDispatch()
-  const {projects: unsavedProjects} = useTheSelector(state => state.unsavedProjects)
-  const [mutateDeleteImage] = useMutation(DeleteFileMutation)
+  const { projects: unsavedProjects } = useTheSelector(
+    state => state.unsavedProjects
+  )
+  const [
+    mutateDeleteImages,
+    { error: deleteFileError, loading: deleteFileLoading },
+  ] = useDeleteFilesMutation()
   const {
     isOpen: alertIsOpen,
     message: alertMessage,
     title: alertTitle,
     setAlert,
   } = useAlert()
+  useAlertGraphqlError(deleteFileError, deleteFileLoading, setAlert)
 
   useEffect(() => {
     dispatch(fetchUnsavedProjectsReducer({}))
-  }, [param,isNameChanged])
+  }, [param, isNameChanged])
 
   const deleteUnfinishedProject = (name: string) => {
     if (name === param) {
@@ -42,12 +51,16 @@ const UnsavedProjects: FC<Props> = ({ param,isNameChanged  }) => {
 
     const proj = unsavedProjects.find(p => p.name === name)
     if (proj) {
-      if (!/default/.test(proj.image)) {
-        mutateDeleteImage({
+      if ((proj.image && !/default/.test(proj.image)) || proj.sketches.length > 0) {
+        mutateDeleteImages({
           variables: {
-            filename: proj.image,
+            filenames: [
+              proj.image,
+              ...proj.sketches.map(s => s.image),
+              ...proj.sketches.map(s => s.downloadables),
+            ],
           },
-        })
+        }).catch(() => {})
       }
       dispatch(
         deleteUnsavedProjectReducer({
@@ -101,5 +114,5 @@ const UnsavedProjects: FC<Props> = ({ param,isNameChanged  }) => {
       )}
     </>
   )
-  }
+}
 export default memo(UnsavedProjects)

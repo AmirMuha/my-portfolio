@@ -96,7 +96,7 @@ function storeLocally(
             id: string
             summary: string
             description: string
-            download_link: string
+            downloadables: string
             image: string
             title: string
           }[] = [...existingProject.sketches]
@@ -112,7 +112,7 @@ function storeLocally(
             summary: value.summary,
             description: value.description,
             image: value.image,
-            download_link: value.download_link,
+            downloadables: value.downloadables,
             title: value.title,
           })
         }
@@ -335,7 +335,7 @@ const newProjectSlice = createSlice({
           id?: string
           description?: string
           summary?: string
-          download_link?: string
+          downloadables?: string
           image?: string
           title?: string
           updateValue?: string
@@ -350,8 +350,8 @@ const newProjectSlice = createSlice({
           id: action.payload.id ? action.payload.id : undefined,
           description: action.payload.description && action.payload.description,
           summary: action.payload.summary && action.payload.summary,
-          download_link:
-            action.payload.download_link && action.payload.download_link,
+          downloadables:
+            action.payload.downloadables && action.payload.downloadables,
           image: action.payload.image && action.payload.image,
           title: action.payload.title && action.payload.title,
           updateValue: action.payload.updateValue && action.payload.updateValue,

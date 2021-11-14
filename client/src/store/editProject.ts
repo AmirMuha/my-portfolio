@@ -146,7 +146,7 @@ const EditProjectSlice = createSlice({
           title: string
           description: string
           summary: string
-          download_link: string
+          downloadables: string
         }
       }
     ) => {
@@ -156,7 +156,7 @@ const EditProjectSlice = createSlice({
         description: action.payload.description,
         title: action.payload.title,
         image: action.payload.image,
-        download_link: action.payload.download_link,
+        downloadables: action.payload.downloadables,
       } as any)
     },
     updateProjectFieldReducer: (
@@ -210,11 +210,11 @@ const EditProjectSlice = createSlice({
     },
     updateDownloadLinkReducer: (
       state,
-      action: { payload: { id: string; download_link: string } }
+      action: { payload: { id: string; downloadables: string } }
     ) => {
       state.sketches.forEach(d => {
         if (d.id === action.payload.id) {
-          d.download_link = action.payload.download_link
+          d.downloadables = action.payload.downloadables
           return
         }
       })

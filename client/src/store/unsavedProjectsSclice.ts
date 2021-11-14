@@ -14,7 +14,7 @@ export interface UnsavedProjectsType {
       title: string
       description: string
       summary: string
-      download_link: string
+      downloadables: string
       image: string
     }[]
     questions: {

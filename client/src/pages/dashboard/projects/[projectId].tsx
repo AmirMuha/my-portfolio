@@ -1,6 +1,7 @@
+import { PageProps, navigate } from "gatsby"
 import React, { FC, useEffect, useState } from "react"
 import {
-  useDeleteFileMutation,
+  useDeleteFilesMutation,
   useDeleteProjectMutation,
   useQuerySingleProjectWithRelationsQuery,
   useUpdateProjectNameMutation
@@ -15,7 +16,6 @@ import Button from "../../../components/UI/Button"
 import Confirm from "../../../components/UI/Confirm"
 import Dash_Layout from "../../../components/Dashboard/Dash_Layout"
 import Loading from "../../../components/UI/Loading"
-import { PageProps } from "gatsby"
 import QAndA from "../../../components/App/QAndA"
 import QAndA_Add from "../../../components/Dashboard/Q&A_Add"
 import { SEO } from "../../../components/SEO"
@@ -25,6 +25,7 @@ import TheSection from "../../../components/App/TheSection"
 import { setProjectStateReducer } from "../../../store/editProject"
 import { useAlert } from "../../../util/useAlert"
 import { useAlertGraphqlError } from "../../../util/useAlertGraphqlError"
+import { useAuth } from "../../../util/useAuth"
 
 interface PageContext {
   project: GatsbyTypes.Portfolio_Project
@@ -33,16 +34,21 @@ interface Props extends PageProps {
   pageContext: PageContext
 }
 const EditableProject: FC<Props> = ({ params: { projectId } }) => {
+  const { data: isLoggedIn, error: loginCheckError } = useAuth()
+  if (!isLoggedIn && loginCheckError) {
+    navigate("/dashboard/auth/")
+    return null
+  }
   const data = useTheSelector(state => state.editProject)
   const dispatchEditProjectStore = useTheDispatch()
+  const [
+    mutateDeleteImages,
+    { error: deleteFilesError, loading: deleteFilesLoading },
+  ] = useDeleteFilesMutation()
   const [
     mutateProjectDeletion,
     { error: deleteProjectError, loading: deleteProjectLoading },
   ] = useDeleteProjectMutation()
-  const [
-    mutateImageDelete,
-    { error: deleteFileError, loading: deleteFileLoading },
-  ] = useDeleteFileMutation()
   const [
     mutateProject,
     { error: updateProjectNameError, loading: updateProjectNameLoading },
@@ -60,15 +66,20 @@ const EditableProject: FC<Props> = ({ params: { projectId } }) => {
     fetchedData?.project?.name || ""
   )
   useAlertGraphqlError(deleteProjectError, deleteProjectLoading, setAlert)
+  useAlertGraphqlError(deleteFilesError, deleteFilesLoading, setAlert)
   useAlertGraphqlError(
     updateProjectNameError,
     updateProjectNameLoading,
     setAlert
   )
-  useAlertGraphqlError(deleteFileError, deleteFileLoading, setAlert)
 
   useEffect(() => {
-    if (fetchedData && !projectQueringError && !isLoadingProject && fetchedData.project) {
+    if (
+      fetchedData &&
+      !projectQueringError &&
+      !isLoadingProject &&
+      fetchedData.project
+    ) {
       dispatchEditProjectStore(
         setProjectStateReducer({
           data: {
@@ -96,13 +107,21 @@ const EditableProject: FC<Props> = ({ params: { projectId } }) => {
           id: projectId,
         },
       }).then(() => {
-        mutateImageDelete({
+        mutateDeleteImages({
           variables: {
-            filename: fetchedData?.project!.image,
+            filenames: [
+              fetchedData?.project!.image,
+              ...(fetchedData?.project?.sketches.map(s => s.image) || []),
+              ...(fetchedData?.project?.sketches.map(s => s.downloadables) ||
+                []),
+            ],
+            isTemp: false,
           },
-        }).then(() => {
-          window.location.href = window.location.origin + "/dashboard/"
         })
+          .then(() => {
+            window.location.href = window.location.origin + "/dashboard/"
+          })
+          .catch(() => {})
       })
     }
   }
@@ -114,13 +133,13 @@ const EditableProject: FC<Props> = ({ params: { projectId } }) => {
         id: projectId,
       },
     }).then(res => {
-      if(res.data?.updateProject) {
+      if (res.data?.updateProject) {
         setProjectName(res.data.updateProject.name)
       } else {
         setAlert({
           isOpen: true,
-           title: "Error",
-           message: "Unknown Error: Something went wrong."
+          title: "Error",
+          message: "Unknown Error: Something went wrong.",
         })
       }
     })
@@ -173,7 +192,7 @@ const EditableProject: FC<Props> = ({ params: { projectId } }) => {
                             key={t.id}
                             border={false}
                             style={{ marginLeft: 0 }}
-                            data={t}
+                            data={t as any}
                           />
                         ))}
                     </TheSection>
