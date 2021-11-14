@@ -5,7 +5,6 @@ import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
-// import { TechCategoryResolver } from "./prisma/generated/type-graphql";
 import {
   HOST,
   PORT,
@@ -24,7 +23,7 @@ import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddl
 import { black } from "./src/chalk";
 import { buildSchemaSync } from "type-graphql";
 import cors from "cors";
-import downloadRoute from "./src/routes/download"
+import downloadRoute from "./src/routes/download";
 import { graphqlUploadExpress } from "graphql-upload";
 import helmet from "helmet";
 import http from "http";
@@ -36,6 +35,10 @@ import redisStore from "connect-redis";
 import resolvers from "./src/resolvers/allResolvers";
 import session from "express-session";
 import { v4 } from "uuid";
+
+process.on("uncaughtException", (e) => {
+  console.error(e);
+});
 
 const app = Express();
 const RedisStore = redisStore(session);
@@ -66,7 +69,7 @@ const main = async () => {
     })
   );
   app.use(Express.static(path.join(__dirname, "./src/uploads/")));
-  app.use("/download/", downloadRoute)
+  app.use("/download/", downloadRoute);
   applyMiddlewares();
   const schema = buildSchemaSync({
     resolvers: [...resolvers, UploadResolver] as any,
@@ -124,6 +127,11 @@ const main = async () => {
   });
   httpServer.listen({ port: PORT }, () => {
     console.log(black(` Server is running on http://${HOST}:${PORT} `));
+  });
+
+  process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    process.exit();
   });
 };
 main().catch(console.error);
