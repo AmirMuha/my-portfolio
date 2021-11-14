@@ -14,7 +14,8 @@ import fetch from "cross-fetch"
 import { getMainDefinition } from "@apollo/client/utilities"
 import { store } from "./src/store/store"
 
-const wsLink = window ? new WebSocketLink({
+const isBrowswer = typeof window !== "undefined"
+const wsLink = isBrowswer ? new WebSocketLink({
   uri: "ws://localhost:3333/graphql",
   options: {
     reconnect: true,
@@ -27,7 +28,7 @@ const uploadLink = createUploadLink({
   fetch,
 })
 
-const splitLink = window ? split(
+const splitLink = isBrowswer ? split(
   ({ query }) => {
     const definition = getMainDefinition(query)
     return (
