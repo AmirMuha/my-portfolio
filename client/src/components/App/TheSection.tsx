@@ -1,4 +1,6 @@
 import React, { CSSProperties, FC, PropsWithChildren, useState } from "react"
+
+import { Delete } from '../../icons/iconsJSX';
 import Editable from "../Dashboard/Editable"
 
 interface Props {
@@ -12,10 +14,11 @@ interface Props {
   titleValue?: string
   getTitleValue?: (v: string) => void
   onSaveTitleValue?: (v: string) => void
+  onDeleteSection?: () => void
 }
 
 const TheSection: FC<PropsWithChildren<Props>> = ({
-  name,
+  name,onDeleteSection,
   titleEditable = false,
   getTitleValue,
   titleValue,
@@ -28,7 +31,6 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
   className,
 }) => {
   const updateTitle = (v: string) => {
-    console.log("updating title value for %s section with Value %s", name, v)
     onSaveTitleValue && onSaveTitleValue(v)
   }
   return (
@@ -62,6 +64,10 @@ const TheSection: FC<PropsWithChildren<Props>> = ({
                 getValue={v => getTitleValue && getTitleValue(v)}
                 value={titleValue}
               />
+              {
+                onDeleteSection &&
+                <button onClick={onDeleteSection}>{Delete}</button>
+              }
             </h1>
           ) : (
             <h1
