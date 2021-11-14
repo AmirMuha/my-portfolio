@@ -12,6 +12,12 @@ subscription SubscribeMessages {
   }
 }
 
+query abouts {
+  abouts {
+    id title body
+  }
+}
+
 query adminEmail {
   me {
     email
@@ -54,7 +60,7 @@ query QuerySingleProjectWithRelations($id: String!) {
       title
       description
       summary
-      download_link
+      downloadables
       image
     }
     tech_categories {
@@ -87,7 +93,7 @@ query QueryProjectsWithRelations {
       title
       description
       summary
-      download_link
+      downloadables
       image
     }
     tech_categories {

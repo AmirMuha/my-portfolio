@@ -1,3 +1,14 @@
+mutation MoveFilesFromTemp($filenames: [String!]!) {
+  moveFilesFromTemp(filenames: $filenames)
+}
+mutation UploadAndSketchImageDownloadables(
+  $image: Upload!
+  $isEdit: Boolean = false
+  $downloadables: [Upload!]!
+) {
+  uploadSingleFile(file: $image, isEdit: $isEdit)
+  uploadFilesToZip(files: $downloadables, isEdit: $isEdit)
+}
 mutation AnswerMessage(
   $from: String!
   $message: String!
@@ -6,11 +17,29 @@ mutation AnswerMessage(
   $messageId: String!
 ) {
   answerMessage(
-    data: { from: $from, message: $message, to: $to, subject: $subject, messageId: $messageId }
+    data: {
+      from: $from
+      message: $message
+      to: $to
+      subject: $subject
+      messageId: $messageId
+    }
   )
 }
-mutation DeleteFile($filename: String!) {
-  deleteFile(filename: $filename)
+mutation UploadFile($file: Upload!, $isEdit: Boolean = false) {
+  uploadSingleFile(file: $file, isEdit: $isEdit)
+}
+mutation UploadFiles($files: [Upload!]!, $isTemp: Boolean = true) {
+  uploadMultipleFiles(files: $files, isTemp: $isTemp)
+}
+mutation UploadFilesToZip($files: [Upload!]!, $isEdit: Boolean! = true) {
+  uploadFilesToZip(files: $files, isEdit: $isEdit)
+}
+mutation DeleteFile($filename: String!, $isTemp: Boolean! = true) {
+  deleteFile(filename: $filename, isTemp: $isTemp)
+}
+mutation DeleteFiles($filenames: [String!]!, $isTemp: Boolean! = true) {
+  deleteFiles(filenames: $filenames, isTemp: $isTemp)
 }
 mutation ConfirmEmail($code: Int!, $email: String!) {
   confirmEmail(code: $code, email: $email)
@@ -58,22 +87,31 @@ mutation SubmitAdmin(
     resumes
   }
 }
-mutation UploadFile($file: Upload!, $isEdit: Boolean = false) {
-  uploadSingleFile(file: $file, isEdit: $isEdit)
-}
-mutation UploadFiles($files: [Upload!]!) {
-  uploadMultipleFiles(files: $files)
-}
 # // ##################################
 # // ############### Create Mutations
 # // ##################################
 
+mutation CreateAbout(
+  $title: String!
+  $body: String!
+  $adminEmail: String!
+  ) {
+  createAbout(data:{
+    title: $title,
+    body: $body,
+    admin:{
+      connect:{
+        email: $adminEmail
+      }
+    }
+  }){id title body}
+}
 mutation CreateMessage(
   $body: String!
   $subject: String!
   $from: String!
   $adminEmail: String!
-  $files: [String!]! = []
+  $files: String!
 ) {
   createNewMessage(
     adminEmail: $adminEmail
@@ -81,7 +119,7 @@ mutation CreateMessage(
       subject: $subject
       from: $from
       body: $body
-      files: { set: $files }
+      files: $files
       admin: { connect: { email: "" } }
     }
   ) {
@@ -166,7 +204,7 @@ mutation CreateSketch(
   $projectId: String!
   $summary: String!
   $description: String!
-  $download_link: String!
+  $downloadables: String!
   $image: String!
   $title: String!
 ) {
@@ -175,7 +213,7 @@ mutation CreateSketch(
       title: $title
       description: $description
       summary: $summary
-      download_link: $download_link
+      downloadables: $downloadables
       image: $image
       project: { connect: { id: $projectId } }
     }
@@ -184,7 +222,7 @@ mutation CreateSketch(
     title
     summary
     description
-    download_link
+    downloadables
     image
     project_id
   }
@@ -226,6 +264,25 @@ mutation CreateQuestion(
 # // // ############### Update Mutations
 # // // ##################################
 
+
+mutation UpdateAboutTitle($id: String!,$title: String!) {
+  updateAbout(data:{
+    title:{set:$title},
+  },where:{
+    id: $id
+  }){
+    id
+  }
+}
+mutation UpdateAboutBody($id: String!,$body: String!) {
+  updateAbout(data:{
+    body:{set:$body},
+  },where:{
+    id: $id
+  }){
+    id
+  }
+}
 mutation UpdateMessageReadStatus($id: String!) {
   updateMessage(data: { read_status: { set: true } }, where: { id: $id }) {
     id
@@ -261,16 +318,13 @@ mutation UpdateProjectType($id: String!, $type: String) {
 }
 mutation UpdateImage(
   $file: Upload!
-  $id: String!
   $prevname: String!
-  $field: String
+  $isEdit: Boolean = true
 ) {
   updateImage(
     file: $file
-    id: $id
     prevname: $prevname
-    field: $field
-    isEdit: true
+    isEdit: $isEdit
   )
 }
 mutation UpdateProjectAppUrl($id: String!, $app_url: String) {
@@ -301,31 +355,20 @@ mutation UpdateSketchDescription($id: String!, $description: String!) {
     description
     summary
     image
-    download_link
+    downloadables
   }
 }
-mutation UpdateSketchImage($id: String!, $image: String!) {
-  updateSketch(data: { image: { set: $image } }, where: { id: $id }) {
-    id
-    title
-    description
-    summary
-    image
-    download_link
-  }
-}
-mutation UpdateSketchDownloadLink($id: String!, $download_link: String!) {
-  updateSketch(
-    data: { download_link: { set: $download_link } }
-    where: { id: $id }
-  ) {
-    id
-    title
-    description
-    summary
-    image
-    download_link
-  }
+
+mutation UpdateZipFile(
+  $files: [Upload!]!
+  $prevname: String!
+  $isTemp: Boolean!
+) {
+  updateZipFile(
+    files: $files
+    prevname: $prevname
+    isTemp: $isTemp
+  )
 }
 mutation UpdateSketchSummary($id: String!, $summary: String!) {
   updateSketch(data: { summary: { set: $summary } }, where: { id: $id }) {
@@ -334,7 +377,7 @@ mutation UpdateSketchSummary($id: String!, $summary: String!) {
     description
     summary
     image
-    download_link
+    downloadables
   }
 }
 mutation UpdateTechCategory($name: String!, $techCategoryId: String!) {
@@ -364,6 +407,11 @@ mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
 # // // ############### Update Mutations
 # // // ##################################
 
+mutation DeleteAbout($id: String!){
+  deleteAbout(where:{id:$id}){
+    id
+  }
+}
 mutation DeleteMessage($id: String!) {
   deleteMessage(where: { id: $id }) {
     id
