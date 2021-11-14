@@ -89,7 +89,7 @@ model Sketch {
   title         String
   description   String  @db.Text
   summary       String  @db.Text
-  download_link String
+  downloadables String
   image         String
   project       Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id    String  @db.Uuid
@@ -108,7 +108,7 @@ model Message {
   id            String   @id @unique @default(uuid()) @db.Uuid
   subject       String
   from          String
-  files         String[]
+  files         String   @default("")
   body          String   @db.Text
   read_status   Boolean  @default(false)
   answer_status Boolean  @default(false)

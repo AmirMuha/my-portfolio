@@ -32,7 +32,7 @@ export class SketchOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  download_link?: "asc" | "desc" | undefined;
+  downloadables?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true

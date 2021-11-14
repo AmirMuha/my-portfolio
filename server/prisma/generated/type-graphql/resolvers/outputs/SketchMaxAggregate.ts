@@ -30,7 +30,7 @@ export class SketchMaxAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  download_link!: string | null;
+  downloadables!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

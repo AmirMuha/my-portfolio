@@ -5,7 +5,6 @@ import { DecimalJSScalar } from "../../scalars";
 import { AdminUpdateOneRequiredWithoutMessagesInput } from "../inputs/AdminUpdateOneRequiredWithoutMessagesInput";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
-import { MessageUpdatefilesInput } from "../inputs/MessageUpdatefilesInput";
 import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
@@ -31,6 +30,11 @@ export class MessageUpdateInput {
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
+  files?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
   body?: StringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
@@ -52,11 +56,6 @@ export class MessageUpdateInput {
     nullable: true
   })
   createdAd?: DateTimeFieldUpdateOperationsInput | undefined;
-
-  @TypeGraphQL.Field(_type => MessageUpdatefilesInput, {
-    nullable: true
-  })
-  files?: MessageUpdatefilesInput | undefined;
 
   @TypeGraphQL.Field(_type => AdminUpdateOneRequiredWithoutMessagesInput, {
     nullable: true

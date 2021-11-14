@@ -31,7 +31,7 @@ export class SketchUpdateWithoutProjectInput {
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
-  download_link?: StringFieldUpdateOperationsInput | undefined;
+  downloadables?: StringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true

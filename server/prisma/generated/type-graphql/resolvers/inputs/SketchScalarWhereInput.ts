@@ -46,7 +46,7 @@ export class SketchScalarWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  download_link?: StringFilter | undefined;
+  downloadables?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

@@ -6,7 +6,6 @@ import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
-import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -42,10 +41,10 @@ export class MessageScalarWhereInput {
   })
   from?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  files?: StringNullableListFilter | undefined;
+  files?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

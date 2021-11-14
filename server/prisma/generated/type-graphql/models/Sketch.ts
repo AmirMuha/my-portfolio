@@ -31,7 +31,7 @@ export class Sketch {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  download_link!: string;
+  downloadables!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false

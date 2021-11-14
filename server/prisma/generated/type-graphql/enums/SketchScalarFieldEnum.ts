@@ -5,7 +5,7 @@ export enum SketchScalarFieldEnum {
   title = "title",
   description = "description",
   summary = "summary",
-  download_link = "download_link",
+  downloadables = "downloadables",
   image = "image",
   project_id = "project_id"
 }

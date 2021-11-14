@@ -547,6 +547,14 @@ type AffectedRowsOutput {
   count: Int!
 }
 
+input AnswerMessageInput {
+  from: String!
+  message: String!
+  messageId: String!
+  subject: String!
+  to: String!
+}
+
 input BoolFieldUpdateOperationsInput {
   set: Boolean
 }
@@ -615,7 +623,7 @@ type Message {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime!
-  files: [String!]!
+  files: String!
   from: String!
   id: String!
   read_status: Boolean!
@@ -628,7 +636,7 @@ input MessageCreateInput {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime
-  files: MessageCreatefilesInput
+  files: String
   from: String!
   id: String
   read_status: Boolean
@@ -640,7 +648,7 @@ input MessageCreateManyAdminInput {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime
-  files: MessageCreateManyfilesInput
+  files: String
   from: String!
   id: String
   read_status: Boolean
@@ -650,10 +658,6 @@ input MessageCreateManyAdminInput {
 input MessageCreateManyAdminInputEnvelope {
   data: [MessageCreateManyAdminInput!]!
   skipDuplicates: Boolean
-}
-
-input MessageCreateManyfilesInput {
-  set: [String!]!
 }
 
 input MessageCreateNestedManyWithoutAdminInput {
@@ -673,15 +677,11 @@ input MessageCreateWithoutAdminInput {
   answeredAt: DateTime
   body: String!
   createdAd: DateTime
-  files: MessageCreatefilesInput
+  files: String
   from: String!
   id: String
   read_status: Boolean
   subject: String!
-}
-
-input MessageCreatefilesInput {
-  set: [String!]!
 }
 
 input MessageListRelationFilter {
@@ -730,7 +730,7 @@ input MessageScalarWhereInput {
   answeredAt: DateTimeNullableFilter
   body: StringFilter
   createdAd: DateTimeFilter
-  files: StringNullableListFilter
+  files: StringFilter
   from: StringFilter
   id: StringFilter
   read_status: BoolFilter
@@ -743,7 +743,7 @@ input MessageUpdateInput {
   answeredAt: NullableDateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
-  files: MessageUpdatefilesInput
+  files: StringFieldUpdateOperationsInput
   from: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   read_status: BoolFieldUpdateOperationsInput
@@ -755,7 +755,7 @@ input MessageUpdateManyMutationInput {
   answeredAt: NullableDateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
-  files: MessageUpdatefilesInput
+  files: StringFieldUpdateOperationsInput
   from: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   read_status: BoolFieldUpdateOperationsInput
@@ -791,16 +791,11 @@ input MessageUpdateWithoutAdminInput {
   answeredAt: NullableDateTimeFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAd: DateTimeFieldUpdateOperationsInput
-  files: MessageUpdatefilesInput
+  files: StringFieldUpdateOperationsInput
   from: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   read_status: BoolFieldUpdateOperationsInput
   subject: StringFieldUpdateOperationsInput
-}
-
-input MessageUpdatefilesInput {
-  push: [String!]
-  set: [String!]
 }
 
 input MessageUpsertWithWhereUniqueWithoutAdminInput {
@@ -819,7 +814,7 @@ input MessageWhereInput {
   answeredAt: DateTimeNullableFilter
   body: StringFilter
   createdAd: DateTimeFilter
-  files: StringNullableListFilter
+  files: StringFilter
   from: StringFilter
   id: StringFilter
   read_status: BoolFilter
@@ -831,6 +826,7 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
+  answerMessage(data: AnswerMessageInput!): Boolean!
   confirmAdminDelete(code: Int, email: String, token: String): Boolean!
   confirmEmail(code: Int, email: String, token: String): Boolean
   confirmTokenOrCode(code: Int, email: String, token: String): Boolean!
@@ -850,7 +846,8 @@ type Mutation {
   createTechCategory(data: TechCategoryCreateInput!): TechCategory!
   deleteAbout(where: AboutWhereUniqueInput!): About
   deleteAdmin(where: AdminWhereUniqueInput!): Boolean!
-  deleteFile(filename: String!): Boolean!
+  deleteFile(filename: String!, isTemp: Boolean!): Boolean!
+  deleteFiles(filenames: [String!]!, isTemp: Boolean!): Boolean!
   deleteManyAbout(where: AboutWhereInput): AffectedRowsOutput!
   deleteManyMessage(where: MessageWhereInput): AffectedRowsOutput!
   deleteManyProject(where: ProjectWhereInput): AffectedRowsOutput!
@@ -868,10 +865,11 @@ type Mutation {
   forgotPassword(email: String!): Boolean!
   login(data: LoginInputType!): LoginReturnType
   logout: Boolean
+  moveFilesFromTemp(filenames: [String!]!): Boolean!
   resetPassword(code: Int, confirmPassword: String!, email: String!, newPassword: String!, token: String): String!
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
-  updateImage(field: String, file: Upload!, id: String!, isEdit: Boolean = false, prevname: String!): String
+  updateImage(file: Upload!, isEdit: Boolean = false, prevname: String!): String
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
@@ -879,7 +877,9 @@ type Mutation {
   updateStack(data: StackUpdateInput!, where: StackWhereUniqueInput!): Stack
   updateTech(data: TechUpdateInput!, where: TechWhereUniqueInput!): Tech
   updateTechCategory(data: TechCategoryUpdateInput!, where: TechCategoryWhereUniqueInput!): TechCategory
-  uploadMultipleFiles(files: [Upload!]!): [String!]
+  updateZipFile(files: [Upload!]!, isTemp: Boolean!, prevname: String!): String!
+  uploadFilesToZip(files: [Upload!]!, isEdit: Boolean!): String!
+  uploadMultipleFiles(files: [Upload!]!, isTemp: Boolean!): [String!]
   uploadSingleFile(file: Upload!, isEdit: Boolean = false): String!
 }
 
@@ -1516,7 +1516,7 @@ input QuestionWhereUniqueInput {
 
 type Sketch {
   description: String!
-  download_link: String!
+  downloadables: String!
   id: String!
   image: String!
   project: Project!
@@ -1527,7 +1527,7 @@ type Sketch {
 
 input SketchCreateInput {
   description: String!
-  download_link: String!
+  downloadables: String!
   id: String
   image: String!
   project: ProjectCreateNestedOneWithoutSketchesInput!
@@ -1537,7 +1537,7 @@ input SketchCreateInput {
 
 input SketchCreateInput_PWNR {
   description: String!
-  download_link: String!
+  downloadables: String!
   image: String!
   summary: String!
   title: String!
@@ -1545,7 +1545,7 @@ input SketchCreateInput_PWNR {
 
 input SketchCreateManyInput {
   description: String!
-  download_link: String!
+  downloadables: String!
   id: String
   image: String!
   project_id: String!
@@ -1555,7 +1555,7 @@ input SketchCreateManyInput {
 
 input SketchCreateManyProjectInput {
   description: String!
-  download_link: String!
+  downloadables: String!
   id: String
   image: String!
   summary: String!
@@ -1581,7 +1581,7 @@ input SketchCreateOrConnectWithoutProjectInput {
 
 input SketchCreateWithoutProjectInput {
   description: String!
-  download_link: String!
+  downloadables: String!
   id: String
   image: String!
   summary: String!
@@ -1600,7 +1600,7 @@ input SketchOrderByRelationAggregateInput {
 
 input SketchOrderByWithRelationInput {
   description: SortOrder
-  download_link: SortOrder
+  downloadables: SortOrder
   id: SortOrder
   image: SortOrder
   project: ProjectOrderByWithRelationInput
@@ -1611,7 +1611,7 @@ input SketchOrderByWithRelationInput {
 
 enum SketchScalarFieldEnum {
   description
-  download_link
+  downloadables
   id
   image
   project_id
@@ -1624,7 +1624,7 @@ input SketchScalarWhereInput {
   NOT: [SketchScalarWhereInput!]
   OR: [SketchScalarWhereInput!]
   description: StringFilter
-  download_link: StringFilter
+  downloadables: StringFilter
   id: StringFilter
   image: StringFilter
   project_id: StringFilter
@@ -1634,7 +1634,7 @@ input SketchScalarWhereInput {
 
 input SketchUpdateInput {
   description: StringFieldUpdateOperationsInput
-  download_link: StringFieldUpdateOperationsInput
+  downloadables: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   project: ProjectUpdateOneRequiredWithoutSketchesInput
@@ -1644,7 +1644,7 @@ input SketchUpdateInput {
 
 input SketchUpdateManyMutationInput {
   description: StringFieldUpdateOperationsInput
-  download_link: StringFieldUpdateOperationsInput
+  downloadables: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   summary: StringFieldUpdateOperationsInput
@@ -1677,7 +1677,7 @@ input SketchUpdateWithWhereUniqueWithoutProjectInput {
 
 input SketchUpdateWithoutProjectInput {
   description: StringFieldUpdateOperationsInput
-  download_link: StringFieldUpdateOperationsInput
+  downloadables: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   image: StringFieldUpdateOperationsInput
   summary: StringFieldUpdateOperationsInput
@@ -1695,7 +1695,7 @@ input SketchWhereInput {
   NOT: [SketchWhereInput!]
   OR: [SketchWhereInput!]
   description: StringFilter
-  download_link: StringFilter
+  downloadables: StringFilter
   id: StringFilter
   image: StringFilter
   project: ProjectRelationFilter

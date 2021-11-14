@@ -79,7 +79,7 @@ CREATE TABLE "Sketch" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "summary" TEXT NOT NULL,
-    "download_link" TEXT NOT NULL,
+    "downloadables" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "project_id" UUID NOT NULL,
 
@@ -102,7 +102,7 @@ CREATE TABLE "Message" (
     "id" UUID NOT NULL,
     "subject" TEXT NOT NULL,
     "from" TEXT NOT NULL,
-    "files" TEXT[],
+    "files" TEXT NOT NULL DEFAULT E'',
     "body" TEXT NOT NULL,
     "read_status" BOOLEAN NOT NULL DEFAULT false,
     "answer_status" BOOLEAN NOT NULL DEFAULT false,

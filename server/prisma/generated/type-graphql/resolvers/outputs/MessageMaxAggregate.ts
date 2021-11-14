@@ -25,6 +25,11 @@ export class MessageMaxAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
+  files!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
   body!: string | null;
 
   @TypeGraphQL.Field(_type => Boolean, {

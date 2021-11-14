@@ -20,7 +20,7 @@ export class GroupBySketchArgs {
   @TypeGraphQL.Field(_type => [SketchScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "title" | "description" | "summary" | "download_link" | "image" | "project_id">;
+  by!: Array<"id" | "title" | "description" | "summary" | "downloadables" | "image" | "project_id">;
 
   @TypeGraphQL.Field(_type => SketchScalarWhereWithAggregatesInput, {
     nullable: true

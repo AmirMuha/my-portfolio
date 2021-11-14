@@ -25,10 +25,10 @@ export class MessageGroupBy {
   })
   from!: string;
 
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: true
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
   })
-  files!: string[] | null;
+  files!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false

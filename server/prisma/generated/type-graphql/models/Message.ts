@@ -23,10 +23,10 @@ export class Message {
   })
   from!: string;
 
-  @TypeGraphQL.Field(_type => [String], {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  files!: string[];
+  files!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false

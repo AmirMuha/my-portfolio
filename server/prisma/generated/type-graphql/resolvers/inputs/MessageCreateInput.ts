@@ -3,7 +3,6 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { AdminCreateNestedOneWithoutMessagesInput } from "../inputs/AdminCreateNestedOneWithoutMessagesInput";
-import { MessageCreatefilesInput } from "../inputs/MessageCreatefilesInput";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -23,6 +22,11 @@ export class MessageCreateInput {
     nullable: false
   })
   from!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  files?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
@@ -48,11 +52,6 @@ export class MessageCreateInput {
     nullable: true
   })
   createdAd?: Date | undefined;
-
-  @TypeGraphQL.Field(_type => MessageCreatefilesInput, {
-    nullable: true
-  })
-  files?: MessageCreatefilesInput | undefined;
 
   @TypeGraphQL.Field(_type => AdminCreateNestedOneWithoutMessagesInput, {
     nullable: false

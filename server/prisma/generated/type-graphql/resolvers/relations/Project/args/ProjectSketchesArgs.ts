@@ -35,5 +35,5 @@ export class ProjectSketchesArgs {
   @TypeGraphQL.Field(_type => [SketchScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "title" | "description" | "summary" | "download_link" | "image" | "project_id"> | undefined;
+  distinct?: Array<"id" | "title" | "description" | "summary" | "downloadables" | "image" | "project_id"> | undefined;
 }
