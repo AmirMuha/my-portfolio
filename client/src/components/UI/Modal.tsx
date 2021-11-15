@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from "react"
-import { createPortal } from "react-dom"
+
 import { Close } from "../../icons/iconsJSX"
+import { createPortal } from "react-dom"
 
 interface Props {
   onClose: () => void
@@ -12,6 +13,7 @@ interface Props {
   containerStyle?: React.CSSProperties
   title?: string
   containerClass?: string
+  modalContainerClass?: string
   header: boolean
   stickyHeader?: boolean
 }
@@ -24,6 +26,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
   minHeight,
   containerClass = "",
   containerStyle,
+  modalContainerClass = "",
   minWidth,
   maxWidth,
   children,
@@ -33,7 +36,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
   return (
     <>
       {createPortal(
-        <div>
+        <div className={modalContainerClass}>
           <div
             onClick={onClose}
             className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
