@@ -2,7 +2,7 @@ import Input, { File } from "../UI/Input"
 import React, { FC, PropsWithChildren, useCallback, useState } from "react"
 import {
   useCreateMessageMutation,
-  useUploadFilesToZipMutation
+  useUploadFilesToZipMutation,
 } from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
@@ -16,12 +16,22 @@ import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
 import whatsapp from "../../images/WhatsApp.png"
 
 interface Props {
+  whatsappNumber: string
+  skypeUrl: string
+  linkedInUrl: string
+  instagramUrl: string
   className?: string
   id?: string
   adminEmail: string
 }
 
-const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
+const ContactMe: FC<PropsWithChildren<Props>> = ({
+  adminEmail,
+  whatsappNumber,
+  instagramUrl,
+  skypeUrl,
+  linkedInUrl,
+}) => {
   const [email, setEmail] = useState<string>("")
   const [message, setMessage] = useState<string>("")
   const [subject, setSubject] = useState<string>("")
@@ -105,6 +115,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
             body: message,
             subject: subject,
             from: email,
+            files: "",
           },
         })
           .then(() => {
@@ -134,7 +145,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
         />
       )}
       <div className="grid lg:grid-cols-2 mb-3">
-        <div className="mx-10">
+        <div className="ml-5 lg:mx-10">
           <form onSubmit={sendTheMessage}>
             <Input
               required
@@ -199,9 +210,9 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
             className="grid-cols-1 sm:grid-cols-2 grid items-start justify-center gap-1 lg:grid-cols-1"
           >
             <Button
-              toUrl="https://google.com"
+              toUrl={whatsappNumber}
               style={{ padding: "6px 8px" }}
-              className="w-full"
+              className="overflow-hidden w-full"
               color="100"
               borderColor="500"
               textColor="500"
@@ -215,13 +226,13 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
                   src={whatsapp}
                   alt="WhatsApp Icon"
                 />
-                <span>+98-9158964046</span>
+                <span>{whatsappNumber}</span>
               </span>
             </Button>
             <Button
-              toUrl="https://google.com"
+              toUrl={skypeUrl}
               style={{ padding: "6px 8px" }}
-              className="w-full"
+              className="overflow-hidden w-full"
               color="100"
               borderColor="500"
               textColor="500"
@@ -235,13 +246,13 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
                   src={skype}
                   alt="Skype Icon"
                 />
-                <span>mirzaii4046@gmail.com</span>
+                <span>{skypeUrl}</span>
               </span>
             </Button>
             <Button
-              toUrl="https://google.com"
+              toUrl={instagramUrl}
               style={{ padding: "6px 8px" }}
-              className="w-full"
+              className="overflow-hidden w-full"
               color="100"
               borderColor="500"
               textColor="500"
@@ -259,9 +270,9 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
               </span>
             </Button>
             <Button
-              toUrl="https://google.com"
+              toUrl={linkedInUrl}
               style={{ padding: "6px 8px" }}
-              className=" w-full"
+              className="overflow-hidden w-full"
               color="100"
               borderColor="500"
               textColor="500"
@@ -281,24 +292,13 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({ adminEmail }) => {
             <div className="mt-5">
               <h2 className="text-md font-bold">Not Happy Yet ?</h2>
               <p>
-                <span className="font-bold">Email #1:</span>
+                <span className="font-bold">Email: </span>
                 <span className="underline text-center inline">
                   <a
-                    href="mailto:mirzaii4046@gmail.com"
+                    href={`mailto:${adminEmail}`}
                     className="font-extra-light mx-4"
                   >
-                    mirzaii4046@gmail.com
-                  </a>
-                </span>
-              </p>
-              <p>
-                <span className="font-bold">Email #2:</span>
-                <span className="underline text-center inline">
-                  <a
-                    href="mailto:mirzaii4046@gmail.com"
-                    className="font-extra-light mx-4"
-                  >
-                    am.mirzaeirad@yahoo.com
+                    {adminEmail}
                   </a>
                 </span>
               </p>

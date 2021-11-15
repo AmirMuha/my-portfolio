@@ -4,7 +4,6 @@ import Button from "../UI/Button"
 import { GitHub } from "../../icons/iconsJSX"
 import InPageMenu from "./InPageMenu"
 import SmallPipe from "../UI/SmallPipe"
-import hero from "../../images/Hero.svg"
 import insta from "../../images/Instagram.png"
 import linkedin from "../../images/LinkedIn.png"
 import skype from "../../images/Skype.png"
@@ -21,7 +20,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
         <div className="p-3 mx-auto">
           <img
             className="w-full px-5"
-            src={hero}
+            src={`${(window as any).__SERVER_API__}/${data.heroImage}`}
             placeholder="none"
             alt="Hero Image"
             style={{
@@ -65,14 +64,30 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
                   <span className="flex-1 h-0.5 bg-palatte-500"></span>
                 </p>
               </div>
-              <div className="border-5 text-sm.4 text-palatte-100 md:border-10 border-palatte-500">
-                <div className="flex p-2">
-                  <button className="w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70">
-                    <p>.PDF</p>
-                  </button>
-                  <button className="w-1/2 py-14 text-center place-self-center bg-palatte-300 opacity-70">
-                    <p>.DOCX</p>
-                  </button>
+              <div className="border-5 text-sm.4 text-palatte-100 p-2 md:border-10 border-palatte-500">
+                <div className="resume-background-image flex">
+                  <a
+                    target="_blank"
+                    href={`${(window as any).__SERVER_API__}/${
+                      data.resumes[0]
+                    }`}
+                    className="w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70"
+                  >
+                    <span className="uppercase">
+                      {data.resumes[0].split(/\.(pdf|ppt|docx)/i)[1]}
+                    </span>
+                  </a>
+                  <a
+                    target="_blank"
+                    href={`${(window as any).__SERVER_API__}/${
+                      data.resumes[1]
+                    }`}
+                    className="w-1/2 py-14 text-center place-self-center bg-palatte-300 opacity-70"
+                  >
+                    <span className="uppercase">
+                      {data.resumes[1].split(/\.(pdf|ppt|docx)/i)[1]}
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -85,7 +100,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               textColor="500"
               color="100"
               outline
-              toUrl="https://google.com"
+              toUrl={`https://wa.me/${data.whatsapp}`}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
@@ -106,7 +121,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               color="100"
               outline
               target="_blank"
-              toUrl="https://google.com"
+              toUrl={data.skype}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
@@ -127,7 +142,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               color="100"
               outline
               target="_blank"
-              toUrl="https://google.com"
+              toUrl={data.instagram}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
@@ -148,7 +163,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               color="100"
               outline
               target="_blank"
-              toUrl="https://google.com"
+              toUrl={data.linkedIn}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
