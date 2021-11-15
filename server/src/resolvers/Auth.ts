@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { UpdateAdminPasswordArgs } from "../types/arg-types/UpdateAdminArgs";
 import {
   Args,
   Ctx,
@@ -65,6 +66,7 @@ export class AuthResolver {
       token,
     };
   }
+
   @UseMiddleware(isLoggedIn)
   @Mutation(() => Boolean, { nullable: true })
   async logout(@Ctx() { req }: MyContext): Promise<boolean | undefined> {
@@ -140,6 +142,30 @@ export class AuthResolver {
     });
     if (!result)
       throw new Error("Couldn't send the email, Please try again later.");
+    return true;
+  }
+
+  @UseMiddleware(isLoggedIn)
+  @Mutation(() => Boolean)
+  async verifyPassword(
+    @Ctx() { prisma, data }: MyContext,
+    @Args(() => UpdateAdminPasswordArgs)
+    { data: { oldPassword } }: UpdateAdminPasswordArgs
+  ): Promise<boolean> {
+    const admin = await prisma.admin.findFirst({
+      where: {
+        id: { equals: data.userId },
+      },
+    });
+    if (!admin) {
+      throw new Error(
+        "Couldn't found admin with the given id, please make sure you're logged in."
+      );
+    }
+    const isPasswordCorrect = await bcrypt.compare(oldPassword, admin.password);
+    if (!isPasswordCorrect) {
+      throw new Error("Old password is incorrect.");
+    }
     return true;
   }
 
@@ -227,6 +253,7 @@ export class AuthResolver {
         instagram: true,
         whatsapp: true,
         linkedIn: true,
+        skype: true,
         heroImage: true,
         resumes: true,
         lname: true,
