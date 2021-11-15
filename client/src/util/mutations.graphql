@@ -62,6 +62,7 @@ mutation SubmitAdmin(
   $linkedIn: String!
   $whatsapp: String!
   $instagram: String!
+  $skype: String!
   $github: String!
   $heroImage: String!
   $resumes: [String!]!
@@ -76,6 +77,7 @@ mutation SubmitAdmin(
       whatsapp: $whatsapp
       instagram: $instagram
       github: $github
+      skype: $skype
       heroImage: $heroImage
       resumes: { set: $resumes }
     }
@@ -91,20 +93,18 @@ mutation SubmitAdmin(
 # // ############### Create Mutations
 # // ##################################
 
-mutation CreateAbout(
-  $title: String!
-  $body: String!
-  $adminEmail: String!
-  ) {
-  createAbout(data:{
-    title: $title,
-    body: $body,
-    admin:{
-      connect:{
-        email: $adminEmail
-      }
+mutation CreateAbout($title: String!, $body: String!, $adminEmail: String!) {
+  createAbout(
+    data: {
+      title: $title
+      body: $body
+      admin: { connect: { email: $adminEmail } }
     }
-  }){id title body}
+  ) {
+    id
+    title
+    body
+  }
 }
 mutation CreateMessage(
   $body: String!
@@ -264,22 +264,44 @@ mutation CreateQuestion(
 # // // ############### Update Mutations
 # // // ##################################
 
-
-mutation UpdateAboutTitle($id: String!,$title: String!) {
-  updateAbout(data:{
-    title:{set:$title},
-  },where:{
-    id: $id
-  }){
+mutation VerifyPassword($oldPassword: String!) {
+  verifyPassword(data: { oldPassword: $oldPassword })
+}
+mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+mutation ResetPassword(
+    $email: String!
+    $newPassword: String!
+    $code: Int!
+  ) {
+    resetPassword(
+      email: $email
+      newPassword: $newPassword
+      code: $code
+    )
+}
+mutation ChangePassword(
+  $email: String!
+  $newPassword: String!
+) {
+  resetPassword(
+    email: $email
+    newPassword: $newPassword
+  )
+}
+mutation updateAdmin($data: AdminUpdateInput!, $email:String!) {
+  updateAdmin(data: $data, where: { email: $email }) {
     id
   }
 }
-mutation UpdateAboutBody($id: String!,$body: String!) {
-  updateAbout(data:{
-    body:{set:$body},
-  },where:{
-    id: $id
-  }){
+mutation UpdateAboutTitle($id: String!, $title: String!) {
+  updateAbout(data: { title: { set: $title } }, where: { id: $id }) {
+    id
+  }
+}
+mutation UpdateAboutBody($id: String!, $body: String!) {
+  updateAbout(data: { body: { set: $body } }, where: { id: $id }) {
     id
   }
 }
@@ -321,11 +343,7 @@ mutation UpdateImage(
   $prevname: String!
   $isEdit: Boolean = true
 ) {
-  updateImage(
-    file: $file
-    prevname: $prevname
-    isEdit: $isEdit
-  )
+  updateImage(file: $file, prevname: $prevname, isEdit: $isEdit)
 }
 mutation UpdateProjectAppUrl($id: String!, $app_url: String) {
   updateProject(data: { app_url: { set: $app_url } }, where: { id: $id }) {
@@ -364,11 +382,7 @@ mutation UpdateZipFile(
   $prevname: String!
   $isTemp: Boolean!
 ) {
-  updateZipFile(
-    files: $files
-    prevname: $prevname
-    isTemp: $isTemp
-  )
+  updateZipFile(files: $files, prevname: $prevname, isTemp: $isTemp)
 }
 mutation UpdateSketchSummary($id: String!, $summary: String!) {
   updateSketch(data: { summary: { set: $summary } }, where: { id: $id }) {
@@ -407,8 +421,8 @@ mutation UpdateQuestion($id: String!, $question: String!, $answer: String!) {
 # // // ############### Update Mutations
 # // // ##################################
 
-mutation DeleteAbout($id: String!){
-  deleteAbout(where:{id:$id}){
+mutation DeleteAbout($id: String!) {
+  deleteAbout(where: { id: $id }) {
     id
   }
 }

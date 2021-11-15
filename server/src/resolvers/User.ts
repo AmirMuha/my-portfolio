@@ -24,10 +24,7 @@ import { EmailTypes, sendEmail } from "../utils/sendEmail";
 import jwt from "jsonwebtoken";
 import { redis } from "../redis-client";
 import { randomNumber } from "../utils/randomNumber";
-import {
-  ConfirmEmailArgsType,
-  ConfirmTokenOrCodeArgsType,
-} from "../types/arg-types/ConfirmEmailArgs";
+import { ConfirmTokenOrCodeArgsType } from "../types/arg-types/ConfirmEmailArgs";
 import { JwtVerifyWithPayloadType } from "../types/JwtVerifyWithPayloadType";
 @Resolver(Admin)
 export class AdminCrudResolver {
@@ -56,6 +53,15 @@ export class AdminCrudResolver {
     @Ctx() { prisma }: MyContext,
     @Args() args: UpdateAdminArgs
   ): Promise<Admin | undefined> {
+    if (
+      args.data.password ||
+      args.data.projects ||
+      args.data.about ||
+      args.data.stack ||
+      args.data.messages
+    ) {
+      throw new Error("Your are not allowed to udpate this property.");
+    }
     const updatedAdmin = await prisma.admin.update({
       data: args.data,
       where: args.where,
