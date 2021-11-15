@@ -12,6 +12,20 @@ subscription SubscribeMessages {
   }
 }
 
+query Admin {
+  me {
+    email
+    github
+    instagram
+    whatsapp
+    linkedIn
+    skype
+    fname
+    lname
+    heroImage
+    resumes
+  }
+}
 query abouts {
   abouts {
     id title body
