@@ -50,6 +50,11 @@ export class AdminMaxAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
+  skype!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
   heroImage!: string | null;
 
   @TypeGraphQL.Field(_type => Boolean, {

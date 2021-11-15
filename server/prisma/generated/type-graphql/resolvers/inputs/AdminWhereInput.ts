@@ -74,6 +74,11 @@ export class AdminWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
+  skype?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
   heroImage?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableListFilter, {

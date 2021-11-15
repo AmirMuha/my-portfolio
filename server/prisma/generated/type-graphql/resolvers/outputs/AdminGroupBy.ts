@@ -53,6 +53,11 @@ export class AdminGroupBy {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
+  skype!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
   heroImage!: string;
 
   @TypeGraphQL.Field(_type => [String], {

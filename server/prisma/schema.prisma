@@ -21,6 +21,7 @@ model Admin {
   whatsapp    String
   instagram   String
   github      String
+  skype       String
   heroImage   String
   resumes     String[]
   confirmed   Boolean   @default(false)

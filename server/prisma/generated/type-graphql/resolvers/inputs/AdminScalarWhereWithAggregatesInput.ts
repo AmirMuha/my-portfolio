@@ -70,6 +70,11 @@ export class AdminScalarWhereWithAggregatesInput {
   @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
+  skype?: StringWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
   heroImage?: StringWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableListFilter, {

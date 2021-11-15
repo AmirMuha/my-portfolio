@@ -55,6 +55,11 @@ export class AdminUpdateManyMutationInput {
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
+  skype?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
   heroImage?: StringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {

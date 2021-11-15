@@ -8,6 +8,7 @@ CREATE TABLE "Admin" (
     "whatsapp" TEXT NOT NULL,
     "instagram" TEXT NOT NULL,
     "github" TEXT NOT NULL,
+    "skype" TEXT NOT NULL,
     "heroImage" TEXT NOT NULL,
     "resumes" TEXT[],
     "confirmed" BOOLEAN NOT NULL DEFAULT false,

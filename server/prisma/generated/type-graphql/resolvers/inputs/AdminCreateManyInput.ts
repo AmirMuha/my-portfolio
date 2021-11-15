@@ -51,6 +51,11 @@ export class AdminCreateManyInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
+  skype!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
   heroImage!: string;
 
   @TypeGraphQL.Field(_type => Boolean, {

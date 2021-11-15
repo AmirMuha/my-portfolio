@@ -50,6 +50,11 @@ export class AdminCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
+  skype!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
   heroImage!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {

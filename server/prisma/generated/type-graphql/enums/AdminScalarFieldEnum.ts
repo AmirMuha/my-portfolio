@@ -9,6 +9,7 @@ export enum AdminScalarFieldEnum {
   whatsapp = "whatsapp",
   instagram = "instagram",
   github = "github",
+  skype = "skype",
   heroImage = "heroImage",
   resumes = "resumes",
   confirmed = "confirmed",

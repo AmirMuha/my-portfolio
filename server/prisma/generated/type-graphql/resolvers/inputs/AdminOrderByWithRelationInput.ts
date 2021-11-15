@@ -55,6 +55,11 @@ export class AdminOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
+  skype?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
   heroImage?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {

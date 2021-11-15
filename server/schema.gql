@@ -170,6 +170,7 @@ type Admin {
   linkedIn: String!
   lname: String!
   resumes: [String!]!
+  skype: String!
   updatedAt: DateTime!
   whatsapp: String!
 }
@@ -197,6 +198,7 @@ input AdminCreateInput {
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  skype: String!
   stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
@@ -261,6 +263,7 @@ input AdminCreateWithoutAboutInput {
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  skype: String!
   stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
@@ -281,6 +284,7 @@ input AdminCreateWithoutMessagesInput {
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  skype: String!
   stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
@@ -301,6 +305,7 @@ input AdminCreateWithoutProjectsInput {
   messages: MessageCreateNestedManyWithoutAdminInput
   password: String!
   resumes: AdminCreateresumesInput
+  skype: String!
   stack: StackCreateNestedManyWithoutAdminInput
   updatedAt: DateTime
   whatsapp: String!
@@ -322,6 +327,7 @@ input AdminCreateWithoutStackInput {
   password: String!
   projects: ProjectCreateNestedManyWithoutAdminInput
   resumes: AdminCreateresumesInput
+  skype: String!
   updatedAt: DateTime
   whatsapp: String!
 }
@@ -346,6 +352,7 @@ input AdminOrderByWithRelationInput {
   password: SortOrder
   projects: ProjectOrderByRelationAggregateInput
   resumes: SortOrder
+  skype: SortOrder
   stack: StackOrderByRelationAggregateInput
   updatedAt: SortOrder
   whatsapp: SortOrder
@@ -372,6 +379,7 @@ input AdminUpdateInput {
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  skype: StringFieldUpdateOperationsInput
   stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
@@ -424,6 +432,7 @@ input AdminUpdateWithoutAboutInput {
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  skype: StringFieldUpdateOperationsInput
   stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
@@ -444,6 +453,7 @@ input AdminUpdateWithoutMessagesInput {
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  skype: StringFieldUpdateOperationsInput
   stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
@@ -464,6 +474,7 @@ input AdminUpdateWithoutProjectsInput {
   messages: MessageUpdateManyWithoutAdminInput
   password: StringFieldUpdateOperationsInput
   resumes: AdminUpdateresumesInput
+  skype: StringFieldUpdateOperationsInput
   stack: StackUpdateManyWithoutAdminInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
@@ -485,6 +496,7 @@ input AdminUpdateWithoutStackInput {
   password: StringFieldUpdateOperationsInput
   projects: ProjectUpdateManyWithoutAdminInput
   resumes: AdminUpdateresumesInput
+  skype: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   whatsapp: StringFieldUpdateOperationsInput
 }
@@ -533,6 +545,7 @@ input AdminWhereInput {
   password: StringFilter
   projects: ProjectListRelationFilter
   resumes: StringNullableListFilter
+  skype: StringFilter
   stack: StackListRelationFilter
   updatedAt: DateTimeFilter
   whatsapp: StringFilter
@@ -866,7 +879,7 @@ type Mutation {
   login(data: LoginInputType!): LoginReturnType
   logout: Boolean
   moveFilesFromTemp(filenames: [String!]!): Boolean!
-  resetPassword(code: Int, confirmPassword: String!, email: String!, newPassword: String!, token: String): String!
+  resetPassword(code: Int, email: String!, newPassword: String!, token: String): String!
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateImage(file: Upload!, isEdit: Boolean = false, prevname: String!): String
@@ -881,6 +894,7 @@ type Mutation {
   uploadFilesToZip(files: [Upload!]!, isEdit: Boolean!): String!
   uploadMultipleFiles(files: [Upload!]!, isTemp: Boolean!): [String!]
   uploadSingleFile(file: Upload!, isEdit: Boolean = false): String!
+  verifyPassword(data: UpdateAdminPasswordInput!): Boolean!
 }
 
 input NestedBoolFilter {
@@ -2222,6 +2236,10 @@ input TechWhereInput {
 
 input TechWhereUniqueInput {
   id: String
+}
+
+input UpdateAdminPasswordInput {
+  oldPassword: String!
 }
 
 """The `Upload` scalar type represents a file upload."""

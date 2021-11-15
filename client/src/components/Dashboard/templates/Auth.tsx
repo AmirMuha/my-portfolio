@@ -22,6 +22,7 @@ import InBoxLoading from "../../UI/InBoxLoading"
 import Input from "../../UI/Input"
 import Modal from "../../../components/UI/Modal"
 import { RouteComponentProps } from "@reach/router"
+import { getErrorMessage } from "../../../util/getErrorMessage"
 import { navigate } from "gatsby"
 import { useAlert } from "../../../util/useAlert"
 import { useAlertGraphqlError } from "../../../util/useAlertGraphqlError"
@@ -36,6 +37,7 @@ enum Credentials {
   "INSTA",
   "GITHUB",
   "WHATSAPP",
+  "SKYPE",
   "HEROIMAGE",
   "FNAME",
   "LNAME",
@@ -48,6 +50,7 @@ interface CredentialsState {
   password: string
   instagram: string
   github: string
+  skype: string
   whatsapp: string
   linkedIn: string
   heroImage: string
@@ -65,6 +68,7 @@ const credentialsState: CredentialsState = {
   password: "",
   instagram: "",
   github: "",
+  skype: "",
   whatsapp: "",
   linkedIn: "",
   heroImage: "",
@@ -94,6 +98,8 @@ const credentialsReducer: Reducer<CredentialsState, CredentialsAction> = (
       return { ...state, github: action.value }
     case Credentials.HEROIMAGE:
       return { ...state, heroImage: action.value }
+    case Credentials.SKYPE:
+      return { ...state, skype: action.value }
     case Credentials.RESUMES:
       return { ...state, resumes: action.value }
     default:
@@ -164,7 +170,7 @@ const confirmCodeReducer: Reducer<ConfirmCodeState, ConfirmCodeAction> = (
 }
 interface Props extends RouteComponentProps {}
 
-const Auth: FC<Partial<Props>> = ({ children }) => {
+const Auth: FC<Partial<Props>> = () => {
   const [isEnterEmailCodeOpen, setIsEnterEmailCodeOpen] =
     useState<boolean>(false)
   const codeInputRef = useRef<HTMLDivElement>()
@@ -262,7 +268,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
         .then(res => {
           if (res?.data?.login?.token) {
             navigate("/dashboard/")
-          } else {
+          } else if (isEmailConfirmBoxOpen && !res?.data?.login?.token) {
             setAlert({
               isOpen: true,
               title: "Error",
@@ -272,12 +278,14 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
           setIsLoginLoading(false)
         })
         .catch(e => {
-          if (isEmailConfirmBoxOpen) {
+          if (e.message.includes("confirmed")) {
             setAlert({
               isOpen: true,
               title: "Error",
-              message: "The code your entered either expired or isn't correct.",
+              message: e.message,
             })
+            setIsEmailConfirmOpen(true)
+            setIsEnterEmailCodeOpen(true)
           } else {
             setAlert({
               isOpen: true,
@@ -286,8 +294,6 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
                 e.message ||
                 "Couldn't login, please try again with the correct credentials.",
             })
-              setIsEmailConfirmOpen(true)
-              setIsEnterEmailCodeOpen(true)
           }
           setIsLoginLoading(false)
         })
@@ -313,24 +319,31 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
           },
         })
           .then(res => {
-            setAlert({
-              isOpen: true,
-              title: "Success",
-              message:
-                "Your email confirmed successfully. Now login to your account with your credentials.",
-            })
-            setIsEnterEmailCodeOpen(false)
-            setIsEmailConfirmOpen(false)
-            setThereIsAdmin(true)
+            if (res?.data?.confirmEmail) {
+              setAlert({
+                isOpen: true,
+                title: "Success",
+                message:
+                  "Your email confirmed successfully. Now login to your account with your credentials.",
+              })
+              setIsEnterEmailCodeOpen(false)
+              setIsEmailConfirmOpen(false)
+              setThereIsAdmin(true)
+            } else {
+              setAlert({
+                isOpen: true,
+                title: "Error",
+                message: "Confirm code was incurrect.",
+              })
+            }
           })
           .catch(codeError => {
             setAlert({
               isOpen: true,
               title: "Error",
-              message: codeError.errors
-                ? codeError.errors[0].message
-                : codeError.message ||
-                  "Couldn't send the code, something went wrong.",
+              message:
+                getErrorMessage(codeError) ||
+                "Couldn't send the code, something went wrong.",
             })
           })
       } else {
@@ -367,7 +380,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
       mutateMultipleFile({
         variables: {
           files: files.resumes,
-          isTemp: false
+          isTemp: false,
         },
       })
         .then(multipleFilesUploadResponse => {
@@ -442,104 +455,104 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
 
   return (
     <>
-    {isEmailConfirmBoxOpen && (
-      <Modal
-        header
-        onClose={() => {}}
-        maxWidth="500px"
-        style={{margin: 0}}
-        title="Confirm Email"
-      >
-        <form onSubmit={e => sendConfirmCode(e)}>
-          <div
-            ref={codeInputRef as any}
-            className="grid my-2 relative items-center num-input grid-cols-4 mx-auto text-sm.8 font-thin gap-4"
-            style={{ width: "fit-content" }}
-          >
-            <input
-              maxLength={1}
-              id="digit-1"
-              pattern="[0-9]"
-              className="px-3 py-1 text-center bg-palatte-200 text-palatte-500"
-              placeholder="-"
-              type="text"
-              style={{ width: 50 }}
-              value={confirmCode_1}
-              onChange={e => {
-                getCodeNum(e, ConfirmCodeTypes.ONE)
-              }}
-            />
-            <input
-              maxLength={1}
-              pattern="[0-9]"
-              id="digit-2"
-              type="text"
-              style={{ width: 50 }}
-              className="px-3 py-1 text-center appearance-none bg-palatte-200 text-palatte-500"
-              placeholder="-"
-              onChange={e => {
-                getCodeNum(e, ConfirmCodeTypes.TWO)
-              }}
-              value={confirmCode_2}
-            />
-            <input
-              maxLength={1}
-              id="digit-3"
-              type="text"
-              pattern="[0-9]"
-              style={{ width: 50 }}
-              placeholder="-"
-              onChange={e => {
-                getCodeNum(e, ConfirmCodeTypes.THREE)
-              }}
-              className="px-3 py-1 text-center appearance-none bg-palatte-200 text-palatte-500"
-              value={confirmCode_3}
-            />
-            <input
-              id="digit-4"
-              type="text"
-              maxLength={1}
-              pattern="[0-9]"
-              placeholder="-"
-              onChange={e => {
-                getCodeNum(e, ConfirmCodeTypes.FOUR)
-              }}
-              className="px-3 py-1 text-center appearance-none bg-palatte-200 text-palatte-500"
-              style={{ width: 50 }}
-              value={confirmCode_4}
-            />
-            <button
-              className="absolute -right-7"
-              title="Reset input"
-              type="button"
-              onClick={() =>
-                dispatchConfirmCode({
-                  type: ConfirmCodeTypes.RESET,
-                  value: "",
-                })
-              }
+      {isEmailConfirmBoxOpen && (
+        <Modal
+          header
+          onClose={() => {}}
+          maxWidth="500px"
+          style={{ margin: 0 }}
+          title="Confirm Email"
+        >
+          <form onSubmit={e => sendConfirmCode(e)}>
+            <div
+              ref={codeInputRef as any}
+              className="grid my-2 relative items-center num-input grid-cols-4 mx-auto text-sm.8 font-thin gap-4"
+              style={{ width: "fit-content" }}
             >
-              <span className="icon-s-4">{Reset}</span>
-            </button>
-          </div>
-          <div className="flex justify-center mt-4 text-center gap-2">
-            <Button
-              normal
-              outline
-              color="100"
-              textColor="500"
-              borderColor="500"
-              onClick={sendCodeAgain}
-            >
-              Resend Code
-            </Button>
-            <Button type="submit" normal outline>
-              Send
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    )}
+              <input
+                maxLength={1}
+                id="digit-1"
+                pattern="[0-9]"
+                className="px-3 py-1 text-center bg-palatte-200 text-palatte-500"
+                placeholder="-"
+                type="text"
+                style={{ width: 50 }}
+                value={confirmCode_1}
+                onChange={e => {
+                  getCodeNum(e, ConfirmCodeTypes.ONE)
+                }}
+              />
+              <input
+                maxLength={1}
+                pattern="[0-9]"
+                id="digit-2"
+                type="text"
+                style={{ width: 50 }}
+                className="px-3 py-1 text-center appearance-none bg-palatte-200 text-palatte-500"
+                placeholder="-"
+                onChange={e => {
+                  getCodeNum(e, ConfirmCodeTypes.TWO)
+                }}
+                value={confirmCode_2}
+              />
+              <input
+                maxLength={1}
+                id="digit-3"
+                type="text"
+                pattern="[0-9]"
+                style={{ width: 50 }}
+                placeholder="-"
+                onChange={e => {
+                  getCodeNum(e, ConfirmCodeTypes.THREE)
+                }}
+                className="px-3 py-1 text-center appearance-none bg-palatte-200 text-palatte-500"
+                value={confirmCode_3}
+              />
+              <input
+                id="digit-4"
+                type="text"
+                maxLength={1}
+                pattern="[0-9]"
+                placeholder="-"
+                onChange={e => {
+                  getCodeNum(e, ConfirmCodeTypes.FOUR)
+                }}
+                className="px-3 py-1 text-center appearance-none bg-palatte-200 text-palatte-500"
+                style={{ width: 50 }}
+                value={confirmCode_4}
+              />
+              <button
+                className="absolute -right-7"
+                title="Reset input"
+                type="button"
+                onClick={() =>
+                  dispatchConfirmCode({
+                    type: ConfirmCodeTypes.RESET,
+                    value: "",
+                  })
+                }
+              >
+                <span className="icon-s-4">{Reset}</span>
+              </button>
+            </div>
+            <div className="flex justify-center mt-4 text-center gap-2">
+              <Button
+                normal
+                outline
+                color="100"
+                textColor="500"
+                borderColor="500"
+                onClick={sendCodeAgain}
+              >
+                Resend Code
+              </Button>
+              <Button type="submit" normal outline>
+                Send
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      )}
       {isErrorBoxOpen && (
         <Alert
           message={errorMessage}
@@ -557,7 +570,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
         >
           <div className="relative mx-4 my-10">
             {isLoginLoading && <InBoxLoading text={false} />}
-            {isThereAdminAlready&& !isEmailConfirmBoxOpen && (
+            {isThereAdminAlready && !isEmailConfirmBoxOpen && (
               <div className="p-5 border bg-palatte-100 border-palatte-500 ">
                 <p
                   style={{ margin: "0 0 10px 0" }}
@@ -624,7 +637,7 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
               </div>
             )}
           </div>
-          {!isThereAdminAlready&& !isEmailConfirmBoxOpen && (
+          {!isThereAdminAlready && !isEmailConfirmBoxOpen && (
             <>
               <div className="relative mx-4 mt-2 mb-10">
                 {isSubmitLoading && <InBoxLoading text={false} />}
@@ -743,6 +756,22 @@ const Auth: FC<Partial<Props>> = ({ children }) => {
                         value={cState.instagram}
                         getValue={v =>
                           dispatch({ type: Credentials.INSTA, value: v })
+                        }
+                        color="200"
+                        type="url"
+                        required
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Input
+                        placeholder="Instagram Profile URL"
+                        id="skype:submit"
+                        label="Skype URL"
+                        textColor="500"
+                        name="skype:submit"
+                        value={cState.skype}
+                        getValue={v =>
+                          dispatch({ type: Credentials.SKYPE, value: v })
                         }
                         color="200"
                         type="url"
