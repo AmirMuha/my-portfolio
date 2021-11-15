@@ -39,7 +39,9 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = () => {
   const addProject = () => {
     dispatch(setStateReducer({ name: newProjectName }))
     navigate(`/dashboard/add/project/${newProjectName}`)
+    return null
   }
+
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
       <BackgroundImage
@@ -94,8 +96,10 @@ const Dash_Hero: FC<PropsWithChildren<Props>> = () => {
           </h1>
           <div className="mt-5">
             <Button
+              to="/dashboard/about-me"
+              style={{ padding: "3.5px 10px", display: "block", margin: "auto" }}
+              outline
               className="w-2/3 text-center"
-              normal
               color="100"
               textColor="500"
             >
