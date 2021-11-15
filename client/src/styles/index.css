@@ -303,3 +303,8 @@ td {
   padding: 5px 20px;
   text-align: center;
 }
+.resume-background-image {
+  background-image: url("../images/resume-background.png");
+  background-position: top;
+  background-size: cover;
+}
