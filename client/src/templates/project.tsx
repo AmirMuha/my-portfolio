@@ -1,28 +1,23 @@
-import { PageProps, graphql } from "gatsby"
 import React, { FC } from "react"
 
 import AboutTheProject from "../components/App/AboutTheProject"
 import InPageMenu from "../components/App/InPageMenu"
 import Layout from "../components/Layout"
 import Loading from "../components/UI/Loading"
+import { PageProps } from "gatsby"
 import QAndA from "../components/App/QAndA"
 import { SEO } from "../components/SEO"
 import Sketch from "../components/App/Sketch"
 import TechItem from "../components/App/TechItem"
 import TheSection from "../components/App/TheSection"
-import { getImage } from "gatsby-plugin-image"
 
 interface PageContext {
   project: GatsbyTypes.Portfolio_Project
 }
 interface Props extends PageProps {
   pageContext: PageContext
-  data: {
-    file: GatsbyTypes.File
-  }
 }
-const Project: FC<Props> = ({ pageContext: { project }, data }) => {
-  const image = getImage(data?.file?.childImageSharp?.gatsbyImageData!)
+const Project: FC<Props> = ({ pageContext: { project }}) => {
   return (
     <>
       {false ? (
@@ -105,13 +100,5 @@ const Project: FC<Props> = ({ pageContext: { project }, data }) => {
     </>
   )
 }
-export const queryImage = graphql`
-  query ProjectImage($image: String) {
-    file(name: { eq: $image }) {
-      childImageSharp {
-        gatsbyImageData
-      }
-    }
-  }
-`
+
 export default Project

@@ -687,12 +687,10 @@ type Portfolio_Admin = {
   readonly whatsapp: Scalars['String'];
   readonly instagram: Scalars['String'];
   readonly github: Scalars['String'];
+  readonly skype: Scalars['String'];
   readonly heroImage: Scalars['String'];
-  readonly stack: ReadonlyArray<Scalars['String']>;
   readonly resumes: ReadonlyArray<Scalars['String']>;
   readonly confirmed: Scalars['Boolean'];
-  readonly isPublished: Scalars['Boolean'];
-  readonly stacks: ReadonlyArray<Scalars['String']>;
   readonly createdAt: Scalars['Portfolio_DateTime'];
   readonly updatedAt: Scalars['Portfolio_DateTime'];
   readonly _count: Maybe<Portfolio_AdminCount>;
@@ -702,6 +700,7 @@ type Portfolio_AdminCount = {
   readonly about: Scalars['Int'];
   readonly messages: Scalars['Int'];
   readonly projects: Scalars['Int'];
+  readonly stack: Scalars['Int'];
 };
 
 type Portfolio_AboutWhereUniqueInput = {
@@ -770,15 +769,14 @@ type Portfolio_AdminWhereInput = {
   readonly whatsapp: Maybe<Portfolio_StringFilter>;
   readonly instagram: Maybe<Portfolio_StringFilter>;
   readonly github: Maybe<Portfolio_StringFilter>;
+  readonly skype: Maybe<Portfolio_StringFilter>;
   readonly heroImage: Maybe<Portfolio_StringFilter>;
-  readonly stack: Maybe<Portfolio_StringNullableListFilter>;
   readonly resumes: Maybe<Portfolio_StringNullableListFilter>;
   readonly confirmed: Maybe<Portfolio_BoolFilter>;
-  readonly isPublished: Maybe<Portfolio_BoolFilter>;
   readonly about: Maybe<Portfolio_AboutListRelationFilter>;
   readonly messages: Maybe<Portfolio_MessageListRelationFilter>;
   readonly projects: Maybe<Portfolio_ProjectListRelationFilter>;
-  readonly stacks: Maybe<Portfolio_StringNullableListFilter>;
+  readonly stack: Maybe<Portfolio_StackListRelationFilter>;
   readonly password: Maybe<Portfolio_StringFilter>;
   readonly createdAt: Maybe<Portfolio_DateTimeFilter>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFilter>;
@@ -821,13 +819,36 @@ type Portfolio_MessageWhereInput = {
   readonly id: Maybe<Portfolio_StringFilter>;
   readonly subject: Maybe<Portfolio_StringFilter>;
   readonly from: Maybe<Portfolio_StringFilter>;
+  readonly files: Maybe<Portfolio_StringFilter>;
   readonly body: Maybe<Portfolio_StringFilter>;
   readonly read_status: Maybe<Portfolio_BoolFilter>;
   readonly answer_status: Maybe<Portfolio_BoolFilter>;
   readonly admin: Maybe<Portfolio_AdminRelationFilter>;
   readonly admin_id: Maybe<Portfolio_StringFilter>;
-  readonly answeredAt: Maybe<Portfolio_DateTimeFilter>;
+  readonly answeredAt: Maybe<Portfolio_DateTimeNullableFilter>;
   readonly createdAd: Maybe<Portfolio_DateTimeFilter>;
+};
+
+type Portfolio_DateTimeNullableFilter = {
+  readonly equals: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly in: Maybe<ReadonlyArray<Scalars['Portfolio_DateTime']>>;
+  readonly notIn: Maybe<ReadonlyArray<Scalars['Portfolio_DateTime']>>;
+  readonly lt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly lte: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly gt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly gte: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly not: Maybe<Portfolio_NestedDateTimeNullableFilter>;
+};
+
+type Portfolio_NestedDateTimeNullableFilter = {
+  readonly equals: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly in: Maybe<ReadonlyArray<Scalars['Portfolio_DateTime']>>;
+  readonly notIn: Maybe<ReadonlyArray<Scalars['Portfolio_DateTime']>>;
+  readonly lt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly lte: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly gt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly gte: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly not: Maybe<Portfolio_NestedDateTimeNullableFilter>;
 };
 
 type Portfolio_DateTimeFilter = {
@@ -933,29 +954,9 @@ type Portfolio_QuestionWhereInput = {
   readonly NOT: Maybe<ReadonlyArray<Portfolio_QuestionWhereInput>>;
   readonly id: Maybe<Portfolio_StringFilter>;
   readonly question: Maybe<Portfolio_StringFilter>;
-  readonly answer: Maybe<Portfolio_AnswerRelationFilter>;
-  readonly answer_id: Maybe<Portfolio_StringFilter>;
+  readonly answer: Maybe<Portfolio_StringFilter>;
   readonly project: Maybe<Portfolio_ProjectRelationFilter>;
   readonly project_id: Maybe<Portfolio_StringFilter>;
-};
-
-type Portfolio_AnswerRelationFilter = {
-  readonly is: Maybe<Portfolio_AnswerWhereInput>;
-  readonly isNot: Maybe<Portfolio_AnswerWhereInput>;
-};
-
-type Portfolio_AnswerWhereInput = {
-  readonly AND: Maybe<ReadonlyArray<Portfolio_AnswerWhereInput>>;
-  readonly OR: Maybe<ReadonlyArray<Portfolio_AnswerWhereInput>>;
-  readonly NOT: Maybe<ReadonlyArray<Portfolio_AnswerWhereInput>>;
-  readonly id: Maybe<Portfolio_StringFilter>;
-  readonly answer: Maybe<Portfolio_StringFilter>;
-  readonly question: Maybe<Portfolio_QuestionRelationFilter>;
-};
-
-type Portfolio_QuestionRelationFilter = {
-  readonly is: Maybe<Portfolio_QuestionWhereInput>;
-  readonly isNot: Maybe<Portfolio_QuestionWhereInput>;
 };
 
 type Portfolio_SketchListRelationFilter = {
@@ -972,10 +973,27 @@ type Portfolio_SketchWhereInput = {
   readonly title: Maybe<Portfolio_StringFilter>;
   readonly description: Maybe<Portfolio_StringFilter>;
   readonly summary: Maybe<Portfolio_StringFilter>;
-  readonly download_link: Maybe<Portfolio_StringFilter>;
+  readonly downloadables: Maybe<Portfolio_StringFilter>;
   readonly image: Maybe<Portfolio_StringFilter>;
   readonly project: Maybe<Portfolio_ProjectRelationFilter>;
   readonly project_id: Maybe<Portfolio_StringFilter>;
+};
+
+type Portfolio_StackListRelationFilter = {
+  readonly every: Maybe<Portfolio_StackWhereInput>;
+  readonly some: Maybe<Portfolio_StackWhereInput>;
+  readonly none: Maybe<Portfolio_StackWhereInput>;
+};
+
+type Portfolio_StackWhereInput = {
+  readonly AND: Maybe<ReadonlyArray<Portfolio_StackWhereInput>>;
+  readonly OR: Maybe<ReadonlyArray<Portfolio_StackWhereInput>>;
+  readonly NOT: Maybe<ReadonlyArray<Portfolio_StackWhereInput>>;
+  readonly id: Maybe<Portfolio_StringFilter>;
+  readonly title: Maybe<Portfolio_StringFilter>;
+  readonly image: Maybe<Portfolio_StringFilter>;
+  readonly admin: Maybe<Portfolio_AdminRelationFilter>;
+  readonly admin_id: Maybe<Portfolio_StringFilter>;
 };
 
 type Portfolio_AboutOrderByWithRelationInput = {
@@ -1000,15 +1018,14 @@ type Portfolio_AdminOrderByWithRelationInput = {
   readonly whatsapp: Maybe<Portfolio_SortOrder>;
   readonly instagram: Maybe<Portfolio_SortOrder>;
   readonly github: Maybe<Portfolio_SortOrder>;
+  readonly skype: Maybe<Portfolio_SortOrder>;
   readonly heroImage: Maybe<Portfolio_SortOrder>;
-  readonly stack: Maybe<Portfolio_SortOrder>;
   readonly resumes: Maybe<Portfolio_SortOrder>;
   readonly confirmed: Maybe<Portfolio_SortOrder>;
-  readonly isPublished: Maybe<Portfolio_SortOrder>;
   readonly about: Maybe<Portfolio_AboutOrderByRelationAggregateInput>;
   readonly messages: Maybe<Portfolio_MessageOrderByRelationAggregateInput>;
   readonly projects: Maybe<Portfolio_ProjectOrderByRelationAggregateInput>;
-  readonly stacks: Maybe<Portfolio_SortOrder>;
+  readonly stack: Maybe<Portfolio_StackOrderByRelationAggregateInput>;
   readonly password: Maybe<Portfolio_SortOrder>;
   readonly createdAt: Maybe<Portfolio_SortOrder>;
   readonly updatedAt: Maybe<Portfolio_SortOrder>;
@@ -1026,6 +1043,10 @@ type Portfolio_ProjectOrderByRelationAggregateInput = {
   readonly _count: Maybe<Portfolio_SortOrder>;
 };
 
+type Portfolio_StackOrderByRelationAggregateInput = {
+  readonly _count: Maybe<Portfolio_SortOrder>;
+};
+
 type Portfolio_AboutScalarFieldEnum =
   | 'id'
   | 'title'
@@ -1033,20 +1054,49 @@ type Portfolio_AboutScalarFieldEnum =
   | 'admin_id'
   | 'updatedAt';
 
-type Portfolio_Answer = {
+type Portfolio_Message = {
   readonly id: Scalars['String'];
-  readonly answer: Scalars['String'];
-  readonly question: Maybe<Portfolio_Question>;
+  readonly subject: Scalars['String'];
+  readonly from: Scalars['String'];
+  readonly files: Scalars['String'];
+  readonly body: Scalars['String'];
+  readonly read_status: Scalars['Boolean'];
+  readonly answer_status: Scalars['Boolean'];
+  readonly admin_id: Scalars['String'];
+  readonly answeredAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly createdAd: Scalars['Portfolio_DateTime'];
+  readonly admin: Portfolio_Admin;
 };
 
-type Portfolio_Question = {
-  readonly id: Scalars['String'];
-  readonly question: Scalars['String'];
-  readonly answer_id: Scalars['String'];
-  readonly project_id: Scalars['String'];
-  readonly answer: Portfolio_Answer;
-  readonly project: Portfolio_Project;
+type Portfolio_MessageWhereUniqueInput = {
+  readonly id: Maybe<Scalars['String']>;
 };
+
+type Portfolio_MessageOrderByWithRelationInput = {
+  readonly id: Maybe<Portfolio_SortOrder>;
+  readonly subject: Maybe<Portfolio_SortOrder>;
+  readonly from: Maybe<Portfolio_SortOrder>;
+  readonly files: Maybe<Portfolio_SortOrder>;
+  readonly body: Maybe<Portfolio_SortOrder>;
+  readonly read_status: Maybe<Portfolio_SortOrder>;
+  readonly answer_status: Maybe<Portfolio_SortOrder>;
+  readonly admin: Maybe<Portfolio_AdminOrderByWithRelationInput>;
+  readonly admin_id: Maybe<Portfolio_SortOrder>;
+  readonly answeredAt: Maybe<Portfolio_SortOrder>;
+  readonly createdAd: Maybe<Portfolio_SortOrder>;
+};
+
+type Portfolio_MessageScalarFieldEnum =
+  | 'id'
+  | 'subject'
+  | 'from'
+  | 'files'
+  | 'body'
+  | 'read_status'
+  | 'answer_status'
+  | 'admin_id'
+  | 'answeredAt'
+  | 'createdAd';
 
 type Portfolio_Project = {
   readonly id: Scalars['String'];
@@ -1198,30 +1248,30 @@ type Portfolio_TechCategoryScalarFieldEnum =
   | 'name'
   | 'project_id';
 
+type Portfolio_Question = {
+  readonly id: Scalars['String'];
+  readonly question: Scalars['String'];
+  readonly answer: Scalars['String'];
+  readonly project_id: Scalars['String'];
+  readonly project: Portfolio_Project;
+};
+
 type Portfolio_QuestionOrderByWithRelationInput = {
   readonly id: Maybe<Portfolio_SortOrder>;
   readonly question: Maybe<Portfolio_SortOrder>;
-  readonly answer: Maybe<Portfolio_AnswerOrderByWithRelationInput>;
-  readonly answer_id: Maybe<Portfolio_SortOrder>;
+  readonly answer: Maybe<Portfolio_SortOrder>;
   readonly project: Maybe<Portfolio_ProjectOrderByWithRelationInput>;
   readonly project_id: Maybe<Portfolio_SortOrder>;
 };
 
-type Portfolio_AnswerOrderByWithRelationInput = {
-  readonly id: Maybe<Portfolio_SortOrder>;
-  readonly answer: Maybe<Portfolio_SortOrder>;
-  readonly question: Maybe<Portfolio_QuestionOrderByWithRelationInput>;
-};
-
 type Portfolio_QuestionWhereUniqueInput = {
   readonly id: Maybe<Scalars['String']>;
-  readonly answer_id: Maybe<Scalars['String']>;
 };
 
 type Portfolio_QuestionScalarFieldEnum =
   | 'id'
   | 'question'
-  | 'answer_id'
+  | 'answer'
   | 'project_id';
 
 type Portfolio_Sketch = {
@@ -1229,7 +1279,7 @@ type Portfolio_Sketch = {
   readonly title: Scalars['String'];
   readonly description: Scalars['String'];
   readonly summary: Scalars['String'];
-  readonly download_link: Scalars['String'];
+  readonly downloadables: Scalars['String'];
   readonly image: Scalars['String'];
   readonly project_id: Scalars['String'];
   readonly project: Portfolio_Project;
@@ -1240,7 +1290,7 @@ type Portfolio_SketchOrderByWithRelationInput = {
   readonly title: Maybe<Portfolio_SortOrder>;
   readonly description: Maybe<Portfolio_SortOrder>;
   readonly summary: Maybe<Portfolio_SortOrder>;
-  readonly download_link: Maybe<Portfolio_SortOrder>;
+  readonly downloadables: Maybe<Portfolio_SortOrder>;
   readonly image: Maybe<Portfolio_SortOrder>;
   readonly project: Maybe<Portfolio_ProjectOrderByWithRelationInput>;
   readonly project_id: Maybe<Portfolio_SortOrder>;
@@ -1255,58 +1305,9 @@ type Portfolio_SketchScalarFieldEnum =
   | 'title'
   | 'description'
   | 'summary'
-  | 'download_link'
+  | 'downloadables'
   | 'image'
   | 'project_id';
-
-type Portfolio_AnswerWhereUniqueInput = {
-  readonly id: Maybe<Scalars['String']>;
-};
-
-type Portfolio_AnswerScalarFieldEnum =
-  | 'id'
-  | 'answer';
-
-type Portfolio_Message = {
-  readonly id: Scalars['String'];
-  readonly subject: Scalars['String'];
-  readonly from: Scalars['String'];
-  readonly body: Scalars['String'];
-  readonly read_status: Scalars['Boolean'];
-  readonly answer_status: Scalars['Boolean'];
-  readonly admin_id: Scalars['String'];
-  readonly answeredAt: Scalars['Portfolio_DateTime'];
-  readonly createdAd: Scalars['Portfolio_DateTime'];
-  readonly admin: Portfolio_Admin;
-};
-
-type Portfolio_MessageWhereUniqueInput = {
-  readonly id: Maybe<Scalars['String']>;
-};
-
-type Portfolio_MessageOrderByWithRelationInput = {
-  readonly id: Maybe<Portfolio_SortOrder>;
-  readonly subject: Maybe<Portfolio_SortOrder>;
-  readonly from: Maybe<Portfolio_SortOrder>;
-  readonly body: Maybe<Portfolio_SortOrder>;
-  readonly read_status: Maybe<Portfolio_SortOrder>;
-  readonly answer_status: Maybe<Portfolio_SortOrder>;
-  readonly admin: Maybe<Portfolio_AdminOrderByWithRelationInput>;
-  readonly admin_id: Maybe<Portfolio_SortOrder>;
-  readonly answeredAt: Maybe<Portfolio_SortOrder>;
-  readonly createdAd: Maybe<Portfolio_SortOrder>;
-};
-
-type Portfolio_MessageScalarFieldEnum =
-  | 'id'
-  | 'subject'
-  | 'from'
-  | 'body'
-  | 'read_status'
-  | 'answer_status'
-  | 'admin_id'
-  | 'answeredAt'
-  | 'createdAd';
 
 type Portfolio_ProjectWhereUniqueInput = {
   readonly id: Maybe<Scalars['String']>;
@@ -1323,6 +1324,32 @@ type Portfolio_ProjectScalarFieldEnum =
   | 'admin_id'
   | 'createdAt'
   | 'updatedAt';
+
+type Portfolio_Stack = {
+  readonly id: Scalars['String'];
+  readonly title: Scalars['String'];
+  readonly image: Scalars['String'];
+  readonly admin_id: Scalars['String'];
+};
+
+type Portfolio_StackOrderByWithRelationInput = {
+  readonly id: Maybe<Portfolio_SortOrder>;
+  readonly title: Maybe<Portfolio_SortOrder>;
+  readonly image: Maybe<Portfolio_SortOrder>;
+  readonly admin: Maybe<Portfolio_AdminOrderByWithRelationInput>;
+  readonly admin_id: Maybe<Portfolio_SortOrder>;
+};
+
+type Portfolio_StackWhereUniqueInput = {
+  readonly id: Maybe<Scalars['String']>;
+};
+
+type Portfolio_StackScalarFieldEnum =
+  | 'id'
+  | 'title'
+  | 'image'
+  | 'admin_id';
+
 
 type Portfolio_AboutCreateInput = {
   readonly id: Maybe<Scalars['String']>;
@@ -1347,28 +1374,19 @@ type Portfolio_AdminCreateWithoutAboutInput = {
   readonly whatsapp: Scalars['String'];
   readonly instagram: Scalars['String'];
   readonly github: Scalars['String'];
+  readonly skype: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
-  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
-};
-
-type Portfolio_AdminCreatestackInput = {
-  readonly set: ReadonlyArray<Scalars['String']>;
+  readonly stack: Maybe<Portfolio_StackCreateNestedManyWithoutAdminInput>;
 };
 
 type Portfolio_AdminCreateresumesInput = {
-  readonly set: ReadonlyArray<Scalars['String']>;
-};
-
-type Portfolio_AdminCreatestacksInput = {
   readonly set: ReadonlyArray<Scalars['String']>;
 };
 
@@ -1383,6 +1401,7 @@ type Portfolio_MessageCreateWithoutAdminInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly subject: Scalars['String'];
   readonly from: Scalars['String'];
+  readonly files: Maybe<Scalars['String']>;
   readonly body: Scalars['String'];
   readonly read_status: Maybe<Scalars['Boolean']>;
   readonly answer_status: Maybe<Scalars['Boolean']>;
@@ -1404,6 +1423,7 @@ type Portfolio_MessageCreateManyAdminInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly subject: Scalars['String'];
   readonly from: Scalars['String'];
+  readonly files: Maybe<Scalars['String']>;
   readonly body: Scalars['String'];
   readonly read_status: Maybe<Scalars['Boolean']>;
   readonly answer_status: Maybe<Scalars['Boolean']>;
@@ -1498,23 +1518,7 @@ type Portfolio_QuestionCreateNestedManyWithoutProjectInput = {
 type Portfolio_QuestionCreateWithoutProjectInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly question: Scalars['String'];
-  readonly answer: Portfolio_AnswerCreateNestedOneWithoutQuestionInput;
-};
-
-type Portfolio_AnswerCreateNestedOneWithoutQuestionInput = {
-  readonly create: Maybe<Portfolio_AnswerCreateWithoutQuestionInput>;
-  readonly connectOrCreate: Maybe<Portfolio_AnswerCreateOrConnectWithoutQuestionInput>;
-  readonly connect: Maybe<Portfolio_AnswerWhereUniqueInput>;
-};
-
-type Portfolio_AnswerCreateWithoutQuestionInput = {
-  readonly id: Maybe<Scalars['String']>;
   readonly answer: Scalars['String'];
-};
-
-type Portfolio_AnswerCreateOrConnectWithoutQuestionInput = {
-  readonly where: Portfolio_AnswerWhereUniqueInput;
-  readonly create: Portfolio_AnswerCreateWithoutQuestionInput;
 };
 
 type Portfolio_QuestionCreateOrConnectWithoutProjectInput = {
@@ -1530,7 +1534,7 @@ type Portfolio_QuestionCreateManyProjectInputEnvelope = {
 type Portfolio_QuestionCreateManyProjectInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly question: Scalars['String'];
-  readonly answer_id: Scalars['String'];
+  readonly answer: Scalars['String'];
 };
 
 type Portfolio_SketchCreateNestedManyWithoutProjectInput = {
@@ -1545,7 +1549,7 @@ type Portfolio_SketchCreateWithoutProjectInput = {
   readonly title: Scalars['String'];
   readonly description: Scalars['String'];
   readonly summary: Scalars['String'];
-  readonly download_link: Scalars['String'];
+  readonly downloadables: Scalars['String'];
   readonly image: Scalars['String'];
 };
 
@@ -1564,7 +1568,7 @@ type Portfolio_SketchCreateManyProjectInput = {
   readonly title: Scalars['String'];
   readonly description: Scalars['String'];
   readonly summary: Scalars['String'];
-  readonly download_link: Scalars['String'];
+  readonly downloadables: Scalars['String'];
   readonly image: Scalars['String'];
 };
 
@@ -1588,6 +1592,35 @@ type Portfolio_ProjectCreateManyAdminInput = {
   readonly summary: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+};
+
+type Portfolio_StackCreateNestedManyWithoutAdminInput = {
+  readonly create: Maybe<ReadonlyArray<Portfolio_StackCreateWithoutAdminInput>>;
+  readonly connectOrCreate: Maybe<ReadonlyArray<Portfolio_StackCreateOrConnectWithoutAdminInput>>;
+  readonly createMany: Maybe<Portfolio_StackCreateManyAdminInputEnvelope>;
+  readonly connect: Maybe<ReadonlyArray<Portfolio_StackWhereUniqueInput>>;
+};
+
+type Portfolio_StackCreateWithoutAdminInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly title: Scalars['String'];
+  readonly image: Scalars['String'];
+};
+
+type Portfolio_StackCreateOrConnectWithoutAdminInput = {
+  readonly where: Portfolio_StackWhereUniqueInput;
+  readonly create: Portfolio_StackCreateWithoutAdminInput;
+};
+
+type Portfolio_StackCreateManyAdminInputEnvelope = {
+  readonly data: ReadonlyArray<Portfolio_StackCreateManyAdminInput>;
+  readonly skipDuplicates: Maybe<Scalars['Boolean']>;
+};
+
+type Portfolio_StackCreateManyAdminInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly title: Scalars['String'];
+  readonly image: Scalars['String'];
 };
 
 type Portfolio_AdminCreateOrConnectWithoutAboutInput = {
@@ -1638,34 +1671,23 @@ type Portfolio_AdminUpdateWithoutAboutInput = {
   readonly whatsapp: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly instagram: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly skype: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackUpdateManyWithoutAdminInput>;
 };
 
 type Portfolio_BoolFieldUpdateOperationsInput = {
   readonly set: Maybe<Scalars['Boolean']>;
 };
 
-type Portfolio_AdminUpdatestackInput = {
-  readonly set: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly push: Maybe<ReadonlyArray<Scalars['String']>>;
-};
-
 type Portfolio_AdminUpdateresumesInput = {
-  readonly set: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly push: Maybe<ReadonlyArray<Scalars['String']>>;
-};
-
-type Portfolio_AdminUpdatestacksInput = {
   readonly set: Maybe<ReadonlyArray<Scalars['String']>>;
   readonly push: Maybe<ReadonlyArray<Scalars['String']>>;
 };
@@ -1694,11 +1716,16 @@ type Portfolio_MessageUpdateWithoutAdminInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly subject: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly from: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly files: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly body: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly read_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly answer_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly answeredAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly answeredAt: Maybe<Portfolio_NullableDateTimeFieldUpdateOperationsInput>;
   readonly createdAd: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+};
+
+type Portfolio_NullableDateTimeFieldUpdateOperationsInput = {
+  readonly set: Maybe<Scalars['Portfolio_DateTime']>;
 };
 
 type Portfolio_MessageUpdateWithWhereUniqueWithoutAdminInput = {
@@ -1718,11 +1745,12 @@ type Portfolio_MessageScalarWhereInput = {
   readonly id: Maybe<Portfolio_StringFilter>;
   readonly subject: Maybe<Portfolio_StringFilter>;
   readonly from: Maybe<Portfolio_StringFilter>;
+  readonly files: Maybe<Portfolio_StringFilter>;
   readonly body: Maybe<Portfolio_StringFilter>;
   readonly read_status: Maybe<Portfolio_BoolFilter>;
   readonly answer_status: Maybe<Portfolio_BoolFilter>;
   readonly admin_id: Maybe<Portfolio_StringFilter>;
-  readonly answeredAt: Maybe<Portfolio_DateTimeFilter>;
+  readonly answeredAt: Maybe<Portfolio_DateTimeNullableFilter>;
   readonly createdAd: Maybe<Portfolio_DateTimeFilter>;
 };
 
@@ -1730,10 +1758,11 @@ type Portfolio_MessageUpdateManyMutationInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly subject: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly from: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly files: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly body: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly read_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly answer_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly answeredAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly answeredAt: Maybe<Portfolio_NullableDateTimeFieldUpdateOperationsInput>;
   readonly createdAd: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
 };
 
@@ -1894,24 +1923,6 @@ type Portfolio_QuestionUpsertWithWhereUniqueWithoutProjectInput = {
 type Portfolio_QuestionUpdateWithoutProjectInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly question: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly answer: Maybe<Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput>;
-};
-
-type Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput = {
-  readonly create: Maybe<Portfolio_AnswerCreateWithoutQuestionInput>;
-  readonly connectOrCreate: Maybe<Portfolio_AnswerCreateOrConnectWithoutQuestionInput>;
-  readonly upsert: Maybe<Portfolio_AnswerUpsertWithoutQuestionInput>;
-  readonly connect: Maybe<Portfolio_AnswerWhereUniqueInput>;
-  readonly update: Maybe<Portfolio_AnswerUpdateWithoutQuestionInput>;
-};
-
-type Portfolio_AnswerUpsertWithoutQuestionInput = {
-  readonly update: Portfolio_AnswerUpdateWithoutQuestionInput;
-  readonly create: Portfolio_AnswerCreateWithoutQuestionInput;
-};
-
-type Portfolio_AnswerUpdateWithoutQuestionInput = {
-  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly answer: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
 };
 
@@ -1931,13 +1942,14 @@ type Portfolio_QuestionScalarWhereInput = {
   readonly NOT: Maybe<ReadonlyArray<Portfolio_QuestionScalarWhereInput>>;
   readonly id: Maybe<Portfolio_StringFilter>;
   readonly question: Maybe<Portfolio_StringFilter>;
-  readonly answer_id: Maybe<Portfolio_StringFilter>;
+  readonly answer: Maybe<Portfolio_StringFilter>;
   readonly project_id: Maybe<Portfolio_StringFilter>;
 };
 
 type Portfolio_QuestionUpdateManyMutationInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly question: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly answer: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
 };
 
 type Portfolio_SketchUpdateManyWithoutProjectInput = {
@@ -1965,7 +1977,7 @@ type Portfolio_SketchUpdateWithoutProjectInput = {
   readonly title: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly description: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly summary: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly download_link: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly downloadables: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
 };
 
@@ -1987,7 +1999,7 @@ type Portfolio_SketchScalarWhereInput = {
   readonly title: Maybe<Portfolio_StringFilter>;
   readonly description: Maybe<Portfolio_StringFilter>;
   readonly summary: Maybe<Portfolio_StringFilter>;
-  readonly download_link: Maybe<Portfolio_StringFilter>;
+  readonly downloadables: Maybe<Portfolio_StringFilter>;
   readonly image: Maybe<Portfolio_StringFilter>;
   readonly project_id: Maybe<Portfolio_StringFilter>;
 };
@@ -1997,7 +2009,7 @@ type Portfolio_SketchUpdateManyMutationInput = {
   readonly title: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly description: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly summary: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly download_link: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly downloadables: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
 };
 
@@ -2039,56 +2051,84 @@ type Portfolio_ProjectUpdateManyMutationInput = {
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
 };
 
+type Portfolio_StackUpdateManyWithoutAdminInput = {
+  readonly create: Maybe<ReadonlyArray<Portfolio_StackCreateWithoutAdminInput>>;
+  readonly connectOrCreate: Maybe<ReadonlyArray<Portfolio_StackCreateOrConnectWithoutAdminInput>>;
+  readonly upsert: Maybe<ReadonlyArray<Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput>>;
+  readonly createMany: Maybe<Portfolio_StackCreateManyAdminInputEnvelope>;
+  readonly connect: Maybe<ReadonlyArray<Portfolio_StackWhereUniqueInput>>;
+  readonly set: Maybe<ReadonlyArray<Portfolio_StackWhereUniqueInput>>;
+  readonly disconnect: Maybe<ReadonlyArray<Portfolio_StackWhereUniqueInput>>;
+  readonly delete: Maybe<ReadonlyArray<Portfolio_StackWhereUniqueInput>>;
+  readonly update: Maybe<ReadonlyArray<Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput>>;
+  readonly updateMany: Maybe<ReadonlyArray<Portfolio_StackUpdateManyWithWhereWithoutAdminInput>>;
+  readonly deleteMany: Maybe<ReadonlyArray<Portfolio_StackScalarWhereInput>>;
+};
+
+type Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput = {
+  readonly where: Portfolio_StackWhereUniqueInput;
+  readonly update: Portfolio_StackUpdateWithoutAdminInput;
+  readonly create: Portfolio_StackCreateWithoutAdminInput;
+};
+
+type Portfolio_StackUpdateWithoutAdminInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly title: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+};
+
+type Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput = {
+  readonly where: Portfolio_StackWhereUniqueInput;
+  readonly data: Portfolio_StackUpdateWithoutAdminInput;
+};
+
+type Portfolio_StackUpdateManyWithWhereWithoutAdminInput = {
+  readonly where: Portfolio_StackScalarWhereInput;
+  readonly data: Portfolio_StackUpdateManyMutationInput;
+};
+
+type Portfolio_StackScalarWhereInput = {
+  readonly AND: Maybe<ReadonlyArray<Portfolio_StackScalarWhereInput>>;
+  readonly OR: Maybe<ReadonlyArray<Portfolio_StackScalarWhereInput>>;
+  readonly NOT: Maybe<ReadonlyArray<Portfolio_StackScalarWhereInput>>;
+  readonly id: Maybe<Portfolio_StringFilter>;
+  readonly title: Maybe<Portfolio_StringFilter>;
+  readonly image: Maybe<Portfolio_StringFilter>;
+  readonly admin_id: Maybe<Portfolio_StringFilter>;
+};
+
+type Portfolio_StackUpdateManyMutationInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly title: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+};
+
 type Portfolio_AffectedRowsOutput = {
   readonly count: Scalars['Int'];
 };
 
-type Portfolio_AnswerCreateInput = {
-  readonly id: Maybe<Scalars['String']>;
-  readonly answer: Scalars['String'];
-  readonly question: Maybe<Portfolio_QuestionCreateNestedOneWithoutAnswerInput>;
+type Portfolio_MessageUpdateInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly subject: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly from: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly files: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly body: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly read_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly answer_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly answeredAt: Maybe<Portfolio_NullableDateTimeFieldUpdateOperationsInput>;
+  readonly createdAd: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutMessagesInput>;
 };
 
-type Portfolio_QuestionCreateNestedOneWithoutAnswerInput = {
-  readonly create: Maybe<Portfolio_QuestionCreateWithoutAnswerInput>;
-  readonly connectOrCreate: Maybe<Portfolio_QuestionCreateOrConnectWithoutAnswerInput>;
-  readonly connect: Maybe<Portfolio_QuestionWhereUniqueInput>;
-};
-
-type Portfolio_QuestionCreateWithoutAnswerInput = {
-  readonly id: Maybe<Scalars['String']>;
-  readonly question: Scalars['String'];
-  readonly project: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput;
-};
-
-type Portfolio_ProjectCreateNestedOneWithoutQuestionsInput = {
-  readonly create: Maybe<Portfolio_ProjectCreateWithoutQuestionsInput>;
-  readonly connectOrCreate: Maybe<Portfolio_ProjectCreateOrConnectWithoutQuestionsInput>;
-  readonly connect: Maybe<Portfolio_ProjectWhereUniqueInput>;
-};
-
-type Portfolio_ProjectCreateWithoutQuestionsInput = {
-  readonly id: Maybe<Scalars['String']>;
-  readonly name: Scalars['String'];
-  readonly image: Scalars['String'];
-  readonly type: Scalars['String'];
-  readonly github_url: Scalars['String'];
-  readonly app_url: Scalars['String'];
-  readonly summary: Scalars['String'];
-  readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly tech_categories: Maybe<Portfolio_TechCategoryCreateNestedManyWithoutProjectInput>;
-  readonly sketches: Maybe<Portfolio_SketchCreateNestedManyWithoutProjectInput>;
-  readonly admin: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
-};
-
-type Portfolio_AdminCreateNestedOneWithoutProjectsInput = {
-  readonly create: Maybe<Portfolio_AdminCreateWithoutProjectsInput>;
-  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutProjectsInput>;
+type Portfolio_AdminUpdateOneRequiredWithoutMessagesInput = {
+  readonly create: Maybe<Portfolio_AdminCreateWithoutMessagesInput>;
+  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutMessagesInput>;
+  readonly upsert: Maybe<Portfolio_AdminUpsertWithoutMessagesInput>;
   readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
+  readonly update: Maybe<Portfolio_AdminUpdateWithoutMessagesInput>;
 };
 
-type Portfolio_AdminCreateWithoutProjectsInput = {
+type Portfolio_AdminCreateWithoutMessagesInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly email: Scalars['String'];
   readonly fname: Scalars['String'];
@@ -2097,17 +2137,16 @@ type Portfolio_AdminCreateWithoutProjectsInput = {
   readonly whatsapp: Scalars['String'];
   readonly instagram: Scalars['String'];
   readonly github: Scalars['String'];
+  readonly skype: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
-  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
-  readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
+  readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackCreateNestedManyWithoutAdminInput>;
 };
 
 type Portfolio_AboutCreateNestedManyWithoutAdminInput = {
@@ -2141,90 +2180,17 @@ type Portfolio_AboutCreateManyAdminInput = {
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
 };
 
-type Portfolio_AdminCreateOrConnectWithoutProjectsInput = {
+type Portfolio_AdminCreateOrConnectWithoutMessagesInput = {
   readonly where: Portfolio_AdminWhereUniqueInput;
-  readonly create: Portfolio_AdminCreateWithoutProjectsInput;
+  readonly create: Portfolio_AdminCreateWithoutMessagesInput;
 };
 
-type Portfolio_ProjectCreateOrConnectWithoutQuestionsInput = {
-  readonly where: Portfolio_ProjectWhereUniqueInput;
-  readonly create: Portfolio_ProjectCreateWithoutQuestionsInput;
+type Portfolio_AdminUpsertWithoutMessagesInput = {
+  readonly update: Portfolio_AdminUpdateWithoutMessagesInput;
+  readonly create: Portfolio_AdminCreateWithoutMessagesInput;
 };
 
-type Portfolio_QuestionCreateOrConnectWithoutAnswerInput = {
-  readonly where: Portfolio_QuestionWhereUniqueInput;
-  readonly create: Portfolio_QuestionCreateWithoutAnswerInput;
-};
-
-type Portfolio_AnswerUpdateInput = {
-  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly answer: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly question: Maybe<Portfolio_QuestionUpdateOneWithoutAnswerInput>;
-};
-
-type Portfolio_QuestionUpdateOneWithoutAnswerInput = {
-  readonly create: Maybe<Portfolio_QuestionCreateWithoutAnswerInput>;
-  readonly connectOrCreate: Maybe<Portfolio_QuestionCreateOrConnectWithoutAnswerInput>;
-  readonly upsert: Maybe<Portfolio_QuestionUpsertWithoutAnswerInput>;
-  readonly connect: Maybe<Portfolio_QuestionWhereUniqueInput>;
-  readonly disconnect: Maybe<Scalars['Boolean']>;
-  readonly delete: Maybe<Scalars['Boolean']>;
-  readonly update: Maybe<Portfolio_QuestionUpdateWithoutAnswerInput>;
-};
-
-type Portfolio_QuestionUpsertWithoutAnswerInput = {
-  readonly update: Portfolio_QuestionUpdateWithoutAnswerInput;
-  readonly create: Portfolio_QuestionCreateWithoutAnswerInput;
-};
-
-type Portfolio_QuestionUpdateWithoutAnswerInput = {
-  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly question: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly project: Maybe<Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput>;
-};
-
-type Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput = {
-  readonly create: Maybe<Portfolio_ProjectCreateWithoutQuestionsInput>;
-  readonly connectOrCreate: Maybe<Portfolio_ProjectCreateOrConnectWithoutQuestionsInput>;
-  readonly upsert: Maybe<Portfolio_ProjectUpsertWithoutQuestionsInput>;
-  readonly connect: Maybe<Portfolio_ProjectWhereUniqueInput>;
-  readonly update: Maybe<Portfolio_ProjectUpdateWithoutQuestionsInput>;
-};
-
-type Portfolio_ProjectUpsertWithoutQuestionsInput = {
-  readonly update: Portfolio_ProjectUpdateWithoutQuestionsInput;
-  readonly create: Portfolio_ProjectCreateWithoutQuestionsInput;
-};
-
-type Portfolio_ProjectUpdateWithoutQuestionsInput = {
-  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly name: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly type: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly github_url: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly app_url: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly summary: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly tech_categories: Maybe<Portfolio_TechCategoryUpdateManyWithoutProjectInput>;
-  readonly sketches: Maybe<Portfolio_SketchUpdateManyWithoutProjectInput>;
-  readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutProjectsInput>;
-};
-
-type Portfolio_AdminUpdateOneRequiredWithoutProjectsInput = {
-  readonly create: Maybe<Portfolio_AdminCreateWithoutProjectsInput>;
-  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutProjectsInput>;
-  readonly upsert: Maybe<Portfolio_AdminUpsertWithoutProjectsInput>;
-  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
-  readonly update: Maybe<Portfolio_AdminUpdateWithoutProjectsInput>;
-};
-
-type Portfolio_AdminUpsertWithoutProjectsInput = {
-  readonly update: Portfolio_AdminUpdateWithoutProjectsInput;
-  readonly create: Portfolio_AdminCreateWithoutProjectsInput;
-};
-
-type Portfolio_AdminUpdateWithoutProjectsInput = {
+type Portfolio_AdminUpdateWithoutMessagesInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly email: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly fname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
@@ -2233,17 +2199,16 @@ type Portfolio_AdminUpdateWithoutProjectsInput = {
   readonly whatsapp: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly instagram: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly skype: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
-  readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
+  readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackUpdateManyWithoutAdminInput>;
 };
 
 type Portfolio_AboutUpdateManyWithoutAdminInput = {
@@ -2301,98 +2266,6 @@ type Portfolio_AboutUpdateManyMutationInput = {
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
 };
 
-type Portfolio_MessageCreateInput = {
-  readonly id: Maybe<Scalars['String']>;
-  readonly subject: Scalars['String'];
-  readonly from: Scalars['String'];
-  readonly body: Scalars['String'];
-  readonly read_status: Maybe<Scalars['Boolean']>;
-  readonly answer_status: Maybe<Scalars['Boolean']>;
-  readonly answeredAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly createdAd: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly admin: Portfolio_AdminCreateNestedOneWithoutMessagesInput;
-};
-
-type Portfolio_AdminCreateNestedOneWithoutMessagesInput = {
-  readonly create: Maybe<Portfolio_AdminCreateWithoutMessagesInput>;
-  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutMessagesInput>;
-  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
-};
-
-type Portfolio_AdminCreateWithoutMessagesInput = {
-  readonly id: Maybe<Scalars['String']>;
-  readonly email: Scalars['String'];
-  readonly fname: Scalars['String'];
-  readonly lname: Scalars['String'];
-  readonly linkedIn: Scalars['String'];
-  readonly whatsapp: Scalars['String'];
-  readonly instagram: Scalars['String'];
-  readonly github: Scalars['String'];
-  readonly heroImage: Scalars['String'];
-  readonly confirmed: Maybe<Scalars['Boolean']>;
-  readonly isPublished: Maybe<Scalars['Boolean']>;
-  readonly password: Scalars['String'];
-  readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
-  readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
-  readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
-  readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
-};
-
-type Portfolio_AdminCreateOrConnectWithoutMessagesInput = {
-  readonly where: Portfolio_AdminWhereUniqueInput;
-  readonly create: Portfolio_AdminCreateWithoutMessagesInput;
-};
-
-type Portfolio_MessageUpdateInput = {
-  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly subject: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly from: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly body: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly read_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly answer_status: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly answeredAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly createdAd: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutMessagesInput>;
-};
-
-type Portfolio_AdminUpdateOneRequiredWithoutMessagesInput = {
-  readonly create: Maybe<Portfolio_AdminCreateWithoutMessagesInput>;
-  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutMessagesInput>;
-  readonly upsert: Maybe<Portfolio_AdminUpsertWithoutMessagesInput>;
-  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
-  readonly update: Maybe<Portfolio_AdminUpdateWithoutMessagesInput>;
-};
-
-type Portfolio_AdminUpsertWithoutMessagesInput = {
-  readonly update: Portfolio_AdminUpdateWithoutMessagesInput;
-  readonly create: Portfolio_AdminCreateWithoutMessagesInput;
-};
-
-type Portfolio_AdminUpdateWithoutMessagesInput = {
-  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly email: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly fname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly lname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly linkedIn: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly whatsapp: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly instagram: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
-  readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
-  readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
-  readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
-};
-
 type Portfolio_ProjectCreateInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly name: Scalars['String'];
@@ -2407,6 +2280,38 @@ type Portfolio_ProjectCreateInput = {
   readonly questions: Maybe<Portfolio_QuestionCreateNestedManyWithoutProjectInput>;
   readonly sketches: Maybe<Portfolio_SketchCreateNestedManyWithoutProjectInput>;
   readonly admin: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
+};
+
+type Portfolio_AdminCreateNestedOneWithoutProjectsInput = {
+  readonly create: Maybe<Portfolio_AdminCreateWithoutProjectsInput>;
+  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutProjectsInput>;
+  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
+};
+
+type Portfolio_AdminCreateWithoutProjectsInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly email: Scalars['String'];
+  readonly fname: Scalars['String'];
+  readonly lname: Scalars['String'];
+  readonly linkedIn: Scalars['String'];
+  readonly whatsapp: Scalars['String'];
+  readonly instagram: Scalars['String'];
+  readonly github: Scalars['String'];
+  readonly skype: Scalars['String'];
+  readonly heroImage: Scalars['String'];
+  readonly confirmed: Maybe<Scalars['Boolean']>;
+  readonly password: Scalars['String'];
+  readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
+  readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
+  readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackCreateNestedManyWithoutAdminInput>;
+};
+
+type Portfolio_AdminCreateOrConnectWithoutProjectsInput = {
+  readonly where: Portfolio_AdminWhereUniqueInput;
+  readonly create: Portfolio_AdminCreateWithoutProjectsInput;
 };
 
 type Portfolio_ProjectUpdateInput = {
@@ -2425,18 +2330,113 @@ type Portfolio_ProjectUpdateInput = {
   readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutProjectsInput>;
 };
 
+type Portfolio_AdminUpdateOneRequiredWithoutProjectsInput = {
+  readonly create: Maybe<Portfolio_AdminCreateWithoutProjectsInput>;
+  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutProjectsInput>;
+  readonly upsert: Maybe<Portfolio_AdminUpsertWithoutProjectsInput>;
+  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
+  readonly update: Maybe<Portfolio_AdminUpdateWithoutProjectsInput>;
+};
+
+type Portfolio_AdminUpsertWithoutProjectsInput = {
+  readonly update: Portfolio_AdminUpdateWithoutProjectsInput;
+  readonly create: Portfolio_AdminCreateWithoutProjectsInput;
+};
+
+type Portfolio_AdminUpdateWithoutProjectsInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly email: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly fname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly lname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly linkedIn: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly whatsapp: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly instagram: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly skype: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
+  readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
+  readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackUpdateManyWithoutAdminInput>;
+};
+
 type Portfolio_QuestionCreateInput = {
   readonly id: Maybe<Scalars['String']>;
   readonly question: Scalars['String'];
-  readonly answer: Portfolio_AnswerCreateNestedOneWithoutQuestionInput;
+  readonly answer: Scalars['String'];
   readonly project: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput;
+};
+
+type Portfolio_ProjectCreateNestedOneWithoutQuestionsInput = {
+  readonly create: Maybe<Portfolio_ProjectCreateWithoutQuestionsInput>;
+  readonly connectOrCreate: Maybe<Portfolio_ProjectCreateOrConnectWithoutQuestionsInput>;
+  readonly connect: Maybe<Portfolio_ProjectWhereUniqueInput>;
+};
+
+type Portfolio_ProjectCreateWithoutQuestionsInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly name: Scalars['String'];
+  readonly image: Scalars['String'];
+  readonly type: Scalars['String'];
+  readonly github_url: Scalars['String'];
+  readonly app_url: Scalars['String'];
+  readonly summary: Scalars['String'];
+  readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly tech_categories: Maybe<Portfolio_TechCategoryCreateNestedManyWithoutProjectInput>;
+  readonly sketches: Maybe<Portfolio_SketchCreateNestedManyWithoutProjectInput>;
+  readonly admin: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
+};
+
+type Portfolio_ProjectCreateOrConnectWithoutQuestionsInput = {
+  readonly where: Portfolio_ProjectWhereUniqueInput;
+  readonly create: Portfolio_ProjectCreateWithoutQuestionsInput;
+};
+
+type Portfolio_QuestionCreateManyInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly question: Scalars['String'];
+  readonly answer: Scalars['String'];
+  readonly project_id: Scalars['String'];
 };
 
 type Portfolio_QuestionUpdateInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly question: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly answer: Maybe<Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput>;
+  readonly answer: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly project: Maybe<Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput>;
+};
+
+type Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput = {
+  readonly create: Maybe<Portfolio_ProjectCreateWithoutQuestionsInput>;
+  readonly connectOrCreate: Maybe<Portfolio_ProjectCreateOrConnectWithoutQuestionsInput>;
+  readonly upsert: Maybe<Portfolio_ProjectUpsertWithoutQuestionsInput>;
+  readonly connect: Maybe<Portfolio_ProjectWhereUniqueInput>;
+  readonly update: Maybe<Portfolio_ProjectUpdateWithoutQuestionsInput>;
+};
+
+type Portfolio_ProjectUpsertWithoutQuestionsInput = {
+  readonly update: Portfolio_ProjectUpdateWithoutQuestionsInput;
+  readonly create: Portfolio_ProjectCreateWithoutQuestionsInput;
+};
+
+type Portfolio_ProjectUpdateWithoutQuestionsInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly name: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly type: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly github_url: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly app_url: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly summary: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly tech_categories: Maybe<Portfolio_TechCategoryUpdateManyWithoutProjectInput>;
+  readonly sketches: Maybe<Portfolio_SketchUpdateManyWithoutProjectInput>;
+  readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutProjectsInput>;
 };
 
 type Portfolio_SketchCreateInput = {
@@ -2444,7 +2444,7 @@ type Portfolio_SketchCreateInput = {
   readonly title: Scalars['String'];
   readonly description: Scalars['String'];
   readonly summary: Scalars['String'];
-  readonly download_link: Scalars['String'];
+  readonly downloadables: Scalars['String'];
   readonly image: Scalars['String'];
   readonly project: Portfolio_ProjectCreateNestedOneWithoutSketchesInput;
 };
@@ -2475,12 +2475,22 @@ type Portfolio_ProjectCreateOrConnectWithoutSketchesInput = {
   readonly create: Portfolio_ProjectCreateWithoutSketchesInput;
 };
 
+type Portfolio_SketchCreateManyInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly title: Scalars['String'];
+  readonly description: Scalars['String'];
+  readonly summary: Scalars['String'];
+  readonly downloadables: Scalars['String'];
+  readonly image: Scalars['String'];
+  readonly project_id: Scalars['String'];
+};
+
 type Portfolio_SketchUpdateInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly title: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly description: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly summary: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
-  readonly download_link: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly downloadables: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly project: Maybe<Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput>;
 };
@@ -2511,6 +2521,86 @@ type Portfolio_ProjectUpdateWithoutSketchesInput = {
   readonly tech_categories: Maybe<Portfolio_TechCategoryUpdateManyWithoutProjectInput>;
   readonly questions: Maybe<Portfolio_QuestionUpdateManyWithoutProjectInput>;
   readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutProjectsInput>;
+};
+
+type Portfolio_StackCreateInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly title: Scalars['String'];
+  readonly image: Scalars['String'];
+  readonly admin: Portfolio_AdminCreateNestedOneWithoutStackInput;
+};
+
+type Portfolio_AdminCreateNestedOneWithoutStackInput = {
+  readonly create: Maybe<Portfolio_AdminCreateWithoutStackInput>;
+  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutStackInput>;
+  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
+};
+
+type Portfolio_AdminCreateWithoutStackInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly email: Scalars['String'];
+  readonly fname: Scalars['String'];
+  readonly lname: Scalars['String'];
+  readonly linkedIn: Scalars['String'];
+  readonly whatsapp: Scalars['String'];
+  readonly instagram: Scalars['String'];
+  readonly github: Scalars['String'];
+  readonly skype: Scalars['String'];
+  readonly heroImage: Scalars['String'];
+  readonly confirmed: Maybe<Scalars['Boolean']>;
+  readonly password: Scalars['String'];
+  readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
+  readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
+  readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
+  readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
+};
+
+type Portfolio_AdminCreateOrConnectWithoutStackInput = {
+  readonly where: Portfolio_AdminWhereUniqueInput;
+  readonly create: Portfolio_AdminCreateWithoutStackInput;
+};
+
+type Portfolio_StackUpdateInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly title: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly image: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly admin: Maybe<Portfolio_AdminUpdateOneRequiredWithoutStackInput>;
+};
+
+type Portfolio_AdminUpdateOneRequiredWithoutStackInput = {
+  readonly create: Maybe<Portfolio_AdminCreateWithoutStackInput>;
+  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutStackInput>;
+  readonly upsert: Maybe<Portfolio_AdminUpsertWithoutStackInput>;
+  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
+  readonly update: Maybe<Portfolio_AdminUpdateWithoutStackInput>;
+};
+
+type Portfolio_AdminUpsertWithoutStackInput = {
+  readonly update: Portfolio_AdminUpdateWithoutStackInput;
+  readonly create: Portfolio_AdminCreateWithoutStackInput;
+};
+
+type Portfolio_AdminUpdateWithoutStackInput = {
+  readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly email: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly fname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly lname: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly linkedIn: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly whatsapp: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly instagram: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly skype: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
+  readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
+  readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
+  readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
+  readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
+  readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
 };
 
 type Portfolio_TechCreateInput = {
@@ -2560,6 +2650,12 @@ type Portfolio_ProjectCreateOrConnectWithoutTech_categoriesInput = {
 type Portfolio_TechCategoryCreateOrConnectWithoutTechsInput = {
   readonly where: Portfolio_TechCategoryWhereUniqueInput;
   readonly create: Portfolio_TechCategoryCreateWithoutTechsInput;
+};
+
+type Portfolio_TechCreateManyInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly name: Scalars['String'];
+  readonly tech_category_id: Scalars['String'];
 };
 
 type Portfolio_TechUpdateInput = {
@@ -2622,20 +2718,17 @@ type Portfolio_TechCategoryCreateInput = {
   readonly project: Portfolio_ProjectCreateNestedOneWithoutTech_categoriesInput;
 };
 
+type Portfolio_TechCategoryCreateManyInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly name: Scalars['String'];
+  readonly project_id: Scalars['String'];
+};
+
 type Portfolio_TechCategoryUpdateInput = {
   readonly id: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly name: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly techs: Maybe<Portfolio_TechUpdateManyWithoutTech_categoriesInput>;
   readonly project: Maybe<Portfolio_ProjectUpdateOneRequiredWithoutTech_categoriesInput>;
-};
-
-type Portfolio_LoginReturnType = {
-  readonly token: Maybe<Scalars['String']>;
-};
-
-type Portfolio_LoginInputType = {
-  readonly email: Scalars['String'];
-  readonly password: Scalars['String'];
 };
 
 type Portfolio_AdminCreateInput = {
@@ -2647,18 +2740,17 @@ type Portfolio_AdminCreateInput = {
   readonly whatsapp: Scalars['String'];
   readonly instagram: Scalars['String'];
   readonly github: Scalars['String'];
+  readonly skype: Scalars['String'];
   readonly heroImage: Scalars['String'];
   readonly confirmed: Maybe<Scalars['Boolean']>;
-  readonly isPublished: Maybe<Scalars['Boolean']>;
   readonly password: Scalars['String'];
   readonly createdAt: Maybe<Scalars['Portfolio_DateTime']>;
   readonly updatedAt: Maybe<Scalars['Portfolio_DateTime']>;
-  readonly stack: Maybe<Portfolio_AdminCreatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminCreateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminCreatestacksInput>;
   readonly about: Maybe<Portfolio_AboutCreateNestedManyWithoutAdminInput>;
   readonly messages: Maybe<Portfolio_MessageCreateNestedManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectCreateNestedManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackCreateNestedManyWithoutAdminInput>;
 };
 
 type Portfolio_AdminUpdateInput = {
@@ -2670,26 +2762,92 @@ type Portfolio_AdminUpdateInput = {
   readonly whatsapp: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly instagram: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly github: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
+  readonly skype: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly heroImage: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly confirmed: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
-  readonly isPublished: Maybe<Portfolio_BoolFieldUpdateOperationsInput>;
   readonly password: Maybe<Portfolio_StringFieldUpdateOperationsInput>;
   readonly createdAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
   readonly updatedAt: Maybe<Portfolio_DateTimeFieldUpdateOperationsInput>;
-  readonly stack: Maybe<Portfolio_AdminUpdatestackInput>;
   readonly resumes: Maybe<Portfolio_AdminUpdateresumesInput>;
-  readonly stacks: Maybe<Portfolio_AdminUpdatestacksInput>;
   readonly about: Maybe<Portfolio_AboutUpdateManyWithoutAdminInput>;
   readonly messages: Maybe<Portfolio_MessageUpdateManyWithoutAdminInput>;
   readonly projects: Maybe<Portfolio_ProjectUpdateManyWithoutAdminInput>;
+  readonly stack: Maybe<Portfolio_StackUpdateManyWithoutAdminInput>;
 };
 
+type Portfolio_AnswerMessageInput = {
+  readonly to: Scalars['String'];
+  readonly subject: Scalars['String'];
+  readonly from: Scalars['String'];
+  readonly message: Scalars['String'];
+  readonly messageId: Scalars['String'];
+};
+
+type Portfolio_LoginReturnType = {
+  readonly token: Maybe<Scalars['String']>;
+};
+
+type Portfolio_LoginInputType = {
+  readonly email: Scalars['String'];
+  readonly password: Scalars['String'];
+};
+
+type Portfolio_CreateProjectInput_PWNR = {
+  readonly name: Scalars['String'];
+  readonly summary: Scalars['String'];
+  readonly type: Scalars['String'];
+  readonly image: Scalars['String'];
+  readonly github_url: Scalars['String'];
+  readonly app_url: Scalars['String'];
+  readonly techCategories: ReadonlyArray<Portfolio_TechCategoryCreateInput_PWNR>;
+  readonly sketches: ReadonlyArray<Portfolio_SketchCreateInput_PWNR>;
+  readonly questions: ReadonlyArray<Portfolio_QuestionCreateInput_PWNR>;
+};
+
+type Portfolio_TechCategoryCreateInput_PWNR = {
+  readonly name: Scalars['String'];
+  readonly techs: ReadonlyArray<Portfolio_TechCreateInput_PWNR>;
+};
+
+type Portfolio_TechCreateInput_PWNR = {
+  readonly name: Scalars['String'];
+};
+
+type Portfolio_SketchCreateInput_PWNR = {
+  readonly title: Scalars['String'];
+  readonly summary: Scalars['String'];
+  readonly description: Scalars['String'];
+  readonly image: Scalars['String'];
+  readonly downloadables: Scalars['String'];
+};
+
+type Portfolio_QuestionCreateInput_PWNR = {
+  readonly question: Scalars['String'];
+  readonly answer: Scalars['String'];
+};
+
+type Portfolio_MessageCreateInput = {
+  readonly id: Maybe<Scalars['String']>;
+  readonly subject: Scalars['String'];
+  readonly from: Scalars['String'];
+  readonly files: Maybe<Scalars['String']>;
+  readonly body: Scalars['String'];
+  readonly read_status: Maybe<Scalars['Boolean']>;
+  readonly answer_status: Maybe<Scalars['Boolean']>;
+  readonly answeredAt: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly createdAd: Maybe<Scalars['Portfolio_DateTime']>;
+  readonly admin: Portfolio_AdminCreateNestedOneWithoutMessagesInput;
+};
+
+type Portfolio_AdminCreateNestedOneWithoutMessagesInput = {
+  readonly create: Maybe<Portfolio_AdminCreateWithoutMessagesInput>;
+  readonly connectOrCreate: Maybe<Portfolio_AdminCreateOrConnectWithoutMessagesInput>;
+  readonly connect: Maybe<Portfolio_AdminWhereUniqueInput>;
+};
 
 type Portfolio = {
   readonly about: Maybe<Portfolio_About>;
   readonly abouts: ReadonlyArray<Portfolio_About>;
-  readonly answer: Maybe<Portfolio_Answer>;
-  readonly answers: ReadonlyArray<Portfolio_Answer>;
   readonly message: Maybe<Portfolio_Message>;
   readonly messages: ReadonlyArray<Portfolio_Message>;
   readonly project: Maybe<Portfolio_Project>;
@@ -2698,14 +2856,15 @@ type Portfolio = {
   readonly questions: ReadonlyArray<Portfolio_Question>;
   readonly sketch: Maybe<Portfolio_Sketch>;
   readonly sketches: ReadonlyArray<Portfolio_Sketch>;
+  readonly stacks: ReadonlyArray<Portfolio_Stack>;
   readonly tech: Maybe<Portfolio_Tech>;
   readonly teches: ReadonlyArray<Portfolio_Tech>;
   readonly techCategory: Maybe<Portfolio_TechCategory>;
   readonly techCategories: ReadonlyArray<Portfolio_TechCategory>;
-  readonly isThereAnAdmin: Scalars['Boolean'];
-  readonly me: Maybe<Portfolio_Admin>;
   readonly getAdmin: Portfolio_Admin;
   readonly getNumOfAdmins: Maybe<Scalars['Int']>;
+  readonly isThereAnAdmin: Scalars['Boolean'];
+  readonly me: Maybe<Portfolio_Admin>;
 };
 
 
@@ -2721,21 +2880,6 @@ type Portfolio_aboutsArgs = {
   take: Maybe<Scalars['Int']>;
   skip: Maybe<Scalars['Int']>;
   distinct: Maybe<ReadonlyArray<Portfolio_AboutScalarFieldEnum>>;
-};
-
-
-type Portfolio_answerArgs = {
-  where: Portfolio_AnswerWhereUniqueInput;
-};
-
-
-type Portfolio_answersArgs = {
-  where: Maybe<Portfolio_AnswerWhereInput>;
-  orderBy: Maybe<ReadonlyArray<Portfolio_AnswerOrderByWithRelationInput>>;
-  cursor: Maybe<Portfolio_AnswerWhereUniqueInput>;
-  take: Maybe<Scalars['Int']>;
-  skip: Maybe<Scalars['Int']>;
-  distinct: Maybe<ReadonlyArray<Portfolio_AnswerScalarFieldEnum>>;
 };
 
 
@@ -2796,6 +2940,16 @@ type Portfolio_sketchesArgs = {
   take: Maybe<Scalars['Int']>;
   skip: Maybe<Scalars['Int']>;
   distinct: Maybe<ReadonlyArray<Portfolio_SketchScalarFieldEnum>>;
+};
+
+
+type Portfolio_stacksArgs = {
+  where: Maybe<Portfolio_StackWhereInput>;
+  orderBy: Maybe<ReadonlyArray<Portfolio_StackOrderByWithRelationInput>>;
+  cursor: Maybe<Portfolio_StackWhereUniqueInput>;
+  take: Maybe<Scalars['Int']>;
+  skip: Maybe<Scalars['Int']>;
+  distinct: Maybe<ReadonlyArray<Portfolio_StackScalarFieldEnum>>;
 };
 
 
@@ -5203,15 +5357,26 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404QueryVariables = Exact<{ [key: string]: never; }>;
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsDashboardDashHeroTsx3862925404Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721QueryVariables = Exact<{ [key: string]: never; }>;
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrccomponentsSeoTsx3000541721Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx636364020QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx636364020Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
+      Pick<Portfolio_Project, 'name' | 'image' | 'id' | 'github_url' | 'createdAt' | 'app_url' | 'summary' | 'updatedAt' | 'type'>
+      & { readonly tech_categories: ReadonlyArray<(
+        Pick<Portfolio_TechCategory, 'name' | 'id'>
+        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'name' | 'id'>> }
+      )> }
+    )>, readonly stacks: ReadonlyArray<Pick<Portfolio_Stack, 'id' | 'title' | 'image'>>, readonly me: Maybe<Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'skype' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'>> } };
 
 type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818QueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5224,16 +5389,15 @@ type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpages
       )> }
     )> } };
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx3888931460QueryVariables = Exact<{ [key: string]: never; }>;
+type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx3888931460Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
-      Pick<Portfolio_Project, 'name' | 'image' | 'id' | 'github_url' | 'createdAt' | 'app_url' | 'summary' | 'updatedAt' | 'type'>
-      & { readonly tech_categories: ReadonlyArray<(
-        Pick<Portfolio_TechCategory, 'name' | 'id'>
-        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'name' | 'id'>> }
-      )> }
-    )>, readonly me: Maybe<Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'>> } };
+type Unnamed_1_Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+
+type Unnamed_2_QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type Unnamed_2_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -5260,23 +5424,6 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
-
-type ProjectImageQueryVariables = Exact<{
-  image: Maybe<Scalars['String']>;
-}>;
-
-
-type ProjectImageQuery = { readonly file: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 
 
@@ -5422,6 +5569,8 @@ export type ResolversTypes = {
   Portfolio_AboutListRelationFilter: Portfolio_AboutListRelationFilter;
   Portfolio_MessageListRelationFilter: Portfolio_MessageListRelationFilter;
   Portfolio_MessageWhereInput: Portfolio_MessageWhereInput;
+  Portfolio_DateTimeNullableFilter: Portfolio_DateTimeNullableFilter;
+  Portfolio_NestedDateTimeNullableFilter: Portfolio_NestedDateTimeNullableFilter;
   Portfolio_DateTimeFilter: Portfolio_DateTimeFilter;
   Portfolio_NestedDateTimeFilter: Portfolio_NestedDateTimeFilter;
   Portfolio_ProjectListRelationFilter: Portfolio_ProjectListRelationFilter;
@@ -5434,20 +5583,22 @@ export type ResolversTypes = {
   Portfolio_ProjectRelationFilter: Portfolio_ProjectRelationFilter;
   Portfolio_QuestionListRelationFilter: Portfolio_QuestionListRelationFilter;
   Portfolio_QuestionWhereInput: Portfolio_QuestionWhereInput;
-  Portfolio_AnswerRelationFilter: Portfolio_AnswerRelationFilter;
-  Portfolio_AnswerWhereInput: Portfolio_AnswerWhereInput;
-  Portfolio_QuestionRelationFilter: Portfolio_QuestionRelationFilter;
   Portfolio_SketchListRelationFilter: Portfolio_SketchListRelationFilter;
   Portfolio_SketchWhereInput: Portfolio_SketchWhereInput;
+  Portfolio_StackListRelationFilter: Portfolio_StackListRelationFilter;
+  Portfolio_StackWhereInput: Portfolio_StackWhereInput;
   Portfolio_AboutOrderByWithRelationInput: Portfolio_AboutOrderByWithRelationInput;
   Portfolio_SortOrder: Portfolio_SortOrder;
   Portfolio_AdminOrderByWithRelationInput: Portfolio_AdminOrderByWithRelationInput;
   Portfolio_AboutOrderByRelationAggregateInput: Portfolio_AboutOrderByRelationAggregateInput;
   Portfolio_MessageOrderByRelationAggregateInput: Portfolio_MessageOrderByRelationAggregateInput;
   Portfolio_ProjectOrderByRelationAggregateInput: Portfolio_ProjectOrderByRelationAggregateInput;
+  Portfolio_StackOrderByRelationAggregateInput: Portfolio_StackOrderByRelationAggregateInput;
   Portfolio_AboutScalarFieldEnum: Portfolio_AboutScalarFieldEnum;
-  Portfolio_Answer: ResolverTypeWrapper<Portfolio_Answer>;
-  Portfolio_Question: ResolverTypeWrapper<Portfolio_Question>;
+  Portfolio_Message: ResolverTypeWrapper<Portfolio_Message>;
+  Portfolio_MessageWhereUniqueInput: Portfolio_MessageWhereUniqueInput;
+  Portfolio_MessageOrderByWithRelationInput: Portfolio_MessageOrderByWithRelationInput;
+  Portfolio_MessageScalarFieldEnum: Portfolio_MessageScalarFieldEnum;
   Portfolio_Project: ResolverTypeWrapper<Portfolio_Project>;
   Portfolio_ProjectCount: ResolverTypeWrapper<Portfolio_ProjectCount>;
   Portfolio_TechCategory: ResolverTypeWrapper<Portfolio_TechCategory>;
@@ -5464,28 +5615,25 @@ export type ResolversTypes = {
   Portfolio_TechScalarFieldEnum: Portfolio_TechScalarFieldEnum;
   Portfolio_TechCategoryWhereUniqueInput: Portfolio_TechCategoryWhereUniqueInput;
   Portfolio_TechCategoryScalarFieldEnum: Portfolio_TechCategoryScalarFieldEnum;
+  Portfolio_Question: ResolverTypeWrapper<Portfolio_Question>;
   Portfolio_QuestionOrderByWithRelationInput: Portfolio_QuestionOrderByWithRelationInput;
-  Portfolio_AnswerOrderByWithRelationInput: Portfolio_AnswerOrderByWithRelationInput;
   Portfolio_QuestionWhereUniqueInput: Portfolio_QuestionWhereUniqueInput;
   Portfolio_QuestionScalarFieldEnum: Portfolio_QuestionScalarFieldEnum;
   Portfolio_Sketch: ResolverTypeWrapper<Portfolio_Sketch>;
   Portfolio_SketchOrderByWithRelationInput: Portfolio_SketchOrderByWithRelationInput;
   Portfolio_SketchWhereUniqueInput: Portfolio_SketchWhereUniqueInput;
   Portfolio_SketchScalarFieldEnum: Portfolio_SketchScalarFieldEnum;
-  Portfolio_AnswerWhereUniqueInput: Portfolio_AnswerWhereUniqueInput;
-  Portfolio_AnswerScalarFieldEnum: Portfolio_AnswerScalarFieldEnum;
-  Portfolio_Message: ResolverTypeWrapper<Portfolio_Message>;
-  Portfolio_MessageWhereUniqueInput: Portfolio_MessageWhereUniqueInput;
-  Portfolio_MessageOrderByWithRelationInput: Portfolio_MessageOrderByWithRelationInput;
-  Portfolio_MessageScalarFieldEnum: Portfolio_MessageScalarFieldEnum;
   Portfolio_ProjectWhereUniqueInput: Portfolio_ProjectWhereUniqueInput;
   Portfolio_ProjectScalarFieldEnum: Portfolio_ProjectScalarFieldEnum;
+  Portfolio_Stack: ResolverTypeWrapper<Portfolio_Stack>;
+  Portfolio_StackOrderByWithRelationInput: Portfolio_StackOrderByWithRelationInput;
+  Portfolio_StackWhereUniqueInput: Portfolio_StackWhereUniqueInput;
+  Portfolio_StackScalarFieldEnum: Portfolio_StackScalarFieldEnum;
+  Portfolio_Upload: ResolverTypeWrapper<Scalars['Portfolio_Upload']>;
   Portfolio_AboutCreateInput: Portfolio_AboutCreateInput;
   Portfolio_AdminCreateNestedOneWithoutAboutInput: Portfolio_AdminCreateNestedOneWithoutAboutInput;
   Portfolio_AdminCreateWithoutAboutInput: Portfolio_AdminCreateWithoutAboutInput;
-  Portfolio_AdminCreatestackInput: Portfolio_AdminCreatestackInput;
   Portfolio_AdminCreateresumesInput: Portfolio_AdminCreateresumesInput;
-  Portfolio_AdminCreatestacksInput: Portfolio_AdminCreatestacksInput;
   Portfolio_MessageCreateNestedManyWithoutAdminInput: Portfolio_MessageCreateNestedManyWithoutAdminInput;
   Portfolio_MessageCreateWithoutAdminInput: Portfolio_MessageCreateWithoutAdminInput;
   Portfolio_MessageCreateOrConnectWithoutAdminInput: Portfolio_MessageCreateOrConnectWithoutAdminInput;
@@ -5505,9 +5653,6 @@ export type ResolversTypes = {
   Portfolio_TechCategoryCreateManyProjectInput: Portfolio_TechCategoryCreateManyProjectInput;
   Portfolio_QuestionCreateNestedManyWithoutProjectInput: Portfolio_QuestionCreateNestedManyWithoutProjectInput;
   Portfolio_QuestionCreateWithoutProjectInput: Portfolio_QuestionCreateWithoutProjectInput;
-  Portfolio_AnswerCreateNestedOneWithoutQuestionInput: Portfolio_AnswerCreateNestedOneWithoutQuestionInput;
-  Portfolio_AnswerCreateWithoutQuestionInput: Portfolio_AnswerCreateWithoutQuestionInput;
-  Portfolio_AnswerCreateOrConnectWithoutQuestionInput: Portfolio_AnswerCreateOrConnectWithoutQuestionInput;
   Portfolio_QuestionCreateOrConnectWithoutProjectInput: Portfolio_QuestionCreateOrConnectWithoutProjectInput;
   Portfolio_QuestionCreateManyProjectInputEnvelope: Portfolio_QuestionCreateManyProjectInputEnvelope;
   Portfolio_QuestionCreateManyProjectInput: Portfolio_QuestionCreateManyProjectInput;
@@ -5519,6 +5664,11 @@ export type ResolversTypes = {
   Portfolio_ProjectCreateOrConnectWithoutAdminInput: Portfolio_ProjectCreateOrConnectWithoutAdminInput;
   Portfolio_ProjectCreateManyAdminInputEnvelope: Portfolio_ProjectCreateManyAdminInputEnvelope;
   Portfolio_ProjectCreateManyAdminInput: Portfolio_ProjectCreateManyAdminInput;
+  Portfolio_StackCreateNestedManyWithoutAdminInput: Portfolio_StackCreateNestedManyWithoutAdminInput;
+  Portfolio_StackCreateWithoutAdminInput: Portfolio_StackCreateWithoutAdminInput;
+  Portfolio_StackCreateOrConnectWithoutAdminInput: Portfolio_StackCreateOrConnectWithoutAdminInput;
+  Portfolio_StackCreateManyAdminInputEnvelope: Portfolio_StackCreateManyAdminInputEnvelope;
+  Portfolio_StackCreateManyAdminInput: Portfolio_StackCreateManyAdminInput;
   Portfolio_AdminCreateOrConnectWithoutAboutInput: Portfolio_AdminCreateOrConnectWithoutAboutInput;
   Portfolio_AdminWhereUniqueInput: Portfolio_AdminWhereUniqueInput;
   Portfolio_AboutUpdateInput: Portfolio_AboutUpdateInput;
@@ -5528,12 +5678,11 @@ export type ResolversTypes = {
   Portfolio_AdminUpsertWithoutAboutInput: Portfolio_AdminUpsertWithoutAboutInput;
   Portfolio_AdminUpdateWithoutAboutInput: Portfolio_AdminUpdateWithoutAboutInput;
   Portfolio_BoolFieldUpdateOperationsInput: Portfolio_BoolFieldUpdateOperationsInput;
-  Portfolio_AdminUpdatestackInput: Portfolio_AdminUpdatestackInput;
   Portfolio_AdminUpdateresumesInput: Portfolio_AdminUpdateresumesInput;
-  Portfolio_AdminUpdatestacksInput: Portfolio_AdminUpdatestacksInput;
   Portfolio_MessageUpdateManyWithoutAdminInput: Portfolio_MessageUpdateManyWithoutAdminInput;
   Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput: Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput;
   Portfolio_MessageUpdateWithoutAdminInput: Portfolio_MessageUpdateWithoutAdminInput;
+  Portfolio_NullableDateTimeFieldUpdateOperationsInput: Portfolio_NullableDateTimeFieldUpdateOperationsInput;
   Portfolio_MessageUpdateWithWhereUniqueWithoutAdminInput: Portfolio_MessageUpdateWithWhereUniqueWithoutAdminInput;
   Portfolio_MessageUpdateManyWithWhereWithoutAdminInput: Portfolio_MessageUpdateManyWithWhereWithoutAdminInput;
   Portfolio_MessageScalarWhereInput: Portfolio_MessageScalarWhereInput;
@@ -5558,9 +5707,6 @@ export type ResolversTypes = {
   Portfolio_QuestionUpdateManyWithoutProjectInput: Portfolio_QuestionUpdateManyWithoutProjectInput;
   Portfolio_QuestionUpsertWithWhereUniqueWithoutProjectInput: Portfolio_QuestionUpsertWithWhereUniqueWithoutProjectInput;
   Portfolio_QuestionUpdateWithoutProjectInput: Portfolio_QuestionUpdateWithoutProjectInput;
-  Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput: Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput;
-  Portfolio_AnswerUpsertWithoutQuestionInput: Portfolio_AnswerUpsertWithoutQuestionInput;
-  Portfolio_AnswerUpdateWithoutQuestionInput: Portfolio_AnswerUpdateWithoutQuestionInput;
   Portfolio_QuestionUpdateWithWhereUniqueWithoutProjectInput: Portfolio_QuestionUpdateWithWhereUniqueWithoutProjectInput;
   Portfolio_QuestionUpdateManyWithWhereWithoutProjectInput: Portfolio_QuestionUpdateManyWithWhereWithoutProjectInput;
   Portfolio_QuestionScalarWhereInput: Portfolio_QuestionScalarWhereInput;
@@ -5576,32 +5722,25 @@ export type ResolversTypes = {
   Portfolio_ProjectUpdateManyWithWhereWithoutAdminInput: Portfolio_ProjectUpdateManyWithWhereWithoutAdminInput;
   Portfolio_ProjectScalarWhereInput: Portfolio_ProjectScalarWhereInput;
   Portfolio_ProjectUpdateManyMutationInput: Portfolio_ProjectUpdateManyMutationInput;
+  Portfolio_StackUpdateManyWithoutAdminInput: Portfolio_StackUpdateManyWithoutAdminInput;
+  Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput: Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput;
+  Portfolio_StackUpdateWithoutAdminInput: Portfolio_StackUpdateWithoutAdminInput;
+  Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput: Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput;
+  Portfolio_StackUpdateManyWithWhereWithoutAdminInput: Portfolio_StackUpdateManyWithWhereWithoutAdminInput;
+  Portfolio_StackScalarWhereInput: Portfolio_StackScalarWhereInput;
+  Portfolio_StackUpdateManyMutationInput: Portfolio_StackUpdateManyMutationInput;
   Portfolio_AffectedRowsOutput: ResolverTypeWrapper<Portfolio_AffectedRowsOutput>;
-  Portfolio_AnswerCreateInput: Portfolio_AnswerCreateInput;
-  Portfolio_QuestionCreateNestedOneWithoutAnswerInput: Portfolio_QuestionCreateNestedOneWithoutAnswerInput;
-  Portfolio_QuestionCreateWithoutAnswerInput: Portfolio_QuestionCreateWithoutAnswerInput;
-  Portfolio_ProjectCreateNestedOneWithoutQuestionsInput: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput;
-  Portfolio_ProjectCreateWithoutQuestionsInput: Portfolio_ProjectCreateWithoutQuestionsInput;
-  Portfolio_AdminCreateNestedOneWithoutProjectsInput: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
-  Portfolio_AdminCreateWithoutProjectsInput: Portfolio_AdminCreateWithoutProjectsInput;
+  Portfolio_MessageUpdateInput: Portfolio_MessageUpdateInput;
+  Portfolio_AdminUpdateOneRequiredWithoutMessagesInput: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput;
+  Portfolio_AdminCreateWithoutMessagesInput: Portfolio_AdminCreateWithoutMessagesInput;
   Portfolio_AboutCreateNestedManyWithoutAdminInput: Portfolio_AboutCreateNestedManyWithoutAdminInput;
   Portfolio_AboutCreateWithoutAdminInput: Portfolio_AboutCreateWithoutAdminInput;
   Portfolio_AboutCreateOrConnectWithoutAdminInput: Portfolio_AboutCreateOrConnectWithoutAdminInput;
   Portfolio_AboutCreateManyAdminInputEnvelope: Portfolio_AboutCreateManyAdminInputEnvelope;
   Portfolio_AboutCreateManyAdminInput: Portfolio_AboutCreateManyAdminInput;
-  Portfolio_AdminCreateOrConnectWithoutProjectsInput: Portfolio_AdminCreateOrConnectWithoutProjectsInput;
-  Portfolio_ProjectCreateOrConnectWithoutQuestionsInput: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput;
-  Portfolio_QuestionCreateOrConnectWithoutAnswerInput: Portfolio_QuestionCreateOrConnectWithoutAnswerInput;
-  Portfolio_AnswerUpdateInput: Portfolio_AnswerUpdateInput;
-  Portfolio_QuestionUpdateOneWithoutAnswerInput: Portfolio_QuestionUpdateOneWithoutAnswerInput;
-  Portfolio_QuestionUpsertWithoutAnswerInput: Portfolio_QuestionUpsertWithoutAnswerInput;
-  Portfolio_QuestionUpdateWithoutAnswerInput: Portfolio_QuestionUpdateWithoutAnswerInput;
-  Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput: Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput;
-  Portfolio_ProjectUpsertWithoutQuestionsInput: Portfolio_ProjectUpsertWithoutQuestionsInput;
-  Portfolio_ProjectUpdateWithoutQuestionsInput: Portfolio_ProjectUpdateWithoutQuestionsInput;
-  Portfolio_AdminUpdateOneRequiredWithoutProjectsInput: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput;
-  Portfolio_AdminUpsertWithoutProjectsInput: Portfolio_AdminUpsertWithoutProjectsInput;
-  Portfolio_AdminUpdateWithoutProjectsInput: Portfolio_AdminUpdateWithoutProjectsInput;
+  Portfolio_AdminCreateOrConnectWithoutMessagesInput: Portfolio_AdminCreateOrConnectWithoutMessagesInput;
+  Portfolio_AdminUpsertWithoutMessagesInput: Portfolio_AdminUpsertWithoutMessagesInput;
+  Portfolio_AdminUpdateWithoutMessagesInput: Portfolio_AdminUpdateWithoutMessagesInput;
   Portfolio_AboutUpdateManyWithoutAdminInput: Portfolio_AboutUpdateManyWithoutAdminInput;
   Portfolio_AboutUpsertWithWhereUniqueWithoutAdminInput: Portfolio_AboutUpsertWithWhereUniqueWithoutAdminInput;
   Portfolio_AboutUpdateWithoutAdminInput: Portfolio_AboutUpdateWithoutAdminInput;
@@ -5609,26 +5748,40 @@ export type ResolversTypes = {
   Portfolio_AboutUpdateManyWithWhereWithoutAdminInput: Portfolio_AboutUpdateManyWithWhereWithoutAdminInput;
   Portfolio_AboutScalarWhereInput: Portfolio_AboutScalarWhereInput;
   Portfolio_AboutUpdateManyMutationInput: Portfolio_AboutUpdateManyMutationInput;
-  Portfolio_MessageCreateInput: Portfolio_MessageCreateInput;
-  Portfolio_AdminCreateNestedOneWithoutMessagesInput: Portfolio_AdminCreateNestedOneWithoutMessagesInput;
-  Portfolio_AdminCreateWithoutMessagesInput: Portfolio_AdminCreateWithoutMessagesInput;
-  Portfolio_AdminCreateOrConnectWithoutMessagesInput: Portfolio_AdminCreateOrConnectWithoutMessagesInput;
-  Portfolio_MessageUpdateInput: Portfolio_MessageUpdateInput;
-  Portfolio_AdminUpdateOneRequiredWithoutMessagesInput: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput;
-  Portfolio_AdminUpsertWithoutMessagesInput: Portfolio_AdminUpsertWithoutMessagesInput;
-  Portfolio_AdminUpdateWithoutMessagesInput: Portfolio_AdminUpdateWithoutMessagesInput;
   Portfolio_ProjectCreateInput: Portfolio_ProjectCreateInput;
+  Portfolio_AdminCreateNestedOneWithoutProjectsInput: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
+  Portfolio_AdminCreateWithoutProjectsInput: Portfolio_AdminCreateWithoutProjectsInput;
+  Portfolio_AdminCreateOrConnectWithoutProjectsInput: Portfolio_AdminCreateOrConnectWithoutProjectsInput;
   Portfolio_ProjectUpdateInput: Portfolio_ProjectUpdateInput;
+  Portfolio_AdminUpdateOneRequiredWithoutProjectsInput: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput;
+  Portfolio_AdminUpsertWithoutProjectsInput: Portfolio_AdminUpsertWithoutProjectsInput;
+  Portfolio_AdminUpdateWithoutProjectsInput: Portfolio_AdminUpdateWithoutProjectsInput;
   Portfolio_QuestionCreateInput: Portfolio_QuestionCreateInput;
+  Portfolio_ProjectCreateNestedOneWithoutQuestionsInput: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput;
+  Portfolio_ProjectCreateWithoutQuestionsInput: Portfolio_ProjectCreateWithoutQuestionsInput;
+  Portfolio_ProjectCreateOrConnectWithoutQuestionsInput: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput;
+  Portfolio_QuestionCreateManyInput: Portfolio_QuestionCreateManyInput;
   Portfolio_QuestionUpdateInput: Portfolio_QuestionUpdateInput;
+  Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput: Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput;
+  Portfolio_ProjectUpsertWithoutQuestionsInput: Portfolio_ProjectUpsertWithoutQuestionsInput;
+  Portfolio_ProjectUpdateWithoutQuestionsInput: Portfolio_ProjectUpdateWithoutQuestionsInput;
   Portfolio_SketchCreateInput: Portfolio_SketchCreateInput;
   Portfolio_ProjectCreateNestedOneWithoutSketchesInput: Portfolio_ProjectCreateNestedOneWithoutSketchesInput;
   Portfolio_ProjectCreateWithoutSketchesInput: Portfolio_ProjectCreateWithoutSketchesInput;
   Portfolio_ProjectCreateOrConnectWithoutSketchesInput: Portfolio_ProjectCreateOrConnectWithoutSketchesInput;
+  Portfolio_SketchCreateManyInput: Portfolio_SketchCreateManyInput;
   Portfolio_SketchUpdateInput: Portfolio_SketchUpdateInput;
   Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput: Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput;
   Portfolio_ProjectUpsertWithoutSketchesInput: Portfolio_ProjectUpsertWithoutSketchesInput;
   Portfolio_ProjectUpdateWithoutSketchesInput: Portfolio_ProjectUpdateWithoutSketchesInput;
+  Portfolio_StackCreateInput: Portfolio_StackCreateInput;
+  Portfolio_AdminCreateNestedOneWithoutStackInput: Portfolio_AdminCreateNestedOneWithoutStackInput;
+  Portfolio_AdminCreateWithoutStackInput: Portfolio_AdminCreateWithoutStackInput;
+  Portfolio_AdminCreateOrConnectWithoutStackInput: Portfolio_AdminCreateOrConnectWithoutStackInput;
+  Portfolio_StackUpdateInput: Portfolio_StackUpdateInput;
+  Portfolio_AdminUpdateOneRequiredWithoutStackInput: Portfolio_AdminUpdateOneRequiredWithoutStackInput;
+  Portfolio_AdminUpsertWithoutStackInput: Portfolio_AdminUpsertWithoutStackInput;
+  Portfolio_AdminUpdateWithoutStackInput: Portfolio_AdminUpdateWithoutStackInput;
   Portfolio_TechCreateInput: Portfolio_TechCreateInput;
   Portfolio_TechCategoryCreateNestedOneWithoutTechsInput: Portfolio_TechCategoryCreateNestedOneWithoutTechsInput;
   Portfolio_TechCategoryCreateWithoutTechsInput: Portfolio_TechCategoryCreateWithoutTechsInput;
@@ -5636,6 +5789,7 @@ export type ResolversTypes = {
   Portfolio_ProjectCreateWithoutTech_categoriesInput: Portfolio_ProjectCreateWithoutTech_categoriesInput;
   Portfolio_ProjectCreateOrConnectWithoutTech_categoriesInput: Portfolio_ProjectCreateOrConnectWithoutTech_categoriesInput;
   Portfolio_TechCategoryCreateOrConnectWithoutTechsInput: Portfolio_TechCategoryCreateOrConnectWithoutTechsInput;
+  Portfolio_TechCreateManyInput: Portfolio_TechCreateManyInput;
   Portfolio_TechUpdateInput: Portfolio_TechUpdateInput;
   Portfolio_TechCategoryUpdateOneRequiredWithoutTechsInput: Portfolio_TechCategoryUpdateOneRequiredWithoutTechsInput;
   Portfolio_TechCategoryUpsertWithoutTechsInput: Portfolio_TechCategoryUpsertWithoutTechsInput;
@@ -5644,12 +5798,20 @@ export type ResolversTypes = {
   Portfolio_ProjectUpsertWithoutTech_categoriesInput: Portfolio_ProjectUpsertWithoutTech_categoriesInput;
   Portfolio_ProjectUpdateWithoutTech_categoriesInput: Portfolio_ProjectUpdateWithoutTech_categoriesInput;
   Portfolio_TechCategoryCreateInput: Portfolio_TechCategoryCreateInput;
+  Portfolio_TechCategoryCreateManyInput: Portfolio_TechCategoryCreateManyInput;
   Portfolio_TechCategoryUpdateInput: Portfolio_TechCategoryUpdateInput;
-  Portfolio_LoginReturnType: ResolverTypeWrapper<Portfolio_LoginReturnType>;
-  Portfolio_LoginInputType: Portfolio_LoginInputType;
   Portfolio_AdminCreateInput: Portfolio_AdminCreateInput;
   Portfolio_AdminUpdateInput: Portfolio_AdminUpdateInput;
-  Portfolio_Upload: ResolverTypeWrapper<Scalars['Portfolio_Upload']>;
+  Portfolio_AnswerMessageInput: Portfolio_AnswerMessageInput;
+  Portfolio_LoginReturnType: ResolverTypeWrapper<Portfolio_LoginReturnType>;
+  Portfolio_LoginInputType: Portfolio_LoginInputType;
+  Portfolio_CreateProjectInput_PWNR: Portfolio_CreateProjectInput_PWNR;
+  Portfolio_TechCategoryCreateInput_PWNR: Portfolio_TechCategoryCreateInput_PWNR;
+  Portfolio_TechCreateInput_PWNR: Portfolio_TechCreateInput_PWNR;
+  Portfolio_SketchCreateInput_PWNR: Portfolio_SketchCreateInput_PWNR;
+  Portfolio_QuestionCreateInput_PWNR: Portfolio_QuestionCreateInput_PWNR;
+  Portfolio_MessageCreateInput: Portfolio_MessageCreateInput;
+  Portfolio_AdminCreateNestedOneWithoutMessagesInput: Portfolio_AdminCreateNestedOneWithoutMessagesInput;
   Portfolio: ResolverTypeWrapper<Portfolio>;
   Query: ResolverTypeWrapper<{}>;
   StringQueryOperatorInput: StringQueryOperatorInput;
@@ -5791,6 +5953,8 @@ export type ResolversParentTypes = {
   Portfolio_AboutListRelationFilter: Portfolio_AboutListRelationFilter;
   Portfolio_MessageListRelationFilter: Portfolio_MessageListRelationFilter;
   Portfolio_MessageWhereInput: Portfolio_MessageWhereInput;
+  Portfolio_DateTimeNullableFilter: Portfolio_DateTimeNullableFilter;
+  Portfolio_NestedDateTimeNullableFilter: Portfolio_NestedDateTimeNullableFilter;
   Portfolio_DateTimeFilter: Portfolio_DateTimeFilter;
   Portfolio_NestedDateTimeFilter: Portfolio_NestedDateTimeFilter;
   Portfolio_ProjectListRelationFilter: Portfolio_ProjectListRelationFilter;
@@ -5803,18 +5967,19 @@ export type ResolversParentTypes = {
   Portfolio_ProjectRelationFilter: Portfolio_ProjectRelationFilter;
   Portfolio_QuestionListRelationFilter: Portfolio_QuestionListRelationFilter;
   Portfolio_QuestionWhereInput: Portfolio_QuestionWhereInput;
-  Portfolio_AnswerRelationFilter: Portfolio_AnswerRelationFilter;
-  Portfolio_AnswerWhereInput: Portfolio_AnswerWhereInput;
-  Portfolio_QuestionRelationFilter: Portfolio_QuestionRelationFilter;
   Portfolio_SketchListRelationFilter: Portfolio_SketchListRelationFilter;
   Portfolio_SketchWhereInput: Portfolio_SketchWhereInput;
+  Portfolio_StackListRelationFilter: Portfolio_StackListRelationFilter;
+  Portfolio_StackWhereInput: Portfolio_StackWhereInput;
   Portfolio_AboutOrderByWithRelationInput: Portfolio_AboutOrderByWithRelationInput;
   Portfolio_AdminOrderByWithRelationInput: Portfolio_AdminOrderByWithRelationInput;
   Portfolio_AboutOrderByRelationAggregateInput: Portfolio_AboutOrderByRelationAggregateInput;
   Portfolio_MessageOrderByRelationAggregateInput: Portfolio_MessageOrderByRelationAggregateInput;
   Portfolio_ProjectOrderByRelationAggregateInput: Portfolio_ProjectOrderByRelationAggregateInput;
-  Portfolio_Answer: Portfolio_Answer;
-  Portfolio_Question: Portfolio_Question;
+  Portfolio_StackOrderByRelationAggregateInput: Portfolio_StackOrderByRelationAggregateInput;
+  Portfolio_Message: Portfolio_Message;
+  Portfolio_MessageWhereUniqueInput: Portfolio_MessageWhereUniqueInput;
+  Portfolio_MessageOrderByWithRelationInput: Portfolio_MessageOrderByWithRelationInput;
   Portfolio_Project: Portfolio_Project;
   Portfolio_ProjectCount: Portfolio_ProjectCount;
   Portfolio_TechCategory: Portfolio_TechCategory;
@@ -5829,23 +5994,21 @@ export type ResolversParentTypes = {
   Portfolio_SketchOrderByRelationAggregateInput: Portfolio_SketchOrderByRelationAggregateInput;
   Portfolio_TechWhereUniqueInput: Portfolio_TechWhereUniqueInput;
   Portfolio_TechCategoryWhereUniqueInput: Portfolio_TechCategoryWhereUniqueInput;
+  Portfolio_Question: Portfolio_Question;
   Portfolio_QuestionOrderByWithRelationInput: Portfolio_QuestionOrderByWithRelationInput;
-  Portfolio_AnswerOrderByWithRelationInput: Portfolio_AnswerOrderByWithRelationInput;
   Portfolio_QuestionWhereUniqueInput: Portfolio_QuestionWhereUniqueInput;
   Portfolio_Sketch: Portfolio_Sketch;
   Portfolio_SketchOrderByWithRelationInput: Portfolio_SketchOrderByWithRelationInput;
   Portfolio_SketchWhereUniqueInput: Portfolio_SketchWhereUniqueInput;
-  Portfolio_AnswerWhereUniqueInput: Portfolio_AnswerWhereUniqueInput;
-  Portfolio_Message: Portfolio_Message;
-  Portfolio_MessageWhereUniqueInput: Portfolio_MessageWhereUniqueInput;
-  Portfolio_MessageOrderByWithRelationInput: Portfolio_MessageOrderByWithRelationInput;
   Portfolio_ProjectWhereUniqueInput: Portfolio_ProjectWhereUniqueInput;
+  Portfolio_Stack: Portfolio_Stack;
+  Portfolio_StackOrderByWithRelationInput: Portfolio_StackOrderByWithRelationInput;
+  Portfolio_StackWhereUniqueInput: Portfolio_StackWhereUniqueInput;
+  Portfolio_Upload: Scalars['Portfolio_Upload'];
   Portfolio_AboutCreateInput: Portfolio_AboutCreateInput;
   Portfolio_AdminCreateNestedOneWithoutAboutInput: Portfolio_AdminCreateNestedOneWithoutAboutInput;
   Portfolio_AdminCreateWithoutAboutInput: Portfolio_AdminCreateWithoutAboutInput;
-  Portfolio_AdminCreatestackInput: Portfolio_AdminCreatestackInput;
   Portfolio_AdminCreateresumesInput: Portfolio_AdminCreateresumesInput;
-  Portfolio_AdminCreatestacksInput: Portfolio_AdminCreatestacksInput;
   Portfolio_MessageCreateNestedManyWithoutAdminInput: Portfolio_MessageCreateNestedManyWithoutAdminInput;
   Portfolio_MessageCreateWithoutAdminInput: Portfolio_MessageCreateWithoutAdminInput;
   Portfolio_MessageCreateOrConnectWithoutAdminInput: Portfolio_MessageCreateOrConnectWithoutAdminInput;
@@ -5865,9 +6028,6 @@ export type ResolversParentTypes = {
   Portfolio_TechCategoryCreateManyProjectInput: Portfolio_TechCategoryCreateManyProjectInput;
   Portfolio_QuestionCreateNestedManyWithoutProjectInput: Portfolio_QuestionCreateNestedManyWithoutProjectInput;
   Portfolio_QuestionCreateWithoutProjectInput: Portfolio_QuestionCreateWithoutProjectInput;
-  Portfolio_AnswerCreateNestedOneWithoutQuestionInput: Portfolio_AnswerCreateNestedOneWithoutQuestionInput;
-  Portfolio_AnswerCreateWithoutQuestionInput: Portfolio_AnswerCreateWithoutQuestionInput;
-  Portfolio_AnswerCreateOrConnectWithoutQuestionInput: Portfolio_AnswerCreateOrConnectWithoutQuestionInput;
   Portfolio_QuestionCreateOrConnectWithoutProjectInput: Portfolio_QuestionCreateOrConnectWithoutProjectInput;
   Portfolio_QuestionCreateManyProjectInputEnvelope: Portfolio_QuestionCreateManyProjectInputEnvelope;
   Portfolio_QuestionCreateManyProjectInput: Portfolio_QuestionCreateManyProjectInput;
@@ -5879,6 +6039,11 @@ export type ResolversParentTypes = {
   Portfolio_ProjectCreateOrConnectWithoutAdminInput: Portfolio_ProjectCreateOrConnectWithoutAdminInput;
   Portfolio_ProjectCreateManyAdminInputEnvelope: Portfolio_ProjectCreateManyAdminInputEnvelope;
   Portfolio_ProjectCreateManyAdminInput: Portfolio_ProjectCreateManyAdminInput;
+  Portfolio_StackCreateNestedManyWithoutAdminInput: Portfolio_StackCreateNestedManyWithoutAdminInput;
+  Portfolio_StackCreateWithoutAdminInput: Portfolio_StackCreateWithoutAdminInput;
+  Portfolio_StackCreateOrConnectWithoutAdminInput: Portfolio_StackCreateOrConnectWithoutAdminInput;
+  Portfolio_StackCreateManyAdminInputEnvelope: Portfolio_StackCreateManyAdminInputEnvelope;
+  Portfolio_StackCreateManyAdminInput: Portfolio_StackCreateManyAdminInput;
   Portfolio_AdminCreateOrConnectWithoutAboutInput: Portfolio_AdminCreateOrConnectWithoutAboutInput;
   Portfolio_AdminWhereUniqueInput: Portfolio_AdminWhereUniqueInput;
   Portfolio_AboutUpdateInput: Portfolio_AboutUpdateInput;
@@ -5888,12 +6053,11 @@ export type ResolversParentTypes = {
   Portfolio_AdminUpsertWithoutAboutInput: Portfolio_AdminUpsertWithoutAboutInput;
   Portfolio_AdminUpdateWithoutAboutInput: Portfolio_AdminUpdateWithoutAboutInput;
   Portfolio_BoolFieldUpdateOperationsInput: Portfolio_BoolFieldUpdateOperationsInput;
-  Portfolio_AdminUpdatestackInput: Portfolio_AdminUpdatestackInput;
   Portfolio_AdminUpdateresumesInput: Portfolio_AdminUpdateresumesInput;
-  Portfolio_AdminUpdatestacksInput: Portfolio_AdminUpdatestacksInput;
   Portfolio_MessageUpdateManyWithoutAdminInput: Portfolio_MessageUpdateManyWithoutAdminInput;
   Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput: Portfolio_MessageUpsertWithWhereUniqueWithoutAdminInput;
   Portfolio_MessageUpdateWithoutAdminInput: Portfolio_MessageUpdateWithoutAdminInput;
+  Portfolio_NullableDateTimeFieldUpdateOperationsInput: Portfolio_NullableDateTimeFieldUpdateOperationsInput;
   Portfolio_MessageUpdateWithWhereUniqueWithoutAdminInput: Portfolio_MessageUpdateWithWhereUniqueWithoutAdminInput;
   Portfolio_MessageUpdateManyWithWhereWithoutAdminInput: Portfolio_MessageUpdateManyWithWhereWithoutAdminInput;
   Portfolio_MessageScalarWhereInput: Portfolio_MessageScalarWhereInput;
@@ -5918,9 +6082,6 @@ export type ResolversParentTypes = {
   Portfolio_QuestionUpdateManyWithoutProjectInput: Portfolio_QuestionUpdateManyWithoutProjectInput;
   Portfolio_QuestionUpsertWithWhereUniqueWithoutProjectInput: Portfolio_QuestionUpsertWithWhereUniqueWithoutProjectInput;
   Portfolio_QuestionUpdateWithoutProjectInput: Portfolio_QuestionUpdateWithoutProjectInput;
-  Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput: Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput;
-  Portfolio_AnswerUpsertWithoutQuestionInput: Portfolio_AnswerUpsertWithoutQuestionInput;
-  Portfolio_AnswerUpdateWithoutQuestionInput: Portfolio_AnswerUpdateWithoutQuestionInput;
   Portfolio_QuestionUpdateWithWhereUniqueWithoutProjectInput: Portfolio_QuestionUpdateWithWhereUniqueWithoutProjectInput;
   Portfolio_QuestionUpdateManyWithWhereWithoutProjectInput: Portfolio_QuestionUpdateManyWithWhereWithoutProjectInput;
   Portfolio_QuestionScalarWhereInput: Portfolio_QuestionScalarWhereInput;
@@ -5936,32 +6097,25 @@ export type ResolversParentTypes = {
   Portfolio_ProjectUpdateManyWithWhereWithoutAdminInput: Portfolio_ProjectUpdateManyWithWhereWithoutAdminInput;
   Portfolio_ProjectScalarWhereInput: Portfolio_ProjectScalarWhereInput;
   Portfolio_ProjectUpdateManyMutationInput: Portfolio_ProjectUpdateManyMutationInput;
+  Portfolio_StackUpdateManyWithoutAdminInput: Portfolio_StackUpdateManyWithoutAdminInput;
+  Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput: Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput;
+  Portfolio_StackUpdateWithoutAdminInput: Portfolio_StackUpdateWithoutAdminInput;
+  Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput: Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput;
+  Portfolio_StackUpdateManyWithWhereWithoutAdminInput: Portfolio_StackUpdateManyWithWhereWithoutAdminInput;
+  Portfolio_StackScalarWhereInput: Portfolio_StackScalarWhereInput;
+  Portfolio_StackUpdateManyMutationInput: Portfolio_StackUpdateManyMutationInput;
   Portfolio_AffectedRowsOutput: Portfolio_AffectedRowsOutput;
-  Portfolio_AnswerCreateInput: Portfolio_AnswerCreateInput;
-  Portfolio_QuestionCreateNestedOneWithoutAnswerInput: Portfolio_QuestionCreateNestedOneWithoutAnswerInput;
-  Portfolio_QuestionCreateWithoutAnswerInput: Portfolio_QuestionCreateWithoutAnswerInput;
-  Portfolio_ProjectCreateNestedOneWithoutQuestionsInput: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput;
-  Portfolio_ProjectCreateWithoutQuestionsInput: Portfolio_ProjectCreateWithoutQuestionsInput;
-  Portfolio_AdminCreateNestedOneWithoutProjectsInput: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
-  Portfolio_AdminCreateWithoutProjectsInput: Portfolio_AdminCreateWithoutProjectsInput;
+  Portfolio_MessageUpdateInput: Portfolio_MessageUpdateInput;
+  Portfolio_AdminUpdateOneRequiredWithoutMessagesInput: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput;
+  Portfolio_AdminCreateWithoutMessagesInput: Portfolio_AdminCreateWithoutMessagesInput;
   Portfolio_AboutCreateNestedManyWithoutAdminInput: Portfolio_AboutCreateNestedManyWithoutAdminInput;
   Portfolio_AboutCreateWithoutAdminInput: Portfolio_AboutCreateWithoutAdminInput;
   Portfolio_AboutCreateOrConnectWithoutAdminInput: Portfolio_AboutCreateOrConnectWithoutAdminInput;
   Portfolio_AboutCreateManyAdminInputEnvelope: Portfolio_AboutCreateManyAdminInputEnvelope;
   Portfolio_AboutCreateManyAdminInput: Portfolio_AboutCreateManyAdminInput;
-  Portfolio_AdminCreateOrConnectWithoutProjectsInput: Portfolio_AdminCreateOrConnectWithoutProjectsInput;
-  Portfolio_ProjectCreateOrConnectWithoutQuestionsInput: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput;
-  Portfolio_QuestionCreateOrConnectWithoutAnswerInput: Portfolio_QuestionCreateOrConnectWithoutAnswerInput;
-  Portfolio_AnswerUpdateInput: Portfolio_AnswerUpdateInput;
-  Portfolio_QuestionUpdateOneWithoutAnswerInput: Portfolio_QuestionUpdateOneWithoutAnswerInput;
-  Portfolio_QuestionUpsertWithoutAnswerInput: Portfolio_QuestionUpsertWithoutAnswerInput;
-  Portfolio_QuestionUpdateWithoutAnswerInput: Portfolio_QuestionUpdateWithoutAnswerInput;
-  Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput: Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput;
-  Portfolio_ProjectUpsertWithoutQuestionsInput: Portfolio_ProjectUpsertWithoutQuestionsInput;
-  Portfolio_ProjectUpdateWithoutQuestionsInput: Portfolio_ProjectUpdateWithoutQuestionsInput;
-  Portfolio_AdminUpdateOneRequiredWithoutProjectsInput: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput;
-  Portfolio_AdminUpsertWithoutProjectsInput: Portfolio_AdminUpsertWithoutProjectsInput;
-  Portfolio_AdminUpdateWithoutProjectsInput: Portfolio_AdminUpdateWithoutProjectsInput;
+  Portfolio_AdminCreateOrConnectWithoutMessagesInput: Portfolio_AdminCreateOrConnectWithoutMessagesInput;
+  Portfolio_AdminUpsertWithoutMessagesInput: Portfolio_AdminUpsertWithoutMessagesInput;
+  Portfolio_AdminUpdateWithoutMessagesInput: Portfolio_AdminUpdateWithoutMessagesInput;
   Portfolio_AboutUpdateManyWithoutAdminInput: Portfolio_AboutUpdateManyWithoutAdminInput;
   Portfolio_AboutUpsertWithWhereUniqueWithoutAdminInput: Portfolio_AboutUpsertWithWhereUniqueWithoutAdminInput;
   Portfolio_AboutUpdateWithoutAdminInput: Portfolio_AboutUpdateWithoutAdminInput;
@@ -5969,26 +6123,40 @@ export type ResolversParentTypes = {
   Portfolio_AboutUpdateManyWithWhereWithoutAdminInput: Portfolio_AboutUpdateManyWithWhereWithoutAdminInput;
   Portfolio_AboutScalarWhereInput: Portfolio_AboutScalarWhereInput;
   Portfolio_AboutUpdateManyMutationInput: Portfolio_AboutUpdateManyMutationInput;
-  Portfolio_MessageCreateInput: Portfolio_MessageCreateInput;
-  Portfolio_AdminCreateNestedOneWithoutMessagesInput: Portfolio_AdminCreateNestedOneWithoutMessagesInput;
-  Portfolio_AdminCreateWithoutMessagesInput: Portfolio_AdminCreateWithoutMessagesInput;
-  Portfolio_AdminCreateOrConnectWithoutMessagesInput: Portfolio_AdminCreateOrConnectWithoutMessagesInput;
-  Portfolio_MessageUpdateInput: Portfolio_MessageUpdateInput;
-  Portfolio_AdminUpdateOneRequiredWithoutMessagesInput: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput;
-  Portfolio_AdminUpsertWithoutMessagesInput: Portfolio_AdminUpsertWithoutMessagesInput;
-  Portfolio_AdminUpdateWithoutMessagesInput: Portfolio_AdminUpdateWithoutMessagesInput;
   Portfolio_ProjectCreateInput: Portfolio_ProjectCreateInput;
+  Portfolio_AdminCreateNestedOneWithoutProjectsInput: Portfolio_AdminCreateNestedOneWithoutProjectsInput;
+  Portfolio_AdminCreateWithoutProjectsInput: Portfolio_AdminCreateWithoutProjectsInput;
+  Portfolio_AdminCreateOrConnectWithoutProjectsInput: Portfolio_AdminCreateOrConnectWithoutProjectsInput;
   Portfolio_ProjectUpdateInput: Portfolio_ProjectUpdateInput;
+  Portfolio_AdminUpdateOneRequiredWithoutProjectsInput: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput;
+  Portfolio_AdminUpsertWithoutProjectsInput: Portfolio_AdminUpsertWithoutProjectsInput;
+  Portfolio_AdminUpdateWithoutProjectsInput: Portfolio_AdminUpdateWithoutProjectsInput;
   Portfolio_QuestionCreateInput: Portfolio_QuestionCreateInput;
+  Portfolio_ProjectCreateNestedOneWithoutQuestionsInput: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput;
+  Portfolio_ProjectCreateWithoutQuestionsInput: Portfolio_ProjectCreateWithoutQuestionsInput;
+  Portfolio_ProjectCreateOrConnectWithoutQuestionsInput: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput;
+  Portfolio_QuestionCreateManyInput: Portfolio_QuestionCreateManyInput;
   Portfolio_QuestionUpdateInput: Portfolio_QuestionUpdateInput;
+  Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput: Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput;
+  Portfolio_ProjectUpsertWithoutQuestionsInput: Portfolio_ProjectUpsertWithoutQuestionsInput;
+  Portfolio_ProjectUpdateWithoutQuestionsInput: Portfolio_ProjectUpdateWithoutQuestionsInput;
   Portfolio_SketchCreateInput: Portfolio_SketchCreateInput;
   Portfolio_ProjectCreateNestedOneWithoutSketchesInput: Portfolio_ProjectCreateNestedOneWithoutSketchesInput;
   Portfolio_ProjectCreateWithoutSketchesInput: Portfolio_ProjectCreateWithoutSketchesInput;
   Portfolio_ProjectCreateOrConnectWithoutSketchesInput: Portfolio_ProjectCreateOrConnectWithoutSketchesInput;
+  Portfolio_SketchCreateManyInput: Portfolio_SketchCreateManyInput;
   Portfolio_SketchUpdateInput: Portfolio_SketchUpdateInput;
   Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput: Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput;
   Portfolio_ProjectUpsertWithoutSketchesInput: Portfolio_ProjectUpsertWithoutSketchesInput;
   Portfolio_ProjectUpdateWithoutSketchesInput: Portfolio_ProjectUpdateWithoutSketchesInput;
+  Portfolio_StackCreateInput: Portfolio_StackCreateInput;
+  Portfolio_AdminCreateNestedOneWithoutStackInput: Portfolio_AdminCreateNestedOneWithoutStackInput;
+  Portfolio_AdminCreateWithoutStackInput: Portfolio_AdminCreateWithoutStackInput;
+  Portfolio_AdminCreateOrConnectWithoutStackInput: Portfolio_AdminCreateOrConnectWithoutStackInput;
+  Portfolio_StackUpdateInput: Portfolio_StackUpdateInput;
+  Portfolio_AdminUpdateOneRequiredWithoutStackInput: Portfolio_AdminUpdateOneRequiredWithoutStackInput;
+  Portfolio_AdminUpsertWithoutStackInput: Portfolio_AdminUpsertWithoutStackInput;
+  Portfolio_AdminUpdateWithoutStackInput: Portfolio_AdminUpdateWithoutStackInput;
   Portfolio_TechCreateInput: Portfolio_TechCreateInput;
   Portfolio_TechCategoryCreateNestedOneWithoutTechsInput: Portfolio_TechCategoryCreateNestedOneWithoutTechsInput;
   Portfolio_TechCategoryCreateWithoutTechsInput: Portfolio_TechCategoryCreateWithoutTechsInput;
@@ -5996,6 +6164,7 @@ export type ResolversParentTypes = {
   Portfolio_ProjectCreateWithoutTech_categoriesInput: Portfolio_ProjectCreateWithoutTech_categoriesInput;
   Portfolio_ProjectCreateOrConnectWithoutTech_categoriesInput: Portfolio_ProjectCreateOrConnectWithoutTech_categoriesInput;
   Portfolio_TechCategoryCreateOrConnectWithoutTechsInput: Portfolio_TechCategoryCreateOrConnectWithoutTechsInput;
+  Portfolio_TechCreateManyInput: Portfolio_TechCreateManyInput;
   Portfolio_TechUpdateInput: Portfolio_TechUpdateInput;
   Portfolio_TechCategoryUpdateOneRequiredWithoutTechsInput: Portfolio_TechCategoryUpdateOneRequiredWithoutTechsInput;
   Portfolio_TechCategoryUpsertWithoutTechsInput: Portfolio_TechCategoryUpsertWithoutTechsInput;
@@ -6004,12 +6173,20 @@ export type ResolversParentTypes = {
   Portfolio_ProjectUpsertWithoutTech_categoriesInput: Portfolio_ProjectUpsertWithoutTech_categoriesInput;
   Portfolio_ProjectUpdateWithoutTech_categoriesInput: Portfolio_ProjectUpdateWithoutTech_categoriesInput;
   Portfolio_TechCategoryCreateInput: Portfolio_TechCategoryCreateInput;
+  Portfolio_TechCategoryCreateManyInput: Portfolio_TechCategoryCreateManyInput;
   Portfolio_TechCategoryUpdateInput: Portfolio_TechCategoryUpdateInput;
-  Portfolio_LoginReturnType: Portfolio_LoginReturnType;
-  Portfolio_LoginInputType: Portfolio_LoginInputType;
   Portfolio_AdminCreateInput: Portfolio_AdminCreateInput;
   Portfolio_AdminUpdateInput: Portfolio_AdminUpdateInput;
-  Portfolio_Upload: Scalars['Portfolio_Upload'];
+  Portfolio_AnswerMessageInput: Portfolio_AnswerMessageInput;
+  Portfolio_LoginReturnType: Portfolio_LoginReturnType;
+  Portfolio_LoginInputType: Portfolio_LoginInputType;
+  Portfolio_CreateProjectInput_PWNR: Portfolio_CreateProjectInput_PWNR;
+  Portfolio_TechCategoryCreateInput_PWNR: Portfolio_TechCategoryCreateInput_PWNR;
+  Portfolio_TechCreateInput_PWNR: Portfolio_TechCreateInput_PWNR;
+  Portfolio_SketchCreateInput_PWNR: Portfolio_SketchCreateInput_PWNR;
+  Portfolio_QuestionCreateInput_PWNR: Portfolio_QuestionCreateInput_PWNR;
+  Portfolio_MessageCreateInput: Portfolio_MessageCreateInput;
+  Portfolio_AdminCreateNestedOneWithoutMessagesInput: Portfolio_AdminCreateNestedOneWithoutMessagesInput;
   Portfolio: Portfolio;
   Query: {};
   StringQueryOperatorInput: StringQueryOperatorInput;
@@ -6491,12 +6668,10 @@ export type Portfolio_AdminResolvers<ContextType = GatsbyResolverContext, Parent
   whatsapp?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   instagram?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   github?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  skype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   heroImage?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  stack?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   resumes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   confirmed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  isPublished?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  stacks?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
   _count?: Resolver<Maybe<ResolversTypes['Portfolio_AdminCount']>, ParentType, ContextType>;
@@ -6507,23 +6682,22 @@ export type Portfolio_AdminCountResolvers<ContextType = GatsbyResolverContext, P
   about?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   messages?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   projects?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  stack?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Portfolio_AnswerResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Answer'] = ResolversParentTypes['Portfolio_Answer']> = {
+export type Portfolio_MessageResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Message'] = ResolversParentTypes['Portfolio_Message']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  answer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  question?: Resolver<Maybe<ResolversTypes['Portfolio_Question']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type Portfolio_QuestionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Question'] = ResolversParentTypes['Portfolio_Question']> = {
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  question?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  answer_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  project_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  answer?: Resolver<ResolversTypes['Portfolio_Answer'], ParentType, ContextType>;
-  project?: Resolver<ResolversTypes['Portfolio_Project'], ParentType, ContextType>;
+  subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  from?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  files?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  body?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  read_status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  answer_status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  admin_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  answeredAt?: Resolver<Maybe<ResolversTypes['Portfolio_DateTime']>, ParentType, ContextType>;
+  createdAd?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
+  admin?: Resolver<ResolversTypes['Portfolio_Admin'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -6576,31 +6750,38 @@ export type Portfolio_TechResolvers<ContextType = GatsbyResolverContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type Portfolio_QuestionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Question'] = ResolversParentTypes['Portfolio_Question']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  question?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  answer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  project_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  project?: Resolver<ResolversTypes['Portfolio_Project'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Portfolio_SketchResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Sketch'] = ResolversParentTypes['Portfolio_Sketch']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  download_link?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  downloadables?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   project_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   project?: Resolver<ResolversTypes['Portfolio_Project'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Portfolio_MessageResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Message'] = ResolversParentTypes['Portfolio_Message']> = {
+export type Portfolio_StackResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_Stack'] = ResolversParentTypes['Portfolio_Stack']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  from?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  body?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  read_status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  answer_status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   admin_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  answeredAt?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
-  createdAd?: Resolver<ResolversTypes['Portfolio_DateTime'], ParentType, ContextType>;
-  admin?: Resolver<ResolversTypes['Portfolio_Admin'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
+
+export interface Portfolio_UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Portfolio_Upload'], any> {
+  name: 'Portfolio_Upload';
+}
 
 export type Portfolio_AffectedRowsOutputResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio_AffectedRowsOutput'] = ResolversParentTypes['Portfolio_AffectedRowsOutput']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -6612,15 +6793,9 @@ export type Portfolio_LoginReturnTypeResolvers<ContextType = GatsbyResolverConte
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface Portfolio_UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Portfolio_Upload'], any> {
-  name: 'Portfolio_Upload';
-}
-
 export type PortfolioResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio']> = {
   about?: Resolver<Maybe<ResolversTypes['Portfolio_About']>, ParentType, ContextType, RequireFields<Portfolio_aboutArgs, 'where'>>;
   abouts?: Resolver<Array<ResolversTypes['Portfolio_About']>, ParentType, ContextType, RequireFields<Portfolio_aboutsArgs, never>>;
-  answer?: Resolver<Maybe<ResolversTypes['Portfolio_Answer']>, ParentType, ContextType, RequireFields<Portfolio_answerArgs, 'where'>>;
-  answers?: Resolver<Array<ResolversTypes['Portfolio_Answer']>, ParentType, ContextType, RequireFields<Portfolio_answersArgs, never>>;
   message?: Resolver<Maybe<ResolversTypes['Portfolio_Message']>, ParentType, ContextType, RequireFields<Portfolio_messageArgs, 'where'>>;
   messages?: Resolver<Array<ResolversTypes['Portfolio_Message']>, ParentType, ContextType, RequireFields<Portfolio_messagesArgs, never>>;
   project?: Resolver<Maybe<ResolversTypes['Portfolio_Project']>, ParentType, ContextType, RequireFields<Portfolio_projectArgs, 'where'>>;
@@ -6629,14 +6804,15 @@ export type PortfolioResolvers<ContextType = GatsbyResolverContext, ParentType e
   questions?: Resolver<Array<ResolversTypes['Portfolio_Question']>, ParentType, ContextType, RequireFields<Portfolio_questionsArgs, never>>;
   sketch?: Resolver<Maybe<ResolversTypes['Portfolio_Sketch']>, ParentType, ContextType, RequireFields<Portfolio_sketchArgs, 'where'>>;
   sketches?: Resolver<Array<ResolversTypes['Portfolio_Sketch']>, ParentType, ContextType, RequireFields<Portfolio_sketchesArgs, never>>;
+  stacks?: Resolver<Array<ResolversTypes['Portfolio_Stack']>, ParentType, ContextType, RequireFields<Portfolio_stacksArgs, never>>;
   tech?: Resolver<Maybe<ResolversTypes['Portfolio_Tech']>, ParentType, ContextType, RequireFields<Portfolio_techArgs, 'where'>>;
   teches?: Resolver<Array<ResolversTypes['Portfolio_Tech']>, ParentType, ContextType, RequireFields<Portfolio_techesArgs, never>>;
   techCategory?: Resolver<Maybe<ResolversTypes['Portfolio_TechCategory']>, ParentType, ContextType, RequireFields<Portfolio_techCategoryArgs, 'where'>>;
   techCategories?: Resolver<Array<ResolversTypes['Portfolio_TechCategory']>, ParentType, ContextType, RequireFields<Portfolio_techCategoriesArgs, never>>;
-  isThereAnAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  me?: Resolver<Maybe<ResolversTypes['Portfolio_Admin']>, ParentType, ContextType>;
   getAdmin?: Resolver<ResolversTypes['Portfolio_Admin'], ParentType, ContextType>;
   getNumOfAdmins?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isThereAnAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  me?: Resolver<Maybe<ResolversTypes['Portfolio_Admin']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -6997,18 +7173,18 @@ export type Resolvers<ContextType = GatsbyResolverContext> = {
   Portfolio_DateTime?: GraphQLScalarType;
   Portfolio_Admin?: Portfolio_AdminResolvers<ContextType>;
   Portfolio_AdminCount?: Portfolio_AdminCountResolvers<ContextType>;
-  Portfolio_Answer?: Portfolio_AnswerResolvers<ContextType>;
-  Portfolio_Question?: Portfolio_QuestionResolvers<ContextType>;
+  Portfolio_Message?: Portfolio_MessageResolvers<ContextType>;
   Portfolio_Project?: Portfolio_ProjectResolvers<ContextType>;
   Portfolio_ProjectCount?: Portfolio_ProjectCountResolvers<ContextType>;
   Portfolio_TechCategory?: Portfolio_TechCategoryResolvers<ContextType>;
   Portfolio_TechCategoryCount?: Portfolio_TechCategoryCountResolvers<ContextType>;
   Portfolio_Tech?: Portfolio_TechResolvers<ContextType>;
+  Portfolio_Question?: Portfolio_QuestionResolvers<ContextType>;
   Portfolio_Sketch?: Portfolio_SketchResolvers<ContextType>;
-  Portfolio_Message?: Portfolio_MessageResolvers<ContextType>;
+  Portfolio_Stack?: Portfolio_StackResolvers<ContextType>;
+  Portfolio_Upload?: GraphQLScalarType;
   Portfolio_AffectedRowsOutput?: Portfolio_AffectedRowsOutputResolvers<ContextType>;
   Portfolio_LoginReturnType?: Portfolio_LoginReturnTypeResolvers<ContextType>;
-  Portfolio_Upload?: GraphQLScalarType;
   Portfolio?: PortfolioResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   FileConnection?: FileConnectionResolvers<ContextType>;

@@ -8,6 +8,7 @@
     "@apollo/client": "^3.3.21",
     "@reduxjs/toolkit": "^1.6.2",
     "@types/gsap": "^3.0.0",
+    "apollo-link-ws": "^1.0.20",
     "apollo-upload-client": "^16.0.0",
     "cross-fetch": "^3.1.4",
     "dotenv": "^10.0.0",
@@ -36,7 +37,8 @@
     "react-helmet": "^6.1.0",
     "react-redux": "^7.2.5",
     "source-map-support": "^0.5.20",
-    "ts-node": "^10.2.1"
+    "ts-node": "^10.2.1",
+    "ws": "^8.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

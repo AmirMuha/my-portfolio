@@ -187,6 +187,7 @@ export type Admin = {
   linkedIn: Scalars['String'];
   lname: Scalars['String'];
   resumes: Array<Scalars['String']>;
+  skype: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   whatsapp: Scalars['String'];
 };
@@ -215,6 +216,7 @@ export type AdminCreateInput = {
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
+  skype: Scalars['String'];
   stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
@@ -279,6 +281,7 @@ export type AdminCreateWithoutAboutInput = {
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
+  skype: Scalars['String'];
   stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
@@ -299,6 +302,7 @@ export type AdminCreateWithoutMessagesInput = {
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
+  skype: Scalars['String'];
   stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
@@ -319,6 +323,7 @@ export type AdminCreateWithoutProjectsInput = {
   messages?: Maybe<MessageCreateNestedManyWithoutAdminInput>;
   password: Scalars['String'];
   resumes?: Maybe<AdminCreateresumesInput>;
+  skype: Scalars['String'];
   stack?: Maybe<StackCreateNestedManyWithoutAdminInput>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
@@ -340,6 +345,7 @@ export type AdminCreateWithoutStackInput = {
   password: Scalars['String'];
   projects?: Maybe<ProjectCreateNestedManyWithoutAdminInput>;
   resumes?: Maybe<AdminCreateresumesInput>;
+  skype: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
   whatsapp: Scalars['String'];
 };
@@ -364,6 +370,7 @@ export type AdminOrderByWithRelationInput = {
   password?: Maybe<SortOrder>;
   projects?: Maybe<ProjectOrderByRelationAggregateInput>;
   resumes?: Maybe<SortOrder>;
+  skype?: Maybe<SortOrder>;
   stack?: Maybe<StackOrderByRelationAggregateInput>;
   updatedAt?: Maybe<SortOrder>;
   whatsapp?: Maybe<SortOrder>;
@@ -390,6 +397,7 @@ export type AdminUpdateInput = {
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
+  skype?: Maybe<StringFieldUpdateOperationsInput>;
   stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
@@ -442,6 +450,7 @@ export type AdminUpdateWithoutAboutInput = {
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
+  skype?: Maybe<StringFieldUpdateOperationsInput>;
   stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
@@ -462,6 +471,7 @@ export type AdminUpdateWithoutMessagesInput = {
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
+  skype?: Maybe<StringFieldUpdateOperationsInput>;
   stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
@@ -482,6 +492,7 @@ export type AdminUpdateWithoutProjectsInput = {
   messages?: Maybe<MessageUpdateManyWithoutAdminInput>;
   password?: Maybe<StringFieldUpdateOperationsInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
+  skype?: Maybe<StringFieldUpdateOperationsInput>;
   stack?: Maybe<StackUpdateManyWithoutAdminInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
@@ -503,6 +514,7 @@ export type AdminUpdateWithoutStackInput = {
   password?: Maybe<StringFieldUpdateOperationsInput>;
   projects?: Maybe<ProjectUpdateManyWithoutAdminInput>;
   resumes?: Maybe<AdminUpdateresumesInput>;
+  skype?: Maybe<StringFieldUpdateOperationsInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   whatsapp?: Maybe<StringFieldUpdateOperationsInput>;
 };
@@ -551,6 +563,7 @@ export type AdminWhereInput = {
   password?: Maybe<StringFilter>;
   projects?: Maybe<ProjectListRelationFilter>;
   resumes?: Maybe<StringNullableListFilter>;
+  skype?: Maybe<StringFilter>;
   stack?: Maybe<StackListRelationFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   whatsapp?: Maybe<StringFilter>;
@@ -639,7 +652,7 @@ export type Message = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd: Scalars['DateTime'];
-  files: Array<Scalars['String']>;
+  files: Scalars['String'];
   from: Scalars['String'];
   id: Scalars['String'];
   read_status: Scalars['Boolean'];
@@ -652,7 +665,7 @@ export type MessageCreateInput = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd?: Maybe<Scalars['DateTime']>;
-  files?: Maybe<MessageCreatefilesInput>;
+  files?: Maybe<Scalars['String']>;
   from: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   read_status?: Maybe<Scalars['Boolean']>;
@@ -664,7 +677,7 @@ export type MessageCreateManyAdminInput = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd?: Maybe<Scalars['DateTime']>;
-  files?: Maybe<MessageCreateManyfilesInput>;
+  files?: Maybe<Scalars['String']>;
   from: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   read_status?: Maybe<Scalars['Boolean']>;
@@ -674,10 +687,6 @@ export type MessageCreateManyAdminInput = {
 export type MessageCreateManyAdminInputEnvelope = {
   data: Array<MessageCreateManyAdminInput>;
   skipDuplicates?: Maybe<Scalars['Boolean']>;
-};
-
-export type MessageCreateManyfilesInput = {
-  set: Array<Scalars['String']>;
 };
 
 export type MessageCreateNestedManyWithoutAdminInput = {
@@ -697,15 +706,11 @@ export type MessageCreateWithoutAdminInput = {
   answeredAt?: Maybe<Scalars['DateTime']>;
   body: Scalars['String'];
   createdAd?: Maybe<Scalars['DateTime']>;
-  files?: Maybe<MessageCreatefilesInput>;
+  files?: Maybe<Scalars['String']>;
   from: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   read_status?: Maybe<Scalars['Boolean']>;
   subject: Scalars['String'];
-};
-
-export type MessageCreatefilesInput = {
-  set: Array<Scalars['String']>;
 };
 
 export type MessageListRelationFilter = {
@@ -754,7 +759,7 @@ export type MessageScalarWhereInput = {
   answeredAt?: Maybe<DateTimeNullableFilter>;
   body?: Maybe<StringFilter>;
   createdAd?: Maybe<DateTimeFilter>;
-  files?: Maybe<StringNullableListFilter>;
+  files?: Maybe<StringFilter>;
   from?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   read_status?: Maybe<BoolFilter>;
@@ -767,7 +772,7 @@ export type MessageUpdateInput = {
   answeredAt?: Maybe<NullableDateTimeFieldUpdateOperationsInput>;
   body?: Maybe<StringFieldUpdateOperationsInput>;
   createdAd?: Maybe<DateTimeFieldUpdateOperationsInput>;
-  files?: Maybe<MessageUpdatefilesInput>;
+  files?: Maybe<StringFieldUpdateOperationsInput>;
   from?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   read_status?: Maybe<BoolFieldUpdateOperationsInput>;
@@ -779,7 +784,7 @@ export type MessageUpdateManyMutationInput = {
   answeredAt?: Maybe<NullableDateTimeFieldUpdateOperationsInput>;
   body?: Maybe<StringFieldUpdateOperationsInput>;
   createdAd?: Maybe<DateTimeFieldUpdateOperationsInput>;
-  files?: Maybe<MessageUpdatefilesInput>;
+  files?: Maybe<StringFieldUpdateOperationsInput>;
   from?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   read_status?: Maybe<BoolFieldUpdateOperationsInput>;
@@ -815,16 +820,11 @@ export type MessageUpdateWithoutAdminInput = {
   answeredAt?: Maybe<NullableDateTimeFieldUpdateOperationsInput>;
   body?: Maybe<StringFieldUpdateOperationsInput>;
   createdAd?: Maybe<DateTimeFieldUpdateOperationsInput>;
-  files?: Maybe<MessageUpdatefilesInput>;
+  files?: Maybe<StringFieldUpdateOperationsInput>;
   from?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   read_status?: Maybe<BoolFieldUpdateOperationsInput>;
   subject?: Maybe<StringFieldUpdateOperationsInput>;
-};
-
-export type MessageUpdatefilesInput = {
-  push?: Maybe<Array<Scalars['String']>>;
-  set?: Maybe<Array<Scalars['String']>>;
 };
 
 export type MessageUpsertWithWhereUniqueWithoutAdminInput = {
@@ -843,7 +843,7 @@ export type MessageWhereInput = {
   answeredAt?: Maybe<DateTimeNullableFilter>;
   body?: Maybe<StringFilter>;
   createdAd?: Maybe<DateTimeFilter>;
-  files?: Maybe<StringNullableListFilter>;
+  files?: Maybe<StringFilter>;
   from?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   read_status?: Maybe<BoolFilter>;
@@ -877,6 +877,7 @@ export type Mutation = {
   deleteAbout?: Maybe<About>;
   deleteAdmin: Scalars['Boolean'];
   deleteFile: Scalars['Boolean'];
+  deleteFiles: Scalars['Boolean'];
   deleteManyAbout: AffectedRowsOutput;
   deleteManyMessage: AffectedRowsOutput;
   deleteManyProject: AffectedRowsOutput;
@@ -894,6 +895,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   login?: Maybe<LoginReturnType>;
   logout?: Maybe<Scalars['Boolean']>;
+  moveFilesFromTemp: Scalars['Boolean'];
   resetPassword: Scalars['String'];
   updateAbout?: Maybe<About>;
   updateAdmin?: Maybe<Admin>;
@@ -905,8 +907,11 @@ export type Mutation = {
   updateStack?: Maybe<Stack>;
   updateTech?: Maybe<Tech>;
   updateTechCategory?: Maybe<TechCategory>;
+  updateZipFile: Scalars['String'];
+  uploadFilesToZip: Scalars['String'];
   uploadMultipleFiles?: Maybe<Array<Scalars['String']>>;
   uploadSingleFile: Scalars['String'];
+  verifyPassword: Scalars['Boolean'];
 };
 
 
@@ -1023,6 +1028,13 @@ export type MutationDeleteAdminArgs = {
 
 export type MutationDeleteFileArgs = {
   filename: Scalars['String'];
+  isTemp: Scalars['Boolean'];
+};
+
+
+export type MutationDeleteFilesArgs = {
+  filenames: Array<Scalars['String']>;
+  isTemp: Scalars['Boolean'];
 };
 
 
@@ -1106,9 +1118,13 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationMoveFilesFromTempArgs = {
+  filenames: Array<Scalars['String']>;
+};
+
+
 export type MutationResetPasswordArgs = {
   code?: Maybe<Scalars['Int']>;
-  confirmPassword: Scalars['String'];
   email: Scalars['String'];
   newPassword: Scalars['String'];
   token?: Maybe<Scalars['String']>;
@@ -1128,9 +1144,7 @@ export type MutationUpdateAdminArgs = {
 
 
 export type MutationUpdateImageArgs = {
-  field?: Maybe<Scalars['String']>;
   file: Scalars['Upload'];
-  id: Scalars['String'];
   isEdit?: Maybe<Scalars['Boolean']>;
   prevname: Scalars['String'];
 };
@@ -1178,14 +1192,33 @@ export type MutationUpdateTechCategoryArgs = {
 };
 
 
+export type MutationUpdateZipFileArgs = {
+  files: Array<Scalars['Upload']>;
+  isTemp: Scalars['Boolean'];
+  prevname: Scalars['String'];
+};
+
+
+export type MutationUploadFilesToZipArgs = {
+  files: Array<Scalars['Upload']>;
+  isEdit: Scalars['Boolean'];
+};
+
+
 export type MutationUploadMultipleFilesArgs = {
   files: Array<Scalars['Upload']>;
+  isTemp: Scalars['Boolean'];
 };
 
 
 export type MutationUploadSingleFileArgs = {
   file: Scalars['Upload'];
   isEdit?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationVerifyPasswordArgs = {
+  data: UpdateAdminPasswordInput;
 };
 
 export type NestedBoolFilter = {
@@ -1971,7 +2004,7 @@ export type QuestionWhereUniqueInput = {
 export type Sketch = {
   __typename?: 'Sketch';
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   id: Scalars['String'];
   image: Scalars['String'];
   project: Project;
@@ -1982,7 +2015,7 @@ export type Sketch = {
 
 export type SketchCreateInput = {
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   image: Scalars['String'];
   project: ProjectCreateNestedOneWithoutSketchesInput;
@@ -1992,7 +2025,7 @@ export type SketchCreateInput = {
 
 export type SketchCreateInput_Pwnr = {
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   image: Scalars['String'];
   summary: Scalars['String'];
   title: Scalars['String'];
@@ -2000,7 +2033,7 @@ export type SketchCreateInput_Pwnr = {
 
 export type SketchCreateManyInput = {
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   image: Scalars['String'];
   project_id: Scalars['String'];
@@ -2010,7 +2043,7 @@ export type SketchCreateManyInput = {
 
 export type SketchCreateManyProjectInput = {
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   image: Scalars['String'];
   summary: Scalars['String'];
@@ -2036,7 +2069,7 @@ export type SketchCreateOrConnectWithoutProjectInput = {
 
 export type SketchCreateWithoutProjectInput = {
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   image: Scalars['String'];
   summary: Scalars['String'];
@@ -2055,7 +2088,7 @@ export type SketchOrderByRelationAggregateInput = {
 
 export type SketchOrderByWithRelationInput = {
   description?: Maybe<SortOrder>;
-  download_link?: Maybe<SortOrder>;
+  downloadables?: Maybe<SortOrder>;
   id?: Maybe<SortOrder>;
   image?: Maybe<SortOrder>;
   project?: Maybe<ProjectOrderByWithRelationInput>;
@@ -2066,7 +2099,7 @@ export type SketchOrderByWithRelationInput = {
 
 export enum SketchScalarFieldEnum {
   Description = 'description',
-  DownloadLink = 'download_link',
+  Downloadables = 'downloadables',
   Id = 'id',
   Image = 'image',
   ProjectId = 'project_id',
@@ -2079,7 +2112,7 @@ export type SketchScalarWhereInput = {
   NOT?: Maybe<Array<SketchScalarWhereInput>>;
   OR?: Maybe<Array<SketchScalarWhereInput>>;
   description?: Maybe<StringFilter>;
-  download_link?: Maybe<StringFilter>;
+  downloadables?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   image?: Maybe<StringFilter>;
   project_id?: Maybe<StringFilter>;
@@ -2089,7 +2122,7 @@ export type SketchScalarWhereInput = {
 
 export type SketchUpdateInput = {
   description?: Maybe<StringFieldUpdateOperationsInput>;
-  download_link?: Maybe<StringFieldUpdateOperationsInput>;
+  downloadables?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   image?: Maybe<StringFieldUpdateOperationsInput>;
   project?: Maybe<ProjectUpdateOneRequiredWithoutSketchesInput>;
@@ -2099,7 +2132,7 @@ export type SketchUpdateInput = {
 
 export type SketchUpdateManyMutationInput = {
   description?: Maybe<StringFieldUpdateOperationsInput>;
-  download_link?: Maybe<StringFieldUpdateOperationsInput>;
+  downloadables?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   image?: Maybe<StringFieldUpdateOperationsInput>;
   summary?: Maybe<StringFieldUpdateOperationsInput>;
@@ -2132,7 +2165,7 @@ export type SketchUpdateWithWhereUniqueWithoutProjectInput = {
 
 export type SketchUpdateWithoutProjectInput = {
   description?: Maybe<StringFieldUpdateOperationsInput>;
-  download_link?: Maybe<StringFieldUpdateOperationsInput>;
+  downloadables?: Maybe<StringFieldUpdateOperationsInput>;
   id?: Maybe<StringFieldUpdateOperationsInput>;
   image?: Maybe<StringFieldUpdateOperationsInput>;
   summary?: Maybe<StringFieldUpdateOperationsInput>;
@@ -2150,7 +2183,7 @@ export type SketchWhereInput = {
   NOT?: Maybe<Array<SketchWhereInput>>;
   OR?: Maybe<Array<SketchWhereInput>>;
   description?: Maybe<StringFilter>;
-  download_link?: Maybe<StringFilter>;
+  downloadables?: Maybe<StringFilter>;
   id?: Maybe<StringFilter>;
   image?: Maybe<StringFilter>;
   project?: Maybe<ProjectRelationFilter>;
@@ -2694,6 +2727,26 @@ export type TechWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type UpdateAdminPasswordInput = {
+  oldPassword: Scalars['String'];
+};
+
+export type MoveFilesFromTempMutationVariables = Exact<{
+  filenames: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type MoveFilesFromTempMutation = { __typename?: 'Mutation', moveFilesFromTemp: boolean };
+
+export type UploadAndSketchImageDownloadablesMutationVariables = Exact<{
+  image: Scalars['Upload'];
+  isEdit?: Maybe<Scalars['Boolean']>;
+  downloadables: Array<Scalars['Upload']> | Scalars['Upload'];
+}>;
+
+
+export type UploadAndSketchImageDownloadablesMutation = { __typename?: 'Mutation', uploadSingleFile: string, uploadFilesToZip: string };
+
 export type AnswerMessageMutationVariables = Exact<{
   from: Scalars['String'];
   message: Scalars['String'];
@@ -2705,12 +2758,45 @@ export type AnswerMessageMutationVariables = Exact<{
 
 export type AnswerMessageMutation = { __typename?: 'Mutation', answerMessage: boolean };
 
+export type UploadFileMutationVariables = Exact<{
+  file: Scalars['Upload'];
+  isEdit?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type UploadFileMutation = { __typename?: 'Mutation', uploadSingleFile: string };
+
+export type UploadFilesMutationVariables = Exact<{
+  files: Array<Scalars['Upload']> | Scalars['Upload'];
+  isTemp?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type UploadFilesMutation = { __typename?: 'Mutation', uploadMultipleFiles?: Array<string> | null | undefined };
+
+export type UploadFilesToZipMutationVariables = Exact<{
+  files: Array<Scalars['Upload']> | Scalars['Upload'];
+  isEdit?: Scalars['Boolean'];
+}>;
+
+
+export type UploadFilesToZipMutation = { __typename?: 'Mutation', uploadFilesToZip: string };
+
 export type DeleteFileMutationVariables = Exact<{
   filename: Scalars['String'];
+  isTemp?: Scalars['Boolean'];
 }>;
 
 
 export type DeleteFileMutation = { __typename?: 'Mutation', deleteFile: boolean };
+
+export type DeleteFilesMutationVariables = Exact<{
+  filenames: Array<Scalars['String']> | Scalars['String'];
+  isTemp?: Scalars['Boolean'];
+}>;
+
+
+export type DeleteFilesMutation = { __typename?: 'Mutation', deleteFiles: boolean };
 
 export type ConfirmEmailMutationVariables = Exact<{
   code: Scalars['Int'];
@@ -2741,6 +2827,7 @@ export type SubmitAdminMutationVariables = Exact<{
   linkedIn: Scalars['String'];
   whatsapp: Scalars['String'];
   instagram: Scalars['String'];
+  skype: Scalars['String'];
   github: Scalars['String'];
   heroImage: Scalars['String'];
   resumes: Array<Scalars['String']> | Scalars['String'];
@@ -2749,27 +2836,21 @@ export type SubmitAdminMutationVariables = Exact<{
 
 export type SubmitAdminMutation = { __typename?: 'Mutation', createAdmin?: { __typename?: 'Admin', id: string, email: string, fname: string, lname: string, resumes: Array<string> } | null | undefined };
 
-export type UploadFileMutationVariables = Exact<{
-  file: Scalars['Upload'];
-  isEdit?: Maybe<Scalars['Boolean']>;
+export type CreateAboutMutationVariables = Exact<{
+  title: Scalars['String'];
+  body: Scalars['String'];
+  adminEmail: Scalars['String'];
 }>;
 
 
-export type UploadFileMutation = { __typename?: 'Mutation', uploadSingleFile: string };
-
-export type UploadFilesMutationVariables = Exact<{
-  files: Array<Scalars['Upload']> | Scalars['Upload'];
-}>;
-
-
-export type UploadFilesMutation = { __typename?: 'Mutation', uploadMultipleFiles?: Array<string> | null | undefined };
+export type CreateAboutMutation = { __typename?: 'Mutation', createAbout: { __typename?: 'About', id: string, title: string, body: string } };
 
 export type CreateMessageMutationVariables = Exact<{
   body: Scalars['String'];
   subject: Scalars['String'];
   from: Scalars['String'];
   adminEmail: Scalars['String'];
-  files?: Array<Scalars['String']> | Scalars['String'];
+  files: Scalars['String'];
 }>;
 
 
@@ -2823,13 +2904,13 @@ export type CreateSketchMutationVariables = Exact<{
   projectId: Scalars['String'];
   summary: Scalars['String'];
   description: Scalars['String'];
-  download_link: Scalars['String'];
+  downloadables: Scalars['String'];
   image: Scalars['String'];
   title: Scalars['String'];
 }>;
 
 
-export type CreateSketchMutation = { __typename?: 'Mutation', createSketch: { __typename?: 'Sketch', id: string, title: string, summary: string, description: string, download_link: string, image: string, project_id: string } };
+export type CreateSketchMutation = { __typename?: 'Mutation', createSketch: { __typename?: 'Sketch', id: string, title: string, summary: string, description: string, downloadables: string, image: string, project_id: string } };
 
 export type CreateTechCategoryMutationVariables = Exact<{
   name: Scalars['String'];
@@ -2855,6 +2936,61 @@ export type CreateQuestionMutationVariables = Exact<{
 
 
 export type CreateQuestionMutation = { __typename?: 'Mutation', createQuestion: { __typename?: 'Question', id: string, question: string, answer: string } };
+
+export type VerifyPasswordMutationVariables = Exact<{
+  oldPassword: Scalars['String'];
+}>;
+
+
+export type VerifyPasswordMutation = { __typename?: 'Mutation', verifyPassword: boolean };
+
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
+
+export type ResetPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+  newPassword: Scalars['String'];
+  code: Scalars['Int'];
+}>;
+
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: string };
+
+export type ChangePasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+  newPassword: Scalars['String'];
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', resetPassword: string };
+
+export type UpdateAdminMutationVariables = Exact<{
+  data: AdminUpdateInput;
+  email: Scalars['String'];
+}>;
+
+
+export type UpdateAdminMutation = { __typename?: 'Mutation', updateAdmin?: { __typename?: 'Admin', id: string } | null | undefined };
+
+export type UpdateAboutTitleMutationVariables = Exact<{
+  id: Scalars['String'];
+  title: Scalars['String'];
+}>;
+
+
+export type UpdateAboutTitleMutation = { __typename?: 'Mutation', updateAbout?: { __typename?: 'About', id: string } | null | undefined };
+
+export type UpdateAboutBodyMutationVariables = Exact<{
+  id: Scalars['String'];
+  body: Scalars['String'];
+}>;
+
+
+export type UpdateAboutBodyMutation = { __typename?: 'Mutation', updateAbout?: { __typename?: 'About', id: string } | null | undefined };
 
 export type UpdateMessageReadStatusMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2898,9 +3034,8 @@ export type UpdateProjectTypeMutation = { __typename?: 'Mutation', updateProject
 
 export type UpdateImageMutationVariables = Exact<{
   file: Scalars['Upload'];
-  id: Scalars['String'];
   prevname: Scalars['String'];
-  field?: Maybe<Scalars['String']>;
+  isEdit?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -2936,23 +3071,16 @@ export type UpdateSketchDescriptionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSketchDescriptionMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
+export type UpdateSketchDescriptionMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, downloadables: string } | null | undefined };
 
-export type UpdateSketchImageMutationVariables = Exact<{
-  id: Scalars['String'];
-  image: Scalars['String'];
+export type UpdateZipFileMutationVariables = Exact<{
+  files: Array<Scalars['Upload']> | Scalars['Upload'];
+  prevname: Scalars['String'];
+  isTemp: Scalars['Boolean'];
 }>;
 
 
-export type UpdateSketchImageMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
-
-export type UpdateSketchDownloadLinkMutationVariables = Exact<{
-  id: Scalars['String'];
-  download_link: Scalars['String'];
-}>;
-
-
-export type UpdateSketchDownloadLinkMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
+export type UpdateZipFileMutation = { __typename?: 'Mutation', updateZipFile: string };
 
 export type UpdateSketchSummaryMutationVariables = Exact<{
   id: Scalars['String'];
@@ -2960,7 +3088,7 @@ export type UpdateSketchSummaryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSketchSummaryMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, download_link: string } | null | undefined };
+export type UpdateSketchSummaryMutation = { __typename?: 'Mutation', updateSketch?: { __typename?: 'Sketch', id: string, title: string, description: string, summary: string, image: string, downloadables: string } | null | undefined };
 
 export type UpdateTechCategoryMutationVariables = Exact<{
   name: Scalars['String'];
@@ -2978,6 +3106,13 @@ export type UpdateQuestionMutationVariables = Exact<{
 
 
 export type UpdateQuestionMutation = { __typename?: 'Mutation', updateQuestion?: { __typename?: 'Question', id: string, question: string, answer: string } | null | undefined };
+
+export type DeleteAboutMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteAboutMutation = { __typename?: 'Mutation', deleteAbout?: { __typename?: 'About', id: string } | null | undefined };
 
 export type DeleteMessageMutationVariables = Exact<{
   id: Scalars['String'];
@@ -3031,7 +3166,17 @@ export type DeleteQuestionMutation = { __typename?: 'Mutation', deleteQuestion?:
 export type SubscribeMessagesSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SubscribeMessagesSubscription = { __typename?: 'Subscription', subscribeMessages: { __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, files: Array<string>, read_status: boolean, subject: string } };
+export type SubscribeMessagesSubscription = { __typename?: 'Subscription', subscribeMessages: { __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, files: string, read_status: boolean, subject: string } };
+
+export type AdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string, github: string, instagram: string, whatsapp: string, linkedIn: string, skype: string, fname: string, lname: string, heroImage: string, resumes: Array<string> } | null | undefined };
+
+export type AboutsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AboutsQuery = { __typename?: 'Query', abouts: Array<{ __typename?: 'About', id: string, title: string, body: string }> };
 
 export type AdminEmailQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3053,12 +3198,12 @@ export type QuerySingleProjectWithRelationsQueryVariables = Exact<{
 }>;
 
 
-export type QuerySingleProjectWithRelationsQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, app_url: string, github_url: string, image: string, type: string, summary: string, questions: Array<{ __typename?: 'Question', id: string, question: string, answer: string }>, sketches: Array<{ __typename?: 'Sketch', id: string, title: string, description: string, summary: string, download_link: string, image: string }>, tech_categories: Array<{ __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> }> } | null | undefined };
+export type QuerySingleProjectWithRelationsQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, app_url: string, github_url: string, image: string, type: string, summary: string, questions: Array<{ __typename?: 'Question', id: string, question: string, answer: string }>, sketches: Array<{ __typename?: 'Sketch', id: string, title: string, description: string, summary: string, downloadables: string, image: string }>, tech_categories: Array<{ __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> }> } | null | undefined };
 
 export type QueryProjectsWithRelationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryProjectsWithRelationsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, app_url: string, github_url: string, image: string, type: string, summary: string, questions: Array<{ __typename?: 'Question', id: string, question: string, answer: string }>, sketches: Array<{ __typename?: 'Sketch', id: string, title: string, description: string, summary: string, download_link: string, image: string }>, tech_categories: Array<{ __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> }> }> };
+export type QueryProjectsWithRelationsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, app_url: string, github_url: string, image: string, type: string, summary: string, questions: Array<{ __typename?: 'Question', id: string, question: string, answer: string }>, sketches: Array<{ __typename?: 'Sketch', id: string, title: string, description: string, summary: string, downloadables: string, image: string }>, tech_categories: Array<{ __typename?: 'TechCategory', id: string, name: string, techs: Array<{ __typename?: 'Tech', id: string, name: string }> }> }> };
 
 export type QueryProjectsWithTechCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3078,9 +3223,74 @@ export type QueryStacksQuery = { __typename?: 'Query', stacks: Array<{ __typenam
 export type QueryDashboardStuffQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryDashboardStuffQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string } | null | undefined, stacks: Array<{ __typename?: 'Stack', id: string, title: string, image: string }>, messages: Array<{ __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, files: Array<string>, subject: string }>, projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string, tech_categories: Array<{ __typename?: 'TechCategory', name: string, id: string, techs: Array<{ __typename?: 'Tech', name: string, id: string }> }> }> };
+export type QueryDashboardStuffQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', email: string } | null | undefined, stacks: Array<{ __typename?: 'Stack', id: string, title: string, image: string }>, messages: Array<{ __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, read_status: boolean, files: string, subject: string }>, projects: Array<{ __typename?: 'Project', app_url: string, github_url: string, id: string, image: string, name: string, summary: string, type: string, tech_categories: Array<{ __typename?: 'TechCategory', name: string, id: string, techs: Array<{ __typename?: 'Tech', name: string, id: string }> }> }> };
 
 
+export const MoveFilesFromTempDocument = gql`
+    mutation MoveFilesFromTemp($filenames: [String!]!) {
+  moveFilesFromTemp(filenames: $filenames)
+}
+    `;
+export type MoveFilesFromTempMutationFn = Apollo.MutationFunction<MoveFilesFromTempMutation, MoveFilesFromTempMutationVariables>;
+
+/**
+ * __useMoveFilesFromTempMutation__
+ *
+ * To run a mutation, you first call `useMoveFilesFromTempMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveFilesFromTempMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveFilesFromTempMutation, { data, loading, error }] = useMoveFilesFromTempMutation({
+ *   variables: {
+ *      filenames: // value for 'filenames'
+ *   },
+ * });
+ */
+export function useMoveFilesFromTempMutation(baseOptions?: Apollo.MutationHookOptions<MoveFilesFromTempMutation, MoveFilesFromTempMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MoveFilesFromTempMutation, MoveFilesFromTempMutationVariables>(MoveFilesFromTempDocument, options);
+      }
+export type MoveFilesFromTempMutationHookResult = ReturnType<typeof useMoveFilesFromTempMutation>;
+export type MoveFilesFromTempMutationResult = Apollo.MutationResult<MoveFilesFromTempMutation>;
+export type MoveFilesFromTempMutationOptions = Apollo.BaseMutationOptions<MoveFilesFromTempMutation, MoveFilesFromTempMutationVariables>;
+export const UploadAndSketchImageDownloadablesDocument = gql`
+    mutation UploadAndSketchImageDownloadables($image: Upload!, $isEdit: Boolean = false, $downloadables: [Upload!]!) {
+  uploadSingleFile(file: $image, isEdit: $isEdit)
+  uploadFilesToZip(files: $downloadables, isEdit: $isEdit)
+}
+    `;
+export type UploadAndSketchImageDownloadablesMutationFn = Apollo.MutationFunction<UploadAndSketchImageDownloadablesMutation, UploadAndSketchImageDownloadablesMutationVariables>;
+
+/**
+ * __useUploadAndSketchImageDownloadablesMutation__
+ *
+ * To run a mutation, you first call `useUploadAndSketchImageDownloadablesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadAndSketchImageDownloadablesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadAndSketchImageDownloadablesMutation, { data, loading, error }] = useUploadAndSketchImageDownloadablesMutation({
+ *   variables: {
+ *      image: // value for 'image'
+ *      isEdit: // value for 'isEdit'
+ *      downloadables: // value for 'downloadables'
+ *   },
+ * });
+ */
+export function useUploadAndSketchImageDownloadablesMutation(baseOptions?: Apollo.MutationHookOptions<UploadAndSketchImageDownloadablesMutation, UploadAndSketchImageDownloadablesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadAndSketchImageDownloadablesMutation, UploadAndSketchImageDownloadablesMutationVariables>(UploadAndSketchImageDownloadablesDocument, options);
+      }
+export type UploadAndSketchImageDownloadablesMutationHookResult = ReturnType<typeof useUploadAndSketchImageDownloadablesMutation>;
+export type UploadAndSketchImageDownloadablesMutationResult = Apollo.MutationResult<UploadAndSketchImageDownloadablesMutation>;
+export type UploadAndSketchImageDownloadablesMutationOptions = Apollo.BaseMutationOptions<UploadAndSketchImageDownloadablesMutation, UploadAndSketchImageDownloadablesMutationVariables>;
 export const AnswerMessageDocument = gql`
     mutation AnswerMessage($from: String!, $message: String!, $subject: String!, $to: String!, $messageId: String!) {
   answerMessage(
@@ -3118,9 +3328,105 @@ export function useAnswerMessageMutation(baseOptions?: Apollo.MutationHookOption
 export type AnswerMessageMutationHookResult = ReturnType<typeof useAnswerMessageMutation>;
 export type AnswerMessageMutationResult = Apollo.MutationResult<AnswerMessageMutation>;
 export type AnswerMessageMutationOptions = Apollo.BaseMutationOptions<AnswerMessageMutation, AnswerMessageMutationVariables>;
+export const UploadFileDocument = gql`
+    mutation UploadFile($file: Upload!, $isEdit: Boolean = false) {
+  uploadSingleFile(file: $file, isEdit: $isEdit)
+}
+    `;
+export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, UploadFileMutationVariables>;
+
+/**
+ * __useUploadFileMutation__
+ *
+ * To run a mutation, you first call `useUploadFileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadFileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadFileMutation, { data, loading, error }] = useUploadFileMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *      isEdit: // value for 'isEdit'
+ *   },
+ * });
+ */
+export function useUploadFileMutation(baseOptions?: Apollo.MutationHookOptions<UploadFileMutation, UploadFileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadFileMutation, UploadFileMutationVariables>(UploadFileDocument, options);
+      }
+export type UploadFileMutationHookResult = ReturnType<typeof useUploadFileMutation>;
+export type UploadFileMutationResult = Apollo.MutationResult<UploadFileMutation>;
+export type UploadFileMutationOptions = Apollo.BaseMutationOptions<UploadFileMutation, UploadFileMutationVariables>;
+export const UploadFilesDocument = gql`
+    mutation UploadFiles($files: [Upload!]!, $isTemp: Boolean = true) {
+  uploadMultipleFiles(files: $files, isTemp: $isTemp)
+}
+    `;
+export type UploadFilesMutationFn = Apollo.MutationFunction<UploadFilesMutation, UploadFilesMutationVariables>;
+
+/**
+ * __useUploadFilesMutation__
+ *
+ * To run a mutation, you first call `useUploadFilesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadFilesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadFilesMutation, { data, loading, error }] = useUploadFilesMutation({
+ *   variables: {
+ *      files: // value for 'files'
+ *      isTemp: // value for 'isTemp'
+ *   },
+ * });
+ */
+export function useUploadFilesMutation(baseOptions?: Apollo.MutationHookOptions<UploadFilesMutation, UploadFilesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadFilesMutation, UploadFilesMutationVariables>(UploadFilesDocument, options);
+      }
+export type UploadFilesMutationHookResult = ReturnType<typeof useUploadFilesMutation>;
+export type UploadFilesMutationResult = Apollo.MutationResult<UploadFilesMutation>;
+export type UploadFilesMutationOptions = Apollo.BaseMutationOptions<UploadFilesMutation, UploadFilesMutationVariables>;
+export const UploadFilesToZipDocument = gql`
+    mutation UploadFilesToZip($files: [Upload!]!, $isEdit: Boolean! = true) {
+  uploadFilesToZip(files: $files, isEdit: $isEdit)
+}
+    `;
+export type UploadFilesToZipMutationFn = Apollo.MutationFunction<UploadFilesToZipMutation, UploadFilesToZipMutationVariables>;
+
+/**
+ * __useUploadFilesToZipMutation__
+ *
+ * To run a mutation, you first call `useUploadFilesToZipMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadFilesToZipMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadFilesToZipMutation, { data, loading, error }] = useUploadFilesToZipMutation({
+ *   variables: {
+ *      files: // value for 'files'
+ *      isEdit: // value for 'isEdit'
+ *   },
+ * });
+ */
+export function useUploadFilesToZipMutation(baseOptions?: Apollo.MutationHookOptions<UploadFilesToZipMutation, UploadFilesToZipMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadFilesToZipMutation, UploadFilesToZipMutationVariables>(UploadFilesToZipDocument, options);
+      }
+export type UploadFilesToZipMutationHookResult = ReturnType<typeof useUploadFilesToZipMutation>;
+export type UploadFilesToZipMutationResult = Apollo.MutationResult<UploadFilesToZipMutation>;
+export type UploadFilesToZipMutationOptions = Apollo.BaseMutationOptions<UploadFilesToZipMutation, UploadFilesToZipMutationVariables>;
 export const DeleteFileDocument = gql`
-    mutation DeleteFile($filename: String!) {
-  deleteFile(filename: $filename)
+    mutation DeleteFile($filename: String!, $isTemp: Boolean! = true) {
+  deleteFile(filename: $filename, isTemp: $isTemp)
 }
     `;
 export type DeleteFileMutationFn = Apollo.MutationFunction<DeleteFileMutation, DeleteFileMutationVariables>;
@@ -3139,6 +3445,7 @@ export type DeleteFileMutationFn = Apollo.MutationFunction<DeleteFileMutation, D
  * const [deleteFileMutation, { data, loading, error }] = useDeleteFileMutation({
  *   variables: {
  *      filename: // value for 'filename'
+ *      isTemp: // value for 'isTemp'
  *   },
  * });
  */
@@ -3149,6 +3456,38 @@ export function useDeleteFileMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteFileMutationHookResult = ReturnType<typeof useDeleteFileMutation>;
 export type DeleteFileMutationResult = Apollo.MutationResult<DeleteFileMutation>;
 export type DeleteFileMutationOptions = Apollo.BaseMutationOptions<DeleteFileMutation, DeleteFileMutationVariables>;
+export const DeleteFilesDocument = gql`
+    mutation DeleteFiles($filenames: [String!]!, $isTemp: Boolean! = true) {
+  deleteFiles(filenames: $filenames, isTemp: $isTemp)
+}
+    `;
+export type DeleteFilesMutationFn = Apollo.MutationFunction<DeleteFilesMutation, DeleteFilesMutationVariables>;
+
+/**
+ * __useDeleteFilesMutation__
+ *
+ * To run a mutation, you first call `useDeleteFilesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFilesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFilesMutation, { data, loading, error }] = useDeleteFilesMutation({
+ *   variables: {
+ *      filenames: // value for 'filenames'
+ *      isTemp: // value for 'isTemp'
+ *   },
+ * });
+ */
+export function useDeleteFilesMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFilesMutation, DeleteFilesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFilesMutation, DeleteFilesMutationVariables>(DeleteFilesDocument, options);
+      }
+export type DeleteFilesMutationHookResult = ReturnType<typeof useDeleteFilesMutation>;
+export type DeleteFilesMutationResult = Apollo.MutationResult<DeleteFilesMutation>;
+export type DeleteFilesMutationOptions = Apollo.BaseMutationOptions<DeleteFilesMutation, DeleteFilesMutationVariables>;
 export const ConfirmEmailDocument = gql`
     mutation ConfirmEmail($code: Int!, $email: String!) {
   confirmEmail(code: $code, email: $email)
@@ -3246,9 +3585,9 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const SubmitAdminDocument = gql`
-    mutation SubmitAdmin($email: String!, $password: String!, $fname: String!, $lname: String!, $linkedIn: String!, $whatsapp: String!, $instagram: String!, $github: String!, $heroImage: String!, $resumes: [String!]!) {
+    mutation SubmitAdmin($email: String!, $password: String!, $fname: String!, $lname: String!, $linkedIn: String!, $whatsapp: String!, $instagram: String!, $skype: String!, $github: String!, $heroImage: String!, $resumes: [String!]!) {
   createAdmin(
-    data: {email: $email, password: $password, fname: $fname, lname: $lname, linkedIn: $linkedIn, whatsapp: $whatsapp, instagram: $instagram, github: $github, heroImage: $heroImage, resumes: {set: $resumes}}
+    data: {email: $email, password: $password, fname: $fname, lname: $lname, linkedIn: $linkedIn, whatsapp: $whatsapp, instagram: $instagram, github: $github, skype: $skype, heroImage: $heroImage, resumes: {set: $resumes}}
   ) {
     id
     email
@@ -3280,6 +3619,7 @@ export type SubmitAdminMutationFn = Apollo.MutationFunction<SubmitAdminMutation,
  *      linkedIn: // value for 'linkedIn'
  *      whatsapp: // value for 'whatsapp'
  *      instagram: // value for 'instagram'
+ *      skype: // value for 'skype'
  *      github: // value for 'github'
  *      heroImage: // value for 'heroImage'
  *      resumes: // value for 'resumes'
@@ -3293,74 +3633,50 @@ export function useSubmitAdminMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SubmitAdminMutationHookResult = ReturnType<typeof useSubmitAdminMutation>;
 export type SubmitAdminMutationResult = Apollo.MutationResult<SubmitAdminMutation>;
 export type SubmitAdminMutationOptions = Apollo.BaseMutationOptions<SubmitAdminMutation, SubmitAdminMutationVariables>;
-export const UploadFileDocument = gql`
-    mutation UploadFile($file: Upload!, $isEdit: Boolean = false) {
-  uploadSingleFile(file: $file, isEdit: $isEdit)
+export const CreateAboutDocument = gql`
+    mutation CreateAbout($title: String!, $body: String!, $adminEmail: String!) {
+  createAbout(
+    data: {title: $title, body: $body, admin: {connect: {email: $adminEmail}}}
+  ) {
+    id
+    title
+    body
+  }
 }
     `;
-export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, UploadFileMutationVariables>;
+export type CreateAboutMutationFn = Apollo.MutationFunction<CreateAboutMutation, CreateAboutMutationVariables>;
 
 /**
- * __useUploadFileMutation__
+ * __useCreateAboutMutation__
  *
- * To run a mutation, you first call `useUploadFileMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadFileMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateAboutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAboutMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [uploadFileMutation, { data, loading, error }] = useUploadFileMutation({
+ * const [createAboutMutation, { data, loading, error }] = useCreateAboutMutation({
  *   variables: {
- *      file: // value for 'file'
- *      isEdit: // value for 'isEdit'
+ *      title: // value for 'title'
+ *      body: // value for 'body'
+ *      adminEmail: // value for 'adminEmail'
  *   },
  * });
  */
-export function useUploadFileMutation(baseOptions?: Apollo.MutationHookOptions<UploadFileMutation, UploadFileMutationVariables>) {
+export function useCreateAboutMutation(baseOptions?: Apollo.MutationHookOptions<CreateAboutMutation, CreateAboutMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UploadFileMutation, UploadFileMutationVariables>(UploadFileDocument, options);
+        return Apollo.useMutation<CreateAboutMutation, CreateAboutMutationVariables>(CreateAboutDocument, options);
       }
-export type UploadFileMutationHookResult = ReturnType<typeof useUploadFileMutation>;
-export type UploadFileMutationResult = Apollo.MutationResult<UploadFileMutation>;
-export type UploadFileMutationOptions = Apollo.BaseMutationOptions<UploadFileMutation, UploadFileMutationVariables>;
-export const UploadFilesDocument = gql`
-    mutation UploadFiles($files: [Upload!]!) {
-  uploadMultipleFiles(files: $files)
-}
-    `;
-export type UploadFilesMutationFn = Apollo.MutationFunction<UploadFilesMutation, UploadFilesMutationVariables>;
-
-/**
- * __useUploadFilesMutation__
- *
- * To run a mutation, you first call `useUploadFilesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadFilesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [uploadFilesMutation, { data, loading, error }] = useUploadFilesMutation({
- *   variables: {
- *      files: // value for 'files'
- *   },
- * });
- */
-export function useUploadFilesMutation(baseOptions?: Apollo.MutationHookOptions<UploadFilesMutation, UploadFilesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UploadFilesMutation, UploadFilesMutationVariables>(UploadFilesDocument, options);
-      }
-export type UploadFilesMutationHookResult = ReturnType<typeof useUploadFilesMutation>;
-export type UploadFilesMutationResult = Apollo.MutationResult<UploadFilesMutation>;
-export type UploadFilesMutationOptions = Apollo.BaseMutationOptions<UploadFilesMutation, UploadFilesMutationVariables>;
+export type CreateAboutMutationHookResult = ReturnType<typeof useCreateAboutMutation>;
+export type CreateAboutMutationResult = Apollo.MutationResult<CreateAboutMutation>;
+export type CreateAboutMutationOptions = Apollo.BaseMutationOptions<CreateAboutMutation, CreateAboutMutationVariables>;
 export const CreateMessageDocument = gql`
-    mutation CreateMessage($body: String!, $subject: String!, $from: String!, $adminEmail: String!, $files: [String!]! = []) {
+    mutation CreateMessage($body: String!, $subject: String!, $from: String!, $adminEmail: String!, $files: String!) {
   createNewMessage(
     adminEmail: $adminEmail
-    data: {subject: $subject, from: $from, body: $body, files: {set: $files}, admin: {connect: {email: ""}}}
+    data: {subject: $subject, from: $from, body: $body, files: $files, admin: {connect: {email: ""}}}
   ) {
     id
   }
@@ -3555,15 +3871,15 @@ export type CreateManySketchesMutationHookResult = ReturnType<typeof useCreateMa
 export type CreateManySketchesMutationResult = Apollo.MutationResult<CreateManySketchesMutation>;
 export type CreateManySketchesMutationOptions = Apollo.BaseMutationOptions<CreateManySketchesMutation, CreateManySketchesMutationVariables>;
 export const CreateSketchDocument = gql`
-    mutation CreateSketch($projectId: String!, $summary: String!, $description: String!, $download_link: String!, $image: String!, $title: String!) {
+    mutation CreateSketch($projectId: String!, $summary: String!, $description: String!, $downloadables: String!, $image: String!, $title: String!) {
   createSketch(
-    data: {title: $title, description: $description, summary: $summary, download_link: $download_link, image: $image, project: {connect: {id: $projectId}}}
+    data: {title: $title, description: $description, summary: $summary, downloadables: $downloadables, image: $image, project: {connect: {id: $projectId}}}
   ) {
     id
     title
     summary
     description
-    download_link
+    downloadables
     image
     project_id
   }
@@ -3587,7 +3903,7 @@ export type CreateSketchMutationFn = Apollo.MutationFunction<CreateSketchMutatio
  *      projectId: // value for 'projectId'
  *      summary: // value for 'summary'
  *      description: // value for 'description'
- *      download_link: // value for 'download_link'
+ *      downloadables: // value for 'downloadables'
  *      image: // value for 'image'
  *      title: // value for 'title'
  *   },
@@ -3711,6 +4027,235 @@ export function useCreateQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateQuestionMutationHookResult = ReturnType<typeof useCreateQuestionMutation>;
 export type CreateQuestionMutationResult = Apollo.MutationResult<CreateQuestionMutation>;
 export type CreateQuestionMutationOptions = Apollo.BaseMutationOptions<CreateQuestionMutation, CreateQuestionMutationVariables>;
+export const VerifyPasswordDocument = gql`
+    mutation VerifyPassword($oldPassword: String!) {
+  verifyPassword(data: {oldPassword: $oldPassword})
+}
+    `;
+export type VerifyPasswordMutationFn = Apollo.MutationFunction<VerifyPasswordMutation, VerifyPasswordMutationVariables>;
+
+/**
+ * __useVerifyPasswordMutation__
+ *
+ * To run a mutation, you first call `useVerifyPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyPasswordMutation, { data, loading, error }] = useVerifyPasswordMutation({
+ *   variables: {
+ *      oldPassword: // value for 'oldPassword'
+ *   },
+ * });
+ */
+export function useVerifyPasswordMutation(baseOptions?: Apollo.MutationHookOptions<VerifyPasswordMutation, VerifyPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyPasswordMutation, VerifyPasswordMutationVariables>(VerifyPasswordDocument, options);
+      }
+export type VerifyPasswordMutationHookResult = ReturnType<typeof useVerifyPasswordMutation>;
+export type VerifyPasswordMutationResult = Apollo.MutationResult<VerifyPasswordMutation>;
+export type VerifyPasswordMutationOptions = Apollo.BaseMutationOptions<VerifyPasswordMutation, VerifyPasswordMutationVariables>;
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+    `;
+export type ForgotPasswordMutationFn = Apollo.MutationFunction<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+
+/**
+ * __useForgotPasswordMutation__
+ *
+ * To run a mutation, you first call `useForgotPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useForgotPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument, options);
+      }
+export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
+export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
+export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const ResetPasswordDocument = gql`
+    mutation ResetPassword($email: String!, $newPassword: String!, $code: Int!) {
+  resetPassword(email: $email, newPassword: $newPassword, code: $code)
+}
+    `;
+export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutation, ResetPasswordMutationVariables>;
+
+/**
+ * __useResetPasswordMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      newPassword: // value for 'newPassword'
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useResetPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordMutation, ResetPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, options);
+      }
+export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
+export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($email: String!, $newPassword: String!) {
+  resetPassword(email: $email, newPassword: $newPassword)
+}
+    `;
+export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
+
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      newPassword: // value for 'newPassword'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptions<ChangePasswordMutation, ChangePasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, options);
+      }
+export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
+export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
+export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const UpdateAdminDocument = gql`
+    mutation updateAdmin($data: AdminUpdateInput!, $email: String!) {
+  updateAdmin(data: $data, where: {email: $email}) {
+    id
+  }
+}
+    `;
+export type UpdateAdminMutationFn = Apollo.MutationFunction<UpdateAdminMutation, UpdateAdminMutationVariables>;
+
+/**
+ * __useUpdateAdminMutation__
+ *
+ * To run a mutation, you first call `useUpdateAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAdminMutation, { data, loading, error }] = useUpdateAdminMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useUpdateAdminMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAdminMutation, UpdateAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAdminMutation, UpdateAdminMutationVariables>(UpdateAdminDocument, options);
+      }
+export type UpdateAdminMutationHookResult = ReturnType<typeof useUpdateAdminMutation>;
+export type UpdateAdminMutationResult = Apollo.MutationResult<UpdateAdminMutation>;
+export type UpdateAdminMutationOptions = Apollo.BaseMutationOptions<UpdateAdminMutation, UpdateAdminMutationVariables>;
+export const UpdateAboutTitleDocument = gql`
+    mutation UpdateAboutTitle($id: String!, $title: String!) {
+  updateAbout(data: {title: {set: $title}}, where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type UpdateAboutTitleMutationFn = Apollo.MutationFunction<UpdateAboutTitleMutation, UpdateAboutTitleMutationVariables>;
+
+/**
+ * __useUpdateAboutTitleMutation__
+ *
+ * To run a mutation, you first call `useUpdateAboutTitleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAboutTitleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAboutTitleMutation, { data, loading, error }] = useUpdateAboutTitleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useUpdateAboutTitleMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAboutTitleMutation, UpdateAboutTitleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAboutTitleMutation, UpdateAboutTitleMutationVariables>(UpdateAboutTitleDocument, options);
+      }
+export type UpdateAboutTitleMutationHookResult = ReturnType<typeof useUpdateAboutTitleMutation>;
+export type UpdateAboutTitleMutationResult = Apollo.MutationResult<UpdateAboutTitleMutation>;
+export type UpdateAboutTitleMutationOptions = Apollo.BaseMutationOptions<UpdateAboutTitleMutation, UpdateAboutTitleMutationVariables>;
+export const UpdateAboutBodyDocument = gql`
+    mutation UpdateAboutBody($id: String!, $body: String!) {
+  updateAbout(data: {body: {set: $body}}, where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type UpdateAboutBodyMutationFn = Apollo.MutationFunction<UpdateAboutBodyMutation, UpdateAboutBodyMutationVariables>;
+
+/**
+ * __useUpdateAboutBodyMutation__
+ *
+ * To run a mutation, you first call `useUpdateAboutBodyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAboutBodyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAboutBodyMutation, { data, loading, error }] = useUpdateAboutBodyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useUpdateAboutBodyMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAboutBodyMutation, UpdateAboutBodyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAboutBodyMutation, UpdateAboutBodyMutationVariables>(UpdateAboutBodyDocument, options);
+      }
+export type UpdateAboutBodyMutationHookResult = ReturnType<typeof useUpdateAboutBodyMutation>;
+export type UpdateAboutBodyMutationResult = Apollo.MutationResult<UpdateAboutBodyMutation>;
+export type UpdateAboutBodyMutationOptions = Apollo.BaseMutationOptions<UpdateAboutBodyMutation, UpdateAboutBodyMutationVariables>;
 export const UpdateMessageReadStatusDocument = gql`
     mutation UpdateMessageReadStatus($id: String!) {
   updateMessage(data: {read_status: {set: true}}, where: {id: $id}) {
@@ -3888,14 +4433,8 @@ export type UpdateProjectTypeMutationHookResult = ReturnType<typeof useUpdatePro
 export type UpdateProjectTypeMutationResult = Apollo.MutationResult<UpdateProjectTypeMutation>;
 export type UpdateProjectTypeMutationOptions = Apollo.BaseMutationOptions<UpdateProjectTypeMutation, UpdateProjectTypeMutationVariables>;
 export const UpdateImageDocument = gql`
-    mutation UpdateImage($file: Upload!, $id: String!, $prevname: String!, $field: String) {
-  updateImage(
-    file: $file
-    id: $id
-    prevname: $prevname
-    field: $field
-    isEdit: true
-  )
+    mutation UpdateImage($file: Upload!, $prevname: String!, $isEdit: Boolean = true) {
+  updateImage(file: $file, prevname: $prevname, isEdit: $isEdit)
 }
     `;
 export type UpdateImageMutationFn = Apollo.MutationFunction<UpdateImageMutation, UpdateImageMutationVariables>;
@@ -3914,9 +4453,8 @@ export type UpdateImageMutationFn = Apollo.MutationFunction<UpdateImageMutation,
  * const [updateImageMutation, { data, loading, error }] = useUpdateImageMutation({
  *   variables: {
  *      file: // value for 'file'
- *      id: // value for 'id'
  *      prevname: // value for 'prevname'
- *      field: // value for 'field'
+ *      isEdit: // value for 'isEdit'
  *   },
  * });
  */
@@ -4037,7 +4575,7 @@ export const UpdateSketchDescriptionDocument = gql`
     description
     summary
     image
-    download_link
+    downloadables
   }
 }
     `;
@@ -4068,84 +4606,39 @@ export function useUpdateSketchDescriptionMutation(baseOptions?: Apollo.Mutation
 export type UpdateSketchDescriptionMutationHookResult = ReturnType<typeof useUpdateSketchDescriptionMutation>;
 export type UpdateSketchDescriptionMutationResult = Apollo.MutationResult<UpdateSketchDescriptionMutation>;
 export type UpdateSketchDescriptionMutationOptions = Apollo.BaseMutationOptions<UpdateSketchDescriptionMutation, UpdateSketchDescriptionMutationVariables>;
-export const UpdateSketchImageDocument = gql`
-    mutation UpdateSketchImage($id: String!, $image: String!) {
-  updateSketch(data: {image: {set: $image}}, where: {id: $id}) {
-    id
-    title
-    description
-    summary
-    image
-    download_link
-  }
+export const UpdateZipFileDocument = gql`
+    mutation UpdateZipFile($files: [Upload!]!, $prevname: String!, $isTemp: Boolean!) {
+  updateZipFile(files: $files, prevname: $prevname, isTemp: $isTemp)
 }
     `;
-export type UpdateSketchImageMutationFn = Apollo.MutationFunction<UpdateSketchImageMutation, UpdateSketchImageMutationVariables>;
+export type UpdateZipFileMutationFn = Apollo.MutationFunction<UpdateZipFileMutation, UpdateZipFileMutationVariables>;
 
 /**
- * __useUpdateSketchImageMutation__
+ * __useUpdateZipFileMutation__
  *
- * To run a mutation, you first call `useUpdateSketchImageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSketchImageMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateZipFileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateZipFileMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateSketchImageMutation, { data, loading, error }] = useUpdateSketchImageMutation({
+ * const [updateZipFileMutation, { data, loading, error }] = useUpdateZipFileMutation({
  *   variables: {
- *      id: // value for 'id'
- *      image: // value for 'image'
+ *      files: // value for 'files'
+ *      prevname: // value for 'prevname'
+ *      isTemp: // value for 'isTemp'
  *   },
  * });
  */
-export function useUpdateSketchImageMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSketchImageMutation, UpdateSketchImageMutationVariables>) {
+export function useUpdateZipFileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateZipFileMutation, UpdateZipFileMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSketchImageMutation, UpdateSketchImageMutationVariables>(UpdateSketchImageDocument, options);
+        return Apollo.useMutation<UpdateZipFileMutation, UpdateZipFileMutationVariables>(UpdateZipFileDocument, options);
       }
-export type UpdateSketchImageMutationHookResult = ReturnType<typeof useUpdateSketchImageMutation>;
-export type UpdateSketchImageMutationResult = Apollo.MutationResult<UpdateSketchImageMutation>;
-export type UpdateSketchImageMutationOptions = Apollo.BaseMutationOptions<UpdateSketchImageMutation, UpdateSketchImageMutationVariables>;
-export const UpdateSketchDownloadLinkDocument = gql`
-    mutation UpdateSketchDownloadLink($id: String!, $download_link: String!) {
-  updateSketch(data: {download_link: {set: $download_link}}, where: {id: $id}) {
-    id
-    title
-    description
-    summary
-    image
-    download_link
-  }
-}
-    `;
-export type UpdateSketchDownloadLinkMutationFn = Apollo.MutationFunction<UpdateSketchDownloadLinkMutation, UpdateSketchDownloadLinkMutationVariables>;
-
-/**
- * __useUpdateSketchDownloadLinkMutation__
- *
- * To run a mutation, you first call `useUpdateSketchDownloadLinkMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSketchDownloadLinkMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSketchDownloadLinkMutation, { data, loading, error }] = useUpdateSketchDownloadLinkMutation({
- *   variables: {
- *      id: // value for 'id'
- *      download_link: // value for 'download_link'
- *   },
- * });
- */
-export function useUpdateSketchDownloadLinkMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSketchDownloadLinkMutation, UpdateSketchDownloadLinkMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSketchDownloadLinkMutation, UpdateSketchDownloadLinkMutationVariables>(UpdateSketchDownloadLinkDocument, options);
-      }
-export type UpdateSketchDownloadLinkMutationHookResult = ReturnType<typeof useUpdateSketchDownloadLinkMutation>;
-export type UpdateSketchDownloadLinkMutationResult = Apollo.MutationResult<UpdateSketchDownloadLinkMutation>;
-export type UpdateSketchDownloadLinkMutationOptions = Apollo.BaseMutationOptions<UpdateSketchDownloadLinkMutation, UpdateSketchDownloadLinkMutationVariables>;
+export type UpdateZipFileMutationHookResult = ReturnType<typeof useUpdateZipFileMutation>;
+export type UpdateZipFileMutationResult = Apollo.MutationResult<UpdateZipFileMutation>;
+export type UpdateZipFileMutationOptions = Apollo.BaseMutationOptions<UpdateZipFileMutation, UpdateZipFileMutationVariables>;
 export const UpdateSketchSummaryDocument = gql`
     mutation UpdateSketchSummary($id: String!, $summary: String!) {
   updateSketch(data: {summary: {set: $summary}}, where: {id: $id}) {
@@ -4154,7 +4647,7 @@ export const UpdateSketchSummaryDocument = gql`
     description
     summary
     image
-    download_link
+    downloadables
   }
 }
     `;
@@ -4264,6 +4757,39 @@ export function useUpdateQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateQuestionMutationHookResult = ReturnType<typeof useUpdateQuestionMutation>;
 export type UpdateQuestionMutationResult = Apollo.MutationResult<UpdateQuestionMutation>;
 export type UpdateQuestionMutationOptions = Apollo.BaseMutationOptions<UpdateQuestionMutation, UpdateQuestionMutationVariables>;
+export const DeleteAboutDocument = gql`
+    mutation DeleteAbout($id: String!) {
+  deleteAbout(where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type DeleteAboutMutationFn = Apollo.MutationFunction<DeleteAboutMutation, DeleteAboutMutationVariables>;
+
+/**
+ * __useDeleteAboutMutation__
+ *
+ * To run a mutation, you first call `useDeleteAboutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAboutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAboutMutation, { data, loading, error }] = useDeleteAboutMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAboutMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAboutMutation, DeleteAboutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAboutMutation, DeleteAboutMutationVariables>(DeleteAboutDocument, options);
+      }
+export type DeleteAboutMutationHookResult = ReturnType<typeof useDeleteAboutMutation>;
+export type DeleteAboutMutationResult = Apollo.MutationResult<DeleteAboutMutation>;
+export type DeleteAboutMutationOptions = Apollo.BaseMutationOptions<DeleteAboutMutation, DeleteAboutMutationVariables>;
 export const DeleteMessageDocument = gql`
     mutation DeleteMessage($id: String!) {
   deleteMessage(where: {id: $id}) {
@@ -4534,6 +5060,85 @@ export function useSubscribeMessagesSubscription(baseOptions?: Apollo.Subscripti
       }
 export type SubscribeMessagesSubscriptionHookResult = ReturnType<typeof useSubscribeMessagesSubscription>;
 export type SubscribeMessagesSubscriptionResult = Apollo.SubscriptionResult<SubscribeMessagesSubscription>;
+export const AdminDocument = gql`
+    query Admin {
+  me {
+    email
+    github
+    instagram
+    whatsapp
+    linkedIn
+    skype
+    fname
+    lname
+    heroImage
+    resumes
+  }
+}
+    `;
+
+/**
+ * __useAdminQuery__
+ *
+ * To run a query within a React component, call `useAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminQuery(baseOptions?: Apollo.QueryHookOptions<AdminQuery, AdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminQuery, AdminQueryVariables>(AdminDocument, options);
+      }
+export function useAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminQuery, AdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminQuery, AdminQueryVariables>(AdminDocument, options);
+        }
+export type AdminQueryHookResult = ReturnType<typeof useAdminQuery>;
+export type AdminLazyQueryHookResult = ReturnType<typeof useAdminLazyQuery>;
+export type AdminQueryResult = Apollo.QueryResult<AdminQuery, AdminQueryVariables>;
+export const AboutsDocument = gql`
+    query abouts {
+  abouts {
+    id
+    title
+    body
+  }
+}
+    `;
+
+/**
+ * __useAboutsQuery__
+ *
+ * To run a query within a React component, call `useAboutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAboutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAboutsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAboutsQuery(baseOptions?: Apollo.QueryHookOptions<AboutsQuery, AboutsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AboutsQuery, AboutsQueryVariables>(AboutsDocument, options);
+      }
+export function useAboutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AboutsQuery, AboutsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AboutsQuery, AboutsQueryVariables>(AboutsDocument, options);
+        }
+export type AboutsQueryHookResult = ReturnType<typeof useAboutsQuery>;
+export type AboutsLazyQueryHookResult = ReturnType<typeof useAboutsLazyQuery>;
+export type AboutsQueryResult = Apollo.QueryResult<AboutsQuery, AboutsQueryVariables>;
 export const AdminEmailDocument = gql`
     query adminEmail {
   me {
@@ -4661,7 +5266,7 @@ export const QuerySingleProjectWithRelationsDocument = gql`
       title
       description
       summary
-      download_link
+      downloadables
       image
     }
     tech_categories {
@@ -4723,7 +5328,7 @@ export const QueryProjectsWithRelationsDocument = gql`
       title
       description
       summary
-      download_link
+      downloadables
       image
     }
     tech_categories {

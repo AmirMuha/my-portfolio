@@ -133,7 +133,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
     }
   }
 
-  const updateDownloadables = (v: string) => {
+  const updateDownloadables = () => {
     if (mode === "ADD") {
       mutateUpdateZipFile({
         variables: {

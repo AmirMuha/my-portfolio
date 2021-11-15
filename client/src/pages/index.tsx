@@ -1,4 +1,5 @@
 import { PageProps, graphql } from "gatsby"
+import { Project, Stack as StackTypes } from "../types/graphql-types"
 import React, { FC } from "react"
 
 import ContactMe from "../components/App/ContactMe"
@@ -13,12 +14,15 @@ import TheSection from "../components/App/TheSection"
 interface Props extends PageProps {
   data: {
     portfolio: {
-      projects: GatsbyTypes.Portfolio_Project[]
+      projects: Project[]
+      stacks: StackTypes[]
       me: GatsbyTypes.Portfolio_Admin
     }
   }
 }
+
 const Home: FC<Props> = ({ data }) => {
+  console.log(data)
   return (
     <>
       <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />
@@ -36,14 +40,21 @@ const Home: FC<Props> = ({ data }) => {
           <Projects data={data?.portfolio?.projects || []} />
         </TheSection>
         <TheSection id="stack" name="Stack">
-          <Stack />
+          <Stack data={data?.portfolio?.stacks} />
         </TheSection>
         <TheSection
           id="contact-me"
           style={{ paddingBottom: 25 }}
           name="Contact Me"
         >
-          <ContactMe adminEmail={data?.portfolio.me.email} id="footer" />
+          <ContactMe
+            skypeUrl={data?.portfolio?.me?.skype}
+            instagramUrl={data?.portfolio?.me?.instagram}
+            whatsappNumber={data?.portfolio?.me?.whatsapp}
+            linkedInUrl={data?.portfolio?.me?.linkedIn}
+            adminEmail={data?.portfolio?.me?.email}
+            id="footer"
+          />
         </TheSection>
         <TheSection
           style={{ marginBottom: 50, paddingBottom: 25 }}
@@ -79,11 +90,17 @@ export const query = graphql`
           }
         }
       }
+      stacks {
+        id
+        title
+        image
+      }
       me {
         email
         github
         heroImage
         instagram
+        skype
         linkedIn
         lname
         resumes

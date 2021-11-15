@@ -1,15 +1,17 @@
-import { graphql, PageProps } from "gatsby"
+import { PageProps, graphql } from "gatsby"
 import React, { FC } from "react"
+
 import InPageMenu from "../components/App/InPageMenu"
-import ProjectsComponent from "../components/App/Projects"
-import TheSection from "../components/App/TheSection"
 import Layout from "../components/Layout"
+import {Project} from "../types/graphql-types"
+import ProjectsComponent from "../components/App/Projects"
 import { SEO } from "../components/SEO"
+import TheSection from "../components/App/TheSection"
 
 interface QueryTypes extends PageProps {
   data: {
     portfolio: {
-      projects: GatsbyTypes.Portfolio_Project[]
+      projects: Project[]
     }
   }
 }

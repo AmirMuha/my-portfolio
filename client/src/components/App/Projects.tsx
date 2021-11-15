@@ -1,9 +1,11 @@
 import React, { FC, PropsWithChildren } from "react"
+
+import {Project} from '../../types/graphql-types'
 import ProjectItem from "./ProjectItem"
 
 interface Props {
   type?: "1" | "2"
-  data: GatsbyTypes.Portfolio_Project[]
+  data: Project[]
 }
 
 const Projects: FC<PropsWithChildren<Props>> = ({ type = "1", data }) => {

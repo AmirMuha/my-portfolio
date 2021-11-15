@@ -1,4 +1,7 @@
-import { CreatePagesArgs, CreateWebpackConfigArgs } from "gatsby"
+import {
+  CreatePagesArgs,
+  CreateWebpackConfigArgs,
+} from "gatsby"
 
 import path from "path"
 
@@ -7,6 +10,7 @@ interface ProjectQuery {
     projects: GatsbyTypes.Portfolio_Project[]
   }
 }
+
 export const onCreateWebpackConfig = ({ actions }: CreateWebpackConfigArgs) => {
   actions.setWebpackConfig({
     devtool: "eval-source-map",
@@ -34,7 +38,7 @@ export const createPages = async ({
             description
             summary
             image
-            download_link
+            downloadables
           }
           tech_categories {
             id

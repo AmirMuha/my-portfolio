@@ -17,16 +17,12 @@ import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
 
 interface Props {
-  style?: React.CSSProperties
-  className?: string
   data?: StackType[]
   editable?: boolean
   adminEmail?: string
   refetch?: () => void
 }
 const Stack: FC<PropsWithChildren<Props>> = ({
-  className,
-  style,
   adminEmail,
   data,
   editable = false,
@@ -165,15 +161,15 @@ const Stack: FC<PropsWithChildren<Props>> = ({
       {isStackCreateOpen && (
         <Modal
           header
-          title="Create new Stack"
-          maxWidth="500px"
+          title="Create New Stack"
+          maxWidth="700px"
           onClose={() => {
             setStackCreateOpen(false)
             setNewStackTitle("")
             setNewStackImageFile(undefined)
           }}
         >
-          <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-2 grid-cols-1 lg:grid-cols-2">
             <div className="flex-grow">
               <Input
                 label="Title"
@@ -198,7 +194,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
                 getValue={(_, f) => setNewStackImageFile(f[0])}
               />
             </div>
-            <Button normal outline onClick={saveStack}>
+            <Button className="col-span-2" normal outline onClick={saveStack}>
               Save
             </Button>
           </div>
@@ -267,8 +263,12 @@ const Stack: FC<PropsWithChildren<Props>> = ({
         >
           <ul className="flex px-3 stack items-center gap-2">
             {data?.map(s => (
-              // Static Image
-              <li title="TypeScript"></li>
+              <li title={s.title}>
+              <img
+                src={`${(window as any).__SERVER_API__}/${s.image}`}
+                alt={s.title}
+              />
+              </li>
             ))}
           </ul>
         </div>

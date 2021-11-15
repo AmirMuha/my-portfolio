@@ -766,12 +766,10 @@ type Portfolio_Admin {
   whatsapp: String!
   instagram: String!
   github: String!
+  skype: String!
   heroImage: String!
-  stack: [String!]!
   resumes: [String!]!
   confirmed: Boolean!
-  isPublished: Boolean!
-  stacks: [String!]!
   createdAt: Portfolio_DateTime!
   updatedAt: Portfolio_DateTime!
   _count: Portfolio_AdminCount
@@ -781,6 +779,7 @@ type Portfolio_AdminCount {
   about: Int!
   messages: Int!
   projects: Int!
+  stack: Int!
 }
 
 input Portfolio_AboutWhereUniqueInput {
@@ -850,15 +849,14 @@ input Portfolio_AdminWhereInput {
   whatsapp: Portfolio_StringFilter
   instagram: Portfolio_StringFilter
   github: Portfolio_StringFilter
+  skype: Portfolio_StringFilter
   heroImage: Portfolio_StringFilter
-  stack: Portfolio_StringNullableListFilter
   resumes: Portfolio_StringNullableListFilter
   confirmed: Portfolio_BoolFilter
-  isPublished: Portfolio_BoolFilter
   about: Portfolio_AboutListRelationFilter
   messages: Portfolio_MessageListRelationFilter
   projects: Portfolio_ProjectListRelationFilter
-  stacks: Portfolio_StringNullableListFilter
+  stack: Portfolio_StackListRelationFilter
   password: Portfolio_StringFilter
   createdAt: Portfolio_DateTimeFilter
   updatedAt: Portfolio_DateTimeFilter
@@ -901,13 +899,36 @@ input Portfolio_MessageWhereInput {
   id: Portfolio_StringFilter
   subject: Portfolio_StringFilter
   from: Portfolio_StringFilter
+  files: Portfolio_StringFilter
   body: Portfolio_StringFilter
   read_status: Portfolio_BoolFilter
   answer_status: Portfolio_BoolFilter
   admin: Portfolio_AdminRelationFilter
   admin_id: Portfolio_StringFilter
-  answeredAt: Portfolio_DateTimeFilter
+  answeredAt: Portfolio_DateTimeNullableFilter
   createdAd: Portfolio_DateTimeFilter
+}
+
+input Portfolio_DateTimeNullableFilter {
+  equals: Portfolio_DateTime
+  in: [Portfolio_DateTime!]
+  notIn: [Portfolio_DateTime!]
+  lt: Portfolio_DateTime
+  lte: Portfolio_DateTime
+  gt: Portfolio_DateTime
+  gte: Portfolio_DateTime
+  not: Portfolio_NestedDateTimeNullableFilter
+}
+
+input Portfolio_NestedDateTimeNullableFilter {
+  equals: Portfolio_DateTime
+  in: [Portfolio_DateTime!]
+  notIn: [Portfolio_DateTime!]
+  lt: Portfolio_DateTime
+  lte: Portfolio_DateTime
+  gt: Portfolio_DateTime
+  gte: Portfolio_DateTime
+  not: Portfolio_NestedDateTimeNullableFilter
 }
 
 input Portfolio_DateTimeFilter {
@@ -1013,29 +1034,9 @@ input Portfolio_QuestionWhereInput {
   NOT: [Portfolio_QuestionWhereInput!]
   id: Portfolio_StringFilter
   question: Portfolio_StringFilter
-  answer: Portfolio_AnswerRelationFilter
-  answer_id: Portfolio_StringFilter
+  answer: Portfolio_StringFilter
   project: Portfolio_ProjectRelationFilter
   project_id: Portfolio_StringFilter
-}
-
-input Portfolio_AnswerRelationFilter {
-  is: Portfolio_AnswerWhereInput
-  isNot: Portfolio_AnswerWhereInput
-}
-
-input Portfolio_AnswerWhereInput {
-  AND: [Portfolio_AnswerWhereInput!]
-  OR: [Portfolio_AnswerWhereInput!]
-  NOT: [Portfolio_AnswerWhereInput!]
-  id: Portfolio_StringFilter
-  answer: Portfolio_StringFilter
-  question: Portfolio_QuestionRelationFilter
-}
-
-input Portfolio_QuestionRelationFilter {
-  is: Portfolio_QuestionWhereInput
-  isNot: Portfolio_QuestionWhereInput
 }
 
 input Portfolio_SketchListRelationFilter {
@@ -1052,10 +1053,27 @@ input Portfolio_SketchWhereInput {
   title: Portfolio_StringFilter
   description: Portfolio_StringFilter
   summary: Portfolio_StringFilter
-  download_link: Portfolio_StringFilter
+  downloadables: Portfolio_StringFilter
   image: Portfolio_StringFilter
   project: Portfolio_ProjectRelationFilter
   project_id: Portfolio_StringFilter
+}
+
+input Portfolio_StackListRelationFilter {
+  every: Portfolio_StackWhereInput
+  some: Portfolio_StackWhereInput
+  none: Portfolio_StackWhereInput
+}
+
+input Portfolio_StackWhereInput {
+  AND: [Portfolio_StackWhereInput!]
+  OR: [Portfolio_StackWhereInput!]
+  NOT: [Portfolio_StackWhereInput!]
+  id: Portfolio_StringFilter
+  title: Portfolio_StringFilter
+  image: Portfolio_StringFilter
+  admin: Portfolio_AdminRelationFilter
+  admin_id: Portfolio_StringFilter
 }
 
 input Portfolio_AboutOrderByWithRelationInput {
@@ -1081,15 +1099,14 @@ input Portfolio_AdminOrderByWithRelationInput {
   whatsapp: Portfolio_SortOrder
   instagram: Portfolio_SortOrder
   github: Portfolio_SortOrder
+  skype: Portfolio_SortOrder
   heroImage: Portfolio_SortOrder
-  stack: Portfolio_SortOrder
   resumes: Portfolio_SortOrder
   confirmed: Portfolio_SortOrder
-  isPublished: Portfolio_SortOrder
   about: Portfolio_AboutOrderByRelationAggregateInput
   messages: Portfolio_MessageOrderByRelationAggregateInput
   projects: Portfolio_ProjectOrderByRelationAggregateInput
-  stacks: Portfolio_SortOrder
+  stack: Portfolio_StackOrderByRelationAggregateInput
   password: Portfolio_SortOrder
   createdAt: Portfolio_SortOrder
   updatedAt: Portfolio_SortOrder
@@ -1107,6 +1124,10 @@ input Portfolio_ProjectOrderByRelationAggregateInput {
   _count: Portfolio_SortOrder
 }
 
+input Portfolio_StackOrderByRelationAggregateInput {
+  _count: Portfolio_SortOrder
+}
+
 enum Portfolio_AboutScalarFieldEnum {
   id
   title
@@ -1115,19 +1136,49 @@ enum Portfolio_AboutScalarFieldEnum {
   updatedAt
 }
 
-type Portfolio_Answer {
+type Portfolio_Message {
   id: String!
-  answer: String!
-  question: Portfolio_Question
+  subject: String!
+  from: String!
+  files: String!
+  body: String!
+  read_status: Boolean!
+  answer_status: Boolean!
+  admin_id: String!
+  answeredAt: Portfolio_DateTime
+  createdAd: Portfolio_DateTime!
+  admin: Portfolio_Admin!
 }
 
-type Portfolio_Question {
-  id: String!
-  question: String!
-  answer_id: String!
-  project_id: String!
-  answer: Portfolio_Answer!
-  project: Portfolio_Project!
+input Portfolio_MessageWhereUniqueInput {
+  id: String
+}
+
+input Portfolio_MessageOrderByWithRelationInput {
+  id: Portfolio_SortOrder
+  subject: Portfolio_SortOrder
+  from: Portfolio_SortOrder
+  files: Portfolio_SortOrder
+  body: Portfolio_SortOrder
+  read_status: Portfolio_SortOrder
+  answer_status: Portfolio_SortOrder
+  admin: Portfolio_AdminOrderByWithRelationInput
+  admin_id: Portfolio_SortOrder
+  answeredAt: Portfolio_SortOrder
+  createdAd: Portfolio_SortOrder
+}
+
+enum Portfolio_MessageScalarFieldEnum {
+  id
+  subject
+  from
+  files
+  body
+  read_status
+  answer_status
+  admin_id
+  answeredAt
+  createdAd
 }
 
 type Portfolio_Project {
@@ -1242,30 +1293,30 @@ enum Portfolio_TechCategoryScalarFieldEnum {
   project_id
 }
 
+type Portfolio_Question {
+  id: String!
+  question: String!
+  answer: String!
+  project_id: String!
+  project: Portfolio_Project!
+}
+
 input Portfolio_QuestionOrderByWithRelationInput {
   id: Portfolio_SortOrder
   question: Portfolio_SortOrder
-  answer: Portfolio_AnswerOrderByWithRelationInput
-  answer_id: Portfolio_SortOrder
+  answer: Portfolio_SortOrder
   project: Portfolio_ProjectOrderByWithRelationInput
   project_id: Portfolio_SortOrder
 }
 
-input Portfolio_AnswerOrderByWithRelationInput {
-  id: Portfolio_SortOrder
-  answer: Portfolio_SortOrder
-  question: Portfolio_QuestionOrderByWithRelationInput
-}
-
 input Portfolio_QuestionWhereUniqueInput {
   id: String
-  answer_id: String
 }
 
 enum Portfolio_QuestionScalarFieldEnum {
   id
   question
-  answer_id
+  answer
   project_id
 }
 
@@ -1274,7 +1325,7 @@ type Portfolio_Sketch {
   title: String!
   description: String!
   summary: String!
-  download_link: String!
+  downloadables: String!
   image: String!
   project_id: String!
   project: Portfolio_Project!
@@ -1285,7 +1336,7 @@ input Portfolio_SketchOrderByWithRelationInput {
   title: Portfolio_SortOrder
   description: Portfolio_SortOrder
   summary: Portfolio_SortOrder
-  download_link: Portfolio_SortOrder
+  downloadables: Portfolio_SortOrder
   image: Portfolio_SortOrder
   project: Portfolio_ProjectOrderByWithRelationInput
   project_id: Portfolio_SortOrder
@@ -1300,60 +1351,9 @@ enum Portfolio_SketchScalarFieldEnum {
   title
   description
   summary
-  download_link
+  downloadables
   image
   project_id
-}
-
-input Portfolio_AnswerWhereUniqueInput {
-  id: String
-}
-
-enum Portfolio_AnswerScalarFieldEnum {
-  id
-  answer
-}
-
-type Portfolio_Message {
-  id: String!
-  subject: String!
-  from: String!
-  body: String!
-  read_status: Boolean!
-  answer_status: Boolean!
-  admin_id: String!
-  answeredAt: Portfolio_DateTime!
-  createdAd: Portfolio_DateTime!
-  admin: Portfolio_Admin!
-}
-
-input Portfolio_MessageWhereUniqueInput {
-  id: String
-}
-
-input Portfolio_MessageOrderByWithRelationInput {
-  id: Portfolio_SortOrder
-  subject: Portfolio_SortOrder
-  from: Portfolio_SortOrder
-  body: Portfolio_SortOrder
-  read_status: Portfolio_SortOrder
-  answer_status: Portfolio_SortOrder
-  admin: Portfolio_AdminOrderByWithRelationInput
-  admin_id: Portfolio_SortOrder
-  answeredAt: Portfolio_SortOrder
-  createdAd: Portfolio_SortOrder
-}
-
-enum Portfolio_MessageScalarFieldEnum {
-  id
-  subject
-  from
-  body
-  read_status
-  answer_status
-  admin_id
-  answeredAt
-  createdAd
 }
 
 input Portfolio_ProjectWhereUniqueInput {
@@ -1372,6 +1372,35 @@ enum Portfolio_ProjectScalarFieldEnum {
   createdAt
   updatedAt
 }
+
+type Portfolio_Stack {
+  id: String!
+  title: String!
+  image: String!
+  admin_id: String!
+}
+
+input Portfolio_StackOrderByWithRelationInput {
+  id: Portfolio_SortOrder
+  title: Portfolio_SortOrder
+  image: Portfolio_SortOrder
+  admin: Portfolio_AdminOrderByWithRelationInput
+  admin_id: Portfolio_SortOrder
+}
+
+input Portfolio_StackWhereUniqueInput {
+  id: String
+}
+
+enum Portfolio_StackScalarFieldEnum {
+  id
+  title
+  image
+  admin_id
+}
+
+# The `Upload` scalar type represents a file upload.
+scalar Portfolio_Upload
 
 input Portfolio_AboutCreateInput {
   id: String
@@ -1396,28 +1425,19 @@ input Portfolio_AdminCreateWithoutAboutInput {
   whatsapp: String!
   instagram: String!
   github: String!
+  skype: String!
   heroImage: String!
   confirmed: Boolean
-  isPublished: Boolean
   password: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
-  stack: Portfolio_AdminCreatestackInput
   resumes: Portfolio_AdminCreateresumesInput
-  stacks: Portfolio_AdminCreatestacksInput
   messages: Portfolio_MessageCreateNestedManyWithoutAdminInput
   projects: Portfolio_ProjectCreateNestedManyWithoutAdminInput
-}
-
-input Portfolio_AdminCreatestackInput {
-  set: [String!]!
+  stack: Portfolio_StackCreateNestedManyWithoutAdminInput
 }
 
 input Portfolio_AdminCreateresumesInput {
-  set: [String!]!
-}
-
-input Portfolio_AdminCreatestacksInput {
   set: [String!]!
 }
 
@@ -1432,6 +1452,7 @@ input Portfolio_MessageCreateWithoutAdminInput {
   id: String
   subject: String!
   from: String!
+  files: String
   body: String!
   read_status: Boolean
   answer_status: Boolean
@@ -1453,6 +1474,7 @@ input Portfolio_MessageCreateManyAdminInput {
   id: String
   subject: String!
   from: String!
+  files: String
   body: String!
   read_status: Boolean
   answer_status: Boolean
@@ -1547,23 +1569,7 @@ input Portfolio_QuestionCreateNestedManyWithoutProjectInput {
 input Portfolio_QuestionCreateWithoutProjectInput {
   id: String
   question: String!
-  answer: Portfolio_AnswerCreateNestedOneWithoutQuestionInput!
-}
-
-input Portfolio_AnswerCreateNestedOneWithoutQuestionInput {
-  create: Portfolio_AnswerCreateWithoutQuestionInput
-  connectOrCreate: Portfolio_AnswerCreateOrConnectWithoutQuestionInput
-  connect: Portfolio_AnswerWhereUniqueInput
-}
-
-input Portfolio_AnswerCreateWithoutQuestionInput {
-  id: String
   answer: String!
-}
-
-input Portfolio_AnswerCreateOrConnectWithoutQuestionInput {
-  where: Portfolio_AnswerWhereUniqueInput!
-  create: Portfolio_AnswerCreateWithoutQuestionInput!
 }
 
 input Portfolio_QuestionCreateOrConnectWithoutProjectInput {
@@ -1579,7 +1585,7 @@ input Portfolio_QuestionCreateManyProjectInputEnvelope {
 input Portfolio_QuestionCreateManyProjectInput {
   id: String
   question: String!
-  answer_id: String!
+  answer: String!
 }
 
 input Portfolio_SketchCreateNestedManyWithoutProjectInput {
@@ -1594,7 +1600,7 @@ input Portfolio_SketchCreateWithoutProjectInput {
   title: String!
   description: String!
   summary: String!
-  download_link: String!
+  downloadables: String!
   image: String!
 }
 
@@ -1613,7 +1619,7 @@ input Portfolio_SketchCreateManyProjectInput {
   title: String!
   description: String!
   summary: String!
-  download_link: String!
+  downloadables: String!
   image: String!
 }
 
@@ -1637,6 +1643,35 @@ input Portfolio_ProjectCreateManyAdminInput {
   summary: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
+}
+
+input Portfolio_StackCreateNestedManyWithoutAdminInput {
+  create: [Portfolio_StackCreateWithoutAdminInput!]
+  connectOrCreate: [Portfolio_StackCreateOrConnectWithoutAdminInput!]
+  createMany: Portfolio_StackCreateManyAdminInputEnvelope
+  connect: [Portfolio_StackWhereUniqueInput!]
+}
+
+input Portfolio_StackCreateWithoutAdminInput {
+  id: String
+  title: String!
+  image: String!
+}
+
+input Portfolio_StackCreateOrConnectWithoutAdminInput {
+  where: Portfolio_StackWhereUniqueInput!
+  create: Portfolio_StackCreateWithoutAdminInput!
+}
+
+input Portfolio_StackCreateManyAdminInputEnvelope {
+  data: [Portfolio_StackCreateManyAdminInput!]!
+  skipDuplicates: Boolean
+}
+
+input Portfolio_StackCreateManyAdminInput {
+  id: String
+  title: String!
+  image: String!
 }
 
 input Portfolio_AdminCreateOrConnectWithoutAboutInput {
@@ -1687,34 +1722,23 @@ input Portfolio_AdminUpdateWithoutAboutInput {
   whatsapp: Portfolio_StringFieldUpdateOperationsInput
   instagram: Portfolio_StringFieldUpdateOperationsInput
   github: Portfolio_StringFieldUpdateOperationsInput
+  skype: Portfolio_StringFieldUpdateOperationsInput
   heroImage: Portfolio_StringFieldUpdateOperationsInput
   confirmed: Portfolio_BoolFieldUpdateOperationsInput
-  isPublished: Portfolio_BoolFieldUpdateOperationsInput
   password: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  stack: Portfolio_AdminUpdatestackInput
   resumes: Portfolio_AdminUpdateresumesInput
-  stacks: Portfolio_AdminUpdatestacksInput
   messages: Portfolio_MessageUpdateManyWithoutAdminInput
   projects: Portfolio_ProjectUpdateManyWithoutAdminInput
+  stack: Portfolio_StackUpdateManyWithoutAdminInput
 }
 
 input Portfolio_BoolFieldUpdateOperationsInput {
   set: Boolean
 }
 
-input Portfolio_AdminUpdatestackInput {
-  set: [String!]
-  push: [String!]
-}
-
 input Portfolio_AdminUpdateresumesInput {
-  set: [String!]
-  push: [String!]
-}
-
-input Portfolio_AdminUpdatestacksInput {
   set: [String!]
   push: [String!]
 }
@@ -1743,11 +1767,16 @@ input Portfolio_MessageUpdateWithoutAdminInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   subject: Portfolio_StringFieldUpdateOperationsInput
   from: Portfolio_StringFieldUpdateOperationsInput
+  files: Portfolio_StringFieldUpdateOperationsInput
   body: Portfolio_StringFieldUpdateOperationsInput
   read_status: Portfolio_BoolFieldUpdateOperationsInput
   answer_status: Portfolio_BoolFieldUpdateOperationsInput
-  answeredAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  answeredAt: Portfolio_NullableDateTimeFieldUpdateOperationsInput
   createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
+}
+
+input Portfolio_NullableDateTimeFieldUpdateOperationsInput {
+  set: Portfolio_DateTime
 }
 
 input Portfolio_MessageUpdateWithWhereUniqueWithoutAdminInput {
@@ -1767,11 +1796,12 @@ input Portfolio_MessageScalarWhereInput {
   id: Portfolio_StringFilter
   subject: Portfolio_StringFilter
   from: Portfolio_StringFilter
+  files: Portfolio_StringFilter
   body: Portfolio_StringFilter
   read_status: Portfolio_BoolFilter
   answer_status: Portfolio_BoolFilter
   admin_id: Portfolio_StringFilter
-  answeredAt: Portfolio_DateTimeFilter
+  answeredAt: Portfolio_DateTimeNullableFilter
   createdAd: Portfolio_DateTimeFilter
 }
 
@@ -1779,10 +1809,11 @@ input Portfolio_MessageUpdateManyMutationInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   subject: Portfolio_StringFieldUpdateOperationsInput
   from: Portfolio_StringFieldUpdateOperationsInput
+  files: Portfolio_StringFieldUpdateOperationsInput
   body: Portfolio_StringFieldUpdateOperationsInput
   read_status: Portfolio_BoolFieldUpdateOperationsInput
   answer_status: Portfolio_BoolFieldUpdateOperationsInput
-  answeredAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  answeredAt: Portfolio_NullableDateTimeFieldUpdateOperationsInput
   createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
 }
 
@@ -1943,24 +1974,6 @@ input Portfolio_QuestionUpsertWithWhereUniqueWithoutProjectInput {
 input Portfolio_QuestionUpdateWithoutProjectInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   question: Portfolio_StringFieldUpdateOperationsInput
-  answer: Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput
-}
-
-input Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput {
-  create: Portfolio_AnswerCreateWithoutQuestionInput
-  connectOrCreate: Portfolio_AnswerCreateOrConnectWithoutQuestionInput
-  upsert: Portfolio_AnswerUpsertWithoutQuestionInput
-  connect: Portfolio_AnswerWhereUniqueInput
-  update: Portfolio_AnswerUpdateWithoutQuestionInput
-}
-
-input Portfolio_AnswerUpsertWithoutQuestionInput {
-  update: Portfolio_AnswerUpdateWithoutQuestionInput!
-  create: Portfolio_AnswerCreateWithoutQuestionInput!
-}
-
-input Portfolio_AnswerUpdateWithoutQuestionInput {
-  id: Portfolio_StringFieldUpdateOperationsInput
   answer: Portfolio_StringFieldUpdateOperationsInput
 }
 
@@ -1980,13 +1993,14 @@ input Portfolio_QuestionScalarWhereInput {
   NOT: [Portfolio_QuestionScalarWhereInput!]
   id: Portfolio_StringFilter
   question: Portfolio_StringFilter
-  answer_id: Portfolio_StringFilter
+  answer: Portfolio_StringFilter
   project_id: Portfolio_StringFilter
 }
 
 input Portfolio_QuestionUpdateManyMutationInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   question: Portfolio_StringFieldUpdateOperationsInput
+  answer: Portfolio_StringFieldUpdateOperationsInput
 }
 
 input Portfolio_SketchUpdateManyWithoutProjectInput {
@@ -2014,7 +2028,7 @@ input Portfolio_SketchUpdateWithoutProjectInput {
   title: Portfolio_StringFieldUpdateOperationsInput
   description: Portfolio_StringFieldUpdateOperationsInput
   summary: Portfolio_StringFieldUpdateOperationsInput
-  download_link: Portfolio_StringFieldUpdateOperationsInput
+  downloadables: Portfolio_StringFieldUpdateOperationsInput
   image: Portfolio_StringFieldUpdateOperationsInput
 }
 
@@ -2036,7 +2050,7 @@ input Portfolio_SketchScalarWhereInput {
   title: Portfolio_StringFilter
   description: Portfolio_StringFilter
   summary: Portfolio_StringFilter
-  download_link: Portfolio_StringFilter
+  downloadables: Portfolio_StringFilter
   image: Portfolio_StringFilter
   project_id: Portfolio_StringFilter
 }
@@ -2046,7 +2060,7 @@ input Portfolio_SketchUpdateManyMutationInput {
   title: Portfolio_StringFieldUpdateOperationsInput
   description: Portfolio_StringFieldUpdateOperationsInput
   summary: Portfolio_StringFieldUpdateOperationsInput
-  download_link: Portfolio_StringFieldUpdateOperationsInput
+  downloadables: Portfolio_StringFieldUpdateOperationsInput
   image: Portfolio_StringFieldUpdateOperationsInput
 }
 
@@ -2088,56 +2102,84 @@ input Portfolio_ProjectUpdateManyMutationInput {
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
 }
 
+input Portfolio_StackUpdateManyWithoutAdminInput {
+  create: [Portfolio_StackCreateWithoutAdminInput!]
+  connectOrCreate: [Portfolio_StackCreateOrConnectWithoutAdminInput!]
+  upsert: [Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput!]
+  createMany: Portfolio_StackCreateManyAdminInputEnvelope
+  connect: [Portfolio_StackWhereUniqueInput!]
+  set: [Portfolio_StackWhereUniqueInput!]
+  disconnect: [Portfolio_StackWhereUniqueInput!]
+  delete: [Portfolio_StackWhereUniqueInput!]
+  update: [Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput!]
+  updateMany: [Portfolio_StackUpdateManyWithWhereWithoutAdminInput!]
+  deleteMany: [Portfolio_StackScalarWhereInput!]
+}
+
+input Portfolio_StackUpsertWithWhereUniqueWithoutAdminInput {
+  where: Portfolio_StackWhereUniqueInput!
+  update: Portfolio_StackUpdateWithoutAdminInput!
+  create: Portfolio_StackCreateWithoutAdminInput!
+}
+
+input Portfolio_StackUpdateWithoutAdminInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  title: Portfolio_StringFieldUpdateOperationsInput
+  image: Portfolio_StringFieldUpdateOperationsInput
+}
+
+input Portfolio_StackUpdateWithWhereUniqueWithoutAdminInput {
+  where: Portfolio_StackWhereUniqueInput!
+  data: Portfolio_StackUpdateWithoutAdminInput!
+}
+
+input Portfolio_StackUpdateManyWithWhereWithoutAdminInput {
+  where: Portfolio_StackScalarWhereInput!
+  data: Portfolio_StackUpdateManyMutationInput!
+}
+
+input Portfolio_StackScalarWhereInput {
+  AND: [Portfolio_StackScalarWhereInput!]
+  OR: [Portfolio_StackScalarWhereInput!]
+  NOT: [Portfolio_StackScalarWhereInput!]
+  id: Portfolio_StringFilter
+  title: Portfolio_StringFilter
+  image: Portfolio_StringFilter
+  admin_id: Portfolio_StringFilter
+}
+
+input Portfolio_StackUpdateManyMutationInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  title: Portfolio_StringFieldUpdateOperationsInput
+  image: Portfolio_StringFieldUpdateOperationsInput
+}
+
 type Portfolio_AffectedRowsOutput {
   count: Int!
 }
 
-input Portfolio_AnswerCreateInput {
-  id: String
-  answer: String!
-  question: Portfolio_QuestionCreateNestedOneWithoutAnswerInput
+input Portfolio_MessageUpdateInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  subject: Portfolio_StringFieldUpdateOperationsInput
+  from: Portfolio_StringFieldUpdateOperationsInput
+  files: Portfolio_StringFieldUpdateOperationsInput
+  body: Portfolio_StringFieldUpdateOperationsInput
+  read_status: Portfolio_BoolFieldUpdateOperationsInput
+  answer_status: Portfolio_BoolFieldUpdateOperationsInput
+  answeredAt: Portfolio_NullableDateTimeFieldUpdateOperationsInput
+  createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
+  admin: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput
 }
 
-input Portfolio_QuestionCreateNestedOneWithoutAnswerInput {
-  create: Portfolio_QuestionCreateWithoutAnswerInput
-  connectOrCreate: Portfolio_QuestionCreateOrConnectWithoutAnswerInput
-  connect: Portfolio_QuestionWhereUniqueInput
-}
-
-input Portfolio_QuestionCreateWithoutAnswerInput {
-  id: String
-  question: String!
-  project: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput!
-}
-
-input Portfolio_ProjectCreateNestedOneWithoutQuestionsInput {
-  create: Portfolio_ProjectCreateWithoutQuestionsInput
-  connectOrCreate: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput
-  connect: Portfolio_ProjectWhereUniqueInput
-}
-
-input Portfolio_ProjectCreateWithoutQuestionsInput {
-  id: String
-  name: String!
-  image: String!
-  type: String!
-  github_url: String!
-  app_url: String!
-  summary: String!
-  createdAt: Portfolio_DateTime
-  updatedAt: Portfolio_DateTime
-  tech_categories: Portfolio_TechCategoryCreateNestedManyWithoutProjectInput
-  sketches: Portfolio_SketchCreateNestedManyWithoutProjectInput
-  admin: Portfolio_AdminCreateNestedOneWithoutProjectsInput!
-}
-
-input Portfolio_AdminCreateNestedOneWithoutProjectsInput {
-  create: Portfolio_AdminCreateWithoutProjectsInput
-  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutProjectsInput
+input Portfolio_AdminUpdateOneRequiredWithoutMessagesInput {
+  create: Portfolio_AdminCreateWithoutMessagesInput
+  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutMessagesInput
+  upsert: Portfolio_AdminUpsertWithoutMessagesInput
   connect: Portfolio_AdminWhereUniqueInput
+  update: Portfolio_AdminUpdateWithoutMessagesInput
 }
 
-input Portfolio_AdminCreateWithoutProjectsInput {
+input Portfolio_AdminCreateWithoutMessagesInput {
   id: String
   email: String!
   fname: String!
@@ -2146,17 +2188,16 @@ input Portfolio_AdminCreateWithoutProjectsInput {
   whatsapp: String!
   instagram: String!
   github: String!
+  skype: String!
   heroImage: String!
   confirmed: Boolean
-  isPublished: Boolean
   password: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
-  stack: Portfolio_AdminCreatestackInput
   resumes: Portfolio_AdminCreateresumesInput
-  stacks: Portfolio_AdminCreatestacksInput
   about: Portfolio_AboutCreateNestedManyWithoutAdminInput
-  messages: Portfolio_MessageCreateNestedManyWithoutAdminInput
+  projects: Portfolio_ProjectCreateNestedManyWithoutAdminInput
+  stack: Portfolio_StackCreateNestedManyWithoutAdminInput
 }
 
 input Portfolio_AboutCreateNestedManyWithoutAdminInput {
@@ -2190,90 +2231,17 @@ input Portfolio_AboutCreateManyAdminInput {
   updatedAt: Portfolio_DateTime
 }
 
-input Portfolio_AdminCreateOrConnectWithoutProjectsInput {
+input Portfolio_AdminCreateOrConnectWithoutMessagesInput {
   where: Portfolio_AdminWhereUniqueInput!
-  create: Portfolio_AdminCreateWithoutProjectsInput!
+  create: Portfolio_AdminCreateWithoutMessagesInput!
 }
 
-input Portfolio_ProjectCreateOrConnectWithoutQuestionsInput {
-  where: Portfolio_ProjectWhereUniqueInput!
-  create: Portfolio_ProjectCreateWithoutQuestionsInput!
+input Portfolio_AdminUpsertWithoutMessagesInput {
+  update: Portfolio_AdminUpdateWithoutMessagesInput!
+  create: Portfolio_AdminCreateWithoutMessagesInput!
 }
 
-input Portfolio_QuestionCreateOrConnectWithoutAnswerInput {
-  where: Portfolio_QuestionWhereUniqueInput!
-  create: Portfolio_QuestionCreateWithoutAnswerInput!
-}
-
-input Portfolio_AnswerUpdateInput {
-  id: Portfolio_StringFieldUpdateOperationsInput
-  answer: Portfolio_StringFieldUpdateOperationsInput
-  question: Portfolio_QuestionUpdateOneWithoutAnswerInput
-}
-
-input Portfolio_QuestionUpdateOneWithoutAnswerInput {
-  create: Portfolio_QuestionCreateWithoutAnswerInput
-  connectOrCreate: Portfolio_QuestionCreateOrConnectWithoutAnswerInput
-  upsert: Portfolio_QuestionUpsertWithoutAnswerInput
-  connect: Portfolio_QuestionWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: Portfolio_QuestionUpdateWithoutAnswerInput
-}
-
-input Portfolio_QuestionUpsertWithoutAnswerInput {
-  update: Portfolio_QuestionUpdateWithoutAnswerInput!
-  create: Portfolio_QuestionCreateWithoutAnswerInput!
-}
-
-input Portfolio_QuestionUpdateWithoutAnswerInput {
-  id: Portfolio_StringFieldUpdateOperationsInput
-  question: Portfolio_StringFieldUpdateOperationsInput
-  project: Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput
-}
-
-input Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput {
-  create: Portfolio_ProjectCreateWithoutQuestionsInput
-  connectOrCreate: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput
-  upsert: Portfolio_ProjectUpsertWithoutQuestionsInput
-  connect: Portfolio_ProjectWhereUniqueInput
-  update: Portfolio_ProjectUpdateWithoutQuestionsInput
-}
-
-input Portfolio_ProjectUpsertWithoutQuestionsInput {
-  update: Portfolio_ProjectUpdateWithoutQuestionsInput!
-  create: Portfolio_ProjectCreateWithoutQuestionsInput!
-}
-
-input Portfolio_ProjectUpdateWithoutQuestionsInput {
-  id: Portfolio_StringFieldUpdateOperationsInput
-  name: Portfolio_StringFieldUpdateOperationsInput
-  image: Portfolio_StringFieldUpdateOperationsInput
-  type: Portfolio_StringFieldUpdateOperationsInput
-  github_url: Portfolio_StringFieldUpdateOperationsInput
-  app_url: Portfolio_StringFieldUpdateOperationsInput
-  summary: Portfolio_StringFieldUpdateOperationsInput
-  createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
-  sketches: Portfolio_SketchUpdateManyWithoutProjectInput
-  admin: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput
-}
-
-input Portfolio_AdminUpdateOneRequiredWithoutProjectsInput {
-  create: Portfolio_AdminCreateWithoutProjectsInput
-  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutProjectsInput
-  upsert: Portfolio_AdminUpsertWithoutProjectsInput
-  connect: Portfolio_AdminWhereUniqueInput
-  update: Portfolio_AdminUpdateWithoutProjectsInput
-}
-
-input Portfolio_AdminUpsertWithoutProjectsInput {
-  update: Portfolio_AdminUpdateWithoutProjectsInput!
-  create: Portfolio_AdminCreateWithoutProjectsInput!
-}
-
-input Portfolio_AdminUpdateWithoutProjectsInput {
+input Portfolio_AdminUpdateWithoutMessagesInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   email: Portfolio_StringFieldUpdateOperationsInput
   fname: Portfolio_StringFieldUpdateOperationsInput
@@ -2282,17 +2250,16 @@ input Portfolio_AdminUpdateWithoutProjectsInput {
   whatsapp: Portfolio_StringFieldUpdateOperationsInput
   instagram: Portfolio_StringFieldUpdateOperationsInput
   github: Portfolio_StringFieldUpdateOperationsInput
+  skype: Portfolio_StringFieldUpdateOperationsInput
   heroImage: Portfolio_StringFieldUpdateOperationsInput
   confirmed: Portfolio_BoolFieldUpdateOperationsInput
-  isPublished: Portfolio_BoolFieldUpdateOperationsInput
   password: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  stack: Portfolio_AdminUpdatestackInput
   resumes: Portfolio_AdminUpdateresumesInput
-  stacks: Portfolio_AdminUpdatestacksInput
   about: Portfolio_AboutUpdateManyWithoutAdminInput
-  messages: Portfolio_MessageUpdateManyWithoutAdminInput
+  projects: Portfolio_ProjectUpdateManyWithoutAdminInput
+  stack: Portfolio_StackUpdateManyWithoutAdminInput
 }
 
 input Portfolio_AboutUpdateManyWithoutAdminInput {
@@ -2350,98 +2317,6 @@ input Portfolio_AboutUpdateManyMutationInput {
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
 }
 
-input Portfolio_MessageCreateInput {
-  id: String
-  subject: String!
-  from: String!
-  body: String!
-  read_status: Boolean
-  answer_status: Boolean
-  answeredAt: Portfolio_DateTime
-  createdAd: Portfolio_DateTime
-  admin: Portfolio_AdminCreateNestedOneWithoutMessagesInput!
-}
-
-input Portfolio_AdminCreateNestedOneWithoutMessagesInput {
-  create: Portfolio_AdminCreateWithoutMessagesInput
-  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutMessagesInput
-  connect: Portfolio_AdminWhereUniqueInput
-}
-
-input Portfolio_AdminCreateWithoutMessagesInput {
-  id: String
-  email: String!
-  fname: String!
-  lname: String!
-  linkedIn: String!
-  whatsapp: String!
-  instagram: String!
-  github: String!
-  heroImage: String!
-  confirmed: Boolean
-  isPublished: Boolean
-  password: String!
-  createdAt: Portfolio_DateTime
-  updatedAt: Portfolio_DateTime
-  stack: Portfolio_AdminCreatestackInput
-  resumes: Portfolio_AdminCreateresumesInput
-  stacks: Portfolio_AdminCreatestacksInput
-  about: Portfolio_AboutCreateNestedManyWithoutAdminInput
-  projects: Portfolio_ProjectCreateNestedManyWithoutAdminInput
-}
-
-input Portfolio_AdminCreateOrConnectWithoutMessagesInput {
-  where: Portfolio_AdminWhereUniqueInput!
-  create: Portfolio_AdminCreateWithoutMessagesInput!
-}
-
-input Portfolio_MessageUpdateInput {
-  id: Portfolio_StringFieldUpdateOperationsInput
-  subject: Portfolio_StringFieldUpdateOperationsInput
-  from: Portfolio_StringFieldUpdateOperationsInput
-  body: Portfolio_StringFieldUpdateOperationsInput
-  read_status: Portfolio_BoolFieldUpdateOperationsInput
-  answer_status: Portfolio_BoolFieldUpdateOperationsInput
-  answeredAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  createdAd: Portfolio_DateTimeFieldUpdateOperationsInput
-  admin: Portfolio_AdminUpdateOneRequiredWithoutMessagesInput
-}
-
-input Portfolio_AdminUpdateOneRequiredWithoutMessagesInput {
-  create: Portfolio_AdminCreateWithoutMessagesInput
-  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutMessagesInput
-  upsert: Portfolio_AdminUpsertWithoutMessagesInput
-  connect: Portfolio_AdminWhereUniqueInput
-  update: Portfolio_AdminUpdateWithoutMessagesInput
-}
-
-input Portfolio_AdminUpsertWithoutMessagesInput {
-  update: Portfolio_AdminUpdateWithoutMessagesInput!
-  create: Portfolio_AdminCreateWithoutMessagesInput!
-}
-
-input Portfolio_AdminUpdateWithoutMessagesInput {
-  id: Portfolio_StringFieldUpdateOperationsInput
-  email: Portfolio_StringFieldUpdateOperationsInput
-  fname: Portfolio_StringFieldUpdateOperationsInput
-  lname: Portfolio_StringFieldUpdateOperationsInput
-  linkedIn: Portfolio_StringFieldUpdateOperationsInput
-  whatsapp: Portfolio_StringFieldUpdateOperationsInput
-  instagram: Portfolio_StringFieldUpdateOperationsInput
-  github: Portfolio_StringFieldUpdateOperationsInput
-  heroImage: Portfolio_StringFieldUpdateOperationsInput
-  confirmed: Portfolio_BoolFieldUpdateOperationsInput
-  isPublished: Portfolio_BoolFieldUpdateOperationsInput
-  password: Portfolio_StringFieldUpdateOperationsInput
-  createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  stack: Portfolio_AdminUpdatestackInput
-  resumes: Portfolio_AdminUpdateresumesInput
-  stacks: Portfolio_AdminUpdatestacksInput
-  about: Portfolio_AboutUpdateManyWithoutAdminInput
-  projects: Portfolio_ProjectUpdateManyWithoutAdminInput
-}
-
 input Portfolio_ProjectCreateInput {
   id: String
   name: String!
@@ -2456,6 +2331,38 @@ input Portfolio_ProjectCreateInput {
   questions: Portfolio_QuestionCreateNestedManyWithoutProjectInput
   sketches: Portfolio_SketchCreateNestedManyWithoutProjectInput
   admin: Portfolio_AdminCreateNestedOneWithoutProjectsInput!
+}
+
+input Portfolio_AdminCreateNestedOneWithoutProjectsInput {
+  create: Portfolio_AdminCreateWithoutProjectsInput
+  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutProjectsInput
+  connect: Portfolio_AdminWhereUniqueInput
+}
+
+input Portfolio_AdminCreateWithoutProjectsInput {
+  id: String
+  email: String!
+  fname: String!
+  lname: String!
+  linkedIn: String!
+  whatsapp: String!
+  instagram: String!
+  github: String!
+  skype: String!
+  heroImage: String!
+  confirmed: Boolean
+  password: String!
+  createdAt: Portfolio_DateTime
+  updatedAt: Portfolio_DateTime
+  resumes: Portfolio_AdminCreateresumesInput
+  about: Portfolio_AboutCreateNestedManyWithoutAdminInput
+  messages: Portfolio_MessageCreateNestedManyWithoutAdminInput
+  stack: Portfolio_StackCreateNestedManyWithoutAdminInput
+}
+
+input Portfolio_AdminCreateOrConnectWithoutProjectsInput {
+  where: Portfolio_AdminWhereUniqueInput!
+  create: Portfolio_AdminCreateWithoutProjectsInput!
 }
 
 input Portfolio_ProjectUpdateInput {
@@ -2474,18 +2381,113 @@ input Portfolio_ProjectUpdateInput {
   admin: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput
 }
 
+input Portfolio_AdminUpdateOneRequiredWithoutProjectsInput {
+  create: Portfolio_AdminCreateWithoutProjectsInput
+  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutProjectsInput
+  upsert: Portfolio_AdminUpsertWithoutProjectsInput
+  connect: Portfolio_AdminWhereUniqueInput
+  update: Portfolio_AdminUpdateWithoutProjectsInput
+}
+
+input Portfolio_AdminUpsertWithoutProjectsInput {
+  update: Portfolio_AdminUpdateWithoutProjectsInput!
+  create: Portfolio_AdminCreateWithoutProjectsInput!
+}
+
+input Portfolio_AdminUpdateWithoutProjectsInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  email: Portfolio_StringFieldUpdateOperationsInput
+  fname: Portfolio_StringFieldUpdateOperationsInput
+  lname: Portfolio_StringFieldUpdateOperationsInput
+  linkedIn: Portfolio_StringFieldUpdateOperationsInput
+  whatsapp: Portfolio_StringFieldUpdateOperationsInput
+  instagram: Portfolio_StringFieldUpdateOperationsInput
+  github: Portfolio_StringFieldUpdateOperationsInput
+  skype: Portfolio_StringFieldUpdateOperationsInput
+  heroImage: Portfolio_StringFieldUpdateOperationsInput
+  confirmed: Portfolio_BoolFieldUpdateOperationsInput
+  password: Portfolio_StringFieldUpdateOperationsInput
+  createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  resumes: Portfolio_AdminUpdateresumesInput
+  about: Portfolio_AboutUpdateManyWithoutAdminInput
+  messages: Portfolio_MessageUpdateManyWithoutAdminInput
+  stack: Portfolio_StackUpdateManyWithoutAdminInput
+}
+
 input Portfolio_QuestionCreateInput {
   id: String
   question: String!
-  answer: Portfolio_AnswerCreateNestedOneWithoutQuestionInput!
+  answer: String!
   project: Portfolio_ProjectCreateNestedOneWithoutQuestionsInput!
+}
+
+input Portfolio_ProjectCreateNestedOneWithoutQuestionsInput {
+  create: Portfolio_ProjectCreateWithoutQuestionsInput
+  connectOrCreate: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput
+  connect: Portfolio_ProjectWhereUniqueInput
+}
+
+input Portfolio_ProjectCreateWithoutQuestionsInput {
+  id: String
+  name: String!
+  image: String!
+  type: String!
+  github_url: String!
+  app_url: String!
+  summary: String!
+  createdAt: Portfolio_DateTime
+  updatedAt: Portfolio_DateTime
+  tech_categories: Portfolio_TechCategoryCreateNestedManyWithoutProjectInput
+  sketches: Portfolio_SketchCreateNestedManyWithoutProjectInput
+  admin: Portfolio_AdminCreateNestedOneWithoutProjectsInput!
+}
+
+input Portfolio_ProjectCreateOrConnectWithoutQuestionsInput {
+  where: Portfolio_ProjectWhereUniqueInput!
+  create: Portfolio_ProjectCreateWithoutQuestionsInput!
+}
+
+input Portfolio_QuestionCreateManyInput {
+  id: String
+  question: String!
+  answer: String!
+  project_id: String!
 }
 
 input Portfolio_QuestionUpdateInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   question: Portfolio_StringFieldUpdateOperationsInput
-  answer: Portfolio_AnswerUpdateOneRequiredWithoutQuestionInput
+  answer: Portfolio_StringFieldUpdateOperationsInput
   project: Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput
+}
+
+input Portfolio_ProjectUpdateOneRequiredWithoutQuestionsInput {
+  create: Portfolio_ProjectCreateWithoutQuestionsInput
+  connectOrCreate: Portfolio_ProjectCreateOrConnectWithoutQuestionsInput
+  upsert: Portfolio_ProjectUpsertWithoutQuestionsInput
+  connect: Portfolio_ProjectWhereUniqueInput
+  update: Portfolio_ProjectUpdateWithoutQuestionsInput
+}
+
+input Portfolio_ProjectUpsertWithoutQuestionsInput {
+  update: Portfolio_ProjectUpdateWithoutQuestionsInput!
+  create: Portfolio_ProjectCreateWithoutQuestionsInput!
+}
+
+input Portfolio_ProjectUpdateWithoutQuestionsInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  name: Portfolio_StringFieldUpdateOperationsInput
+  image: Portfolio_StringFieldUpdateOperationsInput
+  type: Portfolio_StringFieldUpdateOperationsInput
+  github_url: Portfolio_StringFieldUpdateOperationsInput
+  app_url: Portfolio_StringFieldUpdateOperationsInput
+  summary: Portfolio_StringFieldUpdateOperationsInput
+  createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
+  sketches: Portfolio_SketchUpdateManyWithoutProjectInput
+  admin: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput
 }
 
 input Portfolio_SketchCreateInput {
@@ -2493,7 +2495,7 @@ input Portfolio_SketchCreateInput {
   title: String!
   description: String!
   summary: String!
-  download_link: String!
+  downloadables: String!
   image: String!
   project: Portfolio_ProjectCreateNestedOneWithoutSketchesInput!
 }
@@ -2524,12 +2526,22 @@ input Portfolio_ProjectCreateOrConnectWithoutSketchesInput {
   create: Portfolio_ProjectCreateWithoutSketchesInput!
 }
 
+input Portfolio_SketchCreateManyInput {
+  id: String
+  title: String!
+  description: String!
+  summary: String!
+  downloadables: String!
+  image: String!
+  project_id: String!
+}
+
 input Portfolio_SketchUpdateInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   title: Portfolio_StringFieldUpdateOperationsInput
   description: Portfolio_StringFieldUpdateOperationsInput
   summary: Portfolio_StringFieldUpdateOperationsInput
-  download_link: Portfolio_StringFieldUpdateOperationsInput
+  downloadables: Portfolio_StringFieldUpdateOperationsInput
   image: Portfolio_StringFieldUpdateOperationsInput
   project: Portfolio_ProjectUpdateOneRequiredWithoutSketchesInput
 }
@@ -2560,6 +2572,86 @@ input Portfolio_ProjectUpdateWithoutSketchesInput {
   tech_categories: Portfolio_TechCategoryUpdateManyWithoutProjectInput
   questions: Portfolio_QuestionUpdateManyWithoutProjectInput
   admin: Portfolio_AdminUpdateOneRequiredWithoutProjectsInput
+}
+
+input Portfolio_StackCreateInput {
+  id: String
+  title: String!
+  image: String!
+  admin: Portfolio_AdminCreateNestedOneWithoutStackInput!
+}
+
+input Portfolio_AdminCreateNestedOneWithoutStackInput {
+  create: Portfolio_AdminCreateWithoutStackInput
+  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutStackInput
+  connect: Portfolio_AdminWhereUniqueInput
+}
+
+input Portfolio_AdminCreateWithoutStackInput {
+  id: String
+  email: String!
+  fname: String!
+  lname: String!
+  linkedIn: String!
+  whatsapp: String!
+  instagram: String!
+  github: String!
+  skype: String!
+  heroImage: String!
+  confirmed: Boolean
+  password: String!
+  createdAt: Portfolio_DateTime
+  updatedAt: Portfolio_DateTime
+  resumes: Portfolio_AdminCreateresumesInput
+  about: Portfolio_AboutCreateNestedManyWithoutAdminInput
+  messages: Portfolio_MessageCreateNestedManyWithoutAdminInput
+  projects: Portfolio_ProjectCreateNestedManyWithoutAdminInput
+}
+
+input Portfolio_AdminCreateOrConnectWithoutStackInput {
+  where: Portfolio_AdminWhereUniqueInput!
+  create: Portfolio_AdminCreateWithoutStackInput!
+}
+
+input Portfolio_StackUpdateInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  title: Portfolio_StringFieldUpdateOperationsInput
+  image: Portfolio_StringFieldUpdateOperationsInput
+  admin: Portfolio_AdminUpdateOneRequiredWithoutStackInput
+}
+
+input Portfolio_AdminUpdateOneRequiredWithoutStackInput {
+  create: Portfolio_AdminCreateWithoutStackInput
+  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutStackInput
+  upsert: Portfolio_AdminUpsertWithoutStackInput
+  connect: Portfolio_AdminWhereUniqueInput
+  update: Portfolio_AdminUpdateWithoutStackInput
+}
+
+input Portfolio_AdminUpsertWithoutStackInput {
+  update: Portfolio_AdminUpdateWithoutStackInput!
+  create: Portfolio_AdminCreateWithoutStackInput!
+}
+
+input Portfolio_AdminUpdateWithoutStackInput {
+  id: Portfolio_StringFieldUpdateOperationsInput
+  email: Portfolio_StringFieldUpdateOperationsInput
+  fname: Portfolio_StringFieldUpdateOperationsInput
+  lname: Portfolio_StringFieldUpdateOperationsInput
+  linkedIn: Portfolio_StringFieldUpdateOperationsInput
+  whatsapp: Portfolio_StringFieldUpdateOperationsInput
+  instagram: Portfolio_StringFieldUpdateOperationsInput
+  github: Portfolio_StringFieldUpdateOperationsInput
+  skype: Portfolio_StringFieldUpdateOperationsInput
+  heroImage: Portfolio_StringFieldUpdateOperationsInput
+  confirmed: Portfolio_BoolFieldUpdateOperationsInput
+  password: Portfolio_StringFieldUpdateOperationsInput
+  createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
+  resumes: Portfolio_AdminUpdateresumesInput
+  about: Portfolio_AboutUpdateManyWithoutAdminInput
+  messages: Portfolio_MessageUpdateManyWithoutAdminInput
+  projects: Portfolio_ProjectUpdateManyWithoutAdminInput
 }
 
 input Portfolio_TechCreateInput {
@@ -2609,6 +2701,12 @@ input Portfolio_ProjectCreateOrConnectWithoutTech_categoriesInput {
 input Portfolio_TechCategoryCreateOrConnectWithoutTechsInput {
   where: Portfolio_TechCategoryWhereUniqueInput!
   create: Portfolio_TechCategoryCreateWithoutTechsInput!
+}
+
+input Portfolio_TechCreateManyInput {
+  id: String
+  name: String!
+  tech_category_id: String!
 }
 
 input Portfolio_TechUpdateInput {
@@ -2671,20 +2769,17 @@ input Portfolio_TechCategoryCreateInput {
   project: Portfolio_ProjectCreateNestedOneWithoutTech_categoriesInput!
 }
 
+input Portfolio_TechCategoryCreateManyInput {
+  id: String
+  name: String!
+  project_id: String!
+}
+
 input Portfolio_TechCategoryUpdateInput {
   id: Portfolio_StringFieldUpdateOperationsInput
   name: Portfolio_StringFieldUpdateOperationsInput
   techs: Portfolio_TechUpdateManyWithoutTech_categoriesInput
   project: Portfolio_ProjectUpdateOneRequiredWithoutTech_categoriesInput
-}
-
-type Portfolio_LoginReturnType {
-  token: String
-}
-
-input Portfolio_LoginInputType {
-  email: String!
-  password: String!
 }
 
 input Portfolio_AdminCreateInput {
@@ -2696,18 +2791,17 @@ input Portfolio_AdminCreateInput {
   whatsapp: String!
   instagram: String!
   github: String!
+  skype: String!
   heroImage: String!
   confirmed: Boolean
-  isPublished: Boolean
   password: String!
   createdAt: Portfolio_DateTime
   updatedAt: Portfolio_DateTime
-  stack: Portfolio_AdminCreatestackInput
   resumes: Portfolio_AdminCreateresumesInput
-  stacks: Portfolio_AdminCreatestacksInput
   about: Portfolio_AboutCreateNestedManyWithoutAdminInput
   messages: Portfolio_MessageCreateNestedManyWithoutAdminInput
   projects: Portfolio_ProjectCreateNestedManyWithoutAdminInput
+  stack: Portfolio_StackCreateNestedManyWithoutAdminInput
 }
 
 input Portfolio_AdminUpdateInput {
@@ -2719,28 +2813,92 @@ input Portfolio_AdminUpdateInput {
   whatsapp: Portfolio_StringFieldUpdateOperationsInput
   instagram: Portfolio_StringFieldUpdateOperationsInput
   github: Portfolio_StringFieldUpdateOperationsInput
+  skype: Portfolio_StringFieldUpdateOperationsInput
   heroImage: Portfolio_StringFieldUpdateOperationsInput
   confirmed: Portfolio_BoolFieldUpdateOperationsInput
-  isPublished: Portfolio_BoolFieldUpdateOperationsInput
   password: Portfolio_StringFieldUpdateOperationsInput
   createdAt: Portfolio_DateTimeFieldUpdateOperationsInput
   updatedAt: Portfolio_DateTimeFieldUpdateOperationsInput
-  stack: Portfolio_AdminUpdatestackInput
   resumes: Portfolio_AdminUpdateresumesInput
-  stacks: Portfolio_AdminUpdatestacksInput
   about: Portfolio_AboutUpdateManyWithoutAdminInput
   messages: Portfolio_MessageUpdateManyWithoutAdminInput
   projects: Portfolio_ProjectUpdateManyWithoutAdminInput
+  stack: Portfolio_StackUpdateManyWithoutAdminInput
 }
 
-# The `Upload` scalar type represents a file upload.
-scalar Portfolio_Upload
+input Portfolio_AnswerMessageInput {
+  to: String!
+  subject: String!
+  from: String!
+  message: String!
+  messageId: String!
+}
+
+type Portfolio_LoginReturnType {
+  token: String
+}
+
+input Portfolio_LoginInputType {
+  email: String!
+  password: String!
+}
+
+input Portfolio_CreateProjectInput_PWNR {
+  name: String!
+  summary: String!
+  type: String!
+  image: String!
+  github_url: String!
+  app_url: String!
+  techCategories: [Portfolio_TechCategoryCreateInput_PWNR!]!
+  sketches: [Portfolio_SketchCreateInput_PWNR!]!
+  questions: [Portfolio_QuestionCreateInput_PWNR!]!
+}
+
+input Portfolio_TechCategoryCreateInput_PWNR {
+  name: String!
+  techs: [Portfolio_TechCreateInput_PWNR!]!
+}
+
+input Portfolio_TechCreateInput_PWNR {
+  name: String!
+}
+
+input Portfolio_SketchCreateInput_PWNR {
+  title: String!
+  summary: String!
+  description: String!
+  image: String!
+  downloadables: String!
+}
+
+input Portfolio_QuestionCreateInput_PWNR {
+  question: String!
+  answer: String!
+}
+
+input Portfolio_MessageCreateInput {
+  id: String
+  subject: String!
+  from: String!
+  files: String
+  body: String!
+  read_status: Boolean
+  answer_status: Boolean
+  answeredAt: Portfolio_DateTime
+  createdAd: Portfolio_DateTime
+  admin: Portfolio_AdminCreateNestedOneWithoutMessagesInput!
+}
+
+input Portfolio_AdminCreateNestedOneWithoutMessagesInput {
+  create: Portfolio_AdminCreateWithoutMessagesInput
+  connectOrCreate: Portfolio_AdminCreateOrConnectWithoutMessagesInput
+  connect: Portfolio_AdminWhereUniqueInput
+}
 
 type Portfolio {
   about(where: Portfolio_AboutWhereUniqueInput!): Portfolio_About
   abouts(where: Portfolio_AboutWhereInput, orderBy: [Portfolio_AboutOrderByWithRelationInput!], cursor: Portfolio_AboutWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_AboutScalarFieldEnum!]): [Portfolio_About!]!
-  answer(where: Portfolio_AnswerWhereUniqueInput!): Portfolio_Answer
-  answers(where: Portfolio_AnswerWhereInput, orderBy: [Portfolio_AnswerOrderByWithRelationInput!], cursor: Portfolio_AnswerWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_AnswerScalarFieldEnum!]): [Portfolio_Answer!]!
   message(where: Portfolio_MessageWhereUniqueInput!): Portfolio_Message
   messages(where: Portfolio_MessageWhereInput, orderBy: [Portfolio_MessageOrderByWithRelationInput!], cursor: Portfolio_MessageWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_MessageScalarFieldEnum!]): [Portfolio_Message!]!
   project(where: Portfolio_ProjectWhereUniqueInput!): Portfolio_Project
@@ -2749,14 +2907,15 @@ type Portfolio {
   questions(where: Portfolio_QuestionWhereInput, orderBy: [Portfolio_QuestionOrderByWithRelationInput!], cursor: Portfolio_QuestionWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_QuestionScalarFieldEnum!]): [Portfolio_Question!]!
   sketch(where: Portfolio_SketchWhereUniqueInput!): Portfolio_Sketch
   sketches(where: Portfolio_SketchWhereInput, orderBy: [Portfolio_SketchOrderByWithRelationInput!], cursor: Portfolio_SketchWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_SketchScalarFieldEnum!]): [Portfolio_Sketch!]!
+  stacks(where: Portfolio_StackWhereInput, orderBy: [Portfolio_StackOrderByWithRelationInput!], cursor: Portfolio_StackWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_StackScalarFieldEnum!]): [Portfolio_Stack!]!
   tech(where: Portfolio_TechWhereUniqueInput!): Portfolio_Tech
   teches(where: Portfolio_TechWhereInput, orderBy: [Portfolio_TechOrderByWithRelationInput!], cursor: Portfolio_TechWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_TechScalarFieldEnum!]): [Portfolio_Tech!]!
   techCategory(where: Portfolio_TechCategoryWhereUniqueInput!): Portfolio_TechCategory
   techCategories(where: Portfolio_TechCategoryWhereInput, orderBy: [Portfolio_TechCategoryOrderByWithRelationInput!], cursor: Portfolio_TechCategoryWhereUniqueInput, take: Int, skip: Int, distinct: [Portfolio_TechCategoryScalarFieldEnum!]): [Portfolio_TechCategory!]!
-  isThereAnAdmin: Boolean!
-  me: Portfolio_Admin
   getAdmin: Portfolio_Admin!
   getNumOfAdmins: Int
+  isThereAnAdmin: Boolean!
+  me: Portfolio_Admin
 }
 
 type Query {
