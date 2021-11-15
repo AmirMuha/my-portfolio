@@ -226,7 +226,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
                   src={whatsapp}
                   alt="WhatsApp Icon"
                 />
-                <span>{whatsappNumber}</span>
+                <span>WhatsApp</span>
               </span>
             </Button>
             <Button
@@ -246,7 +246,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
                   src={skype}
                   alt="Skype Icon"
                 />
-                <span>{skypeUrl}</span>
+                <span>Skype</span>
               </span>
             </Button>
             <Button
