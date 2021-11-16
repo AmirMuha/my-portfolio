@@ -1,5 +1,5 @@
+import { IsBoolean, IsEmail, IsInt, IsString, MinLength } from "class-validator";
 import { ArgsType, Field, Int } from "type-graphql";
-import { IsEmail, IsInt, IsString, Length, MinLength } from "class-validator";
 
 export interface RPArgs {
   email: string;
@@ -10,20 +10,25 @@ export interface RPArgs {
 
 @ArgsType()
 export class ResetPasswordArgs implements RPArgs {
-  @IsEmail()
   @Field(() => String)
+  @IsEmail()
   email: string;
 
+  @Field(() => String)
   @IsString()
   @MinLength(8)
-  @Field(() => String)
   newPassword: string;
 
-  @IsString()
   @Field(() => String, { nullable: true })
+  @IsString()
   token?: string;
 
-  @IsInt()
   @Field(() => Int, { nullable: true })
+  @IsInt()
   code?: number;
+
+
+  @Field(() => Boolean)
+  @IsBoolean()
+  needCode: boolean
 }

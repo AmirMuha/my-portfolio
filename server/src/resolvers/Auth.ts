@@ -202,31 +202,29 @@ export class AuthResolver {
     @Args() args: ResetPasswordArgs
   ): Promise<string> {
     let flag: boolean = false;
-    if (!args.code && !args.token)
-      throw new Error(
-        "Please provide either a code or token to confirm deleting the admin."
-      );
-    if (args.token) {
-      const token = args.token;
-      const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
-        complete: true,
-      })) as JwtVerifyWithPayloadType;
-      if (!verifiedToken)
+    if(args.needCode) {
+      if (!args.code && !args.token)
+        throw new Error(
+          "Please provide either a code or token to confirm deleting the admin."
+        );
+      if (args.token) {
+        const token = args.token;
+        const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+          complete: true,
+        })) as JwtVerifyWithPayloadType;
+        if (!verifiedToken)
+          throw new Error("Your code or token has expired. Please try again.");
+        flag = true;
+      } else {
+        const code = await redis.get(`FORGOTPASSWORD_CODE-${data.userId}`);
+        if (!code) throw new Error("Code is either incorrect or has expired.");
+        if (parseInt(code) !== args.code)
+          throw new Error("Your code or token has expired. Please try again.");
+        flag = true;
+      }
+      if (!flag)
         throw new Error("Your code or token has expired. Please try again.");
-      flag = true;
-    } else {
-      const code = await redis.get(`FORGOTPASSWORD_CODE-${data.userId}`);
-      if (!code) throw new Error("Code is either incorrect or has expired.");
-      if (parseInt(code) !== args.code)
-        throw new Error("Your code or token has expired. Please try again.");
-      flag = true;
     }
-    if (!flag)
-      throw new Error("Your code or token has expired. Please try again.");
-    if (!args.newPassword || !args.confirmPassword)
-      throw new Error("Please provide both new and confirm passwords.");
-    if (args.newPassword !== args.confirmPassword)
-      throw new Error("Passwords don't match.");
     const hashedPassword = await bcrypt.hash(args.newPassword, 12);
     await prisma.admin.update({
       data: {
