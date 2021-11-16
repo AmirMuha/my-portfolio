@@ -1,7 +1,3 @@
-import React, { FC, PropsWithChildren, useRef, useState } from "react"
-import { Download } from "../../icons/iconsJSX"
-import Button from "../UI/Button"
-import NavLink from "../UI/NavLink"
 import {
   Header,
   Header_Border,
@@ -9,6 +5,14 @@ import {
   Header_Menu,
   Header_Resume,
 } from "./styles/Header.module.css"
+import React, { FC, PropsWithChildren, useRef, useState } from "react"
+
+import Button from "../UI/Button"
+import { Download } from "../../icons/iconsJSX"
+import NavLink from "../UI/NavLink"
+import {
+  useResumesQuery
+} from "../../types/graphql-types"
 
 interface Props {
   nav?: boolean
@@ -21,6 +25,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
   brand = "AMIRMUHA",
   page = "portfolio",
 }) => {
+  const {data} = useResumesQuery()
   const navRef = useRef<HTMLElement>()
   const headerClasses = `${Header}  ${Header_Border}`
   const navClasses = `${Header_Container}`
@@ -77,6 +82,8 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     isDropdownOpen ? "" : "hidden"
                   }`}
                 >
+                {
+                  data && data.me && data.me.resumes &&
                   <div
                     className="flex-col mr-1 mb-1 mt-1"
                     style={{ fontSize: "12px" }}
@@ -84,7 +91,8 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     <Button
                       iconAnimation="TtB"
                       color="300"
-                      normal
+                      toUrl={`${(window as any).__SERVER_API__}/${data.me.resumes[0]}`}
+                      target="_blank"
                       style={{
                         justifyContent: "space-between",
                         width: "100%",
@@ -92,18 +100,20 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                       }}
                       icon={Download}
                     >
-                      .PDF
+                      .{data.me.resumes[0].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </Button>
                     <Button
                       iconAnimation="TtB"
+                      toUrl={`${(window as any).__SERVER_API__}/${data.me.resumes[1]}`}
+                      target="_blank"
                       color="300"
-                      normal
                       style={{ justifyContent: "space-between", width: "100%" }}
                       icon={Download}
                     >
-                      .DOCX
+                    .{data.me.resumes[1].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </Button>
                   </div>
+                }
                 </div>
               </div>
             </div>

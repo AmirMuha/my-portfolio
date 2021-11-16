@@ -74,7 +74,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
                     className="w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70"
                   >
                     <span className="uppercase">
-                      {data.resumes[0].split(/\.(pdf|ppt|docx)/i)[1]}
+                      .{data.resumes[0].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </span>
                   </a>
                   <a
@@ -85,7 +85,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
                     className="w-1/2 py-14 text-center place-self-center bg-palatte-300 opacity-70"
                   >
                     <span className="uppercase">
-                      {data.resumes[1].split(/\.(pdf|ppt|docx)/i)[1]}
+                      .{data.resumes[1].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </span>
                   </a>
                 </div>
