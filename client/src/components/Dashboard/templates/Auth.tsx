@@ -257,7 +257,7 @@ const Auth: FC<Partial<Props>> = () => {
     }
   }
 
-  const login = () => {
+  const login = (sendCode?: boolean) => {
     if (loginCredentials.email || loginCredentials.password) {
       loginMutate({
         variables: {
@@ -278,22 +278,30 @@ const Auth: FC<Partial<Props>> = () => {
           setIsLoginLoading(false)
         })
         .catch(e => {
-          if (e.message.includes("confirmed")) {
+          if(sendCode) {
             setAlert({
               isOpen: true,
-              title: "Error",
-              message: e.message,
+              title: "Success",
+              message: "Sent another code successfully."
             })
-            setIsEmailConfirmOpen(true)
-            setIsEnterEmailCodeOpen(true)
           } else {
-            setAlert({
-              isOpen: true,
-              title: "Error",
-              message:
-                e.message ||
-                "Couldn't login, please try again with the correct credentials.",
-            })
+            if (e.message.includes("confirmed")) {
+              setAlert({
+                isOpen: true,
+                title: "Error",
+                message: e.message,
+              })
+              setIsEmailConfirmOpen(true)
+              setIsEnterEmailCodeOpen(true)
+            } else {
+              setAlert({
+                isOpen: true,
+                title: "Error",
+                message:
+                  e.message ||
+                  "Couldn't login, please try again with the correct credentials.",
+              })
+            }
           }
           setIsLoginLoading(false)
         })
@@ -303,7 +311,7 @@ const Auth: FC<Partial<Props>> = () => {
   }
 
   const sendCodeAgain = () => {
-    login()
+    login(true)
   }
 
   const sendConfirmCode = (e?: React.FormEvent) => {
@@ -453,7 +461,7 @@ const Auth: FC<Partial<Props>> = () => {
     }
   }
 
-  return (
+return (
     <>
       {isEmailConfirmBoxOpen && (
         <Modal
