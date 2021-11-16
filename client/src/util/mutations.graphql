@@ -274,22 +274,33 @@ mutation ResetPassword(
     $email: String!
     $newPassword: String!
     $code: Int!
+    $needCode: Boolean! = true
   ) {
     resetPassword(
       email: $email
       newPassword: $newPassword
       code: $code
+      needCode: $needCode
     )
 }
 mutation ChangePassword(
   $email: String!
   $newPassword: String!
+  $needCode: Boolean! = false
 ) {
   resetPassword(
     email: $email
     newPassword: $newPassword
+    needCode: $needCode
   )
 }
+mutation UpdateResumes(
+    $oldResumes: [String!]!
+    $newResumes: [Upload!]!
+  ){
+    deleteFiles(filenames: $oldResumes, isTemp: false)
+    uploadMultipleFiles(files: $newResumes, isTemp: false)
+  }
 mutation updateAdmin($data: AdminUpdateInput!, $email:String!) {
   updateAdmin(data: $data, where: { email: $email }) {
     id
