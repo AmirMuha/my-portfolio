@@ -1,12 +1,14 @@
 import React, { FC, PropsWithChildren } from "react"
 
 import Button from "../UI/Button"
+import {Project} from "../../types/graphql-types"
 
 interface Props {
+  projects: Project[]
   onClose?: () => void
 }
 
-const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
+const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose, projects }) => {
   return (
     <div className="relative h-full text-palatte-100">
       <button onClick={onClose} className="absolute top-5 left-5">
@@ -19,6 +21,8 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
       </button>
       <div className="grid grid-cols-1 grid-rows-4 h-full justify-between items-center">
         <div className="self-start pt-20 text-center row-span-3">
+        {
+          projects && projects.length > 0 &&  
           <div className="mx-auto inline-block w-2/3 border-l-2 border-b-2 border-palatte-100 pl-1 pb-1 ">
             <div className="font-bold text-left">
               <h3 className="bg-palatte-500 inline -ml-2 pt-3 text-sm.4">
@@ -26,35 +30,23 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
               </h3>
             </div>
             <div className="gap-1 grid grid-cols-1 ">
-              <Button
-                style={{ padding: "5px 10px" }}
-                color="200"
-                textColor="500"
-                className="w-full"
-                toUrl="/"
-              >
-                Project 1
-              </Button>
-              <Button
-                style={{ padding: "5px 10px" }}
-                color="200"
-                textColor="500"
-                className="w-full"
-                toUrl="/"
-              >
-                Project 2
-              </Button>
-              <Button
-                style={{ padding: "5px 10px" }}
-                color="200"
-                textColor="500"
-                className="w-full"
-                toUrl="/"
-              >
-                Project 3
-              </Button>
+            {
+              projects.length > 0 && projects.map(p => (
+                <Button
+                  key={p.id}
+                  style={{ padding: "5px 10px" }}
+                  color="200"
+                  textColor="500"
+                  className="w-full"
+                  toUrl={`/dashboard/projects/${p.id}`}
+                >
+                  Project 1
+                </Button>
+              ))
+            }
             </div>
           </div>
+        }
           <div className="mx-auto inline-block mt-10 w-2/3 border-l-2 border-b-2 border-palatte-100 pl-1 pb-1 ">
             <div className="font-bold text-left">
               <h3 className="bg-palatte-500 inline -ml-2 pt-3 text-sm.4">
@@ -67,7 +59,7 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
                 color="200"
                 textColor="500"
                 className="w-full"
-                toUrl="/"
+                toUrl="/dashboard/about-me"
               >
                 About Me
               </Button>
@@ -76,9 +68,9 @@ const Dash_Menu: FC<PropsWithChildren<Props>> = ({ onClose }) => {
                 color="200"
                 textColor="500"
                 className="w-full"
-                toUrl="/"
+                toUrl="/dashboard/profile"
               >
-                Stack
+                Profile
               </Button>
             </div>
           </div>
