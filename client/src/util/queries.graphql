@@ -11,7 +11,11 @@ subscription SubscribeMessages {
     subject
   }
 }
-
+query Resumes {
+  me {
+    resumes  
+  }
+}
 query Admin {
   me {
     email
