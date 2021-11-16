@@ -6,7 +6,7 @@
   "scripts": {
     "reset": "rm -rf ./prisma/migrations/ && rm -rf ./src/uploads/**/zip* && rm -rf ./src/uploads/**/file* && rm -rf ./src/uploads/file* && npm run p:mig && npm run dev",
     "dev": "export NODE_ENV=development && ts-node-dev index.ts",
-    "start": "node ./getprivatekey.js && node dist/index.js",
+    "start": "node dist/index.js",
     "build": "tsc -b",
     "p:mig": "prisma migrate dev --name init",
     "p:reset": "prisma migrate reset",
@@ -72,6 +72,8 @@
     "@types/showdown": "^1.9.4",
     "@types/uuid": "^8.3.1",
     "prisma": "^3.0.1",
-    "typegraphql-prisma": "^0.16.0"
+    "ts-node": "^10.4.0",
+    "typegraphql-prisma": "^0.16.0",
+    "typescript": "^4.4.4"
   }
 }
