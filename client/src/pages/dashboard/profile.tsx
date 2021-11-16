@@ -4,6 +4,8 @@ import {
   useAdminQuery,
   useChangePasswordMutation,
   useUpdateAdminMutation,
+  useUpdateImageMutation,
+  useUpdateResumesMutation,
   useVerifyPasswordMutation,
 } from "../../types/graphql-types"
 import React, { FC, Reducer, useEffect, useReducer, useState } from "react"
@@ -115,6 +117,19 @@ const reducer: Reducer<ReducerState, ReducerAction> = (state, action) => {
 }
 
 const Profile: FC<PageProps> = () => {
+  const { data: isLoggedIn, error: loginCheckError } = useAuth()
+  if (!isLoggedIn && loginCheckError) {
+    navigate("/dashboard/auth/")
+    return null
+  }
+  const [resumes, setResumes] = useState<{ files: any; name: string }>({
+    files: undefined,
+    name: "",
+  })
+  const [heroImage, setHeroImage] = useState<{ file: any; name: string }>({
+    file: undefined,
+    name: "",
+  })
   const [canSeePassword_old, setCanSeePassword_old] = useState<boolean>(false)
   const [canSeePassword_new, setCanSeePassword_new] = useState<boolean>(false)
   const [canSeePassword_confirm, setCanSeePassword_confirm] =
@@ -128,13 +143,16 @@ const Profile: FC<PageProps> = () => {
     newPassword: "",
     confirmPassword: "",
   })
-  const { data: isLoggedIn, error: loginCheckError } = useAuth()
-  if (!isLoggedIn && loginCheckError) {
-    navigate("/dashboard/auth/")
-    return null
-  }
-  const { data } = useAdminQuery()
+  const { data, refetch } = useAdminQuery()
   const [adminState, dispatch] = useReducer(reducer, reducerInitialState)
+  const [
+    mutateHeroImageUpdate,
+    { error: updateImageError, loading: updateImageLoading },
+  ] = useUpdateImageMutation()
+  const [
+    mutateUpdateResumes,
+    { error: updateResumesError, loading: updateResumesLoading },
+  ] = useUpdateResumesMutation()
   const [
     mutateAdminUpdate,
     { error: updateAdminError, loading: updateAdminLoading },
@@ -157,6 +175,8 @@ const Profile: FC<PageProps> = () => {
   useAlertGraphqlError(updateAdminError, updateAdminLoading, setAlert)
   useAlertGraphqlError(verifyPasswordError, verifyPasswordLoading, setAlert)
   useAlertGraphqlError(resetPasswordError, resetPasswordLoading, setAlert)
+  useAlertGraphqlError(updateImageError, updateImageLoading, setAlert)
+  useAlertGraphqlError(updateResumesError, updateResumesLoading, setAlert)
 
   useEffect(() => {
     if (data && data.me) {
@@ -204,24 +224,24 @@ const Profile: FC<PageProps> = () => {
 
   const changePassword = () => {
     let isShorter = false
-    for(const p in password) {
-      if(password[p] && password[p].length <= 7) {
+    for (const p in password) {
+      if (password[p] && password[p].length <= 7) {
         isShorter = true
       }
     }
-    if(isShorter) {
+    if (isShorter) {
       setAlert({
         isOpen: true,
         title: "Error",
-        message: "Passwords should be at least 8 charectors long."
+        message: "Passwords should be at least 8 charectors long.",
       })
       return
     }
-    if(password.newPassword!==password.confirmPassword) {
+    if (password.newPassword !== password.confirmPassword) {
       setAlert({
         isOpen: true,
         title: "Error",
-        message: "'New password' and 'confirm password' do not match."
+        message: "'New password' and 'confirm password' do not match.",
       })
       return
     }
@@ -246,6 +266,101 @@ const Profile: FC<PageProps> = () => {
               })
             })
             .catch(() => {})
+        }
+      })
+      .catch(() => {})
+  }
+
+  const updateHeroImage = () => {
+    if (!heroImage.file || !heroImage.name) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: `Please choose an image first to the HeroImage.`,
+      })
+      return
+    }
+    if (!adminState) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Something went wrong, please refresh the page and try again.",
+      })
+      return
+    }
+    mutateHeroImageUpdate({
+      variables: {
+        prevname: adminState.heroImage,
+        file: heroImage.file,
+        isEdit: true,
+      },
+    })
+      .then(() => {
+        setAlert({
+          isOpen: true,
+          title: "Success",
+          message: "Updated heroImage successfully.",
+        })
+        setHeroImage({file: undefined, name: ""})
+      })
+      .catch(() => {})
+  }
+
+  const updateResumes = () => {
+    if (!resumes.files && !resumes.name) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Please choose the new resumes first to update them.",
+      })
+      return
+    }
+    if (!adminState) {
+      setAlert({
+        isOpen: true,
+        title: "Error",
+        message: "Something went wrong, please refresh the page and try again.",
+      })
+      return
+    }
+    mutateUpdateResumes({
+      variables: {
+        oldResumes:
+          typeof adminState?.resumes! === "object"
+            ? (adminState?.resumes! as any)
+            : adminState.resumes,
+        newResumes: resumes.files,
+      },
+    })
+      .then(res => {
+        if (res.data) {
+          mutateAdminUpdate({
+            variables: {
+              email: adminState.email,
+              data: {
+                resumes: {
+                  set: res.data?.uploadMultipleFiles,
+                },
+              },
+            },
+          })
+            .then(() => {
+              refetch()
+              setAlert({
+                isOpen: true,
+                title: "Success",
+                message: "Updated resumes successfully.",
+              })
+              setResumes({files: undefined, name: ""})
+            })
+            .catch(() => {})
+        } else {
+          setAlert({
+            isOpen: true,
+            title: "Error",
+            message:
+              "Unknown Error: Something went wrong, please try again later.",
+          })
         }
       })
       .catch(() => {})
@@ -395,105 +510,156 @@ const Profile: FC<PageProps> = () => {
                 <div className="ml-5 md:flex relative gap-2 overflow-hidden col-span-2"></div>
               </div>
             </TheSection>
-            <div className="lg:grid grid-cols-2 mb-10">
-            <TheSection
-              style={{ paddingBottom: "25px" }}
-              id="general"
-              name={`General`}
-            ></TheSection>
-            <TheSection
-              style={{ paddingBottom: "25px"}}
-              id="change-password"
-              name="Change Password"
-            >
-              <div className="ml-5">
-                <div className="w-full mb-2">
-                  <div className="w-full relative">
+            <div className="md:grid grid-cols-2 mb-10">
+              <TheSection
+                style={{ paddingBottom: "25px" }}
+                id="general"
+                name={`General`}
+              >
+
+                <div className="ml-5 md:mr-5">
+                  <div>
                     <Input
-                      id="profile:old-password"
-                      label="Old Password"
-                      name="profile:old-password"
-                      getValue={v =>
-                        setPassword(prev => ({ ...prev, oldPassword: v }))
-                      }
-                      value={password.oldPassword}
-                      color="200"
+                      placeholder="Choose Hero Image"
+                      buttonTitle="Choose"
+                      id="heroimage:profile"
                       textColor="500"
-                      containerClasses="w-full"
-                      placeholder="Enter your old password"
-                      type={canSeePassword_old ? "text" : "password"}
+                      type="file"
+                      name="heroimage:profile"
+                      value={heroImage.name}
+                      label="Hero Image"
+                      getValue={(v, f) => {
+                        setHeroImage({ name: v, file: f[0] })
+                      }}
+                      color="200"
                     />
-                    <span
-                      onClick={() => setCanSeePassword_old(prev => !prev)}
-                      title="Show Password"
-                      className="cursor-pointer  p-2 absolute right-0 icon-palatte-400 bottom-1.5 transform"
-                    >
-                      {Eye}
-                    </span>
+                    <Button normal outline className="w-full mt-2" onClick={updateHeroImage}>
+                      Save
+                    </Button>
                   </div>
-                  <div className="w-full relative">
+                  <div>
                     <Input
-                      id="profile:new-password"
-                      label="New Password"
-                      name="profile:new-password"
-                      getValue={v =>
-                        setPassword(prev => ({ ...prev, newPassword: v }))
-                      }
-                      value={password.newPassword}
-                      color="200"
+                      placeholder="Choose Resumes"
+                      id="resumes:profile"
                       textColor="500"
-                      containerClasses="w-full"
-                      placeholder="Enter your new password"
-                      type={canSeePassword_new ? "text" : "password"}
-                    />
-                    <span
-                      onClick={() => setCanSeePassword_new(prev => !prev)}
-                      title="Show Password"
-                      className="cursor-pointer  p-2 absolute right-0 icon-palatte-400 bottom-1.5 transform"
-                    >
-                      {Eye}
-                    </span>
-                  </div>
-                  <div className="w-full relative">
-                    <Input
-                      id="profile:password-confirm"
-                      label="Confirm New Password"
-                      name="profile:password-confirm"
-                      getValue={v =>
-                        setPassword(prev => ({ ...prev, confirmPassword: v }))
-                      }
-                      value={password.confirmPassword}
+                      buttonTitle="Choose"
+                      type="file"
+                      label="Resumes"
+                      multiple
+                      pattern=".pdf, .docx, .ppt"
+                      name="resumes:profile"
+                      value={resumes.name}
+                      getValue={(v, f) => {
+                        setResumes({ name: v, files: f })
+                      }}
                       color="200"
-                      textColor="500"
-                      containerClasses="w-full"
-                      placeholder="Enter your confirm new password"
-                      type={canSeePassword_confirm ? "text" : "password"}
                     />
-                    <span
-                      onClick={() => setCanSeePassword_confirm(prev => !prev)}
-                      title="Show Password"
-                      className="cursor-pointer  p-2 absolute right-0 icon-palatte-400 bottom-1.5 transform"
-                    >
-                      {Eye}
-                    </span>
+                    <Button normal outline className="w-full mt-2" onClick={updateResumes}>
+                      Save
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-2 justify-end">
-                <Button normal outline color="100" textColor="500" borderColor="500" onClick={() => {
-                  setPassword({
-                    oldPassword: "",
-                    newPassword: "",
-                    confirmPassword: ""
-                  })
-                }}>
-                  Reset
-                </Button>
-                <Button normal outline onClick={changePassword}>
-                  Change Password
-                </Button>
-              </div>
-              </div>
-            </TheSection>
+              </TheSection>
+              <TheSection
+                style={{ paddingBottom: "25px" }}
+                id="change-password"
+                name="Change Password"
+              >
+                <div className="ml-5">
+                  <div className="w-full mb-2">
+                    <div className="w-full relative">
+                      <Input
+                        id="profile:old-password"
+                        label="Old Password"
+                        name="profile:old-password"
+                        getValue={v =>
+                          setPassword(prev => ({ ...prev, oldPassword: v }))
+                        }
+                        value={password.oldPassword}
+                        color="200"
+                        textColor="500"
+                        containerClasses="w-full"
+                        placeholder="Enter your old password"
+                        type={canSeePassword_old ? "text" : "password"}
+                      />
+                      <span
+                        onClick={() => setCanSeePassword_old(prev => !prev)}
+                        title="Show Password"
+                        className="cursor-pointer  p-2 absolute right-0 icon-palatte-400 bottom-1.5 transform"
+                      >
+                        {Eye}
+                      </span>
+                    </div>
+                    <div className="w-full relative">
+                      <Input
+                        id="profile:new-password"
+                        label="New Password"
+                        name="profile:new-password"
+                        getValue={v =>
+                          setPassword(prev => ({ ...prev, newPassword: v }))
+                        }
+                        value={password.newPassword}
+                        color="200"
+                        textColor="500"
+                        containerClasses="w-full"
+                        placeholder="Enter your new password"
+                        type={canSeePassword_new ? "text" : "password"}
+                      />
+                      <span
+                        onClick={() => setCanSeePassword_new(prev => !prev)}
+                        title="Show Password"
+                        className="cursor-pointer  p-2 absolute right-0 icon-palatte-400 bottom-1.5 transform"
+                      >
+                        {Eye}
+                      </span>
+                    </div>
+                    <div className="w-full relative">
+                      <Input
+                        id="profile:password-confirm"
+                        label="Confirm New Password"
+                        name="profile:password-confirm"
+                        getValue={v =>
+                          setPassword(prev => ({ ...prev, confirmPassword: v }))
+                        }
+                        value={password.confirmPassword}
+                        color="200"
+                        textColor="500"
+                        containerClasses="w-full"
+                        placeholder="Enter your confirm new password"
+                        type={canSeePassword_confirm ? "text" : "password"}
+                      />
+                      <span
+                        onClick={() => setCanSeePassword_confirm(prev => !prev)}
+                        title="Show Password"
+                        className="cursor-pointer  p-2 absolute right-0 icon-palatte-400 bottom-1.5 transform"
+                      >
+                        {Eye}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      normal
+                      outline
+                      color="100"
+                      textColor="500"
+                      borderColor="500"
+                      onClick={() => {
+                        setPassword({
+                          oldPassword: "",
+                          newPassword: "",
+                          confirmPassword: "",
+                        })
+                      }}
+                    >
+                      Reset
+                    </Button>
+                    <Button normal outline onClick={changePassword}>
+                      Change Password
+                    </Button>
+                  </div>
+                </div>
+              </TheSection>
             </div>
           </>
         )}
