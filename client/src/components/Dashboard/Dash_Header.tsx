@@ -1,10 +1,11 @@
-import { useMutation } from "@apollo/client"
-import { navigate } from "gatsby"
 import React, { FC, PropsWithChildren } from "react"
+
 import { Exit } from "../../icons/iconsJSX"
 import { LogoutMutation } from "../../util/mutations"
-import { useAuth } from "../../util/useAuth"
 import NavLink from "../UI/NavLink"
+import { navigate } from "gatsby"
+import { useAuth } from "../../util/useAuth"
+import { useMutation } from "@apollo/client"
 
 interface Props {
   page?: string
@@ -16,7 +17,6 @@ interface Props {
 const Dash_Header: FC<PropsWithChildren<Props>> = ({
   page = "dashboard",
   onMenuClick,
-  onMessagesClick,
   brand = "AMIRMUHA",
 }) => {
   const [mutate] = useMutation(LogoutMutation)
@@ -28,7 +28,7 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
         .then(() => {
           navigate("/dashboard/auth/")
         })
-        .catch(e => {
+        .catch(() => {
           navigate("/dashboard/auth/")
         })
       return null
@@ -66,6 +66,9 @@ const Dash_Header: FC<PropsWithChildren<Props>> = ({
             </NavLink>
             <NavLink onHover to="/dashboard/about-me">
               About Me
+            </NavLink>
+            <NavLink onHover to="/dashboard/profile">
+              Profile
             </NavLink>
             {isLoggedIn && (
               <button

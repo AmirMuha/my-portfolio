@@ -1,10 +1,11 @@
-import { graphql, PageProps } from "gatsby"
-import React, { FC } from "react"
-import InPageMenu from "../components/App/InPageMenu"
-import TheSection from "../components/App/TheSection"
-import Layout from "../components/Layout"
 import { Meta, SEO } from "../components/SEO"
+import { PageProps, graphql } from "gatsby"
+import React, { FC } from "react"
+
+import InPageMenu from "../components/App/InPageMenu"
+import Layout from "../components/Layout"
 import Markdown from "../components/utility/Markdown"
+import TheSection from "../components/App/TheSection"
 const meta: Meta = [
   {
     name: "description",

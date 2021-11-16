@@ -1,16 +1,20 @@
 import React, { CSSProperties, FC, PropsWithChildren, useState } from "react"
-import { createPortal } from "react-dom"
+
 import Dash_Aside from "./Dash_Aside"
 import Dash_Header from "./Dash_Header"
 import Dash_Menu from "./Dash_Menu"
+import {Project} from "../../types/graphql-types"
+import { createPortal } from "react-dom"
 
 interface Props {
+  projects?: Project[]
   className?: string
   style?: CSSProperties
 }
 
 const Dash_Layout: FC<PropsWithChildren<Props>> = ({
   children,
+  projects = [],
   className = "",
   style,
 }): React.ReactElement => {
@@ -49,7 +53,7 @@ const Dash_Layout: FC<PropsWithChildren<Props>> = ({
               isMenuOpen ? "onshowMenu" : "onhideMenu"
             } fixed top-0 left-0 h-full z-50 bg-palatte-500`}
           >
-            <Dash_Menu onClose={close} />
+            <Dash_Menu projects={projects} onClose={close} />
           </Dash_Aside>
         </>
       )}

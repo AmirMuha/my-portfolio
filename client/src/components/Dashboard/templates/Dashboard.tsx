@@ -41,7 +41,7 @@ const Dashboard: FC = () => {
   return (
     <>
       <SEO title="Dashboard" />
-      <Dash_Layout>
+      <Dash_Layout projects={data?.projects! as any}>
         <UnsavedProjects />
         <div className="my-10">
           <Dash_Hero />
