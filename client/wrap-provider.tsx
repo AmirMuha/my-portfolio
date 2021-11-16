@@ -42,7 +42,7 @@ const splitLink = isBrowswer ? split(
 export const wrapRootElement: FC<WrapRootElementBrowserArgs> = ({
   element,
 }) => {
-  if (window) {
+  if (isBrowswer) {
     ;(window as any).__SERVER_API__ = "http://localhost:3333"
   }
   const cache = new InMemoryCache()
