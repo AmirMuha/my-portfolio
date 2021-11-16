@@ -1126,6 +1126,7 @@ export type MutationMoveFilesFromTempArgs = {
 export type MutationResetPasswordArgs = {
   code?: Maybe<Scalars['Int']>;
   email: Scalars['String'];
+  needCode: Scalars['Boolean'];
   newPassword: Scalars['String'];
   token?: Maybe<Scalars['String']>;
 };
@@ -2955,6 +2956,7 @@ export type ResetPasswordMutationVariables = Exact<{
   email: Scalars['String'];
   newPassword: Scalars['String'];
   code: Scalars['Int'];
+  needCode?: Scalars['Boolean'];
 }>;
 
 
@@ -2963,10 +2965,19 @@ export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: st
 export type ChangePasswordMutationVariables = Exact<{
   email: Scalars['String'];
   newPassword: Scalars['String'];
+  needCode?: Scalars['Boolean'];
 }>;
 
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', resetPassword: string };
+
+export type UpdateResumesMutationVariables = Exact<{
+  oldResumes: Array<Scalars['String']> | Scalars['String'];
+  newResumes: Array<Scalars['Upload']> | Scalars['Upload'];
+}>;
+
+
+export type UpdateResumesMutation = { __typename?: 'Mutation', deleteFiles: boolean, uploadMultipleFiles?: Array<string> | null | undefined };
 
 export type UpdateAdminMutationVariables = Exact<{
   data: AdminUpdateInput;
@@ -3167,6 +3178,11 @@ export type SubscribeMessagesSubscriptionVariables = Exact<{ [key: string]: neve
 
 
 export type SubscribeMessagesSubscription = { __typename?: 'Subscription', subscribeMessages: { __typename?: 'Message', id: string, answer_status: boolean, answeredAt?: any | null | undefined, body: string, createdAd: any, from: string, files: string, read_status: boolean, subject: string } };
+
+export type ResumesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ResumesQuery = { __typename?: 'Query', me?: { __typename?: 'Admin', resumes: Array<string> } | null | undefined };
 
 export type AdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4090,8 +4106,13 @@ export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswo
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 export const ResetPasswordDocument = gql`
-    mutation ResetPassword($email: String!, $newPassword: String!, $code: Int!) {
-  resetPassword(email: $email, newPassword: $newPassword, code: $code)
+    mutation ResetPassword($email: String!, $newPassword: String!, $code: Int!, $needCode: Boolean! = true) {
+  resetPassword(
+    email: $email
+    newPassword: $newPassword
+    code: $code
+    needCode: $needCode
+  )
 }
     `;
 export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutation, ResetPasswordMutationVariables>;
@@ -4112,6 +4133,7 @@ export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutat
  *      email: // value for 'email'
  *      newPassword: // value for 'newPassword'
  *      code: // value for 'code'
+ *      needCode: // value for 'needCode'
  *   },
  * });
  */
@@ -4123,8 +4145,8 @@ export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPassword
 export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
 export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
 export const ChangePasswordDocument = gql`
-    mutation ChangePassword($email: String!, $newPassword: String!) {
-  resetPassword(email: $email, newPassword: $newPassword)
+    mutation ChangePassword($email: String!, $newPassword: String!, $needCode: Boolean! = false) {
+  resetPassword(email: $email, newPassword: $newPassword, needCode: $needCode)
 }
     `;
 export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
@@ -4144,6 +4166,7 @@ export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMut
  *   variables: {
  *      email: // value for 'email'
  *      newPassword: // value for 'newPassword'
+ *      needCode: // value for 'needCode'
  *   },
  * });
  */
@@ -4154,6 +4177,39 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const UpdateResumesDocument = gql`
+    mutation UpdateResumes($oldResumes: [String!]!, $newResumes: [Upload!]!) {
+  deleteFiles(filenames: $oldResumes, isTemp: false)
+  uploadMultipleFiles(files: $newResumes, isTemp: false)
+}
+    `;
+export type UpdateResumesMutationFn = Apollo.MutationFunction<UpdateResumesMutation, UpdateResumesMutationVariables>;
+
+/**
+ * __useUpdateResumesMutation__
+ *
+ * To run a mutation, you first call `useUpdateResumesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateResumesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateResumesMutation, { data, loading, error }] = useUpdateResumesMutation({
+ *   variables: {
+ *      oldResumes: // value for 'oldResumes'
+ *      newResumes: // value for 'newResumes'
+ *   },
+ * });
+ */
+export function useUpdateResumesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateResumesMutation, UpdateResumesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateResumesMutation, UpdateResumesMutationVariables>(UpdateResumesDocument, options);
+      }
+export type UpdateResumesMutationHookResult = ReturnType<typeof useUpdateResumesMutation>;
+export type UpdateResumesMutationResult = Apollo.MutationResult<UpdateResumesMutation>;
+export type UpdateResumesMutationOptions = Apollo.BaseMutationOptions<UpdateResumesMutation, UpdateResumesMutationVariables>;
 export const UpdateAdminDocument = gql`
     mutation updateAdmin($data: AdminUpdateInput!, $email: String!) {
   updateAdmin(data: $data, where: {email: $email}) {
@@ -5060,6 +5116,40 @@ export function useSubscribeMessagesSubscription(baseOptions?: Apollo.Subscripti
       }
 export type SubscribeMessagesSubscriptionHookResult = ReturnType<typeof useSubscribeMessagesSubscription>;
 export type SubscribeMessagesSubscriptionResult = Apollo.SubscriptionResult<SubscribeMessagesSubscription>;
+export const ResumesDocument = gql`
+    query Resumes {
+  me {
+    resumes
+  }
+}
+    `;
+
+/**
+ * __useResumesQuery__
+ *
+ * To run a query within a React component, call `useResumesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useResumesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useResumesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useResumesQuery(baseOptions?: Apollo.QueryHookOptions<ResumesQuery, ResumesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ResumesQuery, ResumesQueryVariables>(ResumesDocument, options);
+      }
+export function useResumesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ResumesQuery, ResumesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ResumesQuery, ResumesQueryVariables>(ResumesDocument, options);
+        }
+export type ResumesQueryHookResult = ReturnType<typeof useResumesQuery>;
+export type ResumesLazyQueryHookResult = ReturnType<typeof useResumesLazyQuery>;
+export type ResumesQueryResult = Apollo.QueryResult<ResumesQuery, ResumesQueryVariables>;
 export const AdminDocument = gql`
     query Admin {
   me {
