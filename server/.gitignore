@@ -3,4 +3,7 @@ node_modules
 .env
 .env.production
 .env.development
-/src/uploads/
+/src/uploads/**/file*
+/src/uploads/file*
+/src/uploads/zip*
+/src/uploads/**/zip*
