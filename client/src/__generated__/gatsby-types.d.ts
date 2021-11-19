@@ -264,8 +264,6 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly port: Maybe<Scalars['Int']>;
-  readonly host: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
@@ -287,6 +285,7 @@ type SiteSiteMetadata = {
   readonly description: Maybe<Scalars['String']>;
   readonly author: Maybe<Scalars['String']>;
   readonly siteUrl: Maybe<Scalars['String']>;
+  readonly serverUrl: Maybe<Scalars['String']>;
 };
 
 type SiteFunction = Node & {
@@ -309,13 +308,13 @@ type SitePage = Node & {
   readonly internalComponentName: Scalars['String'];
   readonly componentChunkName: Scalars['String'];
   readonly matchPath: Maybe<Scalars['String']>;
-  readonly isCreatedByStatefulCreatePages: Maybe<Scalars['Boolean']>;
-  readonly pluginCreator: Maybe<SitePlugin>;
-  readonly pluginCreatorId: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
   readonly children: ReadonlyArray<Node>;
   readonly internal: Internal;
+  readonly isCreatedByStatefulCreatePages: Maybe<Scalars['Boolean']>;
+  readonly pluginCreator: Maybe<SitePlugin>;
+  readonly pluginCreatorId: Maybe<Scalars['String']>;
 };
 
 type ImageFormat =
@@ -3113,8 +3112,6 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  port: Maybe<IntQueryOperatorInput>;
-  host: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
@@ -3161,13 +3158,13 @@ type Query_sitePageArgs = {
   internalComponentName: Maybe<StringQueryOperatorInput>;
   componentChunkName: Maybe<StringQueryOperatorInput>;
   matchPath: Maybe<StringQueryOperatorInput>;
-  isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
-  pluginCreator: Maybe<SitePluginFilterInput>;
-  pluginCreatorId: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
   parent: Maybe<NodeFilterInput>;
   children: Maybe<NodeFilterListInput>;
   internal: Maybe<InternalFilterInput>;
+  isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
+  pluginCreator: Maybe<SitePluginFilterInput>;
+  pluginCreatorId: Maybe<StringQueryOperatorInput>;
 };
 
 
@@ -4002,6 +3999,7 @@ type SiteSiteMetadataFilterInput = {
   readonly description: Maybe<StringQueryOperatorInput>;
   readonly author: Maybe<StringQueryOperatorInput>;
   readonly siteUrl: Maybe<StringQueryOperatorInput>;
+  readonly serverUrl: Maybe<StringQueryOperatorInput>;
 };
 
 type SiteConnection = {
@@ -4055,8 +4053,7 @@ type SiteFieldsEnum =
   | 'siteMetadata.description'
   | 'siteMetadata.author'
   | 'siteMetadata.siteUrl'
-  | 'port'
-  | 'host'
+  | 'siteMetadata.serverUrl'
   | 'polyfill'
   | 'pathPrefix'
   | 'id'
@@ -4158,8 +4155,6 @@ type SiteGroupConnection = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  readonly port: Maybe<IntQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
@@ -4479,89 +4474,6 @@ type SitePageFieldsEnum =
   | 'internalComponentName'
   | 'componentChunkName'
   | 'matchPath'
-  | 'isCreatedByStatefulCreatePages'
-  | 'pluginCreator.id'
-  | 'pluginCreator.parent.id'
-  | 'pluginCreator.parent.parent.id'
-  | 'pluginCreator.parent.parent.children'
-  | 'pluginCreator.parent.children'
-  | 'pluginCreator.parent.children.id'
-  | 'pluginCreator.parent.children.children'
-  | 'pluginCreator.parent.internal.content'
-  | 'pluginCreator.parent.internal.contentDigest'
-  | 'pluginCreator.parent.internal.description'
-  | 'pluginCreator.parent.internal.fieldOwners'
-  | 'pluginCreator.parent.internal.ignoreType'
-  | 'pluginCreator.parent.internal.mediaType'
-  | 'pluginCreator.parent.internal.owner'
-  | 'pluginCreator.parent.internal.type'
-  | 'pluginCreator.children'
-  | 'pluginCreator.children.id'
-  | 'pluginCreator.children.parent.id'
-  | 'pluginCreator.children.parent.children'
-  | 'pluginCreator.children.children'
-  | 'pluginCreator.children.children.id'
-  | 'pluginCreator.children.children.children'
-  | 'pluginCreator.children.internal.content'
-  | 'pluginCreator.children.internal.contentDigest'
-  | 'pluginCreator.children.internal.description'
-  | 'pluginCreator.children.internal.fieldOwners'
-  | 'pluginCreator.children.internal.ignoreType'
-  | 'pluginCreator.children.internal.mediaType'
-  | 'pluginCreator.children.internal.owner'
-  | 'pluginCreator.children.internal.type'
-  | 'pluginCreator.internal.content'
-  | 'pluginCreator.internal.contentDigest'
-  | 'pluginCreator.internal.description'
-  | 'pluginCreator.internal.fieldOwners'
-  | 'pluginCreator.internal.ignoreType'
-  | 'pluginCreator.internal.mediaType'
-  | 'pluginCreator.internal.owner'
-  | 'pluginCreator.internal.type'
-  | 'pluginCreator.resolve'
-  | 'pluginCreator.name'
-  | 'pluginCreator.version'
-  | 'pluginCreator.pluginOptions.base64Width'
-  | 'pluginCreator.pluginOptions.stripMetadata'
-  | 'pluginCreator.pluginOptions.defaultQuality'
-  | 'pluginCreator.pluginOptions.failOnError'
-  | 'pluginCreator.pluginOptions.autoFix'
-  | 'pluginCreator.pluginOptions.language'
-  | 'pluginCreator.pluginOptions.includeResolvers'
-  | 'pluginCreator.pluginOptions.outputPath'
-  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql'
-  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson'
-  | 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql'
-  | 'pluginCreator.pluginOptions.specialChars'
-  | 'pluginCreator.pluginOptions.name'
-  | 'pluginCreator.pluginOptions.path'
-  | 'pluginCreator.pluginOptions.isTSX'
-  | 'pluginCreator.pluginOptions.jsxPragma'
-  | 'pluginCreator.pluginOptions.allExtensions'
-  | 'pluginCreator.pluginOptions.typeName'
-  | 'pluginCreator.pluginOptions.fieldName'
-  | 'pluginCreator.pluginOptions.url'
-  | 'pluginCreator.pluginOptions.pathCheck'
-  | 'pluginCreator.nodeAPIs'
-  | 'pluginCreator.browserAPIs'
-  | 'pluginCreator.ssrAPIs'
-  | 'pluginCreator.pluginFilepath'
-  | 'pluginCreator.packageJson.name'
-  | 'pluginCreator.packageJson.description'
-  | 'pluginCreator.packageJson.version'
-  | 'pluginCreator.packageJson.main'
-  | 'pluginCreator.packageJson.license'
-  | 'pluginCreator.packageJson.dependencies'
-  | 'pluginCreator.packageJson.dependencies.name'
-  | 'pluginCreator.packageJson.dependencies.version'
-  | 'pluginCreator.packageJson.devDependencies'
-  | 'pluginCreator.packageJson.devDependencies.name'
-  | 'pluginCreator.packageJson.devDependencies.version'
-  | 'pluginCreator.packageJson.peerDependencies'
-  | 'pluginCreator.packageJson.peerDependencies.name'
-  | 'pluginCreator.packageJson.peerDependencies.version'
-  | 'pluginCreator.packageJson.keywords'
-  | 'pluginCreatorId'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -4647,7 +4559,90 @@ type SitePageFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'isCreatedByStatefulCreatePages'
+  | 'pluginCreator.id'
+  | 'pluginCreator.parent.id'
+  | 'pluginCreator.parent.parent.id'
+  | 'pluginCreator.parent.parent.children'
+  | 'pluginCreator.parent.children'
+  | 'pluginCreator.parent.children.id'
+  | 'pluginCreator.parent.children.children'
+  | 'pluginCreator.parent.internal.content'
+  | 'pluginCreator.parent.internal.contentDigest'
+  | 'pluginCreator.parent.internal.description'
+  | 'pluginCreator.parent.internal.fieldOwners'
+  | 'pluginCreator.parent.internal.ignoreType'
+  | 'pluginCreator.parent.internal.mediaType'
+  | 'pluginCreator.parent.internal.owner'
+  | 'pluginCreator.parent.internal.type'
+  | 'pluginCreator.children'
+  | 'pluginCreator.children.id'
+  | 'pluginCreator.children.parent.id'
+  | 'pluginCreator.children.parent.children'
+  | 'pluginCreator.children.children'
+  | 'pluginCreator.children.children.id'
+  | 'pluginCreator.children.children.children'
+  | 'pluginCreator.children.internal.content'
+  | 'pluginCreator.children.internal.contentDigest'
+  | 'pluginCreator.children.internal.description'
+  | 'pluginCreator.children.internal.fieldOwners'
+  | 'pluginCreator.children.internal.ignoreType'
+  | 'pluginCreator.children.internal.mediaType'
+  | 'pluginCreator.children.internal.owner'
+  | 'pluginCreator.children.internal.type'
+  | 'pluginCreator.internal.content'
+  | 'pluginCreator.internal.contentDigest'
+  | 'pluginCreator.internal.description'
+  | 'pluginCreator.internal.fieldOwners'
+  | 'pluginCreator.internal.ignoreType'
+  | 'pluginCreator.internal.mediaType'
+  | 'pluginCreator.internal.owner'
+  | 'pluginCreator.internal.type'
+  | 'pluginCreator.resolve'
+  | 'pluginCreator.name'
+  | 'pluginCreator.version'
+  | 'pluginCreator.pluginOptions.base64Width'
+  | 'pluginCreator.pluginOptions.stripMetadata'
+  | 'pluginCreator.pluginOptions.defaultQuality'
+  | 'pluginCreator.pluginOptions.failOnError'
+  | 'pluginCreator.pluginOptions.autoFix'
+  | 'pluginCreator.pluginOptions.language'
+  | 'pluginCreator.pluginOptions.includeResolvers'
+  | 'pluginCreator.pluginOptions.outputPath'
+  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql'
+  | 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson'
+  | 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql'
+  | 'pluginCreator.pluginOptions.specialChars'
+  | 'pluginCreator.pluginOptions.name'
+  | 'pluginCreator.pluginOptions.path'
+  | 'pluginCreator.pluginOptions.isTSX'
+  | 'pluginCreator.pluginOptions.jsxPragma'
+  | 'pluginCreator.pluginOptions.allExtensions'
+  | 'pluginCreator.pluginOptions.typeName'
+  | 'pluginCreator.pluginOptions.fieldName'
+  | 'pluginCreator.pluginOptions.url'
+  | 'pluginCreator.pluginOptions.pathCheck'
+  | 'pluginCreator.nodeAPIs'
+  | 'pluginCreator.browserAPIs'
+  | 'pluginCreator.ssrAPIs'
+  | 'pluginCreator.pluginFilepath'
+  | 'pluginCreator.packageJson.name'
+  | 'pluginCreator.packageJson.description'
+  | 'pluginCreator.packageJson.version'
+  | 'pluginCreator.packageJson.main'
+  | 'pluginCreator.packageJson.license'
+  | 'pluginCreator.packageJson.dependencies'
+  | 'pluginCreator.packageJson.dependencies.name'
+  | 'pluginCreator.packageJson.dependencies.version'
+  | 'pluginCreator.packageJson.devDependencies'
+  | 'pluginCreator.packageJson.devDependencies.name'
+  | 'pluginCreator.packageJson.devDependencies.version'
+  | 'pluginCreator.packageJson.peerDependencies'
+  | 'pluginCreator.packageJson.peerDependencies.name'
+  | 'pluginCreator.packageJson.peerDependencies.version'
+  | 'pluginCreator.packageJson.keywords'
+  | 'pluginCreatorId';
 
 type SitePageGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -4664,13 +4659,13 @@ type SitePageFilterInput = {
   readonly internalComponentName: Maybe<StringQueryOperatorInput>;
   readonly componentChunkName: Maybe<StringQueryOperatorInput>;
   readonly matchPath: Maybe<StringQueryOperatorInput>;
-  readonly isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
-  readonly pluginCreator: Maybe<SitePluginFilterInput>;
-  readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
   readonly internal: Maybe<InternalFilterInput>;
+  readonly isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
+  readonly pluginCreator: Maybe<SitePluginFilterInput>;
+  readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePageSortInput = {
@@ -5361,31 +5356,20 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+type Unnamed_1_Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesaboutMeTsx814646772Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
-
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx636364020QueryVariables = Exact<{ [key: string]: never; }>;
+type Unnamed_2_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesindexTsx636364020Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
-      Pick<Portfolio_Project, 'name' | 'image' | 'id' | 'github_url' | 'createdAt' | 'app_url' | 'summary' | 'updatedAt' | 'type'>
-      & { readonly tech_categories: ReadonlyArray<(
-        Pick<Portfolio_TechCategory, 'name' | 'id'>
-        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'name' | 'id'>> }
-      )> }
-    )>, readonly stacks: ReadonlyArray<Pick<Portfolio_Stack, 'id' | 'title' | 'image'>>, readonly me: Maybe<Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'skype' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'>> } };
+type Unnamed_2_Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818QueryVariables = Exact<{ [key: string]: never; }>;
+type Unnamed_3_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpagesprojectsTsx666501818Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
+type Unnamed_3_Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
       Pick<Portfolio_Project, 'id' | 'image' | 'app_url' | 'type' | 'name' | 'github_url' | 'summary'>
       & { readonly tech_categories: ReadonlyArray<(
         Pick<Portfolio_TechCategory, 'id' | 'name'>
@@ -5393,15 +5377,16 @@ type runmediaamirmuha86E6E47Be6E46CbdProjectsApplicationsportfolioclientsrcpages
       )> }
     )> } };
 
-type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
+type Unnamed_4_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type Unnamed_1_Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
-
-type Unnamed_2_QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type Unnamed_2_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
+type Unnamed_4_Query = { readonly portfolio: { readonly projects: ReadonlyArray<(
+      Pick<Portfolio_Project, 'name' | 'image' | 'id' | 'github_url' | 'createdAt' | 'app_url' | 'summary' | 'updatedAt' | 'type'>
+      & { readonly tech_categories: ReadonlyArray<(
+        Pick<Portfolio_TechCategory, 'name' | 'id'>
+        & { readonly techs: ReadonlyArray<Pick<Portfolio_Tech, 'name' | 'id'>> }
+      )> }
+    )>, readonly stacks: ReadonlyArray<Pick<Portfolio_Stack, 'id' | 'title' | 'image'>>, readonly me: Maybe<Pick<Portfolio_Admin, 'email' | 'github' | 'heroImage' | 'instagram' | 'skype' | 'linkedIn' | 'lname' | 'resumes' | 'whatsapp'>> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -5428,6 +5413,16 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
+
+type Unnamed_5_QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type Unnamed_5_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'serverUrl'>> }> };
+
+type Unnamed_6_QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type Unnamed_6_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
 
 
 
@@ -6423,8 +6418,6 @@ export type DirectoryResolvers<ContextType = GatsbyResolverContext, ParentType e
 export type SiteResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['Site'] = ResolversParentTypes['Site']> = {
   buildTime?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<Site_buildTimeArgs, never>>;
   siteMetadata?: Resolver<Maybe<ResolversTypes['SiteSiteMetadata']>, ParentType, ContextType>;
-  port?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  host?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   polyfill?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   pathPrefix?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -6439,6 +6432,7 @@ export type SiteSiteMetadataResolvers<ContextType = GatsbyResolverContext, Paren
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   author?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   siteUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  serverUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -6463,13 +6457,13 @@ export type SitePageResolvers<ContextType = GatsbyResolverContext, ParentType ex
   internalComponentName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   componentChunkName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   matchPath?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isCreatedByStatefulCreatePages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  pluginCreator?: Resolver<Maybe<ResolversTypes['SitePlugin']>, ParentType, ContextType>;
-  pluginCreatorId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType>;
   children?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   internal?: Resolver<ResolversTypes['Internal'], ParentType, ContextType>;
+  isCreatedByStatefulCreatePages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  pluginCreator?: Resolver<Maybe<ResolversTypes['SitePlugin']>, ParentType, ContextType>;
+  pluginCreatorId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -6939,7 +6933,7 @@ export type SiteEdgeResolvers<ContextType = GatsbyResolverContext, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SiteFieldsEnumResolvers = { buildTime: 'undefined', siteMetadata___title: 'siteMetadata.title', siteMetadata___description: 'siteMetadata.description', siteMetadata___author: 'siteMetadata.author', siteMetadata___siteUrl: 'siteMetadata.siteUrl', port: 'undefined', host: 'undefined', polyfill: 'undefined', pathPrefix: 'undefined', id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type' };
+export type SiteFieldsEnumResolvers = { buildTime: 'undefined', siteMetadata___title: 'siteMetadata.title', siteMetadata___description: 'siteMetadata.description', siteMetadata___author: 'siteMetadata.author', siteMetadata___siteUrl: 'siteMetadata.siteUrl', siteMetadata___serverUrl: 'siteMetadata.serverUrl', polyfill: 'undefined', pathPrefix: 'undefined', id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type' };
 
 export type SiteGroupConnectionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['SiteGroupConnection'] = ResolversParentTypes['SiteGroupConnection']> = {
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -7003,7 +6997,7 @@ export type SitePageEdgeResolvers<ContextType = GatsbyResolverContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SitePageFieldsEnumResolvers = { path: 'undefined', component: 'undefined', internalComponentName: 'undefined', componentChunkName: 'undefined', matchPath: 'undefined', isCreatedByStatefulCreatePages: 'undefined', pluginCreator___id: 'pluginCreator.id', pluginCreator___parent___id: 'pluginCreator.parent.id', pluginCreator___parent___parent___id: 'pluginCreator.parent.parent.id', pluginCreator___parent___parent___children: 'pluginCreator.parent.parent.children', pluginCreator___parent___children: 'pluginCreator.parent.children', pluginCreator___parent___children___id: 'pluginCreator.parent.children.id', pluginCreator___parent___children___children: 'pluginCreator.parent.children.children', pluginCreator___parent___internal___content: 'pluginCreator.parent.internal.content', pluginCreator___parent___internal___contentDigest: 'pluginCreator.parent.internal.contentDigest', pluginCreator___parent___internal___description: 'pluginCreator.parent.internal.description', pluginCreator___parent___internal___fieldOwners: 'pluginCreator.parent.internal.fieldOwners', pluginCreator___parent___internal___ignoreType: 'pluginCreator.parent.internal.ignoreType', pluginCreator___parent___internal___mediaType: 'pluginCreator.parent.internal.mediaType', pluginCreator___parent___internal___owner: 'pluginCreator.parent.internal.owner', pluginCreator___parent___internal___type: 'pluginCreator.parent.internal.type', pluginCreator___children: 'pluginCreator.children', pluginCreator___children___id: 'pluginCreator.children.id', pluginCreator___children___parent___id: 'pluginCreator.children.parent.id', pluginCreator___children___parent___children: 'pluginCreator.children.parent.children', pluginCreator___children___children: 'pluginCreator.children.children', pluginCreator___children___children___id: 'pluginCreator.children.children.id', pluginCreator___children___children___children: 'pluginCreator.children.children.children', pluginCreator___children___internal___content: 'pluginCreator.children.internal.content', pluginCreator___children___internal___contentDigest: 'pluginCreator.children.internal.contentDigest', pluginCreator___children___internal___description: 'pluginCreator.children.internal.description', pluginCreator___children___internal___fieldOwners: 'pluginCreator.children.internal.fieldOwners', pluginCreator___children___internal___ignoreType: 'pluginCreator.children.internal.ignoreType', pluginCreator___children___internal___mediaType: 'pluginCreator.children.internal.mediaType', pluginCreator___children___internal___owner: 'pluginCreator.children.internal.owner', pluginCreator___children___internal___type: 'pluginCreator.children.internal.type', pluginCreator___internal___content: 'pluginCreator.internal.content', pluginCreator___internal___contentDigest: 'pluginCreator.internal.contentDigest', pluginCreator___internal___description: 'pluginCreator.internal.description', pluginCreator___internal___fieldOwners: 'pluginCreator.internal.fieldOwners', pluginCreator___internal___ignoreType: 'pluginCreator.internal.ignoreType', pluginCreator___internal___mediaType: 'pluginCreator.internal.mediaType', pluginCreator___internal___owner: 'pluginCreator.internal.owner', pluginCreator___internal___type: 'pluginCreator.internal.type', pluginCreator___resolve: 'pluginCreator.resolve', pluginCreator___name: 'pluginCreator.name', pluginCreator___version: 'pluginCreator.version', pluginCreator___pluginOptions___base64Width: 'pluginCreator.pluginOptions.base64Width', pluginCreator___pluginOptions___stripMetadata: 'pluginCreator.pluginOptions.stripMetadata', pluginCreator___pluginOptions___defaultQuality: 'pluginCreator.pluginOptions.defaultQuality', pluginCreator___pluginOptions___failOnError: 'pluginCreator.pluginOptions.failOnError', pluginCreator___pluginOptions___autoFix: 'pluginCreator.pluginOptions.autoFix', pluginCreator___pluginOptions___language: 'pluginCreator.pluginOptions.language', pluginCreator___pluginOptions___includeResolvers: 'pluginCreator.pluginOptions.includeResolvers', pluginCreator___pluginOptions___outputPath: 'pluginCreator.pluginOptions.outputPath', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxschemaxgraphql: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson', pluginCreator___pluginOptions___emitPluginDocuments___src___generated___gatsby_plugin_documents_graphql: 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql', pluginCreator___pluginOptions___specialChars: 'pluginCreator.pluginOptions.specialChars', pluginCreator___pluginOptions___name: 'pluginCreator.pluginOptions.name', pluginCreator___pluginOptions___path: 'pluginCreator.pluginOptions.path', pluginCreator___pluginOptions___isTSX: 'pluginCreator.pluginOptions.isTSX', pluginCreator___pluginOptions___jsxPragma: 'pluginCreator.pluginOptions.jsxPragma', pluginCreator___pluginOptions___allExtensions: 'pluginCreator.pluginOptions.allExtensions', pluginCreator___pluginOptions___typeName: 'pluginCreator.pluginOptions.typeName', pluginCreator___pluginOptions___fieldName: 'pluginCreator.pluginOptions.fieldName', pluginCreator___pluginOptions___url: 'pluginCreator.pluginOptions.url', pluginCreator___pluginOptions___pathCheck: 'pluginCreator.pluginOptions.pathCheck', pluginCreator___nodeAPIs: 'pluginCreator.nodeAPIs', pluginCreator___browserAPIs: 'pluginCreator.browserAPIs', pluginCreator___ssrAPIs: 'pluginCreator.ssrAPIs', pluginCreator___pluginFilepath: 'pluginCreator.pluginFilepath', pluginCreator___packageJson___name: 'pluginCreator.packageJson.name', pluginCreator___packageJson___description: 'pluginCreator.packageJson.description', pluginCreator___packageJson___version: 'pluginCreator.packageJson.version', pluginCreator___packageJson___main: 'pluginCreator.packageJson.main', pluginCreator___packageJson___license: 'pluginCreator.packageJson.license', pluginCreator___packageJson___dependencies: 'pluginCreator.packageJson.dependencies', pluginCreator___packageJson___dependencies___name: 'pluginCreator.packageJson.dependencies.name', pluginCreator___packageJson___dependencies___version: 'pluginCreator.packageJson.dependencies.version', pluginCreator___packageJson___devDependencies: 'pluginCreator.packageJson.devDependencies', pluginCreator___packageJson___devDependencies___name: 'pluginCreator.packageJson.devDependencies.name', pluginCreator___packageJson___devDependencies___version: 'pluginCreator.packageJson.devDependencies.version', pluginCreator___packageJson___peerDependencies: 'pluginCreator.packageJson.peerDependencies', pluginCreator___packageJson___peerDependencies___name: 'pluginCreator.packageJson.peerDependencies.name', pluginCreator___packageJson___peerDependencies___version: 'pluginCreator.packageJson.peerDependencies.version', pluginCreator___packageJson___keywords: 'pluginCreator.packageJson.keywords', pluginCreatorId: 'undefined', id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type' };
+export type SitePageFieldsEnumResolvers = { path: 'undefined', component: 'undefined', internalComponentName: 'undefined', componentChunkName: 'undefined', matchPath: 'undefined', id: 'undefined', parent___id: 'parent.id', parent___parent___id: 'parent.parent.id', parent___parent___parent___id: 'parent.parent.parent.id', parent___parent___parent___children: 'parent.parent.parent.children', parent___parent___children: 'parent.parent.children', parent___parent___children___id: 'parent.parent.children.id', parent___parent___children___children: 'parent.parent.children.children', parent___parent___internal___content: 'parent.parent.internal.content', parent___parent___internal___contentDigest: 'parent.parent.internal.contentDigest', parent___parent___internal___description: 'parent.parent.internal.description', parent___parent___internal___fieldOwners: 'parent.parent.internal.fieldOwners', parent___parent___internal___ignoreType: 'parent.parent.internal.ignoreType', parent___parent___internal___mediaType: 'parent.parent.internal.mediaType', parent___parent___internal___owner: 'parent.parent.internal.owner', parent___parent___internal___type: 'parent.parent.internal.type', parent___children: 'parent.children', parent___children___id: 'parent.children.id', parent___children___parent___id: 'parent.children.parent.id', parent___children___parent___children: 'parent.children.parent.children', parent___children___children: 'parent.children.children', parent___children___children___id: 'parent.children.children.id', parent___children___children___children: 'parent.children.children.children', parent___children___internal___content: 'parent.children.internal.content', parent___children___internal___contentDigest: 'parent.children.internal.contentDigest', parent___children___internal___description: 'parent.children.internal.description', parent___children___internal___fieldOwners: 'parent.children.internal.fieldOwners', parent___children___internal___ignoreType: 'parent.children.internal.ignoreType', parent___children___internal___mediaType: 'parent.children.internal.mediaType', parent___children___internal___owner: 'parent.children.internal.owner', parent___children___internal___type: 'parent.children.internal.type', parent___internal___content: 'parent.internal.content', parent___internal___contentDigest: 'parent.internal.contentDigest', parent___internal___description: 'parent.internal.description', parent___internal___fieldOwners: 'parent.internal.fieldOwners', parent___internal___ignoreType: 'parent.internal.ignoreType', parent___internal___mediaType: 'parent.internal.mediaType', parent___internal___owner: 'parent.internal.owner', parent___internal___type: 'parent.internal.type', children: 'undefined', children___id: 'children.id', children___parent___id: 'children.parent.id', children___parent___parent___id: 'children.parent.parent.id', children___parent___parent___children: 'children.parent.parent.children', children___parent___children: 'children.parent.children', children___parent___children___id: 'children.parent.children.id', children___parent___children___children: 'children.parent.children.children', children___parent___internal___content: 'children.parent.internal.content', children___parent___internal___contentDigest: 'children.parent.internal.contentDigest', children___parent___internal___description: 'children.parent.internal.description', children___parent___internal___fieldOwners: 'children.parent.internal.fieldOwners', children___parent___internal___ignoreType: 'children.parent.internal.ignoreType', children___parent___internal___mediaType: 'children.parent.internal.mediaType', children___parent___internal___owner: 'children.parent.internal.owner', children___parent___internal___type: 'children.parent.internal.type', children___children: 'children.children', children___children___id: 'children.children.id', children___children___parent___id: 'children.children.parent.id', children___children___parent___children: 'children.children.parent.children', children___children___children: 'children.children.children', children___children___children___id: 'children.children.children.id', children___children___children___children: 'children.children.children.children', children___children___internal___content: 'children.children.internal.content', children___children___internal___contentDigest: 'children.children.internal.contentDigest', children___children___internal___description: 'children.children.internal.description', children___children___internal___fieldOwners: 'children.children.internal.fieldOwners', children___children___internal___ignoreType: 'children.children.internal.ignoreType', children___children___internal___mediaType: 'children.children.internal.mediaType', children___children___internal___owner: 'children.children.internal.owner', children___children___internal___type: 'children.children.internal.type', children___internal___content: 'children.internal.content', children___internal___contentDigest: 'children.internal.contentDigest', children___internal___description: 'children.internal.description', children___internal___fieldOwners: 'children.internal.fieldOwners', children___internal___ignoreType: 'children.internal.ignoreType', children___internal___mediaType: 'children.internal.mediaType', children___internal___owner: 'children.internal.owner', children___internal___type: 'children.internal.type', internal___content: 'internal.content', internal___contentDigest: 'internal.contentDigest', internal___description: 'internal.description', internal___fieldOwners: 'internal.fieldOwners', internal___ignoreType: 'internal.ignoreType', internal___mediaType: 'internal.mediaType', internal___owner: 'internal.owner', internal___type: 'internal.type', isCreatedByStatefulCreatePages: 'undefined', pluginCreator___id: 'pluginCreator.id', pluginCreator___parent___id: 'pluginCreator.parent.id', pluginCreator___parent___parent___id: 'pluginCreator.parent.parent.id', pluginCreator___parent___parent___children: 'pluginCreator.parent.parent.children', pluginCreator___parent___children: 'pluginCreator.parent.children', pluginCreator___parent___children___id: 'pluginCreator.parent.children.id', pluginCreator___parent___children___children: 'pluginCreator.parent.children.children', pluginCreator___parent___internal___content: 'pluginCreator.parent.internal.content', pluginCreator___parent___internal___contentDigest: 'pluginCreator.parent.internal.contentDigest', pluginCreator___parent___internal___description: 'pluginCreator.parent.internal.description', pluginCreator___parent___internal___fieldOwners: 'pluginCreator.parent.internal.fieldOwners', pluginCreator___parent___internal___ignoreType: 'pluginCreator.parent.internal.ignoreType', pluginCreator___parent___internal___mediaType: 'pluginCreator.parent.internal.mediaType', pluginCreator___parent___internal___owner: 'pluginCreator.parent.internal.owner', pluginCreator___parent___internal___type: 'pluginCreator.parent.internal.type', pluginCreator___children: 'pluginCreator.children', pluginCreator___children___id: 'pluginCreator.children.id', pluginCreator___children___parent___id: 'pluginCreator.children.parent.id', pluginCreator___children___parent___children: 'pluginCreator.children.parent.children', pluginCreator___children___children: 'pluginCreator.children.children', pluginCreator___children___children___id: 'pluginCreator.children.children.id', pluginCreator___children___children___children: 'pluginCreator.children.children.children', pluginCreator___children___internal___content: 'pluginCreator.children.internal.content', pluginCreator___children___internal___contentDigest: 'pluginCreator.children.internal.contentDigest', pluginCreator___children___internal___description: 'pluginCreator.children.internal.description', pluginCreator___children___internal___fieldOwners: 'pluginCreator.children.internal.fieldOwners', pluginCreator___children___internal___ignoreType: 'pluginCreator.children.internal.ignoreType', pluginCreator___children___internal___mediaType: 'pluginCreator.children.internal.mediaType', pluginCreator___children___internal___owner: 'pluginCreator.children.internal.owner', pluginCreator___children___internal___type: 'pluginCreator.children.internal.type', pluginCreator___internal___content: 'pluginCreator.internal.content', pluginCreator___internal___contentDigest: 'pluginCreator.internal.contentDigest', pluginCreator___internal___description: 'pluginCreator.internal.description', pluginCreator___internal___fieldOwners: 'pluginCreator.internal.fieldOwners', pluginCreator___internal___ignoreType: 'pluginCreator.internal.ignoreType', pluginCreator___internal___mediaType: 'pluginCreator.internal.mediaType', pluginCreator___internal___owner: 'pluginCreator.internal.owner', pluginCreator___internal___type: 'pluginCreator.internal.type', pluginCreator___resolve: 'pluginCreator.resolve', pluginCreator___name: 'pluginCreator.name', pluginCreator___version: 'pluginCreator.version', pluginCreator___pluginOptions___base64Width: 'pluginCreator.pluginOptions.base64Width', pluginCreator___pluginOptions___stripMetadata: 'pluginCreator.pluginOptions.stripMetadata', pluginCreator___pluginOptions___defaultQuality: 'pluginCreator.pluginOptions.defaultQuality', pluginCreator___pluginOptions___failOnError: 'pluginCreator.pluginOptions.failOnError', pluginCreator___pluginOptions___autoFix: 'pluginCreator.pluginOptions.autoFix', pluginCreator___pluginOptions___language: 'pluginCreator.pluginOptions.language', pluginCreator___pluginOptions___includeResolvers: 'pluginCreator.pluginOptions.includeResolvers', pluginCreator___pluginOptions___outputPath: 'pluginCreator.pluginOptions.outputPath', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxschemaxgraphql: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxschemaxgraphql', pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson: 'pluginCreator.pluginOptions.emitSchema._xsrcxxxgeneratedxxxgatsbyxintrospectionxjson', pluginCreator___pluginOptions___emitPluginDocuments___src___generated___gatsby_plugin_documents_graphql: 'pluginCreator.pluginOptions.emitPluginDocuments.src___generated___gatsby_plugin_documents_graphql', pluginCreator___pluginOptions___specialChars: 'pluginCreator.pluginOptions.specialChars', pluginCreator___pluginOptions___name: 'pluginCreator.pluginOptions.name', pluginCreator___pluginOptions___path: 'pluginCreator.pluginOptions.path', pluginCreator___pluginOptions___isTSX: 'pluginCreator.pluginOptions.isTSX', pluginCreator___pluginOptions___jsxPragma: 'pluginCreator.pluginOptions.jsxPragma', pluginCreator___pluginOptions___allExtensions: 'pluginCreator.pluginOptions.allExtensions', pluginCreator___pluginOptions___typeName: 'pluginCreator.pluginOptions.typeName', pluginCreator___pluginOptions___fieldName: 'pluginCreator.pluginOptions.fieldName', pluginCreator___pluginOptions___url: 'pluginCreator.pluginOptions.url', pluginCreator___pluginOptions___pathCheck: 'pluginCreator.pluginOptions.pathCheck', pluginCreator___nodeAPIs: 'pluginCreator.nodeAPIs', pluginCreator___browserAPIs: 'pluginCreator.browserAPIs', pluginCreator___ssrAPIs: 'pluginCreator.ssrAPIs', pluginCreator___pluginFilepath: 'pluginCreator.pluginFilepath', pluginCreator___packageJson___name: 'pluginCreator.packageJson.name', pluginCreator___packageJson___description: 'pluginCreator.packageJson.description', pluginCreator___packageJson___version: 'pluginCreator.packageJson.version', pluginCreator___packageJson___main: 'pluginCreator.packageJson.main', pluginCreator___packageJson___license: 'pluginCreator.packageJson.license', pluginCreator___packageJson___dependencies: 'pluginCreator.packageJson.dependencies', pluginCreator___packageJson___dependencies___name: 'pluginCreator.packageJson.dependencies.name', pluginCreator___packageJson___dependencies___version: 'pluginCreator.packageJson.dependencies.version', pluginCreator___packageJson___devDependencies: 'pluginCreator.packageJson.devDependencies', pluginCreator___packageJson___devDependencies___name: 'pluginCreator.packageJson.devDependencies.name', pluginCreator___packageJson___devDependencies___version: 'pluginCreator.packageJson.devDependencies.version', pluginCreator___packageJson___peerDependencies: 'pluginCreator.packageJson.peerDependencies', pluginCreator___packageJson___peerDependencies___name: 'pluginCreator.packageJson.peerDependencies.name', pluginCreator___packageJson___peerDependencies___version: 'pluginCreator.packageJson.peerDependencies.version', pluginCreator___packageJson___keywords: 'pluginCreator.packageJson.keywords', pluginCreatorId: 'undefined' };
 
 export type SitePageGroupConnectionResolvers<ContextType = GatsbyResolverContext, ParentType extends ResolversParentTypes['SitePageGroupConnection'] = ResolversParentTypes['SitePageGroupConnection']> = {
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;

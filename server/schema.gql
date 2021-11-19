@@ -879,7 +879,7 @@ type Mutation {
   login(data: LoginInputType!): LoginReturnType
   logout: Boolean
   moveFilesFromTemp(filenames: [String!]!): Boolean!
-  resetPassword(code: Int, email: String!, newPassword: String!, token: String): String!
+  resetPassword(code: Int, email: String!, needCode: Boolean!, newPassword: String!, token: String): String!
   updateAbout(data: AboutUpdateInput!, where: AboutWhereUniqueInput!): About
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateImage(file: Upload!, isEdit: Boolean = false, prevname: String!): String
