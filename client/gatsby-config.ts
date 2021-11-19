@@ -1,6 +1,6 @@
-import { config } from "dotenv"
-import { PluginOptions as TypeGenPluginOptions } from "gatsby-plugin-typegen/types"
 import { GatsbyConfig } from "gatsby"
+import { PluginOptions as TypeGenPluginOptions } from "gatsby-plugin-typegen/types"
+import { config } from "dotenv"
 
 config({
   path: `./.env`,
@@ -13,6 +13,7 @@ export default {
     author: "AmirMohammad MirzaeiRad",
     title: "AmirMohammad MirzaeiRad",
     siteUrl: "https://portfolio.amirmuha.com",
+    serverUrl: "http://localhost:3333"
   },
   plugins: [
     "gatsby-plugin-sharp",
