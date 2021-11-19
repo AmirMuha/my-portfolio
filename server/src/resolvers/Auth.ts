@@ -12,11 +12,6 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import { Admin } from "../../prisma/generated/type-graphql";
-import {
-  EMAIL_CONFIRMATION_CODE,
-  JWT_PRIVATE_KEY,
-  MY_EMAIL,
-} from "../constants/envs-and-consts";
 import { isLoggedIn } from "../middlewares/isLoggedIn";
 import { redis } from "../redis-client";
 import { ConfirmTokenOrCodeArgsType } from "../types/arg-types/ConfirmEmailArgs";
@@ -58,7 +53,7 @@ export class AuthResolver {
       admin.password
     );
     if (!isPassCorrect) throw new Error("Email or Password is incorrect.");
-    const token = jwt.sign({ id: admin.id }, JWT_PRIVATE_KEY, {
+    const token = jwt.sign({ id: admin.id }, process.env.JWT_PRIVATE_KEY!, {
       expiresIn: `7d`,
     });
     req.session.token = token;
@@ -89,7 +84,7 @@ export class AuthResolver {
     });
     if (!admin) throw new Error("There is no admin with this email address.");
     if (args.token) {
-      const verifiedToken = await jwt.verify(args.token, JWT_PRIVATE_KEY);
+      const verifiedToken = await jwt.verify(args.token, process.env.JWT_PRIVATE_KEY!);
       if (verifiedToken) throw new Error("Token is not valid or has expired.");
       await prisma.admin.update({
         data: {
@@ -98,7 +93,7 @@ export class AuthResolver {
         where: { id: admin.id },
       });
     } else if (args.code) {
-      const code = await redis.get(`${EMAIL_CONFIRMATION_CODE}-${admin.id}`);
+      const code = await redis.get(`${process.env.EMAIL_CONFIRMATION_CODE!}-${admin.id}`);
       if (!code) throw new Error("Email confirmation code has expired.");
       if (args.code !== parseInt(code))
         throw new Error("Email confirmation code is incorrect.");
@@ -122,7 +117,7 @@ export class AuthResolver {
       where: { email: args.email },
     });
     if (!admin) throw new Error("There is no admin with the given email.");
-    const token = jwt.sign({ id: data.userId }, JWT_PRIVATE_KEY, {
+    const token = jwt.sign({ id: data.userId }, process.env.JWT_PRIVATE_KEY!, {
       expiresIn: 10 * 60,
     });
     const confirmation_code = randomNumber(1000, 9999);
@@ -134,7 +129,7 @@ export class AuthResolver {
     );
     const result = await sendEmail({
       type: EmailTypes.FORGOT_PASSWORD,
-      from: MY_EMAIL,
+      from: process.env.MY_EMAIL!,
       to: args.email,
       subject: "Forgot Password",
       token,
@@ -181,7 +176,7 @@ export class AuthResolver {
       );
     if (args.token) {
       const token = args.token;
-      const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+      const verifiedToken = (await jwt.verify(token, process.env.JWT_PRIVATE_KEY!, {
         complete: true,
       })) as JwtVerifyWithPayloadType;
       if (!verifiedToken)
@@ -209,7 +204,7 @@ export class AuthResolver {
         );
       if (args.token) {
         const token = args.token;
-        const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+        const verifiedToken = (await jwt.verify(token, process.env.JWT_PRIVATE_KEY!, {
           complete: true,
         })) as JwtVerifyWithPayloadType;
         if (!verifiedToken)

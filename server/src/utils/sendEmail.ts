@@ -1,11 +1,6 @@
 import {
-  EMAIL_HOST,
-  EMAIL_PASSWORD,
-  EMAIL_PORT,
-  EMAIL_USERNAME,
   __prod__,
 } from "../constants/envs-and-consts";
-
 import md from "markdown-it";
 import nodemailer from "nodemailer";
 
@@ -38,12 +33,12 @@ export const sendEmail = async ({
     let testAccount = await nodemailer.createTestAccount();
     let htmlBody = ``;
     const transporter = nodemailer.createTransport({
-      host: EMAIL_HOST,
-      port: EMAIL_PORT,
+      host: process.env.EMAIL_HOST! as any,
+      port: process.env.EMAIL_PORT! as any,
       secure: __prod__ ? true : false, // true for 465, false for other ports
       auth: {
-        user: !__prod__ ? testAccount.user : EMAIL_USERNAME, // generated ethereal user
-        pass: !__prod__ ? testAccount.pass : EMAIL_PASSWORD, // generated ethereal password
+        user: !__prod__ ? testAccount.user : process.env.EMAIL_USERNAME!, // generated ethereal user
+        pass: !__prod__ ? testAccount.pass : process.env.EMAIL_PASSWORD!, // generated ethereal password
       },
     });
     if (type === EmailTypes.CONFIRMATION && confirmation_code) {

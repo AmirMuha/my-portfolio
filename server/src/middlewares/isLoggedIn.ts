@@ -1,6 +1,5 @@
 import { MiddlewareFn, NextFn } from "type-graphql";
 
-import { JWT_PRIVATE_KEY } from "../constants/envs-and-consts";
 import { JwtVerifyWithPayloadType } from "../types/JwtVerifyWithPayloadType";
 import { MyContext } from "../types/MyContext";
 import { Props } from "../types/Props";
@@ -24,7 +23,7 @@ export const isLoggedIn: MiddlewareFn<MyContext> = async (
   if (!token) {
     throw new Error("Either your session exprired or you are not logged in.");
   }
-  const verifiedToken = jwt.verify(token, JWT_PRIVATE_KEY, {
+  const verifiedToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY!, {
     complete: true,
   }) as JwtVerifyWithPayloadType;
   if (!verifiedToken.payload.id) {

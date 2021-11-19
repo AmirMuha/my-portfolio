@@ -14,7 +14,6 @@ import {
   DeleteAdminArgs,
   UpdateAdminArgs,
 } from "../../prisma/generated/type-graphql";
-import { JWT_PRIVATE_KEY, MY_EMAIL } from "../constants/envs-and-consts";
 import CountAdmins from "../middlewares/CountAdmins";
 import { isLoggedIn } from "../middlewares/isLoggedIn";
 import { MyContext } from "../types/MyContext";
@@ -77,7 +76,7 @@ export class AdminCrudResolver {
         "Please provide the email and id of the admin you want to delete."
       );
     const id = args.where.id;
-    const token = await jwt.sign({ id }, JWT_PRIVATE_KEY, {
+    const token = await jwt.sign({ id }, process.env.JWT_PRIVATE_KEY!, {
       expiresIn: 10 * 60,
     });
     const confirmation_code = randomNumber(1000, 9999);
@@ -85,7 +84,7 @@ export class AdminCrudResolver {
     await sendEmail({
       type: EmailTypes.CONFIRMATION,
       subject: "Deleting Admin",
-      from: MY_EMAIL,
+      from: process.env.MY_EMAIL!,
       to: args.where.email!,
       token: token,
       confirmation_code,
@@ -105,7 +104,7 @@ export class AdminCrudResolver {
       );
     if (args.token) {
       const token = args.token;
-      const verifiedToken = (await jwt.verify(token, JWT_PRIVATE_KEY, {
+      const verifiedToken = (await jwt.verify(token, process.env.JWT_PRIVATE_KEY!, {
         complete: true,
       })) as JwtVerifyWithPayloadType;
       if (!verifiedToken)
