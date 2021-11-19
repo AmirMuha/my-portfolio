@@ -5,13 +5,6 @@ import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
-import {
-  HOST,
-  PORT,
-  SESSION_MAX_AGE,
-  SESSION_SECRET,
-  __prod__,
-} from "./src/constants/envs-and-consts";
 import { execute, subscribe } from "graphql";
 
 import { ApolloServer } from "apollo-server-express";
@@ -19,6 +12,7 @@ import Express from "express";
 import { MyContext } from "./src/types/MyContext";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { UploadResolver } from "./src/resolvers/Upload";
+import { __prod__ } from "./src/constants/envs-and-consts";
 import applyMiddlewares from "./src/middlewares/typegraphql-prisma/applyAllMiddlewares";
 import { black } from "./src/chalk";
 import { buildSchemaSync } from "type-graphql";
@@ -39,7 +33,6 @@ import { v4 } from "uuid";
 process.on("uncaughtException", (e) => {
   console.error(e);
 });
-
 const app = Express();
 const RedisStore = redisStore(session);
 
@@ -48,14 +41,19 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: "http://localhost:8000",
+      origin:
+        process.env.NODE_ENV === "development"
+          ? ["http://localhost:8000", "http://localhost:9000"]
+          : "https://portfolio.amirmuha.com",
     })
   );
+
+  console.log(process.env.SESSION_SECRET);
   app.use(
     session({
       name: "sid",
       store: new RedisStore({ client: redis }),
-      secret: SESSION_SECRET,
+      secret: process.env.SESSION_SECRET!,
       genid: () => {
         return v4();
       },
@@ -64,7 +62,8 @@ const main = async () => {
       cookie: {
         httpOnly: true,
         secure: __prod__,
-        maxAge: SESSION_MAX_AGE,
+        maxAge:
+          parseInt(process.env.SESSION_MAX_AGE_DAYS!) * 24 * 60 * 60 * 1000,
       },
     })
   );
@@ -111,7 +110,13 @@ const main = async () => {
 
   server.applyMiddleware({
     app,
-    cors: { origin: "http://localhost:8000", credentials: true },
+    cors: {
+      origin:
+      process.env.NODE_ENV === "development"
+        ? ["http://localhost:8000", "http://localhost:9000"]
+        : "https://portfolio.amirmuha.com",
+      credentials: true,
+    },
   });
   if (!__prod__) {
     app.use(morgan("dev"));
@@ -119,14 +124,15 @@ const main = async () => {
   app.use(helmet());
   app.all("*", (_, res) => {
     if (__prod__) {
-      res.sendFile(path.join(__dirname, "/dist/index.html"));
-    } else {
       res.send("Hi, How Are You?");
     }
-    res.end();
   });
-  httpServer.listen({ port: PORT }, () => {
-    console.log(black(` Server is running on http://${HOST}:${PORT} `));
+  httpServer.listen({ port: process.env.PORT }, () => {
+    console.log(
+      black(
+        ` Server is running on http://${process.env.HOST}:${process.env.PORT} `
+      )
+    );
   });
 
   process.on("unhandledRejection", (reason, promise) => {
@@ -134,4 +140,5 @@ const main = async () => {
     process.exit();
   });
 };
+
 main().catch(console.error);
