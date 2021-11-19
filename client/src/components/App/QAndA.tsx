@@ -232,7 +232,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
               </p>
               <div
                 ref={dropdownRef as any}
-                className="absolute transform origin-center  top-3 right-0"
+                className="absolute transform origin-center top-4.5 right-0"
               >
                 {DropDown}
               </div>

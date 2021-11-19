@@ -6,6 +6,7 @@ import InPageMenu from "../components/App/InPageMenu"
 import Layout from "../components/Layout"
 import Markdown from "../components/utility/Markdown"
 import TheSection from "../components/App/TheSection"
+
 const meta: Meta = [
   {
     name: "description",
@@ -36,7 +37,7 @@ const AboutMe: FC<QueryTypes> = ({ data }) => {
           <InPageMenu pipes="left" />
         </TheSection>
         {abouts.map(p => (
-          <TheSection key={p.id} id={p.id} name={p.title}>
+          <TheSection style={{ marginBottom: 40 }} key={p.id} id={p.id} name={p.title}>
             <div className="px-5 pb-8">
               <Markdown>{p.body}</Markdown>
             </div>
