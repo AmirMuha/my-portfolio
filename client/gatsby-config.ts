@@ -13,7 +13,7 @@ export default {
     author: "AmirMohammad MirzaeiRad",
     title: "AmirMohammad MirzaeiRad",
     siteUrl: "https://portfolio.amirmuha.com",
-    serverUrl: "http://localhost:3333"
+    serverUrl: process.env.NODE_ENV === "development"? "http://localhost:3333": "https://portfolio.server.amirmuha.com"
   },
   plugins: [
     "gatsby-plugin-sharp",
