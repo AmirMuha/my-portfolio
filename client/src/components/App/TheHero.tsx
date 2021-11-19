@@ -7,31 +7,34 @@ import SmallPipe from "../UI/SmallPipe"
 import insta from "../../images/Instagram.png"
 import linkedin from "../../images/LinkedIn.png"
 import skype from "../../images/Skype.png"
+import { useServerUrl } from '../../util/useServerUrl'
 import whatsapp from "../../images/WhatsApp.png"
 
 interface Props {
-  data: GatsbyTypes.Portfolio_Admin
+  data: GatsbyTypes.Portfolio_Admin | null
 }
 
 const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
+  const SERVER_API = useServerUrl()
   return (
-    <div className="pt-5 flex items-center border-l-5 h-auto md:border-l-10 sm:border-r-5 md:border-r-10 border-palatte-500">
-      <div className="block self-end w-full sm:flex-1">
+    <div className="pt-5 flex items-end border-l-5 h-auto md:border-l-10 sm:border-r-5 md:border-r-10 border-palatte-500">
+      <div className="block w-full sm:flex-1">
         <div className="p-3 mx-auto">
           <img
             className="w-full px-5"
-            src={`${(window as any).__SERVER_API__}/${data.heroImage}`}
+            src={`${SERVER_API}/${data ? data.heroImage:"default-project.jpeg"}`}
             placeholder="none"
             alt="Hero Image"
             style={{
               backgroundSize: "cover",
               objectFit: "contain",
               width: "100%",
+              maxWidth: "400px"
             }}
           />
         </div>
         <Button
-          toUrl={data.github}
+          toUrl={data?.github }
           iconAnimation="BtT"
           target="_blank"
           icon={GitHub}
@@ -45,18 +48,18 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
           }}
         ></Button>
       </div>
-      <div className="hidden lg:block justify-self-end self-end flex-1">
+      <div className="hidden lg:block flex-1">
         <div className="bg-palatte-300 flex-col mx-6">
           <div></div>
           <div></div>
           <div></div>
         </div>
-        <InPageMenu style={{ padding: 0 }} />
+        <InPageMenu className="text-xs" style={{ padding: 0 }} />
       </div>
-      <div className="hidden sm:block justify-self-end self-end flex-1">
+      <div className="hidden sm:block  flex-1">
         <div className="block">
-          <SmallPipe rtl className="mb-8 ml-auto max-w-xs">
-            <div className="w-full">
+          <SmallPipe rtl className="mb-10 mr-0 ml-10 mt-12 h-full">
+            <div className="w-full flex-grow">
               <div className="text-center">
                 <p className="flex text-sm.4 items-center">
                   <span className="flex-1 h-0.5 bg-palatte-500"></span>
@@ -68,24 +71,24 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
                 <div className="resume-background-image flex">
                   <a
                     target="_blank"
-                    href={`${(window as any).__SERVER_API__}/${
-                      data.resumes[0]
+                    href={`${SERVER_API}/${
+                      data?.resumes[0]
                     }`}
                     className="w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70"
                   >
                     <span className="uppercase">
-                      .{data.resumes[0].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
+                      .{data?.resumes[0].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </span>
                   </a>
                   <a
                     target="_blank"
-                    href={`${(window as any).__SERVER_API__}/${
-                      data.resumes[1]
+                    href={`${SERVER_API}/${
+                      data?.resumes[1]
                     }`}
                     className="w-1/2 py-14 text-center place-self-center bg-palatte-300 opacity-70"
                   >
                     <span className="uppercase">
-                      .{data.resumes[1].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
+                      .{data?.resumes[1].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </span>
                   </a>
                 </div>
@@ -100,7 +103,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               textColor="500"
               color="100"
               outline
-              toUrl={`https://wa.me/${data.whatsapp}`}
+              toUrl={`https://wa.me/${data?.whatsapp}`}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
@@ -121,7 +124,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               color="100"
               outline
               target="_blank"
-              toUrl={data.skype}
+              toUrl={data?.skype}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
@@ -142,7 +145,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               color="100"
               outline
               target="_blank"
-              toUrl={data.instagram}
+              toUrl={data?.instagram}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",
@@ -163,7 +166,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               color="100"
               outline
               target="_blank"
-              toUrl={data.linkedIn}
+              toUrl={data?.linkedIn}
               style={{
                 alignItems: "center",
                 padding: "6px 8px",

@@ -18,7 +18,9 @@ import TextArea from "../UI/TextArea"
 import { createPortal } from "react-dom"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useServerUrl } from '../../util/useServerUrl';
 
+const isBrowser = typeof window !== "undefined"
 interface Props {
   data: MessageCreateInput
   refetch: () => void
@@ -30,6 +32,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
   data,
   refetch,
 }) => {
+  const SERVER_API = useServerUrl()
   const [
     mutateDeleteFile,
     { error: deleteFileError, loading: deleteFileLoading },
@@ -225,7 +228,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
               })}
             </span>
           </div>
-          {isOpen &&
+          {isOpen && isBrowser &&
             createPortal(
               <div>
                 <Modal
@@ -293,7 +296,7 @@ const Dash_Message: FC<PropsWithChildren<Props>> = ({
                         <div className="w-full px-2 mt-1">
                           <Button
                             toUrl={`${
-                              (window as any).__SERVER_API__
+                              SERVER_API
                             }/download/${data.files}`}
                             icon={Download}
                             iconAnimation="TtB"

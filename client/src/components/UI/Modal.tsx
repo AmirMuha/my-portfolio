@@ -3,6 +3,8 @@ import React, { FC, PropsWithChildren } from "react"
 import { Close } from "../../icons/iconsJSX"
 import { createPortal } from "react-dom"
 
+const isBrowser = typeof window !== "undefined"
+
 interface Props {
   onClose: () => void
   maxHeight?: string
@@ -35,7 +37,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <>
-      {createPortal(
+      {isBrowser  && createPortal(
         <div className={modalContainerClass}>
           <div
             onClick={onClose}

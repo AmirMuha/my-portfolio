@@ -30,6 +30,7 @@ import { useAlert } from "../../../../util/useAlert"
 import { useAlertGraphqlError } from "../../../../util/useAlertGraphqlError"
 import { useAuth } from "../../../../util/useAuth"
 
+const isBrowser = typeof window !== "undefined"
 const project: FC<PageProps> = ({ params }) => {
   const {
     isOpen: alertIsOpen,
@@ -121,10 +122,10 @@ const project: FC<PageProps> = ({ params }) => {
   }
 
   const getNewProjectName = (name: string) => {
-    window.history.replaceState(
+    isBrowser && window.history.replaceState(
       "",
       "",
-      `${window.location.origin}/dashboard/add/project/${name}`
+      `${isBrowser && window.location.origin}/dashboard/add/project/${name}`
     )
     if (isNameChanged) {
       setIsNameChanged(false)
@@ -134,7 +135,7 @@ const project: FC<PageProps> = ({ params }) => {
 
   return (
     <>
-      {isLoading && (
+      {isLoading && isBrowser &&(
         <>
           {createPortal(
             <div className="fixed inset-0">

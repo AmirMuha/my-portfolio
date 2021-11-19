@@ -25,6 +25,7 @@ import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
 import { useTheDispatch } from "../../store/store"
 
+const isBrowser = typeof window !== "undefined"
 interface ReducerState {
   description: string
   summary: string
@@ -246,7 +247,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
 
   return (
     <>
-      {isLoading &&
+      {isLoading && isBrowser &&
         createPortal(
           <div className="fixed w-full h-full top-0 left-0">
             <InBoxLoading text="Loading" />

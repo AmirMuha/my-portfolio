@@ -32,6 +32,7 @@ import {
 } from "../../store/editProject"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useServerUrl } from "../../util/useServerUrl"
 import { useTheDispatch } from "../../store/store"
 
 interface Props {
@@ -44,6 +45,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   mode = "EDIT",
   data,
 }) => {
+  const SERVER_API = useServerUrl()
   const {
     message: alertMessage,
     isOpen: isAlertOpen,
@@ -109,8 +111,6 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           type: projectType,
           id: data.id,
         },
-      }).then(() => {
-        setAlert({
           isOpen: true,
           title: "Success",
           message: "Updated project type successfully.",
@@ -294,7 +294,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                 "Something went wrong, couldn't update image, please try again later.",
             })
             if (imageRef.current) {
-              imageRef.current.src = `${(window as any).__SERVER_API__}/${
+              imageRef.current.src = `${SERVER_API}/${
                 imageName || "default-project.jpeg"
               }`
             }
@@ -348,7 +348,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
   const getImageFile = (f: FileList & BlobPart[]) => {
     if (!f) {
       if (imageRef.current) {
-        imageRef.current.src = `${(window as any).__SERVER_API__}/${
+        imageRef.current.src = `${SERVER_API}/${
           imageName || "default-project.jpeg"
         }`
       }
@@ -397,9 +397,9 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${
-                  mode === "ADD" ? "temp/" : ""
-                }${imageName || "default-project.jpeg"}`}
+                src={`${SERVER_API}/${mode === "ADD" ? "temp/" : ""}${
+                  imageName || "default-project.jpeg"
+                }`}
                 alt={`${data.name || "Default"} Image`}
               />
             </div>
@@ -491,9 +491,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   onSave={updateType}
                   customInputId="project-type"
                   value={projectType}
-                  getValue={v =>
-                    setProjectType(v)
-                  }
+                  getValue={v => setProjectType(v)}
                 />
               </div>
             </SmallPipe>
@@ -535,7 +533,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
                   objectFit: "cover",
                 }}
                 ref={imageRef as any}
-                src={`${(window as any).__SERVER_API__}/${imageName}`}
+                src={`${SERVER_API}/${imageName}`}
                 alt={`${data.name} Image`}
               />
             </div>
@@ -543,7 +541,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             <div className="flex absolute top-0 right-0 left-0 justify-between m-1.5 items-center">
               <Button
                 outline
-                toUrl="https://github.com/AmirMuha"
+                toUrl={data.github_url}
                 borderColor="100"
                 textColor="100"
                 color="500"
@@ -554,7 +552,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               ></Button>
               <Button
                 outline
-                toUrl="https://github.com/AmirMuha"
+                toUrl={data.app_url}
                 borderColor="100"
                 textColor="100"
                 color="500"
@@ -565,7 +563,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
               </Button>
             </div>
           </div>
-          <div className="flex-col ml-7 overflow-auto border-l-5 border-b-5 border-palatte-500 relative lg:border-0 lg:ml-0 pt-5 md:pt-0 md:mt-5">
+          <div className="flex-col ml-7 overflow-auto border-l-5 border-b-5 md:border-l-10 md:border-b-10 border-palatte-500 relative lg:border-0 lg:ml-0 pt-5 lg:pt-0 lg:mt-5">
             <SmallPipe
               style={{
                 display: "block",

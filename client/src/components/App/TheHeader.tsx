@@ -13,6 +13,7 @@ import NavLink from "../UI/NavLink"
 import {
   useResumesQuery
 } from "../../types/graphql-types"
+import { useServerUrl } from '../../util/useServerUrl';
 
 interface Props {
   nav?: boolean
@@ -25,6 +26,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
   brand = "AMIRMUHA",
   page = "portfolio",
 }) => {
+  const SERVER_API = useServerUrl()
   const {data} = useResumesQuery()
   const navRef = useRef<HTMLElement>()
   const headerClasses = `${Header}  ${Header_Border}`
@@ -91,7 +93,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     <Button
                       iconAnimation="TtB"
                       color="300"
-                      toUrl={`${(window as any).__SERVER_API__}/${data.me.resumes[0]}`}
+                      toUrl={`${SERVER_API}/${data.me.resumes[0]}`}
                       target="_blank"
                       style={{
                         justifyContent: "space-between",
@@ -104,7 +106,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     </Button>
                     <Button
                       iconAnimation="TtB"
-                      toUrl={`${(window as any).__SERVER_API__}/${data.me.resumes[1]}`}
+                      toUrl={`${SERVER_API}/${data.me.resumes[1]}`}
                       target="_blank"
                       color="300"
                       style={{ justifyContent: "space-between", width: "100%" }}

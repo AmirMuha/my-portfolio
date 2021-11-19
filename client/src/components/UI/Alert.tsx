@@ -2,6 +2,8 @@ import React, { FC, PropsWithChildren, useEffect } from "react"
 
 import { Close } from "../../icons/iconsJSX"
 import { createPortal } from "react-dom"
+
+const isBrowser = typeof window !== "undefined"
 interface Props {
   header?: boolean
   message: string
@@ -33,7 +35,7 @@ const Alert: FC<PropsWithChildren<Props>> = ({
   }, [])
   return (
     <>
-      {createPortal(
+      {isBrowser && createPortal(
         <>
           {backdrop && (
             <div

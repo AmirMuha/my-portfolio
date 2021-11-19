@@ -1,11 +1,13 @@
 import React, { FC, PropsWithChildren } from "react"
+
 import { createPortal } from "react-dom"
+const isBrowser = typeof window !== "undefined"
 interface Props {}
 
 const Loading: FC<PropsWithChildren<Props>> = props => {
   return (
     <>
-      {createPortal(
+      {isBrowser && createPortal(
         <div className="px-10 py-5 fixed inset-0 bg-palatte-500">
           <div className="flex-col gap-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <svg

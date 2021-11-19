@@ -3,14 +3,14 @@ import React, {
   PropsWithChildren,
   useEffect,
   useRef,
-  useState,
+  useState
 } from "react"
 import { deleteReducer, setSketchReducer } from "../../store/newProjectSlice"
 import {
   deleteSketchReducer,
   updateSketchDescriptionRedcuer,
   updateSketchImageReducer,
-  updateSketchSummaryReducer,
+  updateSketchSummaryReducer
 } from "../../store/editProject"
 import {
   useDeleteFilesMutation,
@@ -18,7 +18,7 @@ import {
   useUpdateImageMutation,
   useUpdateSketchDescriptionMutation,
   useUpdateSketchSummaryMutation,
-  useUpdateZipFileMutation,
+  useUpdateZipFileMutation
 } from "../../types/graphql-types"
 
 import Alert from "../UI/Alert"
@@ -30,6 +30,7 @@ import Markdown from "../utility/Markdown"
 import Modal from "../UI/Modal"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useServerUrl } from '../../util/useServerUrl'
 import { useTheDispatch } from "../../store/store"
 
 interface Props {
@@ -43,6 +44,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
   data,
   editable = false,
 }) => {
+  const SERVER_API = useServerUrl()
   const [
     mutateDeleteFiles,
     { error: deleteFilesError, loading: deleteFilesLoading },
@@ -364,7 +366,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
           >
             <div className="overflow-hidden">
               <img
-                src={`${(window as any).__SERVER_API__}/${
+                src={`${SERVER_API}/${
                   mode === "ADD" ? "temp/" : ""
                 }${data.image}`}
                 alt={data.title}
@@ -386,7 +388,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               </span>
               <div className="flex items-center justify-between">
                 <Button
-                  toUrl={`${(window as any).__SERVER_API__}/download/${
+                  toUrl={`${SERVER_API}/download/${
                     data.downloadables
                   }`}
                   outline
@@ -475,7 +477,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             <div className="relative">
               <div className="overflow-hidden">
                 <img
-                  src={`${(window as any).__SERVER_API__}/${data.image}`}
+                  src={`${SERVER_API}/${data.image}`}
                   alt={data.title}
                   ref={imageRef as any}
                   style={{
@@ -489,7 +491,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               <div className="p-1.5 absolute border-5 md:border-10 border-palatte-500 bg-palatte-200 bg-opacity-50 top-0 left-0 right-0 bottom-0">
                 <div className="flex items-center justify-between">
                   <Button
-                    toUrl={`${(window as any).__SERVER_API__}/download/${
+                    toUrl={`${SERVER_API}/download/${
                       data.downloadables
                     }`}
                     outline

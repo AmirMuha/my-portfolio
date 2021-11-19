@@ -15,6 +15,7 @@ import Modal from "../UI/Modal"
 import SmallPipe from "../UI/SmallPipe"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
+import { useServerUrl } from '../../util/useServerUrl';
 
 interface Props {
   data?: StackType[]
@@ -28,6 +29,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
   editable = false,
   refetch,
 }) => {
+  const SERVER_API = useServerUrl()
   const [isStackCreateOpen, setStackCreateOpen] = useState<boolean>(false)
   const [
     mutateDeleteImage,
@@ -235,7 +237,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
                       }
                     >
                       <img
-                        src={`${(window as any).__SERVER_API__}/${s.image}`}
+                        src={`${SERVER_API}/${s.image}`}
                         alt={s.title}
                       />
                     </button>
@@ -265,7 +267,7 @@ const Stack: FC<PropsWithChildren<Props>> = ({
             {data?.map(s => (
               <li title={s.title}>
               <img
-                src={`${(window as any).__SERVER_API__}/${s.image}`}
+                src={`${SERVER_API}/${s.image}`}
                 alt={s.title}
               />
               </li>

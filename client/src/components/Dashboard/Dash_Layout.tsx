@@ -6,6 +6,7 @@ import Dash_Menu from "./Dash_Menu"
 import {Project} from "../../types/graphql-types"
 import { createPortal } from "react-dom"
 
+const isBrowser = typeof window !== "undefined"
 interface Props {
   projects?: Project[]
   className?: string
@@ -37,7 +38,7 @@ const Dash_Layout: FC<PropsWithChildren<Props>> = ({
   return (
     <div className={`${className}`} style={style}>
       <Dash_Header onMenuClick={openMenu} onMessagesClick={openMessages} />
-      {(isMenuOpen || isMessagesOpen) &&
+      {(isMenuOpen || isMessagesOpen) && isBrowser &&
         createPortal(
           <div
             onClick={close}

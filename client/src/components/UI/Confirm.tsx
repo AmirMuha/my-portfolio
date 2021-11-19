@@ -1,7 +1,9 @@
 import React, { FC, PropsWithChildren } from "react"
-import { createPortal } from "react-dom"
-import { Close } from "../../icons/iconsJSX"
+
 import Button from "./Button"
+import { Close } from "../../icons/iconsJSX"
+import { createPortal } from "react-dom"
+const isBrowser = typeof window !== "undefined"
 interface Props {
   header?: boolean
   text: string
@@ -23,7 +25,7 @@ const Confirm: FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <>
-      {createPortal(
+      {isBrowser  && createPortal(
         <>
           <div
             onClick={onClose}

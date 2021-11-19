@@ -27,6 +27,7 @@ import { useAlert } from "../../../util/useAlert"
 import { useAlertGraphqlError } from "../../../util/useAlertGraphqlError"
 import { useAuth } from "../../../util/useAuth"
 
+const isBrowser = typeof window !== "undefined"
 interface PageContext {
   project: GatsbyTypes.Portfolio_Project
 }
@@ -119,7 +120,9 @@ const EditableProject: FC<Props> = ({ params: { projectId } }) => {
           },
         })
           .then(() => {
-            window.location.href = window.location.origin + "/dashboard/"
+            if(isBrowser) {
+              window.location.href = window.location.origin + "/dashboard/"
+            }
           })
           .catch(() => {})
       })

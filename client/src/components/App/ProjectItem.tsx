@@ -7,6 +7,7 @@ import { Project } from "../../types/graphql-types"
 import { ProjectItem as ProjectItemClass } from "./styles/ProjectItem.module.css"
 import SmallPipe from "../UI/SmallPipe"
 import TechItem from "./TechItem"
+import { useServerUrl } from '../../util/useServerUrl'
 
 interface Props {
   type?: "1" | "2"
@@ -20,6 +21,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
   buttonText,
   editable = false,
 }) => {
+  const SERVER_API = useServerUrl()
   return (
     <>
       <div className="ProjectItems">
@@ -30,7 +32,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
               className="border-palatte-500 overflow-hidden border-5 md:border-10 relative"
             >
                 <img
-                  src={`${(window as any).__SERVER_API__}/${data.image}`}
+                  src={`${SERVER_API}/${data.image}`}
                   alt={`${data.name} Image`}
                 />
               <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
@@ -128,7 +130,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                 overflow: "hidden"
               }} className="ProjectImage_Border max-w-20 relative">
                   <img
-                    src={`${(window as any).__SERVER_API__}/${data.image}`}
+                    src={`${SERVER_API}/${data.image}`}
                     alt={`${data.name} Image`}
                   />
                 <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
