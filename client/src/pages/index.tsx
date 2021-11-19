@@ -22,7 +22,6 @@ interface Props extends PageProps {
 }
 
 const Home: FC<Props> = ({ data }) => {
-  console.log(data)
   return (
     <>
       <SEO titleTemplate="%s" title="AmirMohammad MirzaeiRad" />

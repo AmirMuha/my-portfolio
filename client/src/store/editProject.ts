@@ -49,7 +49,6 @@ const EditProjectSlice = createSlice({
       })
     },
     deleteTechCategoryReducer: (state, action: { payload: { id: string } }) => {
-      console.log("Working")
       const techCategoryIndex = state.tech_categories.findIndex(
         t => t.id === action.payload.id
       )

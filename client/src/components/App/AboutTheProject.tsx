@@ -27,9 +27,7 @@ import Editable from "../Dashboard/Editable"
 import { GitHub } from "../../icons/iconsJSX"
 import Markdown from "../utility/Markdown"
 import SmallPipe from "../UI/SmallPipe"
-import {
-  updateProjectFieldReducer
-} from "../../store/editProject"
+import { updateProjectFieldReducer } from "../../store/editProject"
 import { useAlert } from "../../util/useAlert"
 import { useAlertGraphqlError } from "../../util/useAlertGraphqlError"
 import { useServerUrl } from "../../util/useServerUrl"
@@ -111,15 +109,21 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           type: projectType,
           id: data.id,
         },
-          isOpen: true,
-          title: "Success",
-          message: "Updated project type successfully.",
+      })
+        .then(() => {
+          setAlert({
+            isOpen: true,
+            title: "Success",
+            message: "Updated project type successfully.",
+          })
+          addNewProjectDispatch(
+            updateProjectFieldReducer({
+              value: projectType,
+              field: "type",
+            })
+          )
         })
-        addNewProjectDispatch(updateProjectFieldReducer({
-          value: projectType,
-          field: "type"
-        }))
-      }).catch(() => {})
+        .catch(() => {})
     }
   }
   const unknownError = () => {
@@ -146,18 +150,20 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           github_url: githubUrl,
           id: data.id,
         },
-      }).then(res => {
-        if (res.data && res.data.updateProject) {
-          setGithubUrl(res.data.updateProject.github_url)
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "GitHub Url updated successfully !",
-          })
-        } else {
-          unknownError()
-        }
-      }).catch(() => {})
+      })
+        .then(res => {
+          if (res.data && res.data.updateProject) {
+            setGithubUrl(res.data.updateProject.github_url)
+            setAlert({
+              isOpen: true,
+              title: "Success",
+              message: "GitHub Url updated successfully !",
+            })
+          } else {
+            unknownError()
+          }
+        })
+        .catch(() => {})
     }
   }
 
@@ -178,18 +184,20 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           app_url: appUrl,
           id: data.id,
         },
-      }).then(res => {
-        if (res.data && res.data.updateProject) {
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "App Url updated successfully !",
-          })
-          setAppUrl(res.data.updateProject.app_url)
-        } else {
-          unknownError()
-        }
-      }).catch(() => {})
+      })
+        .then(res => {
+          if (res.data && res.data.updateProject) {
+            setAlert({
+              isOpen: true,
+              title: "Success",
+              message: "App Url updated successfully !",
+            })
+            setAppUrl(res.data.updateProject.app_url)
+          } else {
+            unknownError()
+          }
+        })
+        .catch(() => {})
     }
   }
 
@@ -204,31 +212,31 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
     }
     if (mode === "ADD") {
       if (imageFile) {
-        if(data.image && data.image.includes("file")) {
+        if (data.image && data.image.includes("file")) {
           mutateProjectImageUpdate({
             variables: {
               prevname: data.image,
               file: imageFile[0],
-              isEdit: false
-            }
+              isEdit: false,
+            },
           })
-          .then((res) => {
-            if (res.data?.updateImage) {
-              setImageName(res.data.updateImage)
-              addNewProjectDispatch(
-                setImageReducer({ image: res.data.updateImage })
-              )
-            } else {
-              unknownError()
-            }
-          })
-          .catch(() => {
-            if (imageRef.current) {
-              imageRef.current.src = `${(window as any).__SERVER_API__}/${
-                mode === "ADD" ? "temp/" : ""
-              }${imageName || "default-project.jpeg"}`
-            }
-          })
+            .then(res => {
+              if (res.data?.updateImage) {
+                setImageName(res.data.updateImage)
+                addNewProjectDispatch(
+                  setImageReducer({ image: res.data.updateImage })
+                )
+              } else {
+                unknownError()
+              }
+            })
+            .catch(() => {
+              if (imageRef.current) {
+                imageRef.current.src = `${SERVER_API}/${
+                  mode === "ADD" ? "temp/" : ""
+                }${imageName || "default-project.jpeg"}`
+              }
+            })
         } else {
           mutateImage({
             variables: {
@@ -247,7 +255,7 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
             })
             .catch(() => {
               if (imageRef.current) {
-                imageRef.current.src = `${(window as any).__SERVER_API__}/${
+                imageRef.current.src = `${SERVER_API}/${
                   mode === "ADD" ? "temp/" : ""
                 }${imageName || "default-project.jpeg"}`
               }
@@ -320,18 +328,20 @@ const AboutTheProject: FC<PropsWithChildren<Props>> = ({
           summary: summary,
           id: data.id,
         },
-      }).then(res => {
-        if (res.data && res.data.updateProject) {
-          setAlert({
-            isOpen: true,
-            title: "Success",
-            message: "Summary updated successfully !",
-          })
-          setSummary(res.data.updateProject.summary)
-        } else {
-          unknownError()
-        }
-      }).catch(() => {})
+      })
+        .then(res => {
+          if (res.data && res.data.updateProject) {
+            setAlert({
+              isOpen: true,
+              title: "Success",
+              message: "Summary updated successfully !",
+            })
+            setSummary(res.data.updateProject.summary)
+          } else {
+            unknownError()
+          }
+        })
+        .catch(() => {})
     }
   }
 

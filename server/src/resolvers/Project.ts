@@ -88,7 +88,6 @@ export class CreateProjectWithNestedRelationsResolver {
         return true;
       })
       .catch(async (e) => {
-        console.log(e);
         await prisma.project.delete({
           where: {
             id: project.id,

@@ -1,4 +1,5 @@
 import React, { CSSProperties, FC, PropsWithChildren } from "react"
+
 import Button from "../UI/Button"
 import SmallPipe from "../UI/SmallPipe"
 
@@ -10,7 +11,7 @@ interface Props {
 const InPageMenu: FC<PropsWithChildren<Props>> = ({
   style,
   pipes = "both-side",
-  className,
+  className ="",
 }) => {
   return (
     <>
