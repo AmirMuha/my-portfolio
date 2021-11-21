@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/amirmuha/public_html/portfolio.amirmuha.com/
+    - export DEPLOYPATH=/home/amirmuha/portfolio.amirmuha.com/
     - /bin/cp -R client/public/* $DEPLOYPATH
