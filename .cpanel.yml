@@ -4,4 +4,4 @@ deployment:
     - export DEPLOYPATH_CLIENT=/home/amirmuha/portfolio.amirmuha.com/
     - export DEPLOYPATH_SERVER=/home/amirmuha/portfolio.server.amirmuha.com/
     - /bin/cp -R client/public/* $DEPLOYPATH_CLIENT
-    - /bin/cp -Rp server/* $DEPLOYPATH_SERVER
+    - /bin/cp -Rp server/{dist/*,package.json,package-lock.json,prisma/schema.prisma,prisma/migrations} $DEPLOYPATH_SERVER

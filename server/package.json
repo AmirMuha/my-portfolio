@@ -6,7 +6,7 @@
   "scripts": {
     "reset": "rm -rf ./prisma/migrations/ && rm -rf ./src/uploads/**/zip* && rm -rf ./src/uploads/**/file* && rm -rf ./src/uploads/file* && npm run p:mig && npm run dev",
     "dev": "export NODE_ENV=development && ts-node-dev index.ts",
-    "start": "export NODE_ENV=production && npx prisma migrate dev --name init && ts-node index.ts",
+    "start": "export NODE_ENV=production && node dist/index.js",
     "p:mig": "prisma migrate dev --name init",
     "p:reset": "prisma migrate reset",
     "p:gen": "prisma generate",
