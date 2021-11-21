@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpsertProjectArgs = exports.UpdateProjectArgs = exports.UpdateManyProjectArgs = exports.GroupByProjectArgs = exports.FindUniqueProjectArgs = exports.FindManyProjectArgs = exports.FindFirstProjectArgs = exports.DeleteProjectArgs = exports.DeleteManyProjectArgs = exports.CreateProjectArgs = exports.CreateManyProjectArgs = exports.AggregateProjectArgs = void 0;
+var AggregateProjectArgs_1 = require("./AggregateProjectArgs");
+Object.defineProperty(exports, "AggregateProjectArgs", { enumerable: true, get: function () { return AggregateProjectArgs_1.AggregateProjectArgs; } });
+var CreateManyProjectArgs_1 = require("./CreateManyProjectArgs");
+Object.defineProperty(exports, "CreateManyProjectArgs", { enumerable: true, get: function () { return CreateManyProjectArgs_1.CreateManyProjectArgs; } });
+var CreateProjectArgs_1 = require("./CreateProjectArgs");
+Object.defineProperty(exports, "CreateProjectArgs", { enumerable: true, get: function () { return CreateProjectArgs_1.CreateProjectArgs; } });
+var DeleteManyProjectArgs_1 = require("./DeleteManyProjectArgs");
+Object.defineProperty(exports, "DeleteManyProjectArgs", { enumerable: true, get: function () { return DeleteManyProjectArgs_1.DeleteManyProjectArgs; } });
+var DeleteProjectArgs_1 = require("./DeleteProjectArgs");
+Object.defineProperty(exports, "DeleteProjectArgs", { enumerable: true, get: function () { return DeleteProjectArgs_1.DeleteProjectArgs; } });
+var FindFirstProjectArgs_1 = require("./FindFirstProjectArgs");
+Object.defineProperty(exports, "FindFirstProjectArgs", { enumerable: true, get: function () { return FindFirstProjectArgs_1.FindFirstProjectArgs; } });
+var FindManyProjectArgs_1 = require("./FindManyProjectArgs");
+Object.defineProperty(exports, "FindManyProjectArgs", { enumerable: true, get: function () { return FindManyProjectArgs_1.FindManyProjectArgs; } });
+var FindUniqueProjectArgs_1 = require("./FindUniqueProjectArgs");
+Object.defineProperty(exports, "FindUniqueProjectArgs", { enumerable: true, get: function () { return FindUniqueProjectArgs_1.FindUniqueProjectArgs; } });
+var GroupByProjectArgs_1 = require("./GroupByProjectArgs");
+Object.defineProperty(exports, "GroupByProjectArgs", { enumerable: true, get: function () { return GroupByProjectArgs_1.GroupByProjectArgs; } });
+var UpdateManyProjectArgs_1 = require("./UpdateManyProjectArgs");
+Object.defineProperty(exports, "UpdateManyProjectArgs", { enumerable: true, get: function () { return UpdateManyProjectArgs_1.UpdateManyProjectArgs; } });
+var UpdateProjectArgs_1 = require("./UpdateProjectArgs");
+Object.defineProperty(exports, "UpdateProjectArgs", { enumerable: true, get: function () { return UpdateProjectArgs_1.UpdateProjectArgs; } });
+var UpsertProjectArgs_1 = require("./UpsertProjectArgs");
+Object.defineProperty(exports, "UpsertProjectArgs", { enumerable: true, get: function () { return UpsertProjectArgs_1.UpsertProjectArgs; } });
+//# sourceMappingURL=index.js.map

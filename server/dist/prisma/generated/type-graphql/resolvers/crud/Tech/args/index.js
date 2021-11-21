@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpsertTechArgs = exports.UpdateTechArgs = exports.UpdateManyTechArgs = exports.GroupByTechArgs = exports.FindUniqueTechArgs = exports.FindManyTechArgs = exports.FindFirstTechArgs = exports.DeleteTechArgs = exports.DeleteManyTechArgs = exports.CreateTechArgs = exports.CreateManyTechArgs = exports.AggregateTechArgs = void 0;
+var AggregateTechArgs_1 = require("./AggregateTechArgs");
+Object.defineProperty(exports, "AggregateTechArgs", { enumerable: true, get: function () { return AggregateTechArgs_1.AggregateTechArgs; } });
+var CreateManyTechArgs_1 = require("./CreateManyTechArgs");
+Object.defineProperty(exports, "CreateManyTechArgs", { enumerable: true, get: function () { return CreateManyTechArgs_1.CreateManyTechArgs; } });
+var CreateTechArgs_1 = require("./CreateTechArgs");
+Object.defineProperty(exports, "CreateTechArgs", { enumerable: true, get: function () { return CreateTechArgs_1.CreateTechArgs; } });
+var DeleteManyTechArgs_1 = require("./DeleteManyTechArgs");
+Object.defineProperty(exports, "DeleteManyTechArgs", { enumerable: true, get: function () { return DeleteManyTechArgs_1.DeleteManyTechArgs; } });
+var DeleteTechArgs_1 = require("./DeleteTechArgs");
+Object.defineProperty(exports, "DeleteTechArgs", { enumerable: true, get: function () { return DeleteTechArgs_1.DeleteTechArgs; } });
+var FindFirstTechArgs_1 = require("./FindFirstTechArgs");
+Object.defineProperty(exports, "FindFirstTechArgs", { enumerable: true, get: function () { return FindFirstTechArgs_1.FindFirstTechArgs; } });
+var FindManyTechArgs_1 = require("./FindManyTechArgs");
+Object.defineProperty(exports, "FindManyTechArgs", { enumerable: true, get: function () { return FindManyTechArgs_1.FindManyTechArgs; } });
+var FindUniqueTechArgs_1 = require("./FindUniqueTechArgs");
+Object.defineProperty(exports, "FindUniqueTechArgs", { enumerable: true, get: function () { return FindUniqueTechArgs_1.FindUniqueTechArgs; } });
+var GroupByTechArgs_1 = require("./GroupByTechArgs");
+Object.defineProperty(exports, "GroupByTechArgs", { enumerable: true, get: function () { return GroupByTechArgs_1.GroupByTechArgs; } });
+var UpdateManyTechArgs_1 = require("./UpdateManyTechArgs");
+Object.defineProperty(exports, "UpdateManyTechArgs", { enumerable: true, get: function () { return UpdateManyTechArgs_1.UpdateManyTechArgs; } });
+var UpdateTechArgs_1 = require("./UpdateTechArgs");
+Object.defineProperty(exports, "UpdateTechArgs", { enumerable: true, get: function () { return UpdateTechArgs_1.UpdateTechArgs; } });
+var UpsertTechArgs_1 = require("./UpsertTechArgs");
+Object.defineProperty(exports, "UpsertTechArgs", { enumerable: true, get: function () { return UpsertTechArgs_1.UpsertTechArgs; } });
+//# sourceMappingURL=index.js.map

@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpsertAdminArgs = exports.UpdateManyAdminArgs = exports.UpdateAdminArgs = exports.GroupByAdminArgs = exports.FindUniqueAdminArgs = exports.FindManyAdminArgs = exports.FindFirstAdminArgs = exports.DeleteManyAdminArgs = exports.DeleteAdminArgs = exports.CreateManyAdminArgs = exports.CreateAdminArgs = exports.AggregateAdminArgs = void 0;
+var AggregateAdminArgs_1 = require("./AggregateAdminArgs");
+Object.defineProperty(exports, "AggregateAdminArgs", { enumerable: true, get: function () { return AggregateAdminArgs_1.AggregateAdminArgs; } });
+var CreateAdminArgs_1 = require("./CreateAdminArgs");
+Object.defineProperty(exports, "CreateAdminArgs", { enumerable: true, get: function () { return CreateAdminArgs_1.CreateAdminArgs; } });
+var CreateManyAdminArgs_1 = require("./CreateManyAdminArgs");
+Object.defineProperty(exports, "CreateManyAdminArgs", { enumerable: true, get: function () { return CreateManyAdminArgs_1.CreateManyAdminArgs; } });
+var DeleteAdminArgs_1 = require("./DeleteAdminArgs");
+Object.defineProperty(exports, "DeleteAdminArgs", { enumerable: true, get: function () { return DeleteAdminArgs_1.DeleteAdminArgs; } });
+var DeleteManyAdminArgs_1 = require("./DeleteManyAdminArgs");
+Object.defineProperty(exports, "DeleteManyAdminArgs", { enumerable: true, get: function () { return DeleteManyAdminArgs_1.DeleteManyAdminArgs; } });
+var FindFirstAdminArgs_1 = require("./FindFirstAdminArgs");
+Object.defineProperty(exports, "FindFirstAdminArgs", { enumerable: true, get: function () { return FindFirstAdminArgs_1.FindFirstAdminArgs; } });
+var FindManyAdminArgs_1 = require("./FindManyAdminArgs");
+Object.defineProperty(exports, "FindManyAdminArgs", { enumerable: true, get: function () { return FindManyAdminArgs_1.FindManyAdminArgs; } });
+var FindUniqueAdminArgs_1 = require("./FindUniqueAdminArgs");
+Object.defineProperty(exports, "FindUniqueAdminArgs", { enumerable: true, get: function () { return FindUniqueAdminArgs_1.FindUniqueAdminArgs; } });
+var GroupByAdminArgs_1 = require("./GroupByAdminArgs");
+Object.defineProperty(exports, "GroupByAdminArgs", { enumerable: true, get: function () { return GroupByAdminArgs_1.GroupByAdminArgs; } });
+var UpdateAdminArgs_1 = require("./UpdateAdminArgs");
+Object.defineProperty(exports, "UpdateAdminArgs", { enumerable: true, get: function () { return UpdateAdminArgs_1.UpdateAdminArgs; } });
+var UpdateManyAdminArgs_1 = require("./UpdateManyAdminArgs");
+Object.defineProperty(exports, "UpdateManyAdminArgs", { enumerable: true, get: function () { return UpdateManyAdminArgs_1.UpdateManyAdminArgs; } });
+var UpsertAdminArgs_1 = require("./UpsertAdminArgs");
+Object.defineProperty(exports, "UpsertAdminArgs", { enumerable: true, get: function () { return UpsertAdminArgs_1.UpsertAdminArgs; } });
+//# sourceMappingURL=index.js.map
