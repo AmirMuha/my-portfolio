@@ -16,7 +16,7 @@ export default {
     serverUrl:
       process.env.NODE_ENV === "development"
         ? "http://localhost:3333"
-        : "https://portfolio.server.amirmuha.com",
+        : "https://my-portfolio-amirmuha.herokuapp.com",
   },
   plugins: [
     "gatsby-plugin-sharp",
@@ -74,9 +74,9 @@ export default {
         typeName: "Portfolio",
         fieldName: "portfolio",
         url:
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:3333/graphql"
-          : "https://portfolio.server.amirmuha.com/graphql",
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3333/graphql"
+            : "https://my-portfolio-amirmuha.herokuapp.com/graphql",
       },
     },
   ],

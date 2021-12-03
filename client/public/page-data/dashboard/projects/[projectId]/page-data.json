@@ -1,6 +1,0 @@
-{
-    "componentChunkName": "component---src-pages-dashboard-projects-project-id-tsx",
-    "path": "/dashboard/projects/[projectId]/",
-    "result": {"pageContext":{"matchPath":"/dashboard/projects/:projectId"}},
-    "staticQueryHashes": ["1194656870","3000541721"],
-    "matchPath": "/dashboard/projects/:projectId"}
