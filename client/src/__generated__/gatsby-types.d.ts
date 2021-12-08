@@ -5356,10 +5356,15 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+
 type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type Unnamed_1_Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
+type Unnamed_1_Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
 
 type Unnamed_2_QueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5386,12 +5391,17 @@ type Unnamed_3_Query = { readonly portfolio: { readonly projects: ReadonlyArray<
 type Unnamed_4_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type Unnamed_4_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
+type Unnamed_4_Query = { readonly f1: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }>, readonly f2: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> };
 
 type Unnamed_5_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type Unnamed_5_Query = { readonly portfolio: { readonly abouts: ReadonlyArray<Pick<Portfolio_About, 'body' | 'id' | 'title'>> } };
+type Unnamed_5_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'title' | 'description'>> }> };
+
+type Unnamed_6_QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type Unnamed_6_Query = { readonly site: Maybe<{ readonly siteMetadata: Maybe<Pick<SiteSiteMetadata, 'serverUrl'>> }> };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
