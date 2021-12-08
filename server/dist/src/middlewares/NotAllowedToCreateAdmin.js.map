@@ -1,1 +1,0 @@
-{"version":3,"file":"NotAllowedToCreateAdmin.js","sourceRoot":"","sources":["../../../src/middlewares/NotAllowedToCreateAdmin.ts"],"names":[],"mappings":";;;AAGO,MAAM,uBAAuB,GAClC,KAAK,IAAqB,EAAE;IAC1B,MAAM,IAAI,KAAK,CAAC,qDAAqD,CAAC,CAAC;AACzE,CAAC,CAAC;AAHS,QAAA,uBAAuB,2BAGhC"}

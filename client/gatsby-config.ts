@@ -13,10 +13,7 @@ export default {
     author: "AmirMohammad MirzaeiRad",
     title: "AmirMohammad MirzaeiRad",
     siteUrl: "https://portfolio.amirmuha.com",
-    serverUrl:
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3333"
-        : "https://portfolio.server.amirmuha.com",
+    serverUrl: "http://localhost:3333"
   },
   plugins: [
     "gatsby-plugin-sharp",
@@ -73,10 +70,7 @@ export default {
       options: {
         typeName: "Portfolio",
         fieldName: "portfolio",
-        url:
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:3333/graphql"
-          : "https://portfolio.server.amirmuha.com/graphql",
+        url: "http://localhost:3333/graphql",
       },
     },
   ],

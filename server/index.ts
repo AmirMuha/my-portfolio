@@ -41,14 +41,13 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin:
-        process.env.NODE_ENV === "development"
-          ? ["http://localhost:8000", "http://localhost:9000"]
-          : "https://portfolio.amirmuha.com",
+      origin:["http://localhost:8000", "http://localhost:9000"]
+        // process.env.NODE_ENV === "development"
+        //   ? ["http://localhost:8000", "http://localhost:9000"]
+        //   : "https://portfolio.amirmuha.com",
     })
   );
 
-  console.log(process.env.SESSION_SECRET);
   app.use(
     session({
       name: "sid",
@@ -67,6 +66,7 @@ const main = async () => {
       },
     })
   );
+
   app.use(Express.static(path.join(__dirname, "./src/uploads/")));
   app.use("/download/", downloadRoute);
   applyMiddlewares();
@@ -94,6 +94,7 @@ const main = async () => {
       },
     ],
   });
+
   const subscriptionServer = SubscriptionServer.create(
     {
       schema,
@@ -111,10 +112,10 @@ const main = async () => {
   server.applyMiddleware({
     app,
     cors: {
-      origin:
-      process.env.NODE_ENV === "development"
-        ? ["http://localhost:8000", "http://localhost:9000"]
-        : "https://portfolio.amirmuha.com",
+      origin:["http://localhost:8000", "http://localhost:9000"],
+      // process.env.NODE_ENV === "development"
+      //   ? ["http://localhost:8000", "http://localhost:9000"]
+      //   : "https://portfolio.amirmuha.com",
       credentials: true,
     },
   });
