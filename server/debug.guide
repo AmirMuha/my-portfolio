@@ -1,0 +1,6 @@
+---------------------- index.ts
+app:init:server
+app:init:mikrORM
+app:uncaughtException
+app:unhandledRejection
+---------------------- "resolvers"

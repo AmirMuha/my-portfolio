@@ -1,35 +1,38 @@
 {
-  "name": "server",
+  "name": "mikro-orm-integration",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
-    "reset": "rm -rf ./prisma/migrations/ && rm -rf ./src/uploads/**/zip* && rm -rf ./src/uploads/**/file* && rm -rf ./src/uploads/file* && npm run p:mig && npm run dev",
-    "dev": "export NODE_ENV=development && ts-node-dev index.ts",
-    "start": "export NODE_ENV=production && ts-node index.ts",
-    "p:mig": "prisma migrate dev --name init",
-    "p:reset": "prisma migrate reset",
-    "p:gen": "prisma generate",
-    "studio": "prisma studio",
-    "dev:delete:images": "rm ./src/uploads/file-*"
+    "reset": "rm -rf ./dist ./migrations ./src/uploads/**/zip* ./src/uploads/**/file* ./src/uploads/file* && npx mikro-orm migration:create --initial",
+    "start": "export NODE_ENV=production && node index.js",
+    "dev": "export DEBUG=app:* && export NODE_ENV=development && nodemon dist/index.js --exec ts-node",
+    "build": "tsc -b",
+    "watch": "tsc --watch",
+    "migrate": "npx mikro-orm migration:create",
+    "generate": "graphql-codegen --config codegen.yml -o"
   },
   "keywords": [],
-  "author": "",
+  "author": "AmirMohammad MirzaeiRad",
   "license": "ISC",
   "dependencies": {
+    "@graphql-codegen/typescript-type-graphql": "^2.2.2",
     "@graphql-tools/schema": "^8.3.1",
-    "@prisma/client": "^3.0.1",
+    "@mikro-orm/cli": "^4.5.9",
+    "@mikro-orm/core": "^4.5.9",
+    "@mikro-orm/migrations": "^4.5.9",
+    "@mikro-orm/postgresql": "^4.5.9",
+    "@mikro-orm/reflection": "^4.5.9",
     "@types/graphql-fields": "^1.3.4",
-    "@types/ioredis": "^4.27.4",
     "@types/nodemailer": "^6.4.4",
     "apollo-server-core": "^3.3.0",
     "apollo-server-express": "^3.3.0",
     "archiver": "^5.3.0",
     "bcrypt": "^5.0.1",
-    "chalk": "^4.1.2",
     "class-validator": "^0.13.1",
-    "connect-redis": "^6.0.0",
+    "connect-pg-simple": "^7.0.0",
     "cors": "^2.8.5",
+    "debug": "^4.3.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
@@ -39,7 +42,6 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-upload": "^12.0.0",
     "helmet": "^4.6.0",
-    "ioredis": "^4.27.9",
     "jsonwebtoken": "^8.5.1",
     "markdown-it": "^12.2.0",
     "morgan": "^1.10.0",
@@ -52,9 +54,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.3.0",
     "@types/archiver": "^5.1.1",
     "@types/bcrypt": "^5.0.0",
-    "@types/connect-redis": "^0.0.17",
+    "@types/connect-pg-simple": "^7.0.0",
+    "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/graphql": "^14.5.0",
@@ -67,9 +71,17 @@
     "@types/sharp": "^0.29.3",
     "@types/showdown": "^1.9.4",
     "@types/uuid": "^8.3.1",
-    "prisma": "^3.0.1",
     "ts-node": "^10.4.0",
-    "typegraphql-prisma": "^0.16.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "@graphql-codegen/typescript": "2.4.1",
+    "@graphql-codegen/typescript-resolvers": "2.4.2",
+    "@graphql-codegen/introspection": "2.1.0"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
   }
 }
