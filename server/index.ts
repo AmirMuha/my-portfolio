@@ -41,10 +41,7 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin:["http://localhost:8000", "http://localhost:9000"]
-        // process.env.NODE_ENV === "development"
-        //   ? ["http://localhost:8000", "http://localhost:9000"]
-        //   : "https://portfolio.amirmuha.com",
+      origin:["http://localhost:8000", "http://localhost:9000", "https://portfolio.amirmuha.com"]
     })
   );
 
@@ -112,10 +109,7 @@ const main = async () => {
   server.applyMiddleware({
     app,
     cors: {
-      origin:["http://localhost:8000", "http://localhost:9000"],
-      // process.env.NODE_ENV === "development"
-      //   ? ["http://localhost:8000", "http://localhost:9000"]
-      //   : "https://portfolio.amirmuha.com",
+      origin:["http://localhost:8000", "http://localhost:9000", "https://portfolio.amirmuha.com"],
       credentials: true,
     },
   });
