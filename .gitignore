@@ -1,5 +1,9 @@
 .vscode
+server/.env
+server/.env.development
+server/.env.production
 .env
 .env.development
 .env.production
+server/dist/
 dist/
