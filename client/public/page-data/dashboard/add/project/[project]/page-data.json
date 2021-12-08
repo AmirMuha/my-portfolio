@@ -1,0 +1,6 @@
+{
+    "componentChunkName": "component---src-pages-dashboard-add-[project]-project-tsx",
+    "path": "/dashboard/add/project/[project]/",
+    "result": {"pageContext":{"matchPath":"/dashboard/add/project/:project"}},
+    "staticQueryHashes": ["1194656870","3000541721"],
+    "matchPath": "/dashboard/add/project/:project"}

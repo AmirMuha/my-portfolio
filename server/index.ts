@@ -48,7 +48,6 @@ const main = async () => {
     })
   );
 
-  console.log(process.env.SESSION_SECRET);
   app.use(
     session({
       name: "sid",
