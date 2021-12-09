@@ -16,7 +16,7 @@ import { store } from "./src/store/store"
 
 const isBrowswer = typeof window !== "undefined"
 const wsLink = isBrowswer ? new WebSocketLink({
-  uri: "ws://localhost:3333/graphql",
+  uri: process.env.GATSBY_SOCKET_URL!,
   options: {
     reconnect: true,
   },
@@ -24,7 +24,7 @@ const wsLink = isBrowswer ? new WebSocketLink({
 
 const uploadLink = createUploadLink({
   credentials: "include",
-  uri: "http://localhost:3333/graphql",
+  uri: process.env.GATSBY_GRAPHQL_API!,
   fetch,
 })
 
