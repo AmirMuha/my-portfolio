@@ -15,7 +15,7 @@ export default {
     siteUrl: "https://portfolio.amirmuha.com",
     serverUrl:
       process.env.NODE_ENV === "production"
-        ? "https://portfolio.amirmuha.com"
+        ? process.env.GATSBY_SERVER_API!
         : "http://localhost:3333",
   },
   plugins: [
@@ -73,7 +73,7 @@ export default {
       options: {
         typeName: "Portfolio",
         fieldName: "portfolio",
-        url: "http://localhost:3333/graphql",
+        url: process.env.GATSBY_GRAPHQL_API,
       },
     },
   ],
