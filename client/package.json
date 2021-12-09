@@ -76,7 +76,7 @@
   "license": "0BSD",
   "scripts": {
     "build": "gatsby clean && gatsby build",
-    "dev": "export ENABLE_GATSBY_REFRESH_ENDPOINT=true && gatsby clean && gatsby develop",
+    "dev": "export ENABLE_GATSBY_REFRESH_ENDPOINT=true && gatsby clean && gatsby develop -p 9000",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",
