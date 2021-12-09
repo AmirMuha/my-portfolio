@@ -64,7 +64,7 @@ const main = async () => {
     })
   );
 
-  app.use(Express.static(path.join(__dirname, "./src/uploads/")));
+  app.use(Express.static(path.join(__dirname, __prod__ ? "./dist/src/uploads/":"./src/uploads/")));
   app.use("/download/", downloadRoute);
   applyMiddlewares();
   const schema = buildSchemaSync({
