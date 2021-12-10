@@ -234,7 +234,7 @@ const Auth: FC<Partial<Props>> = () => {
     if (foundAdmins?.isThereAnAdmin) {
       setThereIsAdmin(true)
     }
-  },[])
+  })
 
   const getCodeNum = (
     e: React.ChangeEvent<HTMLInputElement>,
