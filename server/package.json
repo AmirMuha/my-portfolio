@@ -12,7 +12,7 @@
     "p:gen": "prisma generate",
     "studio": "prisma studio",
     "dev:delete:images": "rm ./src/uploads/file-*",
-    "build": "tsc -b"
+    "build": "tsc -b && cp -r src/uploads dist/src"
   },
   "keywords": [],
   "author": "",
