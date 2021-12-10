@@ -81,7 +81,7 @@
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "refresh": "curl -X POST http://localhost:8000/__refresh",
+    "refresh": "curl -X POST http://localhost:9000/__refresh",
     "generate": "graphql-codegen"
   },
   "repository": {
