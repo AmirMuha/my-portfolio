@@ -66,7 +66,7 @@ export const sendEmail = async ({
       }).render(message!);
     }
     const info = await transporter.sendMail({
-      from,
+      from: `AmirMohammad MirzaiRad <${from}>`,
       to,
       subject,
       html: htmlBody,
