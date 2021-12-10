@@ -4,7 +4,7 @@ export const getGraphqlErrors = (obj: any): string[] => {
   }
   const allErrors: string[] = []
   for(const err of obj[obj.errors ? "errors" : "graphQLErrors"]) {
-    if(err.extensions.exception.validationErrors) {
+    if(err?.extensions?.exception?.validationErrors) {
       const children: any[] =
         err.extensions.exception
           .validationErrors[0].children
