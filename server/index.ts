@@ -38,6 +38,7 @@ const RedisStore = redisStore(session);
 
 const main = async () => {
   const httpServer = http.createServer(app);
+  app.enable("trust proxy");
   app.use(
     cors({
       credentials: true,
@@ -59,6 +60,7 @@ const main = async () => {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
+        sameSite: "none",
         secure: __prod__,
         maxAge:
           parseInt(process.env.SESSION_MAX_AGE_DAYS!) * 24 * 60 * 60 * 1000,
@@ -142,10 +144,7 @@ const main = async () => {
   });
 };
 
-main().catch(console.error);
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
-    process.exit();
-  });
-};
-
-main().catch(console.error);
+main().catch(() => {
+  console.error("Something went wrong during application setup.");
+  process.exit();
+});
