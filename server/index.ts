@@ -41,20 +41,22 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin:["http://localhost:8000", "http://localhost:9000", "https://portfolio.amirmuha.com"]
+      origin: !__prod__
+        ? ["http://localhost:8000", "http://localhost:9000"]
+        : ["https://portfolio.amirmuha.com"],
     })
   );
 
   app.use(
     session({
-      name: "sid",
+      name: "session_id_",
       store: new RedisStore({ client: redis }),
       secret: process.env.SESSION_SECRET!,
       genid: () => {
         return v4();
       },
-      resave: true,
-      saveUninitialized: true,
+      resave: false,
+      saveUninitialized: false,
       cookie: {
         httpOnly: true,
         secure: __prod__,
@@ -64,7 +66,7 @@ const main = async () => {
     })
   );
 
-  app.use(Express.static(path.join(__dirname, __prod__ ? "./dist/src/uploads/":"./src/uploads/")));
+  app.use(Express.static(path.join(__dirname, "./src/uploads/")));
   app.use("/download/", downloadRoute);
   applyMiddlewares();
   const schema = buildSchemaSync({
@@ -109,7 +111,11 @@ const main = async () => {
   server.applyMiddleware({
     app,
     cors: {
-      origin:["http://localhost:8000", "http://localhost:9000", "https://portfolio.amirmuha.com"],
+      origin: [
+        "http://localhost:8000",
+        "http://localhost:9000",
+        "https://portfolio.amirmuha.com",
+      ],
       credentials: true,
     },
   });
@@ -131,6 +137,12 @@ const main = async () => {
   });
 
   process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    process.exit();
+  });
+};
+
+main().catch(console.error);
     console.error("Unhandled Rejection at:", promise, "reason:", reason);
     process.exit();
   });
