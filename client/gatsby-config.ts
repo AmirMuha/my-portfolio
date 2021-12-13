@@ -22,6 +22,56 @@ export default {
     `gatsby-plugin-postcss`,
     `gatsby-plugin-image`,
     {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Portfolio | portfolio.amirmuha.com`,
+        short_name: `Portfolio`,
+        icon: "src/icons/favicon.webp",
+        icons: [
+          {
+            src: "src/icons/16x16.webp",
+            sizes: "16x16",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/32x32.webp",
+            sizes: "32x32",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/48x48.webp",
+            sizes: "48x48",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/64x64.webp",
+            sizes: "64x64",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/96x96.webp",
+            sizes: "96x96",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/128x128.webp",
+            sizes: "128x128",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/192x192.webp",
+            sizes: "192x192",
+            type: "image/ico",
+          },
+          {
+            src: "src/icons/256x256.webp",
+            sizes: "256x256",
+            type: "image/ico",
+          },
+        ],
+      },
+    },
+    {
       resolve: "gatsby-plugin-typegen",
       options: {
         autoFix: true,

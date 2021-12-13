@@ -330,6 +330,8 @@ type Site implements Node {
     locale: String
   ): Date
   siteMetadata: SiteSiteMetadata
+  port: Int
+  host: String
   polyfill: Boolean
   pathPrefix: String
   id: ID!
@@ -661,6 +663,16 @@ type SitePluginPluginOptions {
   stripMetadata: Boolean
   defaultQuality: Int
   failOnError: Boolean
+  name: String
+  short_name: String
+  icon: String
+  icons: [SitePluginPluginOptionsIcons]
+  legacy: Boolean
+  theme_color_in_head: Boolean
+  cache_busting_mode: String
+  crossOrigin: String
+  include_favicon: Boolean
+  cacheDigest: String
   autoFix: Boolean
   language: String
   includeResolvers: Boolean
@@ -668,7 +680,6 @@ type SitePluginPluginOptions {
   emitSchema: SitePluginPluginOptionsEmitSchema
   emitPluginDocuments: SitePluginPluginOptionsEmitPluginDocuments
   specialChars: String
-  name: String
   path: String
   isTSX: Boolean
   jsxPragma: String
@@ -677,6 +688,12 @@ type SitePluginPluginOptions {
   fieldName: String
   url: String
   pathCheck: Boolean
+}
+
+type SitePluginPluginOptionsIcons {
+  src: String
+  sizes: String
+  type: String
 }
 
 type SitePluginPluginOptionsEmitSchema {
@@ -2926,7 +2943,7 @@ type Query {
   allFile(filter: FileFilterInput, sort: FileSortInput, skip: Int, limit: Int): FileConnection!
   directory(sourceInstanceName: StringQueryOperatorInput, absolutePath: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, extension: StringQueryOperatorInput, size: IntQueryOperatorInput, prettySize: StringQueryOperatorInput, modifiedTime: DateQueryOperatorInput, accessTime: DateQueryOperatorInput, changeTime: DateQueryOperatorInput, birthTime: DateQueryOperatorInput, root: StringQueryOperatorInput, dir: StringQueryOperatorInput, base: StringQueryOperatorInput, ext: StringQueryOperatorInput, name: StringQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, dev: IntQueryOperatorInput, mode: IntQueryOperatorInput, nlink: IntQueryOperatorInput, uid: IntQueryOperatorInput, gid: IntQueryOperatorInput, rdev: IntQueryOperatorInput, ino: FloatQueryOperatorInput, atimeMs: FloatQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, atime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, ctime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Directory
   allDirectory(filter: DirectoryFilterInput, sort: DirectorySortInput, skip: Int, limit: Int): DirectoryConnection!
-  site(buildTime: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, polyfill: BooleanQueryOperatorInput, pathPrefix: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Site
+  site(buildTime: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, port: IntQueryOperatorInput, host: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, pathPrefix: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Site
   allSite(filter: SiteFilterInput, sort: SiteSortInput, skip: Int, limit: Int): SiteConnection!
   siteFunction(functionRoute: StringQueryOperatorInput, pluginName: StringQueryOperatorInput, originalAbsoluteFilePath: StringQueryOperatorInput, originalRelativeFilePath: StringQueryOperatorInput, relativeCompiledFilePath: StringQueryOperatorInput, absoluteCompiledFilePath: StringQueryOperatorInput, matchPath: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): SiteFunction
   allSiteFunction(filter: SiteFunctionFilterInput, sort: SiteFunctionSortInput, skip: Int, limit: Int): SiteFunctionConnection!
@@ -3663,6 +3680,8 @@ enum SiteFieldsEnum {
   siteMetadata___author
   siteMetadata___siteUrl
   siteMetadata___serverUrl
+  port
+  host
   polyfill
   pathPrefix
   id
@@ -3765,6 +3784,8 @@ type SiteGroupConnection {
 input SiteFilterInput {
   buildTime: DateQueryOperatorInput
   siteMetadata: SiteSiteMetadataFilterInput
+  port: IntQueryOperatorInput
+  host: StringQueryOperatorInput
   polyfill: BooleanQueryOperatorInput
   pathPrefix: StringQueryOperatorInput
   id: StringQueryOperatorInput
@@ -3941,6 +3962,16 @@ input SitePluginPluginOptionsFilterInput {
   stripMetadata: BooleanQueryOperatorInput
   defaultQuality: IntQueryOperatorInput
   failOnError: BooleanQueryOperatorInput
+  name: StringQueryOperatorInput
+  short_name: StringQueryOperatorInput
+  icon: StringQueryOperatorInput
+  icons: SitePluginPluginOptionsIconsFilterListInput
+  legacy: BooleanQueryOperatorInput
+  theme_color_in_head: BooleanQueryOperatorInput
+  cache_busting_mode: StringQueryOperatorInput
+  crossOrigin: StringQueryOperatorInput
+  include_favicon: BooleanQueryOperatorInput
+  cacheDigest: StringQueryOperatorInput
   autoFix: BooleanQueryOperatorInput
   language: StringQueryOperatorInput
   includeResolvers: BooleanQueryOperatorInput
@@ -3948,7 +3979,6 @@ input SitePluginPluginOptionsFilterInput {
   emitSchema: SitePluginPluginOptionsEmitSchemaFilterInput
   emitPluginDocuments: SitePluginPluginOptionsEmitPluginDocumentsFilterInput
   specialChars: StringQueryOperatorInput
-  name: StringQueryOperatorInput
   path: StringQueryOperatorInput
   isTSX: BooleanQueryOperatorInput
   jsxPragma: StringQueryOperatorInput
@@ -3957,6 +3987,16 @@ input SitePluginPluginOptionsFilterInput {
   fieldName: StringQueryOperatorInput
   url: StringQueryOperatorInput
   pathCheck: BooleanQueryOperatorInput
+}
+
+input SitePluginPluginOptionsIconsFilterListInput {
+  elemMatch: SitePluginPluginOptionsIconsFilterInput
+}
+
+input SitePluginPluginOptionsIconsFilterInput {
+  src: StringQueryOperatorInput
+  sizes: StringQueryOperatorInput
+  type: StringQueryOperatorInput
 }
 
 input SitePluginPluginOptionsEmitSchemaFilterInput {
@@ -4163,6 +4203,19 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___stripMetadata
   pluginCreator___pluginOptions___defaultQuality
   pluginCreator___pluginOptions___failOnError
+  pluginCreator___pluginOptions___name
+  pluginCreator___pluginOptions___short_name
+  pluginCreator___pluginOptions___icon
+  pluginCreator___pluginOptions___icons
+  pluginCreator___pluginOptions___icons___src
+  pluginCreator___pluginOptions___icons___sizes
+  pluginCreator___pluginOptions___icons___type
+  pluginCreator___pluginOptions___legacy
+  pluginCreator___pluginOptions___theme_color_in_head
+  pluginCreator___pluginOptions___cache_busting_mode
+  pluginCreator___pluginOptions___crossOrigin
+  pluginCreator___pluginOptions___include_favicon
+  pluginCreator___pluginOptions___cacheDigest
   pluginCreator___pluginOptions___autoFix
   pluginCreator___pluginOptions___language
   pluginCreator___pluginOptions___includeResolvers
@@ -4171,7 +4224,6 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson
   pluginCreator___pluginOptions___emitPluginDocuments___src___generated___gatsby_plugin_documents_graphql
   pluginCreator___pluginOptions___specialChars
-  pluginCreator___pluginOptions___name
   pluginCreator___pluginOptions___path
   pluginCreator___pluginOptions___isTSX
   pluginCreator___pluginOptions___jsxPragma
@@ -4496,6 +4548,19 @@ enum SitePluginFieldsEnum {
   pluginOptions___stripMetadata
   pluginOptions___defaultQuality
   pluginOptions___failOnError
+  pluginOptions___name
+  pluginOptions___short_name
+  pluginOptions___icon
+  pluginOptions___icons
+  pluginOptions___icons___src
+  pluginOptions___icons___sizes
+  pluginOptions___icons___type
+  pluginOptions___legacy
+  pluginOptions___theme_color_in_head
+  pluginOptions___cache_busting_mode
+  pluginOptions___crossOrigin
+  pluginOptions___include_favicon
+  pluginOptions___cacheDigest
   pluginOptions___autoFix
   pluginOptions___language
   pluginOptions___includeResolvers
@@ -4504,7 +4569,6 @@ enum SitePluginFieldsEnum {
   pluginOptions___emitSchema____xsrcxxxgeneratedxxxgatsbyxintrospectionxjson
   pluginOptions___emitPluginDocuments___src___generated___gatsby_plugin_documents_graphql
   pluginOptions___specialChars
-  pluginOptions___name
   pluginOptions___path
   pluginOptions___isTSX
   pluginOptions___jsxPragma
