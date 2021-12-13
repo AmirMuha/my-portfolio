@@ -38,7 +38,6 @@ const RedisStore = redisStore(session);
 
 const main = async () => {
   const httpServer = http.createServer(app);
-  app.enable("trust proxy");
   app.use(
     cors({
       credentials: true,
@@ -67,7 +66,9 @@ const main = async () => {
       },
     })
   );
-
+  if (__prod__) {
+    app.set("trust proxy", true);
+  }
   app.use(Express.static(path.join(__dirname, "./src/uploads/")));
   app.use("/download/", downloadRoute);
   applyMiddlewares();
