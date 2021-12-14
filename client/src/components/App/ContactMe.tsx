@@ -144,7 +144,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
           position="TOP"
         />
       )}
-      <div className="grid lg:grid-cols-2 mb-3">
+      <div className="mb-3 grid lg:grid-cols-2">
         <div className="ml-5 lg:mx-10">
           <form onSubmit={sendTheMessage}>
             <Input
@@ -197,22 +197,22 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
               type="submit"
               textColor="100"
               style={{ padding: "8px 0 8px 0" }}
-              className="my-2 py-2 w-full"
+              className="w-full py-2 my-2"
             >
               Send
             </Button>
           </form>
         </div>
         <div className="mx-10 mt-5">
-          <h2 className="text-md font-bold">Me On Social Media</h2>
+          <h2 className="font-bold text-md">Me On Social Media</h2>
           <div
             style={{ maxHeight: "min-content" }}
-            className="grid-cols-1 sm:grid-cols-2 grid items-start justify-center gap-1 lg:grid-cols-1"
+            className="items-start justify-center grid-cols-1 sm:grid-cols-2 grid gap-1 lg:grid-cols-1"
           >
             <Button
-              toUrl={whatsappNumber}
+              toUrl={`https://wa.me/${whatsappNumber}`}
               style={{ padding: "6px 8px" }}
-              className="overflow-hidden w-full"
+              className="w-full overflow-hidden"
               color="100"
               borderColor="500"
               textColor="500"
@@ -232,7 +232,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
             <Button
               toUrl={skypeUrl}
               style={{ padding: "6px 8px" }}
-              className="overflow-hidden w-full"
+              className="w-full overflow-hidden"
               color="100"
               borderColor="500"
               textColor="500"
@@ -252,7 +252,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
             <Button
               toUrl={instagramUrl}
               style={{ padding: "6px 8px" }}
-              className="overflow-hidden w-full"
+              className="w-full overflow-hidden"
               color="100"
               borderColor="500"
               textColor="500"
@@ -272,7 +272,7 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
             <Button
               toUrl={linkedInUrl}
               style={{ padding: "6px 8px" }}
-              className="overflow-hidden w-full"
+              className="w-full overflow-hidden"
               color="100"
               borderColor="500"
               textColor="500"
@@ -290,13 +290,21 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
               </span>
             </Button>
             <div className="mt-5">
-              <h2 className="text-md font-bold">Not Happy Yet ?</h2>
+              <h2 className="font-bold text-md">Not Happy Yet ?</h2>
               <p>
                 <span className="font-bold">Email: </span>
-                <span className="underline text-center inline">
+                <span className="inline text-center underline">
+                  <a
+                    href={`mailto:me@mail.amirmuha.com`}
+                    className="mx-4 font-extra-light"
+                  >
+                    me@mail.amirmuha.com
+                  </a>
+                </span>
+                <span className="inline text-center underline">
                   <a
                     href={`mailto:${adminEmail}`}
-                    className="font-extra-light mx-4"
+                    className="mx-4 font-extra-light"
                   >
                     {adminEmail}
                   </a>
