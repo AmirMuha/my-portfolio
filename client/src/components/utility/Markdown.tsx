@@ -21,6 +21,7 @@ const Markdown: FC<PropsWithChildren<Props>> = ({ children }) => {
             props: {
               style: {
                 fontSize: "1.875rem",
+                margin: "20px 0",
               } as CSSProperties,
             },
           },
@@ -28,6 +29,7 @@ const Markdown: FC<PropsWithChildren<Props>> = ({ children }) => {
             props: {
               style: {
                 fontSize: "1.5rem",
+                margin: "20px 0",
               } as CSSProperties,
             },
           },
@@ -35,6 +37,7 @@ const Markdown: FC<PropsWithChildren<Props>> = ({ children }) => {
             props: {
               style: {
                 fontSize: "1.25rem",
+                margin: "20px 0",
               } as CSSProperties,
             },
           },
@@ -42,6 +45,7 @@ const Markdown: FC<PropsWithChildren<Props>> = ({ children }) => {
             props: {
               style: {
                 fontSize: "1.125rem",
+                margin: "20px 0",
               } as CSSProperties,
             },
           },
@@ -49,6 +53,7 @@ const Markdown: FC<PropsWithChildren<Props>> = ({ children }) => {
             props: {
               style: {
                 fontSize: "1rem",
+                margin: "20px 0",
               } as CSSProperties,
             },
           },
@@ -56,6 +61,7 @@ const Markdown: FC<PropsWithChildren<Props>> = ({ children }) => {
             props: {
               style: {
                 fontSize: "0.75rem",
+                margin: "20px 0",
               } as CSSProperties,
             },
           },
