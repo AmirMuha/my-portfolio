@@ -160,11 +160,11 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
             "Summary must be at least 50 and at most 150 charactors long.",
         })
         hasError = true
-      } else if (s === "description" && sketch[s].length > 500) {
+      } else if (s === "description") {
         setAlert({
           isOpen: true,
           title: "Error",
-          message: "Description must be at most 500 charactors long.",
+          message: "Description is required, please provide a description.",
         })
         hasError = true
       }
@@ -249,7 +249,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
     <>
       {isLoading && isBrowser &&
         createPortal(
-          <div className="fixed w-full h-full top-0 left-0">
+          <div className="fixed top-0 left-0 w-full h-full">
             <InBoxLoading text="Loading" />
           </div>,
           document.body
@@ -299,7 +299,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                   {isSummaryPreviewBoxOpen ? (
                     <div className="text-palatte-500">
                       <h3 className="">Summary</h3>
-                      <div className="w-full border-palatte-200 bg-palatte-200 text-palatte-500 px-3 py-2">
+                      <div className="w-full px-3 py-2 border-palatte-200 bg-palatte-200 text-palatte-500">
                         <Markdown>{sketch.summary || "Nothing Yet !"}</Markdown>
                       </div>
                     </div>
@@ -318,7 +318,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                   <button
                     type="button"
                     onClick={() => setIsSummaryPreviewBoxOpen(prev => !prev)}
-                    className="border border-palatte-500 bg-palatte-500 text-palatte-100 text-tiny px-3 py-1 absolute right-1 top-8"
+                    className="absolute px-3 py-1 border border-palatte-500 bg-palatte-500 text-palatte-100 text-tiny right-1 top-8"
                   >
                     {isSummaryPreviewBoxOpen ? "Raw Text" : "preview"}
                   </button>
@@ -327,7 +327,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                   {isDescriptionPreviewBoxOpen ? (
                     <div className="text-palatte-500">
                       <h3 className="">Description</h3>
-                      <div className="w-full border-palatte-200 bg-palatte-200 text-palatte-500 px-3 py-2">
+                      <div className="w-full px-3 py-2 border-palatte-200 bg-palatte-200 text-palatte-500">
                         <Markdown>
                           {sketch.description || "Nothing Yet !"}
                         </Markdown>
@@ -352,7 +352,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                     onClick={() =>
                       setIsDescriptionPreviewBoxOpen(prev => !prev)
                     }
-                    className="border border-palatte-500 bg-palatte-500 text-palatte-100 text-tiny px-3 py-1 absolute right-1 top-8"
+                    className="absolute px-3 py-1 border border-palatte-500 bg-palatte-500 text-palatte-100 text-tiny right-1 top-8"
                   >
                     {isDescriptionPreviewBoxOpen ? "Raw Text" : "preview"}
                   </button>
@@ -381,7 +381,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                   getValue={(_, f) => dispatch({ type: "IMAGE", value: f })}
                 />
               </div>
-              <div className="flex items-center gap-2 justify-end">
+              <div className="flex items-center justify-end gap-2">
                 <Button
                   onClick={() => {
                     dispatch({ type: "RESET", value: "" })

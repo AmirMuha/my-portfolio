@@ -34,7 +34,6 @@ class SketchCreateInput_PWNR {
   summary: string
   @Field(() => String)
   @IsNotEmpty()
-  @Length(300)
   @IsString()
   description: string
   @Field(() => String)
