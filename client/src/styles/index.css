@@ -295,6 +295,9 @@ table tbody {
   border-right: 1px solid #1e0b00;
   border-left: 1px solid #1e0b00;
 }
+table td, table th {
+  border-right: 1px solid #1e0b00;
+}
 table tr {
   border-bottom: 1px solid #1e0b00;
 }
