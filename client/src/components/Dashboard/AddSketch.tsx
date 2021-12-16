@@ -160,7 +160,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
             "Summary must be at least 50 and at most 150 charactors long.",
         })
         hasError = true
-      } else if (s === "description") {
+      } else if (s === "description" && sketch[s].length === 0) {
         setAlert({
           isOpen: true,
           title: "Error",
