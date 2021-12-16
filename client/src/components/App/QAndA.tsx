@@ -84,7 +84,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
   }, [isAnswerOpen])
 
   const updateQAndA = (v: QAndAEditTypes) => {
-    if (v.question || v.answer) {
+    if (!v.question || !v.answer) {
       setAlert({
         isOpen: true,
         title: "Error",
@@ -166,32 +166,32 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
         />
       )}
       {editable ? (
-        <div className="flex gap-0 justify-start">
+        <div className="flex justify-start gap-0">
           <div className="flex-col mr-20">
             <SmallPipe pipeStyle={{ width: 28 }}>
               <button
                 onClick={controlDropDown}
-                className="flex py-2 relative items-center pr-6 text-left justify-between"
+                className="relative flex items-center justify-between py-2 pr-6 text-left"
               >
-                <p className="ml-3 mt-0 mr-0 mb-0 font-semibold">
+                <p className="mt-0 mb-0 ml-3 mr-0 font-semibold">
                   {data.question}
                 </p>
                 <div
                   ref={dropdownRef as any}
-                  className="absolute transform origin-center top-4 right-0"
+                  className="absolute right-0 transform origin-center top-4"
                 >
                   {DropDown}
                 </div>
               </button>
             </SmallPipe>
             {isAnswerOpen && (
-              <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
+              <div className="p-5 mt-0 mb-3 ml-6 mr-0 overflow-hidden bg-palatte-200">
                 <Markdown>{data.answer}</Markdown>
               </div>
             )}
           </div>
           <div className="relative">
-            <div className="absolute top-2 right-0 flex gap-5 items-center">
+            <div className="absolute right-0 flex items-center top-2 gap-5">
               <Editable
                 editButtonStyle={{
                   position: "initial",
@@ -225,9 +225,9 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
           <SmallPipe pipeStyle={{ width: 28 }}>
             <button
               onClick={controlDropDown}
-              className="flex py-2 relative items-center pr-6 text-left justify-between"
+              className="relative flex items-center justify-between py-2 pr-6 text-left"
             >
-              <p className="ml-3 mt-0 mr-0 mb-0 font-semibold">
+              <p className="mt-0 mb-0 ml-3 mr-0 font-semibold">
                 {data.question}
               </p>
               <div
@@ -239,7 +239,7 @@ const QAndA: FC<PropsWithChildren<Props>> = ({
             </button>
           </SmallPipe>
           {isAnswerOpen && (
-            <div className="p-5 ml-6 mt-0 mr-0 bg-palatte-200 overflow-hidden mb-3">
+            <div className="p-5 mt-0 mb-3 ml-6 mr-0 overflow-hidden bg-palatte-200">
               <Markdown>{data.answer}</Markdown>
             </div>
           )}
