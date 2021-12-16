@@ -43,10 +43,12 @@ ol li {
 * {
   outline: none;
   box-sizing: border-box;
+  scrollbar-width: 0;
 }
 *::-webkit-scrollbar {
   display: none;
 }
+
 a {
   text-decoration: none;
 }
