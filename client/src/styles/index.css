@@ -43,7 +43,7 @@ ol li {
 * {
   outline: none;
   box-sizing: border-box;
-  scrollbar-width: 0;
+  scrollbar-width: none;
 }
 *::-webkit-scrollbar {
   display: none;
