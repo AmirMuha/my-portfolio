@@ -59,7 +59,7 @@ const main = async () => {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: __prod__ ? "none":false,
         secure: __prod__,
         maxAge:
           parseInt(process.env.SESSION_MAX_AGE_DAYS!) * 24 * 60 * 60 * 1000,
