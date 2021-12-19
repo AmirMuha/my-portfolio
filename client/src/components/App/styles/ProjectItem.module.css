@@ -1,7 +1,13 @@
 .ProjectItem {
-  @apply flex-col border-l-5 md:border-l-10 border-palatte-500 justify-start gap-0 ml-14;
+  @apply flex-col justify-start border-l-5 md:border-l-10 border-palatte-500 gap-0 ml-14;
 }
 
 .ProjectItems.ProjectItem_Border__Bottom:last-child {
   @apply border-palatte-500 border-b-5 md:border-b-10;
+}
+
+@media (max-width: 500px) {
+  .mobile_width {
+    margin-right: 5%;
+  }
 }

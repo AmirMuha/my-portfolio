@@ -4,7 +4,7 @@ import Button from "../UI/Button"
 import { Edit } from "../../icons/iconsJSX"
 import Markdown from "../utility/Markdown"
 import { Project } from "../../types/graphql-types"
-import { ProjectItem as ProjectItemClass } from "./styles/ProjectItem.module.css"
+import { ProjectItem as ProjectItemClass, mobile_width } from "./styles/ProjectItem.module.css"
 import SmallPipe from "../UI/SmallPipe"
 import TechItem from "./TechItem"
 import { useServerUrl } from '../../util/useServerUrl'
@@ -26,16 +26,16 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
     <>
       <div className="ProjectItems">
         {type === "2" ? (
-          <div className="flex-col gap-0 items-start mb-5 pl-6 pt-5">
+          <div className={`${mobile_width} flex-col gap-0 items-start mb-5 pl-6 pt-5`}>
             <div
               style={{ minHeight: 200, maxHeight: 300 }}
-              className="border-palatte-500 overflow-hidden border-5 md:border-10 relative"
+              className="relative overflow-hidden border-palatte-500 border-5 md:border-10"
             >
                 <img
                   src={`${SERVER_API}/${data.image}`}
                   alt={`${data.name} Image`}
                 />
-              <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
+              <span className="absolute top-0 left-0 w-full h-full opacity-50 bg-palatte-300"></span>
               {editable && (
                 <Button
                   outline
@@ -44,13 +44,13 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   color="100"
                   normal
                   style={{ padding: "6px" }}
-                  className="rounded-full absolute -bottom-4 -right-4"
+                  className="absolute rounded-full -bottom-4 -right-4"
                 >
                   {Edit}
                 </Button>
               )}
             </div>
-            <div className="ml-7 relative pt-5 border-l-5 md:border-l-10 border-palatte-500">
+            <div className="relative pt-5 ml-7 border-l-5 md:border-l-10 border-palatte-500">
               <SmallPipe w="16" pipes="left">
                 <h1 className="font-bold flex gap-1 text-sm.2 mx-2">
                   About The Project
@@ -98,7 +98,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   </>
                 </>
               )}
-              <div className="mt-5 relative">
+              <div className="relative mt-5">
                 <SmallPipe>
                   <Button
                     className="w-full text-center"
@@ -128,12 +128,12 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                 width: 150,
                 height: 100,
                 overflow: "hidden"
-              }} className="ProjectImage_Border max-w-20 relative">
+              }} className="relative ProjectImage_Border max-w-20">
                   <img
                     src={`${SERVER_API}/${data.image}`}
                     alt={`${data.name} Image`}
                   />
-                <span className="absolute top-0 left-0 bg-palatte-300 opacity-50 w-full h-full"></span>
+                <span className="absolute top-0 left-0 w-full h-full opacity-50 bg-palatte-300"></span>
               </div>
               <div className="pl-3 text-sm">
                 <p style={{ margin: 0 }}>{data.name}</p>
@@ -148,8 +148,8 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
               </>
             )}
             <div className={ProjectItemClass}>
-              <div className="flex pt-3 items-center gap-0 relative">
-                <div className="h-pipe-sm md:h-pipe-lg w-6 bg-palatte-500"></div>
+              <div className="relative flex items-center pt-3 gap-0">
+                <div className="w-6 h-pipe-sm md:h-pipe-lg bg-palatte-500"></div>
                 <Button
                   to={
                     editable
@@ -159,7 +159,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   color="100"
                   textColor="500"
                   borderColor="500"
-                  className="text-sm w-full"
+                  className="w-full text-sm"
                   style={{ gap: 0, textAlign: "center" }}
                   outline
                   fill
