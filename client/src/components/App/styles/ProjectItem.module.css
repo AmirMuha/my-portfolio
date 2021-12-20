@@ -13,11 +13,6 @@
 }
 @media (max-width: 400px) {
   .mobile_width {
-    margin-right: 10%;
-  }
-}
-@media (max-width: 300px) {
-  .mobile_width {
     margin-right: 20%;
   }
 }
