@@ -31,19 +31,19 @@ interface Props {
 
 const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
   onOpen,
-  buttonClassName,
+  buttonClassName = "",
   positionPlace,
   buttonStyle,
   saveAndCloseContainerStyle,
   position,
   onClose,
   style,
-  className,
+  className = "",
   textareaRows = 8,
   editButtonStyle,
   isEnable,
   onSave,
-  textareaClassName,
+  textareaClassName = "",
   value,
   textareaStyle,
   getValue,
@@ -61,7 +61,7 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
     }
   }
   return (
-    <div style={style} className={`${className} relative`}>
+    <div style={style} className={`${className} relative overflow-x-auto`}>
       {isPreviewBoxOpen ? (
         <Markdown>{value}</Markdown>
       ) : isEnable ? (
@@ -100,7 +100,7 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
               setNewText(textAreaRef.current ? textAreaRef.current.value : "")
               setIsPreviewBoxOpen(prev => !prev)
             }}
-            className="border border-palatte-500 rounded-full px-3 py-1 bg-palatte-500 text-palatte-100 text-tiny"
+            className="px-3 py-1 border rounded-full border-palatte-500 bg-palatte-500 text-palatte-100 text-tiny"
           >
             {isPreviewBoxOpen ? "Raw Text" : "Preview"}
           </button>
@@ -116,7 +116,7 @@ const Editable_TextArea: FC<PropsWithChildren<Props>> = ({
             style={{ ...buttonStyle, padding: "4px 7px" }}
             className={`${buttonClassName} rounded-full bg-palatte-500`}
           >
-            <span className="icon-s-1 text-palatte-100 gap-1 text-tiny flex items-center">
+            <span className="flex items-center icon-s-1 text-palatte-100 gap-1 text-tiny">
               Save {Done}
             </span>
           </Button>

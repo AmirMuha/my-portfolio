@@ -346,7 +346,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
         />
       )}
       {editable ? (
-        <div className="pl-5 pb-7 relative">
+        <div className="relative pl-5 pb-7">
           {isConfirmOpen && (
             <Confirm
               header
@@ -382,7 +382,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
             <div className="p-1.5 absolute border-5 md:border-10 border-palatte-500 bg-palatte-200 bg-opacity-50 top-0 left-0 right-0 bottom-0">
               <span
                 onClick={() => setConfirmBox(true)}
-                className="cursor-pointer absolute top-2 right-2"
+                className="absolute cursor-pointer top-2 right-2"
               >
                 {Delete}
               </span>
@@ -473,7 +473,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
         </div>
       ) : (
         <div>
-          <div className="pl-5 pb-7 relative overflow-y-scroll">
+          <div className="relative pl-5 overflow-y-scroll pb-7">
             <div className="relative">
               <div className="overflow-hidden">
                 <img
@@ -505,7 +505,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
               </div>
             </div>
             <div className="ml-10 border-l-5 border-palatte-500 md:border-l-10">
-              <div style={{ margin: 0 }} className="px-5 py-3">
+              <div style={{ margin: 0 }} className="px-5 py-3 overflow-x-auto">
                 <Markdown>{data.summary}</Markdown>
               </div>
               <Button

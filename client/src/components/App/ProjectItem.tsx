@@ -67,7 +67,7 @@ const ProjectItem: FC<PropsWithChildren<Props>> = ({
                   )}
                 </h1>
               </SmallPipe>
-              <div className="px-5 pt-4 pb-5">
+              <div className="px-5 pt-4 pb-5 overflow-x-auto">
                 <Markdown>{(data as any).summary}</Markdown>
               </div>
               {data.tech_categories?.length > 0 && (
