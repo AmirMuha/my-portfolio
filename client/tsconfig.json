@@ -12,9 +12,6 @@
     "moduleResolution": "node",
     "rootDir": "/",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
@@ -26,17 +23,6 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  // "plugins": [
-  //   {
-  //     "name": "ts-graphql-plugin",
-  //     "schema": {
-  //       "http": {
-  //         "url": "http://localhost:3333/graphql"
-  //       }
-  //     },
-  //     "tag": "graphql"
-  //   }
-  // ],
   "include": ["**/*"],
   "exclude": [
     "node_modules",
