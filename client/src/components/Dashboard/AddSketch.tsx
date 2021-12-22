@@ -6,6 +6,7 @@ import React, {
   useReducer,
   useState,
 } from "react"
+import Loading from "../UI/Loading"
 import {
   useCreateSketchMutation,
   useUploadAndSketchImageDownloadablesMutation,
@@ -297,8 +298,13 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
             onClose={() => setIsOpen(false)}
           >
             {
-              isNewSketchUploading && 
-              <InBoxLoading />
+              isNewSketchUploading && isBrowser &&
+              createPortal(
+                <div className="fixed inset-0 z-50">
+                  <InBoxLoading text="Creating new sketch, Please wait..." />
+                </div>,
+               document.body
+              )
             }
             <form onSubmit={save} className="w-full">
               <div className="mb-3">
