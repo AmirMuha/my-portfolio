@@ -105,6 +105,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
   mode = "EDIT",
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isNewSketchUploading, setIsNewSketchUploading] = useState<boolean>(false)
   const dispatchNewSketch = useTheDispatch()
   const [
     mutateFiles,
@@ -140,14 +141,16 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
     e.preventDefault()
     let hasError = false
     setIsLoading(true)
+    setIsNewSketchUploading(true)
     for (const s in sketch) {
       if (!sketch[s]) {
-        hasError = true
         setAlert({
           isOpen: true,
           title: "Error",
           message: `${s} field is required please provide some value.`,
         })
+        setIsNewSketchUploading(false)
+        hasError = true
       }
       if (
         s === "summary" &&
@@ -159,6 +162,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
           message:
             "Summary must be at least 50 and at most 150 charactors long.",
         })
+        setIsNewSketchUploading(false)
         hasError = true
       } else if (s === "description" && sketch[s].length === 0) {
         setAlert({
@@ -166,6 +170,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
           title: "Error",
           message: "Description is required, please provide a description.",
         })
+        setIsNewSketchUploading(false)
         hasError = true
       }
     }
@@ -188,11 +193,14 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                   downloadables: res.data.uploadFilesToZip,
                 })
               )
+              setIsNewSketchUploading(false)
               setIsOpen(false)
               dispatch({ type: "RESET", value: "" })
             }
           })
-          .catch(() => {})
+          .catch(() => {
+            setIsNewSketchUploading(false)
+          })
       } else {
         mutateFiles({
           variables: {
@@ -230,16 +238,21 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                         downloadables: resp.data.createSketch.downloadables,
                       })
                     )
+                    setIsNewSketchUploading(false)
                     setIsOpen(false)
                     dispatch({ type: "RESET", value: "" })
                   } else {
                     unknownError()
                   }
                 })
-                .catch(() => {})
+                .catch(() => {
+                  setIsNewSketchUploading(false)
+                })
             }
           })
-          .catch(() => {})
+          .catch(() => {
+            setIsNewSketchUploading(false)
+          })
       }
     }
     setIsLoading(false)
@@ -283,6 +296,10 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
             title="Adding A New Sketch"
             onClose={() => setIsOpen(false)}
           >
+            {
+              isNewSketchUploading && 
+              <InBoxLoading />
+            }
             <form onSubmit={save} className="w-full">
               <div className="mb-3">
                 <Input
@@ -359,6 +376,7 @@ const AddSketch: FC<PropsWithChildren<Props>> = ({
                 </div>
                 <Input
                   type="file"
+                  maxSize={50}
                   label="Downloadables"
                   buttonTitle="Choose Downloadables"
                   id="downloadables"

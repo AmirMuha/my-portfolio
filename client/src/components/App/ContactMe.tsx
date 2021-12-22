@@ -191,6 +191,9 @@ const ContactMe: FC<PropsWithChildren<Props>> = ({
               }}
               value={fileName}
             />
+            <span className="text-xs text-palatte-300">
+              Maximum upload size is 5MB
+            </span>
             <Button
               color="500"
               normal

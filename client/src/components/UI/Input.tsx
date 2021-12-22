@@ -4,7 +4,8 @@ import React, {
   useCallback,
   useRef,
 } from "react"
-
+import Alert from "./Alert"
+import {useAlert} from "../../util/useAlert" 
 import Button from "./Button"
 
 export interface File {
@@ -34,6 +35,7 @@ interface Props {
   name?: string
   color?: "100" | "200" | "300" | "400" | "500" | "transparent"
   textColor?: "100" | "200" | "300" | "400" | "500"
+  maxSize?: number
 }
 
 const Input: ForwardRefRenderFunction<unknown, Props> = (
@@ -57,9 +59,11 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
     name = label,
     getValue,
     type = "text",
+    maxSize= 5
   },
   ref
 ) => {
+  const {isOpen: isAlertOpen, message: fileMessage, title: fileTitle,setAlert} = useAlert();
   const fileRef = useRef<HTMLInputElement>()
   const fileInputClick = useCallback(() => {
     fileRef.current?.click()
@@ -68,7 +72,31 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
     const arr = value.split("\\")
     value = arr[arr.length - 1]
   }
+
+  const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e?.currentTarget?.files?.length! > 0) {
+      const numberOfFiles = new Array(e?.currentTarget?.files?.length!).fill(1);
+      let userTotalUploadSize = 0;
+      numberOfFiles.forEach((f,i) => {
+        userTotalUploadSize += e?.currentTarget?.files?.item(i)?.size!
+      })
+      if(userTotalUploadSize > maxSize * 1000000) {
+        setAlert({
+          isOpen: true,
+          title: "Error",
+          message: `The maximum upload size in total is 5MB, your total size is ${(userTotalUploadSize/1000000).toFixed(2) + "MB"}`
+        })
+      } else {
+        getValue(e.currentTarget.value, e.currentTarget?.files)
+      }
+    }
+  }
   return (
+    <>
+      {
+        isAlertOpen && 
+        <Alert header title={fileTitle} message={fileMessage} onClose={() => setAlert({isOpen: false})} />
+      }
     <div className={containerClasses}>
       {type === "file" && (
         <>
@@ -78,7 +106,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
           <div className="flex">
             <div
               onClick={fileInputClick}
-              className="px-3 py-2 w-full bg-palatte-200 truncate"
+              className="w-full px-3 py-2 truncate bg-palatte-200"
             >
               {value ? (
                 <p style={{ margin: 0 }} className="text-palatte-500">
@@ -115,7 +143,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
             name={name}
             required={required}
             onChange={e =>
-              getValue(e.currentTarget.value, e.currentTarget?.files)
+              fileInputChangeHandler(e)
             }
             ref={fileRef as any}
             type="file"
@@ -167,7 +195,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
               onChange={e => getValue(e.currentTarget.checked)}
               name={name}
             />
-            <div className="box w-5 h-5"></div>
+            <div className="w-5 h-5 box"></div>
           </label>
         </>
       )}
@@ -187,7 +215,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
               onChange={e => getValue(e.currentTarget.checked)}
               name={name}
             />
-            <div className="check-container w-5 h-5">
+            <div className="w-5 h-5 check-container">
               <div
                 className={`check ${
                   checked === true ? "check-on" : "check-off"
@@ -198,6 +226,7 @@ const Input: ForwardRefRenderFunction<unknown, Props> = (
         </>
       )}
     </div>
+  </>
   )
 }
 
