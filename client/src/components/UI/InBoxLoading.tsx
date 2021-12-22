@@ -7,10 +7,10 @@ interface Props {
 const InBoxLoading: FC<PropsWithChildren<Props>> = ({ text }) => {
   return (
     <>
-      <div className="bg-palatte-200 z-50 bg-opacity-70 absolute inset-0">
-        <div className="flex-col absolute gap-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="fixed inset-0 z-50 bg-palatte-200 bg-opacity-70">
+        <div className="absolute flex-col gap-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <svg
-            className="animate-spin mx-auto w-10 h-10 my-3 text-white"
+            className="w-10 h-10 mx-auto my-3 text-white animate-spin"
             viewBox="0 0 24 24"
           >
             <circle
