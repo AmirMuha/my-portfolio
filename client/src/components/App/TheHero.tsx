@@ -76,7 +76,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
                     href={`${SERVER_API}/${
                       data?.resumes[0]
                     }`}
-                    className="w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70"
+                    className="flex-grow w-1/2 text-center py-14 place-self-center bg-palatte-400 opacity-70"
                   >
                     <span className="uppercase">
                       .{data?.resumes[0].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
@@ -90,7 +90,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
                     href={`${SERVER_API}/${
                       data?.resumes[1]
                     }`}
-                    className="w-1/2 text-center py-14 place-self-center bg-palatte-300 opacity-70"
+                    className="flex-grow w-1/2 text-center py-14 place-self-center bg-palatte-300 opacity-70"
                   >
                     <span className="uppercase">
                       .{data?.resumes[1].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
