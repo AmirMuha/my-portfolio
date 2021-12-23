@@ -49,10 +49,10 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
           <NavLink
             to="/"
             style={{ padding: 0, margin: `0 ${!nav ? "auto" : "0"}` }}
-            className="font-bold text-sm"
+            className="text-sm font-bold"
           >
             <span className="uppercase">{brand}</span>.
-            <span className="text-tiny font-normal lowercase">{page}</span>
+            <span className="font-normal lowercase text-tiny">{page}</span>
           </NavLink>
           {nav && (
             <div className="flex items-center gap-5">
@@ -70,7 +70,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
               {isDropdownOpen && (
                 <div
                   onClick={closeDropdown}
-                  className="fixed  top-0 left-0 w-full h-full"
+                  className="fixed top-0 left-0 w-full h-full"
                 ></div>
               )}
               <div
@@ -87,9 +87,10 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                 {
                   data && data.me && data.me.resumes &&
                   <div
-                    className="flex-col mr-1 mb-1 mt-1"
+                    className="flex-col mt-1 mb-1 mr-1"
                     style={{ fontSize: "12px" }}
                   >
+                    { data.me.resumes[0] &&
                     <Button
                       iconAnimation="TtB"
                       color="300"
@@ -104,6 +105,8 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     >
                       .{data.me.resumes[0].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </Button>
+                    }
+                    { data.me.resumes[1] &&
                     <Button
                       iconAnimation="TtB"
                       toUrl={`${SERVER_API}/${data.me.resumes[1]}`}
@@ -114,6 +117,7 @@ const TheHeader: FC<PropsWithChildren<Props>> = ({
                     >
                     .{data.me.resumes[1].split(/\.(pdf|ppt|docx)/i)[1].toUpperCase()}
                     </Button>
+                    }
                   </div>
                 }
                 </div>
