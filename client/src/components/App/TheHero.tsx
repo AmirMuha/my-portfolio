@@ -70,7 +70,7 @@ const TheHero: FC<PropsWithChildren<Props>> = ({ data }) => {
               <div className="border-5 text-sm.4 text-palatte-100 p-2 md:border-10 border-palatte-500">
                 <div className="flex resume-background-image">
                   {
-                    data?.resumes[1] &&
+                    data?.resumes[0] &&
                   <a
                     target="_blank"
                     href={`${SERVER_API}/${
