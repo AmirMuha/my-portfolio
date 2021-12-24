@@ -18,7 +18,7 @@ interface QueryTypes extends PageProps {
 const Projects: FC<QueryTypes> = ({ data }) => {
   return (
     <>
-      <SEO title="Adding New Projects To Stack" />
+      <SEO title="Projects" />
       <Layout nav={false} header={{ brand: "AM.PORTFOLIO", page: "projects" }}>
         <TheSection
           name="What Now ?"
