@@ -379,7 +379,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
                 className="object-cover object-center"
               />
             </div>
-            <div className="absolute z-40 px-2 py-1 bottom-3 left-3 bg-palatte-400 text-palatte-100">
+            <div className="absolute z-20 px-2 py-1 bottom-3 left-3 bg-palatte-400 text-palatte-100">
               {data.title}
             </div>
             <div className="p-1.5 absolute border-5 md:border-10 border-palatte-500 bg-palatte-200 bg-opacity-50 top-0 left-0 right-0 bottom-0">
@@ -491,7 +491,7 @@ const Sketch: FC<PropsWithChildren<Props>> = ({
                   className="object-cover object-center"
                 />
               </div>
-              <div className="absolute z-40 px-2 py-1 bottom-3 left-3 bg-palatte-400 text-palatte-100">
+              <div className="absolute z-20 px-2 py-1 bottom-3 left-3 bg-palatte-400 text-palatte-100">
                 {data.title}
               </div>
               <div className="p-1.5 absolute border-5 md:border-10 border-palatte-500 bg-palatte-200 bg-opacity-50 top-0 left-0 right-0 bottom-0">

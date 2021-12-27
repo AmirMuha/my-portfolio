@@ -38,10 +38,10 @@ const Modal: FC<PropsWithChildren<Props>> = ({
   return (
     <>
       {isBrowser  && createPortal(
-        <div className={modalContainerClass}>
+        <div className={`${modalContainerClass} z-50`}>
           <div
             onClick={onClose}
-            className="bg-palatte-500 top-0 bottom-0 right-0 left-0 w-full opacity-20 h-full fixed"
+            className="fixed top-0 bottom-0 left-0 right-0 w-full h-full bg-palatte-500 opacity-20"
           ></div>
           <dialog
             open
@@ -53,7 +53,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
               padding: 0,
               ...style,
             }}
-            className="bg-palatte-100 fixed overflow-scroll top-1/2 w-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-palatte-500"
+            className="fixed z-50 w-3/4 overflow-scroll border bg-palatte-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-palatte-500"
           >
             {header && (
               <header
@@ -62,10 +62,10 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                   stickyHeader && "sticky top-0"
                 } px-5 flex items-center justify-between py-3 font-bold text-palatte-100`}
               >
-                <span className="flex gap-3 items-center">{title}</span>
+                <span className="flex items-center gap-3">{title}</span>
                 <span
                   onClick={onClose}
-                  className="icon-s-1 cursor-pointer p-2 icon-palatte-100"
+                  className="p-2 cursor-pointer icon-s-1 icon-palatte-100"
                 >
                   {Close}
                 </span>
